@@ -1,9 +1,9 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 export const client = new ApolloClient({
-  uri: 'https://outreau.stepzen.net/api/my-reddit/__graphql',
+  uri: process.env.NEXT_PUBLIC_STEPZEN_HOST,
   headers: {
-    Authorization: `Apikey ${process.env.STEPZEN_API_KEY}`
+    Authorization: `Apikey ${process.env.NEXT_PUBLIC_STEPZEN_API_KEY}`
   },
   cache: new InMemoryCache()
 })

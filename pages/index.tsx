@@ -1,14 +1,14 @@
-import TopNav from '@/components/TopNav'
+import { PostWrapper, TopNav } from '@/components'
 import Head from 'next/head'
 
-export default function Page() {
+export default function Home() {
   return (
     <div>
       <Head>
         <title>My Reddit</title>
       </Head>
-      <h1>Hello this is my Reddit</h1>
       <TopNav></TopNav>
+      <PostWrapper />
     </div>
   )
 }

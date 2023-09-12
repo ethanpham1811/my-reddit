@@ -23,6 +23,7 @@ type Post {
 type Subreddit {
   created_at: DateTime!
   id: ID!
+  topic: String!
   post: [Post] @materializer(query: "postUsingPost_subreddit_id_fkey")
 }
 
@@ -118,6 +119,15 @@ type Query {
       schema: "public"
       query: """
       SELECT "created_at", "id" FROM "subreddit" WHERE "id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  subredditListByTopic(topic: String!): [Subreddit]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT * FROM "subreddit" WHERE "topic" = $1
       """
       configuration: "postgresql_config"
     )
