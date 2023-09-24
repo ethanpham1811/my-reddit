@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { client } from '@/apollo-client'
 import { ADD_POST, ADD_SUBREDDIT } from '@/graphql/mutations'
 import { GET_SUBREDDIT_BY_TOPIC } from '@/graphql/quries'
-import { useMutation } from '@apollo/client'
+import { ApolloError, useMutation } from '@apollo/client'
 import { ErrorMessage } from '@hookform/error-message'
 import toast from 'react-hot-toast'
 
@@ -15,64 +15,50 @@ type Post = {
   subreddit: string
 }
 
-function PostWrapper() {
+function NewPostForm() {
   const { data: session } = useSession()
-  const [addPost, addPostRes] = useMutation(ADD_POST)
-  const [addSubreddit, addSubredditRes] = useMutation(ADD_SUBREDDIT)
+  const [addSubreddit] = useMutation(ADD_SUBREDDIT, {
+    onError: (error: ApolloError) => {
+      toast.error(error.message)
+    }
+  })
+  const [addPost] = useMutation(ADD_POST, {
+    onCompleted: () => {
+      toast.success('Your post sucessfully added!')
+    },
+    onError: (error: ApolloError) => {
+      toast.error(error.message)
+    }
+  })
 
   const {
     register,
-    setValue,
+    reset,
     handleSubmit,
     watch,
     formState: { errors }
   } = useForm<Post>()
 
   const onSubmit = handleSubmit(async (formData) => {
-    const notification = toast.loading('Processing..')
-    try {
-      const {
-        data: { subredditListByTopic }
-      } = await client.query({ query: GET_SUBREDDIT_BY_TOPIC, variables: { topic: formData.subreddit } })
+    const res = await client.query({ query: GET_SUBREDDIT_BY_TOPIC, variables: { topic: formData.subreddit } })
+    const subredditExists = res?.data?.subredditListByTopic?.length > 0
 
-      const subredditExists = subredditListByTopic.length > 0
-
-      if (!subredditExists) {
-        const {
-          data: { insertSubreddit: newSubreddit }
-        } = await addSubreddit({ variables: { topic: formData.subreddit } })
-
-        // const image = formData.postImage || ''
-
-        const {
-          data: { insertPost: newPost }
-        } = await addPost({
+    if (!subredditExists) {
+      addSubreddit({ variables: { topic: formData.subreddit } }).then((res) => {
+        const newSubredditId = res?.data?.insertSubreddit.id
+        addPost({
           variables: {
             body: formData.body,
             image: '',
-            subreddit_id: newSubreddit.id,
+            subreddit_id: newSubredditId,
             title: formData.title,
             username: session?.user?.name
           }
         })
-
-        console.log(newPost)
-      } else {
-      }
-
-      setValue('body', '')
-      setValue('title', '')
-      setValue('subreddit', '')
-      setValue('image', '')
-
-      toast.success('New post created!', {
-        id: notification
-      })
-    } catch (error) {
-      toast.error('Oops, something went wrong, please try again!', {
-        id: notification
       })
     }
+    // clear the form
+    reset()
   })
 
   return (
@@ -103,4 +89,4 @@ function PostWrapper() {
   )
 }
 
-export default PostWrapper
+export default NewPostForm

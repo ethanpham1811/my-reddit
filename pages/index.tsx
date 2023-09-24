@@ -1,4 +1,4 @@
-import { PostWrapper, TopNav } from '@/components'
+import { TopNav } from '@/components'
 import Head from 'next/head'
 
 export default function Home() {
@@ -7,8 +7,8 @@ export default function Home() {
       <Head>
         <title>My Reddit</title>
       </Head>
-      <TopNav></TopNav>
-      <PostWrapper />
+      <TopNav />
+      {/* <NewPostForm /> */}
     </div>
   )
 }
