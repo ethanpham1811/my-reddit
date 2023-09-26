@@ -1,9 +1,9 @@
 import { red } from '@mui/material/colors'
 import { Theme, createTheme } from '@mui/material/styles'
-import { Roboto } from 'next/font/google'
+import { IBM_Plex_Sans } from 'next/font/google'
 
-export const roboto = Roboto({
-  weight: ['300', '400', '500', '700'],
+export const ibmPlexSans = IBM_Plex_Sans({
+  weight: ['400', '500', '700'],
   subsets: ['latin'],
   display: 'swap'
 })
@@ -21,7 +21,7 @@ export const theme: Theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#556cd6'
+      main: '#DAE0E6'
     },
     secondary: {
       main: '#19857b'
@@ -37,9 +37,27 @@ export const theme: Theme = createTheme({
     },
     hoverState: {
       main: '#0079D3' // Custom color value
+    },
+    inputBgOutfocused: {
+      main: '#F6F7F8' // Custom color value
+    },
+    inputBorder: {
+      main: '#EDEFF1' // Custom color value
     }
   },
   typography: {
-    fontFamily: roboto.style.fontFamily
+    fontFamily: ibmPlexSans.style.fontFamily,
+    fontSize: 12.25
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          // ...darkScrollbar(),
+          backgroundColor: '#DAE0E6',
+          fontSize: '1rem'
+        }
+      }
+    }
   }
 })

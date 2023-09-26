@@ -1,49 +1,70 @@
+import { RdDropdown } from '@/components'
 import { generateUserImage } from '@/components/utilities'
 import { HomeIcon } from '@/constants'
-import { Box, Button, FormControl, MenuItem, Select, SelectChangeEvent, styled } from '@mui/material'
+import { MenuItem } from '@mui/material'
 import { Session } from 'next-auth'
-
 import Image from 'next/image'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
+import { v4 as rid } from 'uuid'
 
 type MenuProps = {
   session: Session | null
 }
-
-const ListItem = styled(MenuItem)(() => {
-  return { padding: '0 1rem', fontStyle: 'normal' }
-})
+type MenuItem = {
+  name: string
+  value: string
+  icon: ReactNode | null
+}
 
 function MenuDropDown({ session }: MenuProps) {
   const [page, setPage] = useState('home')
-  function handleChange(e: SelectChangeEvent) {
-    setPage(e.target.value)
+
+  const list: MenuItem[] = [
+    {
+      name: 'Home',
+      value: 'home',
+      icon: <HomeIcon />
+    },
+    {
+      name: 'Ai generated arts',
+      value: 'ai',
+      icon: null
+    }
+  ]
+
+  function renderSelectedOption(selectedValue: ReactNode) {
+    const seletedItem = list.find((item) => item.value == selectedValue)
+    return (
+      <>
+        {seletedItem ? (
+          <>
+            {seletedItem.icon ?? (
+              <Image alt={`${seletedItem.name} image`} src={generateUserImage(seletedItem.name || 'seed')} width={20} height={20} />
+            )}
+            {seletedItem.name || 'unknown'}
+          </>
+        ) : (
+          <div></div>
+        )}
+      </>
+    )
   }
+
   return (
-    <Box flex={1}>
-      <FormControl sx={{ m: 1, minWidth: 200 }}>
-        <Select value={page} onChange={handleChange} sx={{ '.MuiSelect-select': { paddingY: 0, paddingX: '0.4rem' } }}>
-          <ListItem value="home">
-            <Button sx={{ textTransform: 'none' }} color="inherit" startIcon={<HomeIcon />}>
-              Home
-            </Button>
-          </ListItem>
-          {session && (
-            <ListItem value="profile">
-              <Button
-                sx={{ textTransform: 'none' }}
-                color="inherit"
-                startIcon={
-                  <Image alt="profile image" src={session.user?.image || generateUserImage(session.user?.name || 'seed')} width={20} height={20} />
-                }
-              >
-                Profile
-              </Button>
-            </ListItem>
-          )}
-        </Select>
-      </FormControl>
-    </Box>
+    <RdDropdown renderSelectedOption={renderSelectedOption} selectedKey={page} setSelectedKey={setPage}>
+      {session && list.length > 0 ? (
+        list.map((item) => {
+          return (
+            <MenuItem value={item.value} key={`menu_${rid()}`}>
+              {item.icon ?? <Image alt={`${item.name} image`} src={generateUserImage(item.name || 'seed')} width={20} height={20} />}
+              {item.name || 'unknown'}
+            </MenuItem>
+          )
+        })
+      ) : (
+        <div></div>
+      )}
+    </RdDropdown>
   )
 }
 

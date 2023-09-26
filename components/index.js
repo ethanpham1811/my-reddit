@@ -6,5 +6,7 @@ import ProfileDropdown from './TopNav/ProfileDropdown/ProfileDropdown'
 import SearchBar from './TopNav/SearchBar/SearchBar'
 import TopNav from './TopNav/TopNav'
 import MyToast from './utilities/MyToast/MyToast'
+import RdDropdown from './utilities/RdDropdown/RdDropdown'
+import RdNotiBubble from './utilities/RdNotiBubble/RdNotiBubble.tsx'
 
-export { IconBox, Logo, MenuDropDown, MyToast, NewPostForm, ProfileDropdown, SearchBar, TopNav }
+export { IconBox, Logo, MenuDropDown, MyToast, NewPostForm, ProfileDropdown, RdDropdown, RdNotiBubble, SearchBar, TopNav }

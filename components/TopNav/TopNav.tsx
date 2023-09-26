@@ -5,7 +5,9 @@ import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
 
 const NavBar = styled(AppBar)(({ theme }) => {
   return {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    boxShadow: 'none',
+    padding: '4px 1rem'
   }
 })
 

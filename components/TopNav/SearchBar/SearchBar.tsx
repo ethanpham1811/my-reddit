@@ -4,31 +4,28 @@ import { useEffect, useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
 import { useTheme } from '@mui/material/styles'
 
-const SearchIconWrapper = styled('div')(({ theme }) => {
-  return {
-    height: '100%',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    svg: {
-      color: theme.palette.actionIcon.main
-    }
-  }
-})
-
 const SearchField = styled(TextField)(({ theme }) => {
   return {
-    '&> div': { borderRadius: '2.5rem', width: '100%' },
-    '&> div:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.hoverState.main
+    '.MuiInputBase-root': {
+      borderRadius: '1.5rem',
+      width: '100%',
+      border: `1px solid ${theme.palette.inputBorder.main}`,
+      backgroundColor: theme.palette.inputBgOutfocused.main,
+      '.MuiSvgIcon-root': {
+        margin: '0 0.5rem'
+      },
+      '&.Mui-focused': {
+        backgroundColor: 'white'
+      }
     },
-    '.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: theme.palette.hoverState.main,
-      borderWidth: '1px'
+    '.MuiOutlinedInput-notchedOutline': {
+      border: 'none'
     },
-    input: {
-      paddingY: `0 !important`
+    'input.MuiAutocomplete-input': {
+      padding: '0 !important'
+    },
+    '[aria-expanded=true]': {
+      '~ .MuiOutlinedInput-notchedOutline': { borderBottom: 'none' }
     }
   }
 })
@@ -49,7 +46,15 @@ function SearchBar() {
     <Box flex={2}>
       <Autocomplete
         id="search-bar"
-        sx={{ minWidth: 200 }}
+        sx={{
+          minWidth: 200,
+          '&.Mui-expanded': {
+            '.MuiInputBase-root': {
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0
+            }
+          }
+        }}
         isOptionEqualToValue={(option, value) => option.title === value.title}
         getOptionLabel={(option) => option.title}
         options={options}
@@ -62,17 +67,8 @@ function SearchBar() {
             {...params}
             InputProps={{
               ...params.InputProps,
-              startAdornment: (
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-              ),
-              endAdornment: (
-                <>
-                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                  {params.InputProps.endAdornment}
-                </>
-              ),
+              startAdornment: <SearchIcon />,
+              endAdornment: <>{loading ? <CircularProgress color="inherit" size={20} /> : null}</>,
               placeholder: 'Search Reddit'
             }}
           />

@@ -12,6 +12,12 @@ declare module '@mui/material/styles' {
     hoverState: {
       main: string
     }
+    inputBgOutfocused: {
+      main: string
+    }
+    inputBorder: {
+      main: string
+    }
   }
   interface PaletteOptions {
     icon?: {
@@ -21,6 +27,12 @@ declare module '@mui/material/styles' {
       main: string
     }
     hoverState?: {
+      main: string
+    }
+    inputBgOutfocused?: {
+      main: string
+    }
+    inputBorder?: {
       main: string
     }
   }

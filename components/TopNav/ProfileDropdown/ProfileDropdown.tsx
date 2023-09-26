@@ -1,35 +1,60 @@
-import { Box, FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import { RdDropdown } from '@/components'
+import { generateUserImage } from '@/components/utilities'
+import { MenuItem } from '@mui/material'
 import { Session } from 'next-auth'
-import { signIn, signOut } from 'next-auth/react'
+import Image from 'next/image'
+import { ReactNode, useState } from 'react'
+import { v4 as rid } from 'uuid'
 
-import { useState } from 'react'
-
-type ProfileDropdownProp = {
+type MenuProps = {
   session: Session | null
 }
 
-function MenuDropDown({ session }: ProfileDropdownProp) {
+function ProfileDropdownProp({ session }: MenuProps) {
   const [page, setPage] = useState('home')
-  function handleChange(e: SelectChangeEvent) {
-    setPage(e.target.value)
+
+  const list = [
+    {
+      name: 'Home',
+      value: 'home'
+    },
+    {
+      name: 'Ai generated arts',
+      value: 'ai'
+    }
+  ]
+
+  function renderSelectedOption(_: ReactNode) {
+    return (
+      <>
+        {session ? (
+          <>
+            <Image alt="profile image" src={session.user?.image || generateUserImage(session.user?.name || 'seed')} width={20} height={20} />
+            {session.user?.name || 'unknown'}
+          </>
+        ) : (
+          <div></div>
+        )}
+      </>
+    )
   }
+
   return (
-    <Box flex={1}>
-      <FormControl sx={{ m: 1, minWidth: 200 }}>
-        <Select value={page} onChange={handleChange}>
-          {!session ? (
-            <MenuItem>
-              <button onClick={() => signIn()}>login</button>
+    <RdDropdown renderSelectedOption={renderSelectedOption} selectedKey={page} setSelectedKey={setPage}>
+      {session && list.length > 0 ? (
+        list.map((item) => {
+          return (
+            <MenuItem value={item.value} key={`menu_${rid()}`}>
+              <Image alt={`${item.name} image`} src={generateUserImage(item.name || 'seed')} width={20} height={20} />
+              {item.name || 'unknown'}
             </MenuItem>
-          ) : (
-            <MenuItem>
-              <button onClick={() => signOut()}>logout</button>
-            </MenuItem>
-          )}
-        </Select>
-      </FormControl>
-    </Box>
+          )
+        })
+      ) : (
+        <div></div>
+      )}
+    </RdDropdown>
   )
 }
 
-export default MenuDropDown
+export default ProfileDropdownProp
