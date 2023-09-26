@@ -1,75 +1,84 @@
-import { Autocomplete, CircularProgress, TextField } from '@mui/material'
+import { Autocomplete, Box, CircularProgress, TextField, styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 import SearchIcon from '@mui/icons-material/Search'
+import { useTheme } from '@mui/material/styles'
 
-// const Search = styled('div')(({ theme }) => ({
-//   position: 'relative',
-//   borderRadius: theme.shape.borderRadius,
-//   backgroundColor: alpha(theme.palette.common.white, 0.15),
-//   '&:hover': {
-//     backgroundColor: alpha(theme.palette.common.white, 0.25)
-//   },
-//   marginRight: theme.spacing(2),
-//   marginLeft: 0,
-//   width: '100%',
-//   [theme.breakpoints.up('sm')]: {
-//     marginLeft: theme.spacing(3),
-//     width: 'auto'
-//   }
-// }))
+const SearchIconWrapper = styled('div')(({ theme }) => {
+  return {
+    height: '100%',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    svg: {
+      color: theme.palette.actionIcon.main
+    }
+  }
+})
 
-// const SearchIconWrapper = styled('div')(({ theme }) => ({
-//   padding: '2rem',
-//   height: '100%',
-//   position: 'absolute',
-//   pointerEvents: 'none',
-//   display: 'flex',
-//   alignItems: 'center',
-//   justifyContent: 'center'
-// }))
+const SearchField = styled(TextField)(({ theme }) => {
+  return {
+    '&> div': { borderRadius: '2.5rem', width: '100%' },
+    '&> div:hover .MuiOutlinedInput-notchedOutline': {
+      borderColor: theme.palette.hoverState.main
+    },
+    '.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: theme.palette.hoverState.main,
+      borderWidth: '1px'
+    },
+    input: {
+      paddingY: `0 !important`
+    }
+  }
+})
 
 function SearchBar() {
   const [loading, setLoading] = useState(false)
+  const theme = useTheme()
 
-  const options = [{ title: 'Artificial Intelligent Arts' }, { title: 'Programming languages' }, { title: 'Social and family issues' }]
+  const options = loading ? [] : [{ title: 'Artificial Intelligent Arts' }, { title: 'Programming languages' }, { title: 'Social and family issues' }]
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 300)
-  }, [])
+    if (!loading) return
+    const to = setTimeout(() => setLoading(false), 300)
+    return () => clearTimeout(to)
+  }, [loading])
 
   return (
-    <section>
+    <Box flex={2}>
       <Autocomplete
         id="search-bar"
-        sx={{ width: 300 }}
+        sx={{ minWidth: 200 }}
         isOptionEqualToValue={(option, value) => option.title === value.title}
         getOptionLabel={(option) => option.title}
         options={options}
         loading={loading}
+        // open={open}
+        onOpen={() => setLoading(true)}
+        onClose={() => setLoading(false)}
         renderInput={(params) => (
-          <div>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <TextField
-              {...params}
-              InputProps={{
-                ...params.InputProps,
-                endAdornment: (
-                  <>
-                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                    {params.InputProps.endAdornment}
-                  </>
-                )
-              }}
-            />
-          </div>
+          <SearchField
+            {...params}
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: (
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+              ),
+              endAdornment: (
+                <>
+                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                  {params.InputProps.endAdornment}
+                </>
+              ),
+              placeholder: 'Search Reddit'
+            }}
+          />
         )}
       />
-    </section>
+    </Box>
   )
 }
 

@@ -8,7 +8,7 @@ export default function Home() {
         <title>My Reddit</title>
       </Head>
       <TopNav />
-      {/* <NewPostForm /> */}
+      {/* <Container maxWidth="lg"></Container> */}
     </div>
   )
 }

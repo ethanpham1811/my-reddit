@@ -1,40 +1,38 @@
-import logoUrl from '@/public/logo.png'
-import { css } from '@emotion/react'
-import { signIn, signOut, useSession } from 'next-auth/react'
-import Image from 'next/image'
-import { MenuDropDown, SearchBar } from '..'
+import { AppBar, Box, Stack, styled } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { useSession } from 'next-auth/react'
+import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
 
-const styles = css`
-  display: flex;
-  gap: 2rem;
-  section:nth-child(1) {
-    width: 5rem;
-    position: relative;
+const NavBar = styled(AppBar)(({ theme }) => {
+  return {
+    backgroundColor: '#fff'
   }
-  section:nth-child(2) {
-    svg {
-      font-size: 1.5rem;
-    }
-
-    border: 2px solid black;
-  }
-`
+})
 
 function TopNav() {
+  const theme = useTheme()
   const { data: session, status } = useSession()
 
   return (
-    <nav css={styles}>
-      {!session ? <button onClick={() => signIn()}>login</button> : <button onClick={() => signOut()}>logout</button>}
-      <section>
-        <Image alt="logo" src={logoUrl} sizes="(min-width: 768px) 129px, 385px" style={{ width: '100%', height: 'auto' }} />
-      </section>
-      {/* dropdown */}
-      <MenuDropDown session={session} />
-
-      {/* search */}
-      <SearchBar />
-    </nav>
+    <Box sx={{ flexGrow: 1 }}>
+      <NavBar>
+        <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={2}>
+          <Stack flex={1} direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={2}>
+            <Logo />
+            {/* dropdown */}
+            <MenuDropDown session={session} />
+          </Stack>
+          {/* search */}
+          <SearchBar />
+          {/* Icons */}
+          <Stack flex={1.5} direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={2}>
+            <IconBox />
+            {/* Profile dropdown */}
+            <ProfileDropdown session={session} />
+          </Stack>
+        </Stack>
+      </NavBar>
+    </Box>
   )
 }
 
