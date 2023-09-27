@@ -1,25 +1,21 @@
 import { Autocomplete, Box, CircularProgress, TextField, styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 
+import { borderColorStyle } from '@/mui/styles'
 import SearchIcon from '@mui/icons-material/Search'
-import { useTheme } from '@mui/material/styles'
 
 const SearchField = styled(TextField)(({ theme }) => {
   return {
     '.MuiInputBase-root': {
       borderRadius: '1.5rem',
       width: '100%',
-      border: `1px solid ${theme.palette.inputBorder.main}`,
       backgroundColor: theme.palette.inputBgOutfocused.main,
       '.MuiSvgIcon-root': {
         margin: '0 0.5rem'
       },
-      '&.Mui-focused': {
+      '&.Mui-focused, &:hover': {
         backgroundColor: 'white'
       }
-    },
-    '.MuiOutlinedInput-notchedOutline': {
-      border: 'none'
     },
     'input.MuiAutocomplete-input': {
       padding: '0 !important'
@@ -32,7 +28,6 @@ const SearchField = styled(TextField)(({ theme }) => {
 
 function SearchBar() {
   const [loading, setLoading] = useState(false)
-  const theme = useTheme()
 
   const options = loading ? [] : [{ title: 'Artificial Intelligent Arts' }, { title: 'Programming languages' }, { title: 'Social and family issues' }]
 
@@ -53,7 +48,8 @@ function SearchBar() {
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0
             }
-          }
+          },
+          ...borderColorStyle
         }}
         isOptionEqualToValue={(option, value) => option.title === value.title}
         getOptionLabel={(option) => option.title}

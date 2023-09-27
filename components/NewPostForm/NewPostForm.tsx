@@ -2,18 +2,13 @@ import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
 import { client } from '@/apollo-client'
+import { Post } from '@/constants/types'
 import { ADD_POST, ADD_SUBREDDIT } from '@/graphql/mutations'
 import { GET_SUBREDDIT_BY_TOPIC } from '@/graphql/quries'
 import { ApolloError, useMutation } from '@apollo/client'
-import { ErrorMessage } from '@hookform/error-message'
+import { Stack } from '@mui/material'
 import toast from 'react-hot-toast'
-
-type Post = {
-  title: string
-  body: string
-  image: string
-  subreddit: string
-}
+import { RdCard, RdInput } from '..'
 
 function NewPostForm() {
   const { data: session } = useSession()
@@ -36,6 +31,7 @@ function NewPostForm() {
     reset,
     handleSubmit,
     watch,
+    control,
     formState: { errors }
   } = useForm<Post>()
 
@@ -62,30 +58,21 @@ function NewPostForm() {
   })
 
   return (
-    <form onSubmit={onSubmit}>
-      <div>
-        <input type="text" {...register('title', { required: true })} placeholder={session ? 'Type in your post title' : 'Please login first'} />
-      </div>
-
-      {!!watch('title') && (
-        <div>
-          <div>
-            <p>body</p>
-            <input type="text" {...register('body', { required: true })} />
-          </div>
-          <div>
-            <p>image</p>
-            <input type="text" {...register('image', { required: true })} />
-          </div>
-          <div>
-            <p>subreddit</p>
-            <input type="text" {...register('subreddit', { required: true })} />
-          </div>
-          <button type="submit">Post</button>
-          <ErrorMessage errors={errors} name="title" render={({ message }) => <p>{message}</p>} />
-        </div>
-      )}
-    </form>
+    <RdCard>
+      <form onSubmit={onSubmit}>
+        <Stack gap={1}>
+          <RdInput<Post> control={control} name="title" placeholder={session ? 'Create Post' : 'Please login first'} />
+          {!!watch('title') && (
+            <>
+              <RdInput<Post> control={control} name="body" placeholder="Body" />
+              <RdInput<Post> control={control} name="subreddit" placeholder="Subreddit" />
+              <button type="submit">Post</button>
+            </>
+            // {/* <ErrorMessage errors={errors} render={({ message }) => <p>{message}</p>} /> */}
+          )}
+        </Stack>
+      </form>
+    </RdCard>
   )
 }
 

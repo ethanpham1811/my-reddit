@@ -43,6 +43,12 @@ export const theme: Theme = createTheme({
     },
     inputBorder: {
       main: '#EDEFF1' // Custom color value
+    },
+    inputText: {
+      main: '#1c1c1c' // Custom color value
+    },
+    cardBorder: {
+      main: '#ccc' // Custom color value
     }
   },
   typography: {
