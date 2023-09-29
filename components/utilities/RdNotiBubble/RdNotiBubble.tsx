@@ -8,16 +8,16 @@ type RdNotiBubbleProps = {
 }
 
 function RdNotiBubble({ content, max, children }: RdNotiBubbleProps) {
-  const RdNotiBubble = styled(Badge)(() => {
+  const RdNotiBubble = styled(Badge)(({ theme }) => {
     return {
       '.MuiBadge-badge': {
         fontSize: '0.5rem',
-        padding: '0 2px',
+        padding: '0 4px',
         height: '16px',
         lineHeight: 1,
         color: 'white',
         minWidth: '16px',
-        backgroundColor: '#ff4500'
+        backgroundColor: theme.palette.orange.main
       }
     }
   })

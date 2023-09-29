@@ -1,18 +1,16 @@
 import { borderColorStyle } from '@/mui/styles'
-import { FormControl, FormHelperText, InputLabel, styled } from '@mui/material'
+import { FormControl, FormHelperText, InputLabel, SxProps, Theme, styled } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { Control, FieldPath, FieldValues, useController } from 'react-hook-form'
 
 type RdInputProps<T extends FieldValues> = {
   placeholder: string
-  // value?: string | number
-  // onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-  // register?: (options?: RegisterOptions) => void
   name: FieldPath<T>
   control: Control<T>
   label?: string
   disabled?: boolean
   helper?: boolean
+  sx?: SxProps<Theme>
 }
 
 const RdInputBase = styled(TextField)(({ theme }) => {
@@ -29,7 +27,7 @@ const RdInputBase = styled(TextField)(({ theme }) => {
   }
 })
 
-const RdInput = <T extends FieldValues>({ name, control, label, placeholder, disabled = false, helper = false }: RdInputProps<T>) => {
+const RdInput = <T extends FieldValues>({ name, control, label, placeholder, disabled = false, helper = false, sx }: RdInputProps<T>) => {
   const {
     field: { onChange, value },
     fieldState: { error }
@@ -39,7 +37,7 @@ const RdInput = <T extends FieldValues>({ name, control, label, placeholder, dis
   })
 
   return (
-    <FormControl sx={{ '.MuiFormControl-root': { backgroundColor: 'transparent' }, ...borderColorStyle }}>
+    <FormControl sx={{ flex: 1, '.MuiFormControl-root': { bgcolor: 'transparent' }, ...borderColorStyle }}>
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
       <RdInputBase
         helperText={error ? error.message : null}
@@ -54,6 +52,7 @@ const RdInput = <T extends FieldValues>({ name, control, label, placeholder, dis
         placeholder={placeholder}
         id={name}
         aria-describedby={`helper_${name}`}
+        sx={sx}
       />
       {helper && <FormHelperText id={`helper_${name}`}>We'll never share your email.</FormHelperText>}
     </FormControl>

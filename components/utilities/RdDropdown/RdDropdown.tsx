@@ -14,25 +14,26 @@ function RdDropdown({ children, renderSelectedOption, selectedKey, setSelectedKe
 
   return (
     <Box flex={1}>
-      <FormControl sx={{ m: 1, minWidth: 200, margin: 0 }} fullWidth>
+      <FormControl sx={{ m: 0, minWidth: 200 }} fullWidth>
         <Select
           value={selectedKey}
           onChange={handleChange}
           IconComponent={(props): ReactNode => <KeyboardArrowDownIcon {...props} />}
           renderValue={renderSelectedOption}
           sx={{
+            fontWeight: 'medium',
             '.MuiSelect-select': {
-              padding: '0.5rem',
+              p: 1,
               textTransform: 'none',
               alignItems: 'center',
               display: 'flex',
-              gap: '0.5rem'
+              gap: 1
             },
             '.MuiOutlinedInput-notchedOutline': {
               borderColor: 'transparent'
             },
             '&:hover': {
-              '.MuiOutlinedInput-notchedOutline': { borderColor: (theme) => theme.palette.primary.main }
+              '.MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' }
             },
             '&.Mui-focused': {
               '.MuiOutlinedInput-notchedOutline': { borderWidth: '1px' },
@@ -46,9 +47,10 @@ function RdDropdown({ children, renderSelectedOption, selectedKey, setSelectedKe
               sx: {
                 boxShadow: 2,
                 '& .MuiMenuItem-root': {
-                  padding: '0.3rem 1rem',
+                  pY: 0.6,
+                  pX: 2,
+                  gap: 1,
                   justifyContent: 'flex-start',
-                  gap: '0.5rem',
                   fontStyle: 'normal'
                 }
               }

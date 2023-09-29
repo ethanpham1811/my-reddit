@@ -11,7 +11,7 @@ const SearchField = styled(TextField)(({ theme }) => {
       width: '100%',
       backgroundColor: theme.palette.inputBgOutfocused.main,
       '.MuiSvgIcon-root': {
-        margin: '0 0.5rem'
+        margin: `0 ${theme.spacing(1)}`
       },
       '&.Mui-focused, &:hover': {
         backgroundColor: 'white'
@@ -38,7 +38,7 @@ function SearchBar() {
   }, [loading])
 
   return (
-    <Box flex={2}>
+    <Box flex={1}>
       <Autocomplete
         id="search-bar"
         sx={{

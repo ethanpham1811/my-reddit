@@ -1,9 +1,14 @@
 import { red } from '@mui/material/colors'
 import { Theme, createTheme } from '@mui/material/styles'
-import { IBM_Plex_Sans } from 'next/font/google'
+import { IBM_Plex_Sans, Noto_Sans } from 'next/font/google'
 
 export const ibmPlexSans = IBM_Plex_Sans({
-  weight: ['400', '500', '700'],
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap'
+})
+export const notoSans = Noto_Sans({
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap'
 })
@@ -14,11 +19,12 @@ export const theme: Theme = createTheme({
     values: {
       xs: 0,
       sm: 600,
-      md: 900,
+      md: 1024,
       lg: 1200,
       xl: 1536
     }
   },
+  spacing: 8,
   palette: {
     primary: {
       main: '#DAE0E6'
@@ -35,9 +41,6 @@ export const theme: Theme = createTheme({
     actionIcon: {
       main: '#878A8C' // Custom color value
     },
-    hoverState: {
-      main: '#0079D3' // Custom color value
-    },
     inputBgOutfocused: {
       main: '#F6F7F8' // Custom color value
     },
@@ -49,11 +52,27 @@ export const theme: Theme = createTheme({
     },
     cardBorder: {
       main: '#ccc' // Custom color value
+    },
+    white: {
+      main: '#fff' // Custom color value
+    },
+    blue: {
+      main: '#0079D3' // Custom color value
+    },
+    orange: {
+      main: '#ff4500' // Custom color value
+    },
+    green: {
+      main: '#44b700' // Custom color value
     }
   },
   typography: {
     fontFamily: ibmPlexSans.style.fontFamily,
-    fontSize: 12.25
+    fontSize: 12.25,
+    fontWeightBold: 700,
+    fontWeightMedium: 600,
+    fontWeightRegular: 500,
+    fontWeightLight: 400
   },
   components: {
     MuiCssBaseline: {
@@ -61,7 +80,8 @@ export const theme: Theme = createTheme({
         body: {
           // ...darkScrollbar(),
           backgroundColor: '#DAE0E6',
-          fontSize: '1rem'
+          fontSize: '1rem',
+          fontWeight: 400
         }
       }
     }

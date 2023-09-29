@@ -1,58 +1,68 @@
 import { RdNotiBubble } from '@/components'
 import { notificationsLabel } from '@/components/utilities'
 import { AddSharpIcon, CampaignOutlinedIcon, NotificationsOutlinedIcon, OutboundOutlinedIcon, SmsOutlinedIcon } from '@/constants'
-import { Box, IconButton } from '@mui/material'
+import { IconButton, Stack } from '@mui/material'
 import { ReactNode } from 'react'
-import { v4 as rid } from 'uuid'
 
 type NotiData = {
   content: number
   max: number
+}
+type TIconBox = {
   icon: ReactNode
+  name: string
+  notification?: NotiData
 }
 
-const notiData: NotiData[] = [
+const notiData: TIconBox[] = [
   {
-    content: 17,
-    max: 99,
-    icon: <OutboundOutlinedIcon />
+    icon: <OutboundOutlinedIcon />,
+    name: 'Popular'
   },
   {
-    content: 0,
-    max: 99,
-    icon: <SmsOutlinedIcon />
+    icon: <SmsOutlinedIcon />,
+    name: 'Chat',
+    notification: {
+      content: 12,
+      max: 99
+    }
   },
   {
-    content: 1,
-    max: 99,
-    icon: <NotificationsOutlinedIcon />
+    icon: <NotificationsOutlinedIcon />,
+    name: 'Notification',
+    notification: {
+      content: 999,
+      max: 99
+    }
   },
   {
-    content: 5666,
-    max: 99,
-    icon: <AddSharpIcon />
+    icon: <AddSharpIcon />,
+    name: 'Create'
   },
   {
-    content: 6,
-    max: 99,
-    icon: <CampaignOutlinedIcon />
+    icon: <CampaignOutlinedIcon />,
+    name: 'Advertise'
   }
 ]
 
 function IconBox() {
   return (
-    <Box flex={1}>
+    <Stack direction="row">
       {notiData.length > 0 &&
         notiData.map((item) => (
           <IconButton
-            key={`noti_bubble_${rid()}`}
+            key={`noti_bubble_${item.name}`}
             size="large"
-            sx={{ color: (theme): string => theme.palette.icon.main, padding: '10px', fontSize: '2rem' }}
+            sx={{ color: 'icon.main', p: 1.25, fontSize: '2rem' }}
             aria-label={notificationsLabel(100)}
           >
-            <RdNotiBubble content={item.content} max={item.max}>
-              {item.icon}
-            </RdNotiBubble>
+            {item.notification ? (
+              <RdNotiBubble content={item.notification.content} max={item.notification.max}>
+                {item.icon}
+              </RdNotiBubble>
+            ) : (
+              item.icon
+            )}
           </IconButton>
         ))}
 
@@ -67,7 +77,7 @@ function IconBox() {
       >
         <AccountCircle />
       </IconButton> */}
-    </Box>
+    </Stack>
   )
 }
 
