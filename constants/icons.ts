@@ -12,8 +12,13 @@ import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined'
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
+import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined'
+import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined'
+
 export {
   AddSharpIcon,
+  ArrowUpwardOutlinedIcon,
+  ArrowDownwardOutlinedIcon,
   CampaignOutlinedIcon,
   HomeIcon,
   ImageOutlinedIcon,

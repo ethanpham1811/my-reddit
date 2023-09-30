@@ -74,6 +74,7 @@ export const theme: Theme = createTheme({
     fontWeightRegular: 500,
     fontWeightLight: 400
   },
+
   components: {
     MuiCssBaseline: {
       styleOverrides: {
@@ -82,6 +83,22 @@ export const theme: Theme = createTheme({
           backgroundColor: '#DAE0E6',
           fontSize: '1rem',
           fontWeight: 400
+        }
+      }
+    },
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          h1: 'h2',
+          h2: 'h2',
+          h3: 'h2',
+          h4: 'h2',
+          h5: 'h2',
+          h6: 'h2',
+          subtitle1: 'h2',
+          subtitle2: 'h2',
+          body1: 'span',
+          body2: 'span'
         }
       }
     }
