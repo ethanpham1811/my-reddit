@@ -1,17 +1,17 @@
 import { RdNotiBubble } from '@/components'
 import { notificationsLabel } from '@/components/utilities'
-import { AddSharpIcon, CampaignOutlinedIcon, NotificationsOutlinedIcon, OutboundOutlinedIcon, SmsOutlinedIcon } from '@/constants'
+import { AddSharpIcon, CampaignOutlinedIcon, NotificationsOutlinedIcon, OutboundOutlinedIcon, SmsOutlinedIcon } from '@/constants/icons'
 import { IconButton, Stack } from '@mui/material'
 import { ReactNode } from 'react'
 
-type NotiData = {
+type TNotiData = {
   content: number
   max: number
 }
 type TIconBox = {
   icon: ReactNode
   name: string
-  notification?: NotiData
+  notification?: TNotiData
 }
 
 const notiData: TIconBox[] = [

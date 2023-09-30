@@ -1,8 +1,10 @@
-import { Autocomplete, Box, CircularProgress, TextField, styled } from '@mui/material'
+import { Box, TextField, styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 
-import { borderColorStyle } from '@/mui/styles'
+import { RdAutoComplete } from '@/components'
+import { TSearchTerm, TSubreddit } from '@/constants/types'
 import SearchIcon from '@mui/icons-material/Search'
+import { useForm } from 'react-hook-form'
 
 const SearchField = styled(TextField)(({ theme }) => {
   return {
@@ -27,48 +29,36 @@ const SearchField = styled(TextField)(({ theme }) => {
 })
 
 function SearchBar() {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const {
+    reset,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors }
+  } = useForm<TSearchTerm>()
 
-  const options = loading ? [] : [{ title: 'Artificial Intelligent Arts' }, { title: 'Programming languages' }, { title: 'Social and family issues' }]
+  const options: TSubreddit[] = loading
+    ? []
+    : [{ topic: 'Artificial Intelligent Arts' }, { topic: 'Programming languages' }, { topic: 'Social and family issues' }]
 
   useEffect(() => {
     if (!loading) return
-    const to = setTimeout(() => setLoading(false), 300)
+    const to = setTimeout(() => setLoading(false), 2000)
     return () => clearTimeout(to)
   }, [loading])
 
   return (
     <Box flex={1}>
-      <Autocomplete
-        id="search-bar"
-        sx={{
-          minWidth: 200,
-          '&.Mui-expanded': {
-            '.MuiInputBase-root': {
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0
-            }
-          },
-          ...borderColorStyle
-        }}
-        isOptionEqualToValue={(option, value) => option.title === value.title}
-        getOptionLabel={(option) => option.title}
+      <RdAutoComplete
+        control={control}
+        name="term"
         options={options}
         loading={loading}
-        // open={open}
-        onOpen={() => setLoading(true)}
-        onClose={() => setLoading(false)}
-        renderInput={(params) => (
-          <SearchField
-            {...params}
-            InputProps={{
-              ...params.InputProps,
-              startAdornment: <SearchIcon />,
-              endAdornment: <>{loading ? <CircularProgress color="inherit" size={20} /> : null}</>,
-              placeholder: 'Search Reddit'
-            }}
-          />
-        )}
+        startAdornment={<SearchIcon />}
+        placeholder="Search Reddit"
+        id="top-search-auto"
+        flex={1}
       />
     </Box>
   )

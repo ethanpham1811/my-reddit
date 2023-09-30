@@ -1,25 +1,25 @@
 import { RdDropdown } from '@/components'
 import { generateUserImage } from '@/components/utilities'
-import { HomeIcon } from '@/constants'
-import { MenuItem } from '@mui/material'
+import { HomeIcon } from '@/constants/icons'
+import { MenuItem as TMenuItem } from '@mui/material'
 import { Session } from 'next-auth'
 import Image from 'next/image'
 import { ReactNode, useState } from 'react'
 import { v4 as rid } from 'uuid'
 
-type MenuProps = {
+type TMenuProps = {
   session: Session | null
 }
-type MenuItem = {
+type TMenuItem = {
   name: string
   value: string
   icon: ReactNode | null
 }
 
-function MenuDropDown({ session }: MenuProps) {
+function MenuDropDown({ session }: TMenuProps) {
   const [page, setPage] = useState('home')
-
-  const list: MenuItem[] = [
+  const loading = false
+  const list: TMenuItem[] = [
     {
       name: 'Home',
       value: 'home',
@@ -32,7 +32,7 @@ function MenuDropDown({ session }: MenuProps) {
     }
   ]
 
-  function renderSelectedOption(selectedValue: ReactNode) {
+  function renderSelectedOption(selectedValue: string) {
     const seletedItem = list.find((item) => item.value == selectedValue)
     return (
       <>
@@ -51,14 +51,21 @@ function MenuDropDown({ session }: MenuProps) {
   }
 
   return (
-    <RdDropdown renderSelectedOption={renderSelectedOption} selectedKey={page} setSelectedKey={setPage}>
+    <RdDropdown
+      loading={loading}
+      renderSelectedOption={renderSelectedOption}
+      value={page}
+      onChange={(e) => setPage(e.target.value)}
+      flex={1}
+      sx={{ minWidth: '200px' }}
+    >
       {session && list.length > 0 ? (
         list.map((item) => {
           return (
-            <MenuItem value={item.value} key={`menu_${rid()}`}>
+            <TMenuItem value={item.value} key={`menu_${rid()}`}>
               {item.icon ?? <Image alt={`${item.name} image`} src={generateUserImage(item.name || 'seed')} width={20} height={20} />}
               {item.name || 'unknown'}
-            </MenuItem>
+            </TMenuItem>
           )
         })
       ) : (

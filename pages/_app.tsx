@@ -13,18 +13,17 @@ import { theme } from '../mui/theme'
 
 const clientSideEmotionCache = createEmotionCache()
 
-export interface MyAppProps extends AppProps {
+export interface TMyAppProps extends AppProps {
   emotionCache?: EmotionCache
 }
 
-export default function App({ Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps } }: MyAppProps) {
+export default function App({ Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps } }: TMyAppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <ApolloProvider client={client}>
           <SessionProvider session={session}>

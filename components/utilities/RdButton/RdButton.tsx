@@ -1,15 +1,19 @@
-import { ButtonColor } from '@/constants/types'
+import { TButtonColor } from '@/constants/types'
 import { notoSans } from '@/mui/theme'
-import { Button } from '@mui/material'
+import { Button, SxProps, Theme } from '@mui/material'
 
-type RdButtonProps = {
+type TRdButtonProps = {
   text: string
-  bgcolor?: ButtonColor
-  color?: ButtonColor
+  bgcolor?: TButtonColor
+  color?: TButtonColor
   invertColor?: boolean
+  sx?: SxProps<Theme>
+  flex?: number
+  width?: string
+  type?: 'button' | 'submit' | 'reset' | undefined
 }
 
-function RdButton({ text, bgcolor, color, invertColor }: RdButtonProps) {
+function RdButton({ text, bgcolor, flex, color, invertColor, sx, width, type }: TRdButtonProps) {
   const hoverStyle = invertColor
     ? {
         '&:hover, &:focus': {
@@ -24,7 +28,9 @@ function RdButton({ text, bgcolor, color, invertColor }: RdButtonProps) {
       size="medium"
       fullWidth
       variant="outlined"
+      type={type ?? 'button'}
       sx={{
+        flex,
         bgcolor: bgcolor ? bgcolor + '.main' : 'orange.main',
         color: color ? color + '.main' : 'white.main',
         borderColor: color ? color + '.main' : 'white.main',
@@ -33,7 +39,9 @@ function RdButton({ text, bgcolor, color, invertColor }: RdButtonProps) {
         borderRadius: '9999px',
         textTransform: 'none',
         transitionDuration: '0.2s',
-        ...hoverStyle
+        width,
+        ...hoverStyle,
+        ...sx
       }}
     >
       {text}

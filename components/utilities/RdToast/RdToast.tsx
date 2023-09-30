@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import toast from 'react-hot-toast'
 
-function MyToast(t: any) {
+function RdToast(t: any) {
   return (
     <div
       className={`${
@@ -37,4 +37,4 @@ function MyToast(t: any) {
   )
 }
 
-export default MyToast
+export default RdToast

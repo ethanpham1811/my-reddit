@@ -1,4 +1,4 @@
-import { SecurityOutlinedIcon } from '@/constants'
+import { SecurityOutlinedIcon } from '@/constants/icons'
 import { CardActions, CardHeader } from '@mui/material'
 import { RdButton, RdCard } from '..'
 

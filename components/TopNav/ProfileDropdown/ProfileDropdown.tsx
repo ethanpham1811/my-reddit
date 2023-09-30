@@ -3,15 +3,16 @@ import { generateUserImage } from '@/components/utilities'
 import { MenuItem } from '@mui/material'
 import { Session } from 'next-auth'
 import Image from 'next/image'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 import { v4 as rid } from 'uuid'
 
-type MenuProps = {
+type TMenuProps = {
   session: Session | null
 }
 
-function ProfileDropdownProp({ session }: MenuProps) {
+function ProfileDropdownProp({ session }: TMenuProps) {
   const [page, setPage] = useState('home')
+  const loading = false
 
   const list = [
     {
@@ -24,7 +25,7 @@ function ProfileDropdownProp({ session }: MenuProps) {
     }
   ]
 
-  function renderSelectedOption(_: ReactNode) {
+  function renderSelectedOption(_: string) {
     return (
       <>
         {session ? (
@@ -40,7 +41,14 @@ function ProfileDropdownProp({ session }: MenuProps) {
   }
 
   return (
-    <RdDropdown renderSelectedOption={renderSelectedOption} selectedKey={page} setSelectedKey={setPage}>
+    <RdDropdown
+      loading={loading}
+      renderSelectedOption={renderSelectedOption}
+      value={page}
+      onChange={(e) => setPage(e.target.value)}
+      flex={1}
+      sx={{ minWidth: '200px' }}
+    >
       {session && list.length > 0 ? (
         list.map((item) => {
           return (

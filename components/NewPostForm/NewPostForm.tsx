@@ -2,20 +2,21 @@ import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
 import { client } from '@/apollo-client'
-import { ImageOutlinedIcon, LinkIcon } from '@/constants'
-import { Post } from '@/constants/types'
+import { ImageOutlinedIcon, LinkIcon } from '@/constants/icons'
+import { TPost } from '@/constants/types'
 import { ADD_POST, ADD_SUBREDDIT } from '@/graphql/mutations'
 import { GET_SUBREDDIT_BY_TOPIC } from '@/graphql/quries'
 import { OnlineDotStyle } from '@/mui/styles'
 import { ApolloError, useMutation } from '@apollo/client'
 import { Avatar, IconButton, Stack, Tooltip } from '@mui/material'
 import toast from 'react-hot-toast'
-import { RdCard, RdInput } from '..'
+import { RdButton, RdCard, RdInput, RdSubredditSelect, RdTextEditor } from '..'
 import { generateUserImage } from '../utilities'
 
 function NewPostForm() {
   const { data: session } = useSession()
   const userName: string = session?.user?.name || 'Guest user'
+
   const [addSubreddit] = useMutation(ADD_SUBREDDIT, {
     onError: (error: ApolloError) => {
       toast.error(error.message)
@@ -31,15 +32,15 @@ function NewPostForm() {
   })
 
   const {
-    register,
     reset,
     handleSubmit,
     watch,
     control,
     formState: { errors }
-  } = useForm<Post>()
+  } = useForm<TPost>()
 
   const onSubmit = handleSubmit(async (formData) => {
+    console.log(formData)
     const res = await client.query({ query: GET_SUBREDDIT_BY_TOPIC, variables: { topic: formData.subreddit } })
     const subredditExists = res?.data?.subredditListByTopic?.length > 0
 
@@ -77,7 +78,7 @@ function NewPostForm() {
               src={generateUserImage(userName)}
             />
           </OnlineDotStyle>
-          <RdInput<Post> control={control} name="title" placeholder={session ? 'Create Post' : 'Please login first'} />
+          <RdInput<TPost> bgcolor="white" flex={1} control={control} name="title" placeholder={session ? 'Create Post' : 'Please login first'} />
           <Stack direction="row">
             <Tooltip title="Create Media Post">
               <IconButton>
@@ -92,11 +93,13 @@ function NewPostForm() {
           </Stack>
         </Stack>
         {!!watch('title') && (
-          <>
-            <RdInput<Post> control={control} name="body" placeholder="Body" />
-            <RdInput<Post> control={control} name="subreddit" placeholder="Subreddit" />
-            <button type="submit">Post</button>
-          </>
+          <Stack spacing={1} sx={{ py: 1, px: '46px' }}>
+            <RdTextEditor<TPost> control={control} name="body" placeholder="Start your essay.." />
+            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">
+              <RdSubredditSelect control={control} name="subreddit" width="180px" />
+              <RdButton type="submit" text={'Post'} bgcolor="blue" invertColor width="30%" />
+            </Stack>
+          </Stack>
           // {/* <ErrorMessage errors={errors} render={({ message }) => <p>{message}</p>} /> */}
         )}
       </form>
