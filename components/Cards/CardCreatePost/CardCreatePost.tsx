@@ -10,10 +10,10 @@ import { OnlineDotStyle } from '@/mui/styles'
 import { ApolloError, useMutation } from '@apollo/client'
 import { Avatar, IconButton, Stack, Tooltip } from '@mui/material'
 import toast from 'react-hot-toast'
-import { RdButton, RdCard, RdInput, RdSubredditSelect, RdTextEditor } from '..'
-import { generateUserImage } from '../utilities'
+import { RdButton, RdCard, RdInput, RdSubredditSelect, RdTextEditor } from '../..'
+import { generateUserImage } from '../../utilities'
 
-function NewPostForm() {
+function CardCreatePost() {
   const { data: session } = useSession()
   const userName: string = session?.user?.name || 'Guest user'
 
@@ -107,4 +107,4 @@ function NewPostForm() {
   )
 }
 
-export default NewPostForm
+export default CardCreatePost

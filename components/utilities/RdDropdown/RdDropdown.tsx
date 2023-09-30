@@ -22,6 +22,7 @@ function RdDropdown({ flex, width, placeholder, loading, borderColor, children, 
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        displayEmpty
         IconComponent={(props): ReactNode => <KeyboardArrowDownIcon {...props} />}
         renderValue={renderSelectedOption}
         sx={{

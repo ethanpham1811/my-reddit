@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { TSubreddit } from '@/constants/types'
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
 
-import { Box, FormControl, MenuItem, SxProps, Theme } from '@mui/material'
+import { Box, FormControl, MenuItem, SxProps, Theme, Typography } from '@mui/material'
 import Image from 'next/image'
 import { v4 as rid } from 'uuid'
 import { generateUserImage } from '..'
@@ -39,7 +39,7 @@ function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, 
         {seletedItem.topic}
       </Box>
     ) : (
-      <div></div>
+      <Typography>Subreddit</Typography>
     )
   }
 

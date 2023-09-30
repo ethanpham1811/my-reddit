@@ -1,6 +1,8 @@
-import NewPostForm from './NewPostForm/NewPostForm'
-import PageInfo from './PageInfo/PageInfo'
-import PreminumAd from './PreminumAd/PreminumAd'
+import CardAds from './Cards/CardAds/CardAds'
+import CardCreatePost from './Cards/CardCreatePost/CardCreatePost'
+import CardFeedSorter from './Cards/CardFeedSorter/CardFeedSorter'
+import CardPageInfo from './Cards/CardPageInfo/CardPageInfo'
+import NewFeeds from './NewFeeds/NewFeeds'
 import IconBox from './TopNav/IconBox/IconBox'
 import Logo from './TopNav/Logo/Logo'
 import MenuDropDown from './TopNav/MenuDropDown/MenuDropDown'
@@ -19,12 +21,14 @@ import RdTextEditor from './utilities/RdTextEditor/RdTextEditor'
 import RdToast from './utilities/RdToast/RdToast'
 
 export {
+  CardAds,
+  CardCreatePost,
+  CardFeedSorter,
+  CardPageInfo,
   IconBox,
   Logo,
   MenuDropDown,
-  NewPostForm,
-  PageInfo,
-  PreminumAd,
+  NewFeeds,
   ProfileDropdown,
   RdAutoComplete,
   RdButton,

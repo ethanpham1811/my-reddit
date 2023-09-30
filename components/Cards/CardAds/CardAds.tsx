@@ -1,8 +1,8 @@
 import { SecurityOutlinedIcon } from '@/constants/icons'
 import { CardActions, CardHeader } from '@mui/material'
-import { RdButton, RdCard } from '..'
+import { RdButton, RdCard } from '../..'
 
-function PreminumAd() {
+function CardAds() {
   return (
     <RdCard>
       <CardHeader
@@ -28,4 +28,4 @@ function PreminumAd() {
   )
 }
 
-export default PreminumAd
+export default CardAds
