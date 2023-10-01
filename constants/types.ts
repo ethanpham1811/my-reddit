@@ -1,15 +1,40 @@
 import { PaletteOptions } from '@mui/material'
-import { StaticImageData } from 'next/image'
 
 export type TPost = {
   title: string
   body: string
-  image: string
+  images: string
+  comment: TComment
+  created_at: Date
+  username: string
+  subreddit: {
+    name: string
+  }
+  vote: TVote[]
+}
+export type TCardPostProps = {
+  title: string
+  body: string
+  images: TImage[]
+  comment: TComment
+  createdAt: Date
+  username: string
   subreddit: string
+  upvote: number
 }
 export type TSubreddit = {
   topic: string
+  name: string
+  id: number
   // image: string
+}
+export type TComment = {
+  created_at: Date
+  username: string
+  text: string
+}
+export type TVote = {
+  upvote: boolean
 }
 export type TUser = {
   name: string
@@ -18,8 +43,8 @@ export type TUser = {
   // image: string
 }
 export type TImage = {
-  imgSrc: StaticImageData
-  caption: string
+  imgSrc: string
+  caption?: string
 }
 export type TSearchTerm = {
   term: string

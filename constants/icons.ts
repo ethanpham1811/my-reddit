@@ -1,4 +1,8 @@
 import AddSharpIcon from '@mui/icons-material/AddSharp'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined'
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined'
 import HomeIcon from '@mui/icons-material/Home'
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined'
@@ -12,13 +16,12 @@ import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined'
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined'
-import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined'
-
 export {
   AddSharpIcon,
-  ArrowUpwardOutlinedIcon,
+  ArrowBackIosIcon,
   ArrowDownwardOutlinedIcon,
+  ArrowForwardIosIcon,
+  ArrowUpwardOutlinedIcon,
   CampaignOutlinedIcon,
   HomeIcon,
   ImageOutlinedIcon,

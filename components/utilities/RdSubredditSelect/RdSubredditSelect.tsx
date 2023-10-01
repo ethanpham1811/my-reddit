@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react'
-
-import { TSubreddit } from '@/constants/types'
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
 
+import useSubredditList from '@/hooks/useSubredditList'
 import { Box, FormControl, MenuItem, SxProps, Theme, Typography } from '@mui/material'
 import Image from 'next/image'
 import { v4 as rid } from 'uuid'
@@ -18,24 +16,14 @@ type TRdSubredditSelect<T extends FieldValues> = {
 }
 
 function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, sx }: TRdSubredditSelect<T>) {
-  const [loading, setLoading] = useState(true)
-
-  const options: TSubreddit[] = loading
-    ? []
-    : [{ topic: 'Artificial Intelligent Arts' }, { topic: 'Programming' }, { topic: 'Social and family issues' }]
-
-  useEffect(() => {
-    if (!loading) return
-    const to = setTimeout(() => setLoading(false), 2000)
-    return () => clearTimeout(to)
-  }, [loading])
+  const [subredditList, loading] = useSubredditList()
 
   function renderSelectedOption(selectedValue: string) {
-    const seletedItem = options.find((item) => item.topic == selectedValue)
+    const seletedItem = subredditList && subredditList.find((item) => item.topic == selectedValue)
 
     return seletedItem ? (
       <Box sx={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        <Image alt={`${seletedItem.topic} image`} src={generateUserImage(seletedItem.topic || 'seed')} width={20} height={20} />
+        <Image alt={`${seletedItem.topic} image`} src={generateUserImage(seletedItem.topic)} width={20} height={20} />
         {seletedItem.topic}
       </Box>
     ) : (
@@ -60,17 +48,17 @@ function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, 
             placeholder="Subreddit"
             borderColor="primary"
           >
-            {options.length > 0 ? (
-              options.map((item) => {
+            {subredditList && subredditList.length > 0 ? (
+              subredditList.map((item) => {
                 return (
                   <MenuItem value={item.topic} key={`menu_${rid()}`}>
-                    <Image alt={`${item.topic} image`} src={generateUserImage(item.topic || 'seed')} width={20} height={20} />
+                    <Image alt={`${item.topic} image`} src={generateUserImage(item.topic)} width={20} height={20} />
                     {item.topic || 'unknown'}
                   </MenuItem>
                 )
               })
             ) : (
-              <div></div>
+              <div>No subreddit found</div>
             )}
           </RdDropdown>
         )}

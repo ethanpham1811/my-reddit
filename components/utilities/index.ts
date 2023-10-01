@@ -1,3 +1,4 @@
+import { TImage, TVote } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import toast from 'react-hot-toast'
 
@@ -5,7 +6,15 @@ export const notificationHandler = () => {
   return { onCompleted: () => toast.success('sucessful!'), onError: (error: ApolloError) => toast.error(error.message) }
 }
 
-export const generateUserImage = (seed: string): string => `https://robohash.org/${seed}.png`
+export const generateUserImage = (seed: string | null | undefined): string => `https://robohash.org/${seed ?? 'seed'}.png`
+
+export const getTotalUpvote = (votes: TVote[]): number => votes.reduce((prev, cur): number => (cur.upvote ? prev + 1 : prev - 1), 0)
+
+export const parseImages = (imgString: string): TImage[] => {
+  const a = [{ name: 'khoi' }]
+
+  return JSON.parse(JSON.stringify(a)) as TImage[]
+}
 
 export const notificationsLabel = (count: number) => {
   if (count === 0) {

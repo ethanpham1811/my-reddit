@@ -1,11 +1,9 @@
 import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
-import { client } from '@/apollo-client'
 import { ImageOutlinedIcon, LinkIcon } from '@/constants/icons'
 import { TPost } from '@/constants/types'
 import { ADD_POST, ADD_SUBREDDIT } from '@/graphql/mutations'
-import { GET_SUBREDDIT_BY_TOPIC } from '@/graphql/quries'
 import { OnlineDotStyle } from '@/mui/styles'
 import { ApolloError, useMutation } from '@apollo/client'
 import { Avatar, IconButton, Stack, Tooltip } from '@mui/material'
@@ -40,25 +38,15 @@ function CardCreatePost() {
   } = useForm<TPost>()
 
   const onSubmit = handleSubmit(async (formData) => {
-    console.log(formData)
-    const res = await client.query({ query: GET_SUBREDDIT_BY_TOPIC, variables: { topic: formData.subreddit } })
-    const subredditExists = res?.data?.subredditListByTopic?.length > 0
-
-    if (!subredditExists) {
-      addSubreddit({ variables: { topic: formData.subreddit } }).then((res) => {
-        const newSubredditId = res?.data?.insertSubreddit.id
-        addPost({
-          variables: {
-            body: formData.body,
-            image: '',
-            subreddit_id: newSubredditId,
-            title: formData.title,
-            username: session?.user?.name
-          }
-        })
-      })
-    }
-    // clear the form
+    await addPost({
+      variables: {
+        body: formData.body,
+        image: '',
+        subreddit_id: formData.subreddit,
+        title: formData.title,
+        username: session?.user?.name
+      }
+    })
     reset()
   })
 

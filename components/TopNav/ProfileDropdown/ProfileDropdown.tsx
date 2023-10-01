@@ -30,7 +30,7 @@ function ProfileDropdownProp({ session }: TMenuProps) {
       <>
         {session ? (
           <>
-            <Image alt="profile image" src={session.user?.image || generateUserImage(session.user?.name || 'seed')} width={20} height={20} />
+            <Image alt="profile image" src={session.user?.image || generateUserImage(session.user?.name)} width={20} height={20} />
             {session.user?.name || 'unknown'}
           </>
         ) : (
@@ -53,7 +53,7 @@ function ProfileDropdownProp({ session }: TMenuProps) {
         list.map((item) => {
           return (
             <MenuItem value={item.value} key={`menu_${rid()}`}>
-              <Image alt={`${item.name} image`} src={generateUserImage(item.name || 'seed')} width={20} height={20} />
+              <Image alt={`${item.name} image`} src={generateUserImage(item.name)} width={20} height={20} />
               {item.name || 'unknown'}
             </MenuItem>
           )

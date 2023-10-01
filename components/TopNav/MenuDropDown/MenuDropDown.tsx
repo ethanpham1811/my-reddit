@@ -38,9 +38,7 @@ function MenuDropDown({ session }: TMenuProps) {
       <>
         {seletedItem ? (
           <>
-            {seletedItem.icon ?? (
-              <Image alt={`${seletedItem.name} image`} src={generateUserImage(seletedItem.name || 'seed')} width={20} height={20} />
-            )}
+            {seletedItem.icon ?? <Image alt={`${seletedItem.name} image`} src={generateUserImage(seletedItem.name)} width={20} height={20} />}
             {seletedItem.name || 'unknown'}
           </>
         ) : (
@@ -63,7 +61,7 @@ function MenuDropDown({ session }: TMenuProps) {
         list.map((item) => {
           return (
             <TMenuItem value={item.value} key={`menu_${rid()}`}>
-              {item.icon ?? <Image alt={`${item.name} image`} src={generateUserImage(item.name || 'seed')} width={20} height={20} />}
+              {item.icon ?? <Image alt={`${item.name} image`} src={generateUserImage(item.name)} width={20} height={20} />}
               {item.name || 'unknown'}
             </TMenuItem>
           )

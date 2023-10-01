@@ -12,7 +12,7 @@ type Post {
   comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
   created_at: DateTime!
   id: ID!
-  image: String
+  images: String
   subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
   subreddit_id: ID
   title: String
@@ -24,6 +24,7 @@ type Subreddit {
   created_at: DateTime!
   id: ID!
   topic: String!
+  name: String!
   post: [Post] @materializer(query: "postUsingPost_subreddit_id_fkey")
 }
 
@@ -70,7 +71,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "image", "subreddit_id", "title", "username" FROM "post" ORDER BY "id" LIMIT $1 OFFSET $2
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "username" FROM "post" ORDER BY "id" LIMIT $1 OFFSET $2
       """
       configuration: "postgresql_config"
     )
@@ -79,7 +80,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "image", "subreddit_id", "title", "username" FROM "post" WHERE "id" = $1
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "username" FROM "post" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -88,7 +89,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "image", "subreddit_id", "title", "username" FROM "post" WHERE "subreddit_id" = $1
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "username" FROM "post" WHERE "subreddit_id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -97,7 +98,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "image", "subreddit_id", "title", "username" FROM "post" WHERE "id" = $1
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "username" FROM "post" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -181,9 +182,9 @@ type Mutation {
     )
   " Mutations for type 'Post' "
   deletePost(id: ID!): Post @dbquery(type: "postgresql", schema: "public", table: "post", dml: DELETE, configuration: "postgresql_config")
-  insertPost(body: String, subreddit_id: ID, title: String, username: String, image: String): Post
+  insertPost(body: String, subreddit_id: ID, title: String, username: String, images: String): Post
     @dbquery(type: "postgresql", schema: "public", table: "post", dml: INSERT, configuration: "postgresql_config")
-  updatePost(id: ID!, body: String, created_at: DateTime, image: String, subreddit_id: ID, title: String, username: String): Post
+  updatePost(id: ID!, body: String, created_at: DateTime, images: String, subreddit_id: ID, title: String, username: String): Post
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -191,7 +192,7 @@ type Mutation {
       UPDATE "post" SET
         "body" = COALESCE($2, "body"),
         "created_at" = COALESCE($3, "created_at"),
-        "image" = COALESCE($4, "image"),
+        "images" = COALESCE($4, "images"),
         "subreddit_id" = COALESCE($5, "subreddit_id"),
         "title" = COALESCE($6, "title"),
         "username" = COALESCE($7, "username")
