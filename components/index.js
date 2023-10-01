@@ -15,6 +15,8 @@ import RdButton from './utilities/RdButton/RdButton'
 import RdCard from './utilities/RdCard/RdCard'
 import RdDropdown from './utilities/RdDropdown/RdDropdown'
 import RdImageCarousel from './utilities/RdImageCarousel/RdImageCarousel'
+import RdImageList from './utilities/RdImageList/RdImageList'
+import RdImageUploader from './utilities/RdImageUploader/RdImageUploader'
 import RdInput from './utilities/RdInput/RdInput'
 import RdNotiBubble from './utilities/RdNotiBubble/RdNotiBubble'
 import RdSubredditAutoComplete from './utilities/RdSubredditAutoComplete/RdSubredditAutoComplete'
@@ -38,6 +40,8 @@ export {
   RdCard,
   RdDropdown,
   RdImageCarousel,
+  RdImageList,
+  RdImageUploader,
   RdInput,
   RdNotiBubble,
   RdSubredditAutoComplete,

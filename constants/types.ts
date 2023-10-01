@@ -3,25 +3,22 @@ import { PaletteOptions } from '@mui/material'
 export type TPost = {
   title: string
   body: string
-  images: string
+  username: string
   comment: TComment
   created_at: Date
-  username: string
   subreddit: {
     name: string
   }
+  images: string
   vote: TVote[]
 }
-export type TCardPostProps = {
-  title: string
-  body: string
-  images: TImage[]
-  comment: TComment
+export type TCardPostProps = Pick<TPost, 'title' | 'body' | 'comment' | 'username'> & {
   createdAt: Date
-  username: string
   subreddit: string
+  images: TImage[]
   upvote: number
 }
+
 export type TSubreddit = {
   topic: string
   name: string

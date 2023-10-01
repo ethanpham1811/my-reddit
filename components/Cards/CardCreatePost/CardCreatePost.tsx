@@ -1,25 +1,29 @@
 import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
-import { ImageOutlinedIcon, LinkIcon } from '@/constants/icons'
+import { LinkIcon } from '@/constants/icons'
 import { TPost } from '@/constants/types'
-import { ADD_POST, ADD_SUBREDDIT } from '@/graphql/mutations'
+import { ADD_POST } from '@/graphql/mutations'
 import { OnlineDotStyle } from '@/mui/styles'
 import { ApolloError, useMutation } from '@apollo/client'
 import { Avatar, IconButton, Stack, Tooltip } from '@mui/material'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { RdButton, RdCard, RdInput, RdSubredditSelect, RdTextEditor } from '../..'
-import { generateUserImage } from '../../utilities'
+import { RdButton, RdCard, RdImageList, RdImageUploader, RdInput, RdSubredditSelect, RdTextEditor } from '../..'
+import { generateUserImage, uploadFiles } from '../../utilities'
+
+type TCardCreatePostForm = Pick<TPost, 'title' | 'body' | 'username'> & {
+  subreddit_id: number
+  images: FileList
+  link: string
+}
 
 function CardCreatePost() {
   const { data: session } = useSession()
+  const [showLinkInput, setShowLinkInput] = useState(false)
   const userName: string = session?.user?.name || 'Guest user'
 
-  const [addSubreddit] = useMutation(ADD_SUBREDDIT, {
-    onError: (error: ApolloError) => {
-      toast.error(error.message)
-    }
-  })
+  /* mutations */
   const [addPost] = useMutation(ADD_POST, {
     onCompleted: () => {
       toast.success('Your post sucessfully added!')
@@ -29,22 +33,31 @@ function CardCreatePost() {
     }
   })
 
+  /* form controllers */
   const {
     reset,
     handleSubmit,
     watch,
     control,
     formState: { errors }
-  } = useForm<TPost>()
+  } = useForm<TCardCreatePostForm>()
+  const titleValue = watch('title')
+  const imagesValue = watch('images')
+  titleValue === '' && reset()
 
+  /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
+    let images: string[] | null = null
+    if (formData.images && formData.images.length > 0) {
+      images = await uploadFiles(formData.images)
+    }
     await addPost({
       variables: {
         body: formData.body,
-        image: '',
-        subreddit_id: formData.subreddit,
+        subreddit_id: formData.subreddit_id,
         title: formData.title,
-        username: session?.user?.name
+        username: session?.user?.name,
+        images
       }
     })
     reset()
@@ -66,25 +79,37 @@ function CardCreatePost() {
               src={generateUserImage(userName)}
             />
           </OnlineDotStyle>
-          <RdInput<TPost> bgcolor="white" flex={1} control={control} name="title" placeholder={session ? 'Create Post' : 'Please login first'} />
+          <RdInput<TCardCreatePostForm>
+            bgcolor="white"
+            flex={1}
+            control={control}
+            name="title"
+            placeholder={session ? 'Create Post' : 'Please login first'}
+          />
           <Stack direction="row">
             <Tooltip title="Create Media Post">
-              <IconButton>
-                <ImageOutlinedIcon />
+              <IconButton disabled={!watch('title')}>
+                <RdImageUploader<TCardCreatePostForm> control={control} name="images" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Create Link Post">
-              <IconButton>
-                <LinkIcon />
+              <IconButton
+                disabled={!titleValue}
+                sx={{ bgcolor: showLinkInput ? 'primary.main' : 'unset' }}
+                onClick={() => setShowLinkInput(!showLinkInput)}
+              >
+                <LinkIcon sx={{ display: 'block' }} />
               </IconButton>
             </Tooltip>
           </Stack>
         </Stack>
-        {!!watch('title') && (
+        {!!titleValue && (
           <Stack spacing={1} sx={{ py: 1, px: '46px' }}>
-            <RdTextEditor<TPost> control={control} name="body" placeholder="Start your essay.." />
+            {showLinkInput && <RdInput<TCardCreatePostForm> bgcolor="white" flex={1} control={control} name="link" placeholder="Link URL" />}
+            <RdTextEditor<TCardCreatePostForm> control={control} name="body" placeholder="Start your essay.." />
+            {imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} />}
             <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">
-              <RdSubredditSelect control={control} name="subreddit" width="180px" />
+              <RdSubredditSelect control={control} name="subreddit_id" width="180px" />
               <RdButton type="submit" text={'Post'} bgcolor="blue" invertColor width="30%" />
             </Stack>
           </Stack>

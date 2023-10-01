@@ -1,4 +1,5 @@
 import { TImage, TVote } from '@/constants/types'
+import { supabase } from '@/pages/_app'
 import { ApolloError } from '@apollo/client'
 import toast from 'react-hot-toast'
 
@@ -24,4 +25,17 @@ export const notificationsLabel = (count: number) => {
     return 'more than 99 notifications'
   }
   return `${count} notifications`
+}
+
+export const uploadFiles = async (files: FileList): Promise<string[]> => {
+  const filePaths: string[] = []
+  for (const file of files) {
+    const { data, error } = await supabase.storage.from('post_images').upload(file.name, file, {
+      cacheControl: '3600',
+      upsert: false
+    })
+    data && filePaths.push(data.path)
+    // error && toast this
+  }
+  return filePaths
 }

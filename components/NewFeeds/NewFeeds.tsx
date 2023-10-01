@@ -1,4 +1,4 @@
-import { TCardPostProps } from '@/constants/types'
+import { TCardPostProps, TPost } from '@/constants/types'
 import usePostList from '@/hooks/usePostList'
 import { v4 as rid } from 'uuid'
 import { CardPost } from '..'
@@ -8,7 +8,7 @@ function NewFeeds() {
   const [postList, loading] = usePostList()
 
   const cardPostList: TCardPostProps[] | [] = postList
-    ? postList.map((post) => {
+    ? postList.map((post: TPost): TCardPostProps => {
         const { title, body, images, comment, created_at, username, subreddit, vote } = post
         return {
           title,

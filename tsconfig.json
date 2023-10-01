@@ -29,7 +29,8 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "downlevelIteration": true
   },
   "include": [
     "@types",

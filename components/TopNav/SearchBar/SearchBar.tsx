@@ -2,7 +2,7 @@ import { Box, TextField, styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 import { RdAutoComplete } from '@/components'
-import { TSearchTerm, TSubreddit } from '@/constants/types'
+import { TSearchTerm } from '@/constants/types'
 import SearchIcon from '@mui/icons-material/Search'
 import { useForm } from 'react-hook-form'
 
@@ -38,7 +38,8 @@ function SearchBar() {
     formState: { errors }
   } = useForm<TSearchTerm>()
 
-  const options: TSubreddit[] = loading
+  /* mockup data */
+  const options: object[] = loading
     ? []
     : [{ topic: 'Artificial Intelligent Arts' }, { topic: 'Programming languages' }, { topic: 'Social and family issues' }]
 
