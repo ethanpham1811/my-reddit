@@ -18,8 +18,10 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RocketIcon from '@mui/icons-material/Rocket'
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined'
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined'
+import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
+
 export {
   AddSharpIcon,
   ArrowBackIosIcon,
@@ -41,6 +43,7 @@ export {
   RocketIcon,
   SecurityOutlinedIcon,
   SmsOutlinedIcon,
+  SwapVertOutlinedIcon,
   TrendingUpOutlinedIcon,
   WbSunnyIcon
 }

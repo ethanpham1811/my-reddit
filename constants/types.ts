@@ -2,6 +2,7 @@ import { ButtonOwnProps, ImageListOwnProps, PaletteOptions, SelectChangeEvent, S
 import { Session } from 'next-auth'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues } from 'react-hook-form'
+import { ORDERING, SORT_METHOD } from './enums'
 
 /* ------------------------------------------Common Types------------------------------------------ */
 export type TPost = {
@@ -21,6 +22,8 @@ export type TSubreddit = {
   topic: string
   name: string
   id: number
+  subType: string
+  isChildrenContent: boolean
   // image: string
 }
 
@@ -51,6 +54,7 @@ export type TSorter = {
   methodValue: string
   label: string
   description: string
+  disabled: boolean
 }
 export type TNotiData = {
   content: number
@@ -72,6 +76,10 @@ export type TMenuItem = {
 export type TRadioOption = {
   value: string
   label: string | ReactNode
+}
+export type TSortOptions = {
+  method: SORT_METHOD
+  ordering: ORDERING
 }
 
 /* ------------------------------------------Props Types------------------------------------------ */
@@ -185,12 +193,17 @@ export type TRdInputProps<T extends FieldValues> = {
   sx?: SxProps<Theme>
   bgcolor?: string
 }
+export type TCardFeedSorterProps = {
+  sortOptions: TSortOptions
+  setSortOptions: Dispatch<SetStateAction<TSortOptions>>
+}
 
 /* ------------------------------------------Form Types------------------------------------------ */
 export type TCommuinityCreatorForm = {
   name: string
   type: string
   isChildrenContent: boolean
+  topic: string
 }
 export type TCardCreatePostForm = Pick<TPost, 'title' | 'body' | 'username'> & {
   subreddit_id: number

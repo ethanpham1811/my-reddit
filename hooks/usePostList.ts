@@ -1,21 +1,12 @@
-import { client } from '@/apollo-client'
 import { TPost } from '@/constants/types'
 import { GET_POST_LIST } from '@/graphql/quries'
-import { useEffect, useState } from 'react'
+import { ApolloError, useQuery } from '@apollo/client'
 
-function usePostList(): [TPost[] | null, boolean] {
-  const [postList, setPostList] = useState<TPost[] | null>(null)
-  const loading = !postList
+function usePostList(): [TPost[] | null, boolean, ApolloError | undefined] {
+  const { data, loading, error } = useQuery(GET_POST_LIST)
+  const posts: TPost[] = data?.postList
 
-  useEffect(() => {
-    ;(async function () {
-      const res = await client.query({ query: GET_POST_LIST })
-      const list: TPost[] = res?.data?.postList
-      setPostList(list)
-    })()
-  }, [])
-
-  return [postList, loading]
+  return [posts, loading, error]
 }
 
 export default usePostList

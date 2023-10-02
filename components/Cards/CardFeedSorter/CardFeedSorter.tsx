@@ -1,28 +1,31 @@
 import { RdCard } from '@/components'
-import { LocalFireDepartmentIcon, TrendingUpOutlinedIcon, WbSunnyIcon } from '@/constants/icons'
-import { TSorter } from '@/constants/types'
-import { ToggleButton, ToggleButtonGroup, Typography, styled } from '@mui/material'
-import { MouseEvent, useState } from 'react'
+import { ORDERING, SORT_METHOD } from '@/constants/enums'
+import { LocalFireDepartmentIcon, SwapVertOutlinedIcon, TrendingUpOutlinedIcon, WbSunnyIcon } from '@/constants/icons'
+import { TCardFeedSorterProps, TSorter } from '@/constants/types'
+import { IconButton, ToggleButton, ToggleButtonGroup, Typography, styled } from '@mui/material'
 import { v4 as rid } from 'uuid'
 
 const data: TSorter[] = [
   {
     icon: <WbSunnyIcon />,
-    methodValue: 'new',
+    methodValue: SORT_METHOD.new,
     description: 'New posts',
-    label: 'New'
+    label: 'New',
+    disabled: false
   },
   {
     icon: <LocalFireDepartmentIcon />,
-    methodValue: 'upvote',
+    methodValue: SORT_METHOD.hot,
     description: 'Most upvoted',
-    label: 'Hot'
+    label: 'Hot',
+    disabled: false
   },
   {
     icon: <TrendingUpOutlinedIcon />,
-    methodValue: 'trending',
+    methodValue: SORT_METHOD.rising,
     description: 'Top trending',
-    label: 'Rising'
+    label: 'Rising',
+    disabled: true
   }
 ]
 
@@ -42,11 +45,9 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   }
 }))
 
-function CardFeedSorter() {
-  const [sortMethod, setSortMethod] = useState('new')
-
-  const handleSort = (event: MouseEvent<HTMLElement>, sortMethod: string) => {
-    setSortMethod(sortMethod)
+function CardFeedSorter({ sortOptions, setSortOptions }: TCardFeedSorterProps) {
+  const onChange = (_: any, method: SORT_METHOD | null) => {
+    method && setSortOptions({ ordering: ORDERING.desc, method })
   }
 
   return (
@@ -55,13 +56,14 @@ function CardFeedSorter() {
         exclusive
         sx={{ display: 'flex', gap: 2 }}
         size="small"
-        value={sortMethod}
-        onChange={handleSort}
+        value={sortOptions.method}
+        onChange={onChange}
         aria-label="new feeds sorter"
       >
         {data.length > 0 &&
           data.map((item) => (
             <ToggleButton
+              disabled={item.disabled}
               key={`sorter_${rid()}`}
               value={item.methodValue}
               aria-label={item.description}
@@ -73,6 +75,12 @@ function CardFeedSorter() {
               </Typography>
             </ToggleButton>
           ))}
+        <IconButton
+          sx={{ ml: 'auto !important' }}
+          onClick={(e) => setSortOptions({ ...sortOptions, ordering: sortOptions.ordering === ORDERING.asc ? ORDERING.desc : ORDERING.asc })}
+        >
+          <SwapVertOutlinedIcon sx={{ display: 'block' }} />
+        </IconButton>
       </StyledToggleButtonGroup>
     </RdCard>
   )

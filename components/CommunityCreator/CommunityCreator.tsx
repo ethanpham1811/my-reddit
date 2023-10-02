@@ -1,9 +1,12 @@
 import { DEFAULT_GROUP_TYPE } from '@/constants/enums'
 import { LockIcon, PersonIcon, RemoveRedEyeIcon } from '@/constants/icons'
 import { TCommuinityCreatorForm, TCommunityCreatorProps, TCommunityTypeOPtions } from '@/constants/types'
+import { ADD_SUBREDDIT } from '@/graphql/mutations'
+import { ApolloError, useMutation } from '@apollo/client'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { BottomNavigator, IsChildrenGroupCheckbox, RdInput, RdRadioGroup } from '..'
 
 export const groupTypeOptions: TCommunityTypeOPtions[] = [
@@ -55,6 +58,16 @@ export const groupTypeOptions: TCommunityTypeOPtions[] = [
 ]
 
 function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
+  const [addSubreddit] = useMutation(ADD_SUBREDDIT, {
+    onCompleted: () => {
+      toast.success('Your post sucessfully added!')
+      setOpen(false)
+    },
+    onError: (error: ApolloError) => {
+      toast.error(error.message)
+    }
+  })
+
   const {
     reset,
     handleSubmit,
@@ -69,7 +82,18 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
     setValue('type', DEFAULT_GROUP_TYPE)
   }, [])
 
-  const onSubmit = handleSubmit(() => {})
+  /* form submit handler */
+  const onSubmit = handleSubmit(async (formData) => {
+    const { name, topic, type, isChildrenContent } = formData
+    await addSubreddit({
+      variables: {
+        name,
+        topic,
+        type,
+        isChildrenContent
+      }
+    })
+  })
 
   return (
     <Box p={5} height="100vh" display="grid">
@@ -78,14 +102,17 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
           <Typography variant="h5">Create a community</Typography>
           <Divider sx={{ my: 2 }} />
 
-          {/* Community name */}
+          {/* Community name & Topic */}
           <Typography variant="h5" sx={{ mt: 2 }}>
             Name
           </Typography>
           <Typography variant="body1" component="p" sx={{ color: 'hintText.main' }}>
             Community names including capitalization cannot be changed.
           </Typography>
-          <RdInput sx={{ mt: 2 }} control={control} name="name" helper="21 Characters remaining" width="100%" bgcolor="white.main" />
+          <Stack direction="row" gap={1} sx={{ mt: 2 }}>
+            <RdInput control={control} name="name" helper="21 Characters remaining" width="60%" bgcolor="white.main" />
+            <RdInput control={control} name="topic" placeholder="Topic" width="40%" bgcolor="white.main" />
+          </Stack>
 
           {/* Community types  */}
           <RdRadioGroup<TCommuinityCreatorForm>

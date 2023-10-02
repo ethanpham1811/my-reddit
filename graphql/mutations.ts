@@ -15,9 +15,12 @@ export const ADD_POST = gql`
 `
 
 export const ADD_SUBREDDIT = gql`
-  mutation AddSubreddit($topic: String!) {
-    insertSubreddit(topic: $topic) {
+  mutation AddSubreddit($name: String!, $topic: String!, $subType: String!, $isChildrenContent: Boolean!) {
+    insertSubreddit(name: $name, topic: $topic, subType: $subType, isChildrenContent: $isChildrenContent) {
+      name
       topic
+      subType
+      isChildrenContent
       created_at
       id
     }

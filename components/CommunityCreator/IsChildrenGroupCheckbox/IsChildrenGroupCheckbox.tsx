@@ -7,7 +7,7 @@ import RdChip from '../../utilities/RdChip/RdChip'
 function IsChildrenGroupCheckbox<T extends FieldValues>({ name, control }: IsChildrenGroupCheckboxProps<T>) {
   return (
     <FormControl>
-      <FormLabel id={`${name}-radio-group`}>
+      <FormLabel id={`${name}-radio-group`} sx={{ '&.Mui-focused': { color: 'black' }, color: 'black' }}>
         <Typography variant="h5" sx={{ mt: 2 }}>
           Children content
         </Typography>

@@ -25,6 +25,8 @@ type Subreddit {
   id: ID!
   topic: String!
   name: String!
+  subType: String!
+  isChildrenContent: Boolean!
   post: [Post] @materializer(query: "postUsingPost_subreddit_id_fkey")
 }
 
@@ -205,7 +207,7 @@ type Mutation {
   " Mutations for type 'Subreddit' "
   deleteSubreddit(id: ID!): Subreddit
     @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: DELETE, configuration: "postgresql_config")
-  insertSubreddit(topic: String!): Subreddit
+  insertSubreddit(name: String!, topic: String!, subType: String!, isChildrenContent: Boolean!): Subreddit
     @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: INSERT, configuration: "postgresql_config")
   updateSubreddit(id: ID!, created_at: DateTime): Subreddit
     @dbquery(

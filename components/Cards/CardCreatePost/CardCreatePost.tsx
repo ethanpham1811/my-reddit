@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { LinkIcon } from '@/constants/icons'
 import { TCardCreatePostForm } from '@/constants/types'
 import { ADD_POST } from '@/graphql/mutations'
+import { GET_POST_LIST } from '@/graphql/quries'
 import { OnlineDotStyle } from '@/mui/styles'
 import { ApolloError, useMutation } from '@apollo/client'
 import { Avatar, IconButton, Stack, Tooltip } from '@mui/material'
@@ -24,7 +25,8 @@ function CardCreatePost() {
     },
     onError: (error: ApolloError) => {
       toast.error(error.message)
-    }
+    },
+    refetchQueries: [GET_POST_LIST, 'postList']
   })
 
   /* form controllers */
@@ -41,15 +43,16 @@ function CardCreatePost() {
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
+    const { body, subreddit_id, title } = formData
     let images: string[] | null = null
     if (formData.images && formData.images.length > 0) {
       images = await uploadFiles(formData.images)
     }
     await addPost({
       variables: {
-        body: formData.body,
-        subreddit_id: formData.subreddit_id,
-        title: formData.title,
+        body,
+        subreddit_id,
+        title,
         username: session?.user?.name,
         images
       }
