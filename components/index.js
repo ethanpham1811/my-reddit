@@ -7,6 +7,7 @@ import BottomNavigator from './CommunityCreator/BottomNavigator/BottomNavigator'
 import CommunityCreator from './CommunityCreator/CommunityCreator'
 import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/IsChildrenGroupCheckbox'
 import NewFeeds from './NewFeeds/NewFeeds'
+import SubredditTopNav from './SubredditTopNav/SubredditTopNav'
 import IconBox from './TopNav/IconBox/IconBox'
 import Logo from './TopNav/Logo/Logo'
 import MenuDropDown from './TopNav/MenuDropDown/MenuDropDown'
@@ -63,5 +64,6 @@ export {
   RdTextEditor,
   RdToast,
   SearchBar,
+  SubredditTopNav,
   TopNav
 }

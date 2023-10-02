@@ -107,7 +107,7 @@ function CardCreatePost() {
             {imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} cols={5} />}
             <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">
               <RdSubredditSelect control={control} name="subreddit_id" width="180px" />
-              <RdButton type="submit" text={'Post'} bgcolor="blue" invertColor width="30%" />
+              <RdButton type="submit" text={'Post'} filled color="blue" invertColor width="30%" />
             </Stack>
           </Stack>
           // {/* <ErrorMessage errors={errors} render={({ message }) => <p>{message}</p>} /> */}

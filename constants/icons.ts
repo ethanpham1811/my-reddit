@@ -11,6 +11,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LinkIcon from '@mui/icons-material/Link'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import LockIcon from '@mui/icons-material/Lock'
+import NotificationsIcon from '@mui/icons-material/Notifications'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import OutboundOutlinedIcon from '@mui/icons-material/OutboundOutlined'
 import PersonIcon from '@mui/icons-material/Person'
@@ -36,6 +37,7 @@ export {
   LinkIcon,
   LocalFireDepartmentIcon,
   LockIcon,
+  NotificationsIcon,
   NotificationsOutlinedIcon,
   OutboundOutlinedIcon,
   PersonIcon,

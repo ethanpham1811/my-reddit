@@ -24,8 +24,8 @@ function CardPageInfo() {
       </CardContent>
       <Divider sx={{ my: 0.5 }} />
       <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <RdButton text={'Create Post'} bgcolor="blue" invertColor />
-        <RdButton text={'Create Community'} bgcolor="white" color="blue" onClick={() => setIsDrawerOpened(true)} />
+        <RdButton text={'Create Post'} filled color="blue" invertColor />
+        <RdButton text={'Create Community'} color="blue" onClick={() => setIsDrawerOpened(true)} />
         <RdDrawer open={isDrawerOpened} setOpen={setIsDrawerOpened}>
           <CommunityCreator setOpen={setIsDrawerOpened} />
         </RdDrawer>

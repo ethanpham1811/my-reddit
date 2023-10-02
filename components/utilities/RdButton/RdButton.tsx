@@ -1,20 +1,21 @@
+import { DEFAULT_BUTTON_COLOR } from '@/constants/enums'
 import { TRdButtonProps } from '@/constants/types'
 import { notoSans } from '@/mui/theme'
 import { Button } from '@mui/material'
 
-function RdButton({ text, bgcolor, flex, color, invertColor, sx, width, ...rest }: TRdButtonProps) {
+function RdButton({ text, filled = false, flex, color = DEFAULT_BUTTON_COLOR, invertColor = false, sx, width, ...rest }: TRdButtonProps) {
   const hoverStyle = {
     '&:hover, &:focus': invertColor
       ? {
-          bgcolor: 'white',
-          color: bgcolor ? bgcolor + '.main' : 'orange.main',
-          borderColor: bgcolor ? bgcolor + '.main' : 'orange.main'
+          color: filled ? color + '.main' : 'white.main',
+          bgcolor: filled ? 'white.main' : color + '.main',
+          borderColor: color + '.main'
         }
       : {
-          opacity: 0.9,
-          bgcolor: bgcolor ? bgcolor + '.main' : 'orange.main',
-          color: 'white',
-          borderColor: bgcolor ? bgcolor + '.main' : 'orange.main'
+          color: filled ? 'white.main' : color + '.main',
+          bgcolor: filled ? color + '.main' : 'white.main',
+          borderColor: color + '.main',
+          opacity: 0.9
         }
   }
 
@@ -25,9 +26,9 @@ function RdButton({ text, bgcolor, flex, color, invertColor, sx, width, ...rest 
       variant="outlined"
       sx={{
         flex,
-        bgcolor: bgcolor ? bgcolor + '.main' : 'orange.main',
-        color: color ? color + '.main' : 'white.main',
-        borderColor: bgcolor ? bgcolor + '.main' : 'orange.main',
+        color: filled ? 'white.main' : color + '.main',
+        bgcolor: filled ? color + '.main' : 'white.main',
+        borderColor: color + '.main',
         fontWeight: 700,
         fontFamily: notoSans.style.fontFamily,
         borderRadius: '9999px',

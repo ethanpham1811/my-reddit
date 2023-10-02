@@ -124,7 +124,7 @@ export type TRdAutoCompleteProps<T extends FieldValues> = {
 }
 export type TRdButtonProps = ButtonOwnProps & {
   text: string
-  bgcolor?: TButtonColor
+  filled?: boolean
   color?: TButtonColor
   invertColor?: boolean
   sx?: SxProps<Theme>

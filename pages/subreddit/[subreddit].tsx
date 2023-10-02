@@ -1,21 +1,27 @@
-import { CardAds, CardCreatePost, CardFeedSorter, CardPageInfo, NewFeeds, TopNav } from '@/components'
+import { CardAds, CardCreatePost, CardFeedSorter, CardPageInfo, NewFeeds, SubredditTopNav, TopNav } from '@/components'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TSortOptions } from '@/constants/types'
 
 import { Box, Container, Grid, Stack } from '@mui/material'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-export default function Home() {
+function Subreddit() {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.new, ordering: ORDERING.desc })
+
+  const {
+    query: { subreddit }
+  } = useRouter()
 
   return (
     <div>
       <Head>
-        <title>My Reddit</title>
+        <title>r/{subreddit}</title>
       </Head>
       <TopNav />
-      <Container maxWidth="md" sx={{ pt: '70px' }}>
+      <SubredditTopNav name={subreddit as string} />
+      <Container maxWidth="md" sx={{ pt: 2 }}>
         <Box>
           <Grid container spacing={3}>
             <Grid xs={16} md={8} item>
@@ -37,3 +43,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Subreddit

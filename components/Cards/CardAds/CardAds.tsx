@@ -22,7 +22,7 @@ function CardAds() {
         subheader="The best Reddit experience"
       />
       <CardActions sx={{ p: 0, pt: 0.5 }}>
-        <RdButton text={'Try Now'} invertColor />
+        <RdButton filled text={'Try Now'} invertColor />
       </CardActions>
     </RdCard>
   )
