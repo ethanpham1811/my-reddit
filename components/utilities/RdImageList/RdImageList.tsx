@@ -1,12 +1,9 @@
+import { TRdImageListProps } from '@/constants/types'
 import { ImageList, ImageListItem, Stack } from '@mui/material'
 import Image from 'next/image'
 import { v4 as rid } from 'uuid'
 
-type TRdImageListProps = {
-  images: FileList
-}
-
-function RdImageList({ images }: TRdImageListProps) {
+function RdImageList({ images, ...rest }: TRdImageListProps) {
   const imageList = Array.from(images)
   return (
     <Stack
@@ -16,7 +13,7 @@ function RdImageList({ images }: TRdImageListProps) {
       width="100%"
       sx={{ p: 1, borderRadius: '4px', border: (theme) => `1px dashed ${theme.palette.blue.main}` }}
     >
-      <ImageList cols={5}>
+      <ImageList {...rest}>
         {imageList.map((item, i) => (
           <ImageListItem key={`uploaded_img_${rid()}`}>
             <Image

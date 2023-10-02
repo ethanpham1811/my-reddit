@@ -2,9 +2,12 @@ import homeBannerUrl from '@/public/home_banner.png'
 import redditRobotUrl from '@/public/reddit_robbot.png'
 import { CardActions, CardContent, CardHeader, CardMedia, Divider, Typography } from '@mui/material'
 import Image from 'next/image'
-import { RdButton, RdCard } from '../..'
+import { useState } from 'react'
+import { CommunityCreator, RdButton, RdCard, RdDrawer } from '../..'
 
 function CardPageInfo() {
+  const [isDrawerOpened, setIsDrawerOpened] = useState(false)
+
   return (
     <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
       <CardMedia component="img" height={34} image={homeBannerUrl.src} alt="Paella dish" sx={{ mx: -1, mt: -1, width: 'auto' }} />
@@ -22,7 +25,10 @@ function CardPageInfo() {
       <Divider sx={{ my: 0.5 }} />
       <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
         <RdButton text={'Create Post'} bgcolor="blue" invertColor />
-        <RdButton text={'Create Community'} bgcolor="white" color="blue" />
+        <RdButton text={'Create Community'} bgcolor="white" color="blue" onClick={() => setIsDrawerOpened(true)} />
+        <RdDrawer open={isDrawerOpened} setOpen={setIsDrawerOpened}>
+          <CommunityCreator setOpen={setIsDrawerOpened} />
+        </RdDrawer>
       </CardActions>
     </RdCard>
   )

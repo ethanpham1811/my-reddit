@@ -1,20 +1,8 @@
+import { TRdInputProps } from '@/constants/types'
 import { borderColorStyle } from '@/mui/styles'
-import { FormControl, FormHelperText, InputLabel, SxProps, Theme, styled } from '@mui/material'
+import { FormControl, FormHelperText, InputLabel, styled } from '@mui/material'
 import TextField from '@mui/material/TextField'
-import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
-
-type TRdInputProps<T extends FieldValues> = {
-  placeholder: string
-  name: FieldPath<T>
-  control: Control<T>
-  label?: string
-  disabled?: boolean
-  helper?: boolean
-  width?: string
-  flex?: number
-  sx?: SxProps<Theme>
-  bgcolor?: string
-}
+import { Controller, FieldValues } from 'react-hook-form'
 
 const RdInputBase = styled(TextField)(({ theme }) => {
   return {
@@ -36,7 +24,7 @@ const RdInput = <T extends FieldValues>({
   width,
   placeholder,
   disabled = false,
-  helper = false,
+  helper,
   sx,
   bgcolor
 }: TRdInputProps<T>) => {
@@ -64,7 +52,7 @@ const RdInput = <T extends FieldValues>({
           />
         )}
       />
-      {helper && <FormHelperText id={`helper_${name}`}>We'll never share your email.</FormHelperText>}
+      {helper && <FormHelperText id={`helper_${name}`}>{helper}</FormHelperText>}
     </FormControl>
   )
 }

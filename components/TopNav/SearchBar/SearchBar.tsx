@@ -41,7 +41,11 @@ function SearchBar() {
   /* mockup data */
   const options: object[] = loading
     ? []
-    : [{ topic: 'Artificial Intelligent Arts' }, { topic: 'Programming languages' }, { topic: 'Social and family issues' }]
+    : [
+        { topic: 'Artificial Intelligent Arts', name: 'khoi', id: 12 },
+        { topic: 'Programming languages', name: 'khoi', id: 12 },
+        { topic: 'Social and family issues', name: 'khoi', id: 12 }
+      ]
 
   useEffect(() => {
     if (!loading) return

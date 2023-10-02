@@ -10,8 +10,11 @@ import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LinkIcon from '@mui/icons-material/Link'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
+import LockIcon from '@mui/icons-material/Lock'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import OutboundOutlinedIcon from '@mui/icons-material/OutboundOutlined'
+import PersonIcon from '@mui/icons-material/Person'
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RocketIcon from '@mui/icons-material/Rocket'
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined'
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined'
@@ -30,8 +33,11 @@ export {
   KeyboardArrowDownIcon,
   LinkIcon,
   LocalFireDepartmentIcon,
+  LockIcon,
   NotificationsOutlinedIcon,
   OutboundOutlinedIcon,
+  PersonIcon,
+  RemoveRedEyeIcon,
   RocketIcon,
   SecurityOutlinedIcon,
   SmsOutlinedIcon,

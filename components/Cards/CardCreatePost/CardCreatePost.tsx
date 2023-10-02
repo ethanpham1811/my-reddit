@@ -2,7 +2,7 @@ import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
 import { LinkIcon } from '@/constants/icons'
-import { TPost } from '@/constants/types'
+import { TCardCreatePostForm } from '@/constants/types'
 import { ADD_POST } from '@/graphql/mutations'
 import { OnlineDotStyle } from '@/mui/styles'
 import { ApolloError, useMutation } from '@apollo/client'
@@ -11,12 +11,6 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { RdButton, RdCard, RdImageList, RdImageUploader, RdInput, RdSubredditSelect, RdTextEditor } from '../..'
 import { generateUserImage, uploadFiles } from '../../utilities'
-
-type TCardCreatePostForm = Pick<TPost, 'title' | 'body' | 'username'> & {
-  subreddit_id: number
-  images: FileList
-  link: string
-}
 
 function CardCreatePost() {
   const { data: session } = useSession()
@@ -107,7 +101,7 @@ function CardCreatePost() {
           <Stack spacing={1} sx={{ py: 1, px: '46px' }}>
             {showLinkInput && <RdInput<TCardCreatePostForm> bgcolor="white" flex={1} control={control} name="link" placeholder="Link URL" />}
             <RdTextEditor<TCardCreatePostForm> control={control} name="body" placeholder="Start your essay.." />
-            {imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} />}
+            {imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} cols={5} />}
             <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">
               <RdSubredditSelect control={control} name="subreddit_id" width="180px" />
               <RdButton type="submit" text={'Post'} bgcolor="blue" invertColor width="30%" />

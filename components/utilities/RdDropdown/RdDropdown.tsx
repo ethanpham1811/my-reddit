@@ -1,26 +1,13 @@
 import { KeyboardArrowDownIcon } from '@/constants/icons'
-import { Box, Select, SelectChangeEvent, SxProps, Theme } from '@mui/material'
-import { JSX, ReactNode } from 'react'
+import { TRdDropdownProps } from '@/constants/types'
+import { Box, Select } from '@mui/material'
+import { ReactNode } from 'react'
 
-type TRdDropdownProps = {
-  children: JSX.Element | JSX.Element[]
-  renderSelectedOption: (value: string) => ReactNode
-  value: string
-  onChange: (event: SelectChangeEvent<string>, child: ReactNode) => void
-  width?: string
-  flex?: number
-  loading: boolean
-  placeholder?: string
-  borderColor?: string
-  sx?: SxProps<Theme>
-}
-
-function RdDropdown({ flex, width, placeholder, loading, borderColor, children, sx, renderSelectedOption, value, onChange }: TRdDropdownProps) {
+function RdDropdown({ flex, width, loading, borderColor, onChange, value, children, sx, renderSelectedOption, ...rest }: TRdDropdownProps) {
   return (
     <Box flex={flex} sx={{ width, ...sx }}>
       <Select
         value={value}
-        placeholder={placeholder}
         onChange={onChange}
         displayEmpty
         IconComponent={(props): ReactNode => <KeyboardArrowDownIcon {...props} />}
@@ -66,6 +53,7 @@ function RdDropdown({ flex, width, placeholder, loading, borderColor, children, 
             }
           }
         }}
+        {...rest}
       >
         {children}
       </Select>

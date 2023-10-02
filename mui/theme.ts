@@ -53,6 +53,9 @@ export const theme: Theme = createTheme({
     cardBorder: {
       main: '#ccc' // Custom color value
     },
+    hintText: {
+      main: '#7c7c7c' // Custom color value
+    },
     white: {
       main: '#fff' // Custom color value
     },

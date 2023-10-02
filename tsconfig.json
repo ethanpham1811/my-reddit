@@ -38,7 +38,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "constants/data.tss"  ],
   "exclude": [
     "node_modules"
   ]

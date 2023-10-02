@@ -1,14 +1,11 @@
 import { RdDropdown } from '@/components'
 import { generateUserImage } from '@/components/utilities'
+import { TMenuProps } from '@/constants/types'
 import { MenuItem } from '@mui/material'
 import { Session } from 'next-auth'
 import Image from 'next/image'
 import { useState } from 'react'
 import { v4 as rid } from 'uuid'
-
-type TMenuProps = {
-  session: Session | null
-}
 
 function ProfileDropdownProp({ session }: TMenuProps) {
   const [page, setPage] = useState('home')

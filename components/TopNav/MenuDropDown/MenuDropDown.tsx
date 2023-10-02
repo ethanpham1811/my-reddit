@@ -1,20 +1,11 @@
 import { RdDropdown } from '@/components'
 import { generateUserImage } from '@/components/utilities'
 import { HomeIcon } from '@/constants/icons'
-import { MenuItem as TMenuItem } from '@mui/material'
-import { Session } from 'next-auth'
+import { TMenuItem, TMenuProps } from '@/constants/types'
+import { MenuItem } from '@mui/material'
 import Image from 'next/image'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 import { v4 as rid } from 'uuid'
-
-type TMenuProps = {
-  session: Session | null
-}
-type TMenuItem = {
-  name: string
-  value: string
-  icon: ReactNode | null
-}
 
 function MenuDropDown({ session }: TMenuProps) {
   const [page, setPage] = useState('home')
@@ -60,10 +51,10 @@ function MenuDropDown({ session }: TMenuProps) {
       {session && list.length > 0 ? (
         list.map((item) => {
           return (
-            <TMenuItem value={item.value} key={`menu_${rid()}`}>
+            <MenuItem value={item.value} key={`menu_${rid()}`}>
               {item.icon ?? <Image alt={`${item.name} image`} src={generateUserImage(item.name)} width={20} height={20} />}
               {item.name || 'unknown'}
-            </TMenuItem>
+            </MenuItem>
           )
         })
       ) : (

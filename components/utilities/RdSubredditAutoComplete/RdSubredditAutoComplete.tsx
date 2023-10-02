@@ -1,18 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import { TSubreddit } from '@/constants/types'
-import { Control, FieldPath, FieldValues } from 'react-hook-form'
+import { TRdSubredditAutoCompleteProps, TSubreddit } from '@/constants/types'
+import { FieldValues } from 'react-hook-form'
 
 import { RdAutoComplete } from '../..'
 
-type TRdSubredditAutoComplete<T extends FieldValues> = {
-  name: FieldPath<T>
-  control: Control<T>
-  width?: string
-  flex?: number
-}
-
-function RdSubredditAutoComplete<T extends FieldValues>({ name, control, width, flex }: TRdSubredditAutoComplete<T>) {
+function RdSubredditAutoComplete<T extends FieldValues>({ name, control, width, flex }: TRdSubredditAutoCompleteProps<T>) {
   const [loading, setLoading] = useState(true)
 
   const options: TSubreddit[] = loading

@@ -1,17 +1,11 @@
 import { ArrowBackIosIcon, ArrowForwardIosIcon } from '@/constants/icons'
-import { TImage } from '@/constants/types'
+import { TRdImageCarouselProps } from '@/constants/types'
 import { Paper } from '@mui/material'
 import Image from 'next/image'
 import Carousel from 'react-material-ui-carousel'
 import { v4 as rid } from 'uuid'
 
-type TRdImageCarousel = {
-  width: string
-  height: string
-  imgList: TImage[]
-}
-
-function RdImageCarousel({ width, height, imgList }: TRdImageCarousel) {
+function RdImageCarousel({ width, height, imgList }: TRdImageCarouselProps) {
   return (
     <Carousel
       NextIcon={<ArrowForwardIosIcon sx={{ color: 'actionIcon.main' }} />}

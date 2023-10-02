@@ -1,15 +1,9 @@
 import { RdCard } from '@/components'
 import { LocalFireDepartmentIcon, TrendingUpOutlinedIcon, WbSunnyIcon } from '@/constants/icons'
+import { TSorter } from '@/constants/types'
 import { ToggleButton, ToggleButtonGroup, Typography, styled } from '@mui/material'
-import { MouseEvent, ReactNode, useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { v4 as rid } from 'uuid'
-
-type TSorter = {
-  icon: ReactNode
-  methodValue: string
-  label: string
-  description: string
-}
 
 const data: TSorter[] = [
   {
