@@ -1,13 +1,12 @@
 import { RdDropdown } from '@/components'
 import { generateUserImage } from '@/components/utilities'
-import { TMenuProps } from '@/constants/types'
+import { TProfileDropdownProps } from '@/constants/types'
 import { MenuItem } from '@mui/material'
-import { Session } from 'next-auth'
 import Image from 'next/image'
 import { useState } from 'react'
 import { v4 as rid } from 'uuid'
 
-function ProfileDropdownProp({ session }: TMenuProps) {
+function ProfileDropdownProp({ session }: TProfileDropdownProps) {
   const [page, setPage] = useState('home')
   const loading = false
 

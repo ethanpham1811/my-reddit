@@ -2,8 +2,9 @@ import { RdCard, RdImageCarousel } from '@/components'
 import { generateUserImage } from '@/components/utilities'
 import { ArrowDownwardOutlinedIcon, ArrowUpwardOutlinedIcon } from '@/constants/icons'
 import { TCardPostProps, TImage } from '@/constants/types'
-import { Avatar, Box, IconButton, Link, Stack, Typography } from '@mui/material'
+import { Avatar, Box, IconButton, Stack, Typography } from '@mui/material'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import Link from 'next/link'
 import ReactHtmlParser from 'react-html-parser'
 
 function CardPost({ images, body, title, username, createdAt, upvote, subreddit, comment }: TCardPostProps) {

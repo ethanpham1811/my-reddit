@@ -1,34 +1,30 @@
 import { RdDropdown } from '@/components'
 import { generateUserImage } from '@/components/utilities'
 import { HomeIcon } from '@/constants/icons'
-import { TMenuItem, TMenuProps } from '@/constants/types'
-import { MenuItem } from '@mui/material'
+import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
+import { MenuItem, SelectChangeEvent } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { v4 as rid } from 'uuid'
 
-function MenuDropDown({ session }: TMenuProps) {
+function MenuDropDown({ session, subredditListData }: TMenuDropdownProps) {
+  const { subredditList, loading, error } = subredditListData
   const {
     query: { subreddit },
-    pathname
+    pathname,
+    push: navigate
   } = useRouter()
-  const page = pathname === '/' ? 'home' : subreddit
-  const loading = false
+  const activePage: string = pathname === '/' ? 'Home' : (subreddit as string)
   const list: TMenuItem[] = [
     {
       name: 'Home',
-      value: 'home',
       icon: <HomeIcon />
     },
-    {
-      name: 'Ai generated arts',
-      value: 'ai',
-      icon: null
-    }
+    ...(subredditList ?? [])
   ]
 
   function renderSelectedOption(selectedValue: string) {
-    const seletedItem = list.find((item) => item.value == selectedValue)
+    const seletedItem = list.find((item) => item.name == selectedValue)
     return (
       <>
         {seletedItem ? (
@@ -43,19 +39,24 @@ function MenuDropDown({ session }: TMenuProps) {
     )
   }
 
+  const onChange = (e: SelectChangeEvent<string>) => {
+    const name = e.target.value
+    navigate(name === 'Home' ? '/' : `/r/${name}`)
+  }
+
   return (
     <RdDropdown
       loading={loading}
       renderSelectedOption={renderSelectedOption}
-      value={page as string}
-      onChange={() => console.log('change')}
+      value={activePage}
+      onChange={onChange}
       flex={1}
       sx={{ minWidth: '200px' }}
     >
       {session && list.length > 0 ? (
         list.map((item) => {
           return (
-            <MenuItem value={item.value} key={`menu_${rid()}`}>
+            <MenuItem value={item.name} key={`menu_${rid()}`}>
               {item.icon ?? <Image alt={`${item.name} image`} src={generateUserImage(item.name)} width={20} height={20} />}
               {item.name || 'unknown'}
             </MenuItem>

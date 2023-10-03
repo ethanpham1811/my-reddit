@@ -1,10 +1,9 @@
 import { ApolloProvider } from '@apollo/client'
 import { SessionProvider } from 'next-auth/react'
 import type { AppProps } from 'next/app'
-import { Toaster } from 'react-hot-toast'
 import { client } from '../apollo-client'
 
-import { TopNav } from '@/components'
+import { MainLayout } from '@/components'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
@@ -31,9 +30,9 @@ export default function App({ Component, emotionCache = clientSideEmotionCache, 
         <CssBaseline />
         <ApolloProvider client={client}>
           <SessionProvider session={session}>
-            <TopNav />
-            <Component {...pageProps} />
-            <Toaster />
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
           </SessionProvider>
         </ApolloProvider>
       </ThemeProvider>

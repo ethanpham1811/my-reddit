@@ -5,12 +5,13 @@ import { TSortOptions } from '@/constants/types'
 import useSubredditByName from '@/hooks/useSubredditByName'
 
 import { Box, Container, Grid, Stack } from '@mui/material'
+import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-function Subreddit() {
-  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.new, ordering: ORDERING.desc })
+const Subreddit: NextPage = () => {
+  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { subreddit: subName }
   } = useRouter()

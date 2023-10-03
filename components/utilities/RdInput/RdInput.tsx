@@ -41,7 +41,7 @@ const RdInput = <T extends FieldValues>({
             error={!!error}
             onChange={onChange}
             value={value}
-            fullWidth
+            fullWidth={true}
             label={label}
             variant="outlined"
             disabled={disabled}

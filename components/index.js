@@ -6,6 +6,7 @@ import CardPost from './Cards/CardPost/CardPost'
 import BottomNavigator from './CommunityCreator/BottomNavigator/BottomNavigator'
 import CommunityCreator from './CommunityCreator/CommunityCreator'
 import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/IsChildrenGroupCheckbox'
+import MainLayout from './Layouts/MainLayout'
 import NewFeeds from './NewFeeds/NewFeeds'
 import SubredditTopNav from './SubredditTopNav/SubredditTopNav'
 import IconBox from './TopNav/IconBox/IconBox'
@@ -43,6 +44,7 @@ export {
   IconBox,
   IsChildrenGroupCheckbox,
   Logo,
+  MainLayout,
   MenuDropDown,
   NewFeeds,
   ProfileDropdown,

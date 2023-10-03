@@ -8,21 +8,21 @@ import { v4 as rid } from 'uuid'
 const data: TSorter[] = [
   {
     icon: <WbSunnyIcon />,
-    methodValue: SORT_METHOD.new,
+    methodValue: SORT_METHOD.New,
     description: 'New posts',
     label: 'New',
     disabled: false
   },
   {
     icon: <LocalFireDepartmentIcon />,
-    methodValue: SORT_METHOD.hot,
+    methodValue: SORT_METHOD.Hot,
     description: 'Most upvoted',
     label: 'Hot',
     disabled: false
   },
   {
     icon: <TrendingUpOutlinedIcon />,
-    methodValue: SORT_METHOD.rising,
+    methodValue: SORT_METHOD.Rising,
     description: 'Top trending',
     label: 'Rising',
     disabled: true
@@ -47,7 +47,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 function CardFeedSorter({ sortOptions, setSortOptions }: TCardFeedSorterProps) {
   const onChange = (_: any, method: SORT_METHOD | null) => {
-    method && setSortOptions({ ordering: ORDERING.desc, method })
+    method && setSortOptions({ ordering: ORDERING.Desc, method })
   }
 
   return (

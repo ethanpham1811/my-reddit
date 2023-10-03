@@ -22,7 +22,7 @@ function RdButton({ text, filled = false, flex, color = DEFAULT_BUTTON_COLOR, in
   return (
     <Button
       size="medium"
-      fullWidth
+      fullWidth={true}
       variant="outlined"
       sx={{
         flex,

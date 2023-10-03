@@ -4,11 +4,12 @@ import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TSortOptions } from '@/constants/types'
 
 import { Box, Container, Grid, Stack } from '@mui/material'
+import { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 
-export default function Home() {
-  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.new, ordering: ORDERING.desc })
+const Home: NextPage = () => {
+  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const HomeNewFeeds = withPostList(NewFeeds)
 
   return (
@@ -38,3 +39,4 @@ export default function Home() {
     </div>
   )
 }
+export default Home

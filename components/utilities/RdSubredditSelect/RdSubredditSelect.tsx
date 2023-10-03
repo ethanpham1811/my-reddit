@@ -1,6 +1,6 @@
 import { Controller, FieldValues } from 'react-hook-form'
 
-import { SUBREDDIT_LIST_FOR } from '@/constants/enums'
+import { SUBREDDIT_LIST_MODE } from '@/constants/enums'
 import { TRdSubredditSelectProps } from '@/constants/types'
 import useSubredditList from '@/hooks/useSubredditList'
 import { Box, FormControl, MenuItem, Typography } from '@mui/material'
@@ -10,7 +10,7 @@ import { generateUserImage } from '..'
 import { RdDropdown } from '../..'
 
 function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, sx }: TRdSubredditSelectProps<T>) {
-  const [subredditList, loading] = useSubredditList(SUBREDDIT_LIST_FOR.createPostSelect)
+  const { subredditList, loading, error } = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
 
   function renderSelectedOption(selectedValue: string) {
     const seletedItem = subredditList && subredditList.find((item) => item.id == +selectedValue)

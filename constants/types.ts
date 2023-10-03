@@ -56,7 +56,7 @@ export type TSearchTerm = {
 export type TButtonColor = Extract<keyof PaletteOptions, 'orange' | 'blue' | 'white'>
 export type TSorter = {
   icon: ReactNode
-  methodValue: string
+  methodValue: SORT_METHOD
   label: string
   description: string
   disabled: boolean
@@ -70,13 +70,16 @@ export type TIconBox = {
   name: string
   notification?: TNotiData
 }
-export type TMenuProps = {
+export type TMenuDropdownProps = {
+  session: Session | null
+  subredditListData: TUseSubredditListResponse
+}
+export type TProfileDropdownProps = {
   session: Session | null
 }
-export type TMenuItem = {
+export type TMenuItem = Omit<TSubreddit, 'id'> & {
   name: string
-  value: string
-  icon: ReactNode | null
+  icon?: ReactNode
 }
 export type TRadioOption = {
   value: string
@@ -219,6 +222,7 @@ export type TCardCreatePostForm = Pick<TPost, 'title' | 'body' | 'username'> & {
 
 /* ------------------------------------------Hook response Types------------------------------------------ */
 export type TUsePostListResponse = { postList: TPost[] | null; loading: boolean; error: ApolloError | undefined }
+export type TUseSubredditListResponse = { subredditList: TSubreddit[] | null; loading: boolean; error: ApolloError | undefined }
 
 /* ------------------------------------------Data structure Types------------------------------------------ */
 export type TCommunityTypeOPtions = {

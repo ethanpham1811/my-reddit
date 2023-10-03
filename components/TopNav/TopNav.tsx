@@ -1,3 +1,4 @@
+import { TUseSubredditListResponse } from '@/constants/types'
 import { AppBar, Box, Stack, styled } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
@@ -10,7 +11,11 @@ const NavBar = styled(AppBar)(({ theme }) => {
   }
 })
 
-function TopNav() {
+type TTopNavProps = {
+  subredditListData: TUseSubredditListResponse
+}
+
+function TopNav({ subredditListData }: TTopNavProps) {
   const { data: session, status } = useSession()
 
   return (
@@ -20,7 +25,7 @@ function TopNav() {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <Logo />
             {/* dropdown */}
-            <MenuDropDown session={session} />
+            <MenuDropDown session={session} subredditListData={subredditListData} />
           </Stack>
           {/* search */}
           <SearchBar />
