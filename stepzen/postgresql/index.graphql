@@ -21,13 +21,22 @@ type Post {
 }
 
 type Subreddit {
+  coverUrl: String
   created_at: DateTime!
+  description: String
+  headline: String
   id: ID!
-  topic: String!
-  name: String!
-  subType: String!
-  isChildrenContent: Boolean!
+  isChildrenContent: Boolean
+  member: ID!
+  name: String
   post: [Post] @materializer(query: "postUsingPost_subreddit_id_fkey")
+  subType: String
+  topics: [String]!
+}
+
+type Topic {
+  id: ID!
+  name: String
 }
 
 type Vote {
@@ -106,13 +115,14 @@ type Query {
     )
   " Queries for type 'Subreddit' "
   subreddit(id: ID!): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
+  subredditByName(name: String!): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
   subredditList: [Subreddit] @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
   subredditPaginatedList(first: Int, after: Int): [Subreddit]
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT * FROM "subreddit" ORDER BY "id" LIMIT $1 OFFSET $2
+      SELECT "coverUrl", "created_at", "description", "headline", "id", "isChildrenContent", "member", "name", "subType" FROM "subreddit" ORDER BY "id" LIMIT $1 OFFSET $2
       """
       configuration: "postgresql_config"
     )
@@ -121,16 +131,19 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT * FROM "subreddit" WHERE "id" = $1
+      SELECT "coverUrl", "created_at", "description", "headline", "id", "isChildrenContent", "member", "name", "subType" FROM "subreddit" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
-  subredditListByTopic(topic: String!): [Subreddit]
+  " Queries for type 'Topic' "
+  topic(id: ID!): Topic @dbquery(type: "postgresql", schema: "public", table: "topic", configuration: "postgresql_config")
+  topicList: [Topic] @dbquery(type: "postgresql", schema: "public", table: "topic", configuration: "postgresql_config")
+  topicPaginatedList(first: Int, after: Int): [Topic]
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT * FROM "subreddit" WHERE "topic" = $1
+      SELECT "id", "name" FROM "topic" ORDER BY "id" LIMIT $1 OFFSET $2
       """
       configuration: "postgresql_config"
     )
@@ -164,7 +177,7 @@ Feel free to modify them or aggregate more.
 type Mutation {
   " Mutations for type 'Comment' "
   deleteComment(id: ID!): Comment @dbquery(type: "postgresql", schema: "public", table: "comment", dml: DELETE, configuration: "postgresql_config")
-  insertComment(username: String, post_id: ID, text: String, created_at: DateTime!): Comment
+  insertComment(username: String, post_id: ID, text: String, created_at: DateTime): Comment
     @dbquery(type: "postgresql", schema: "public", table: "comment", dml: INSERT, configuration: "postgresql_config")
   updateComment(id: ID!, created_at: DateTime, post_id: ID, text: String, username: String): Comment
     @dbquery(
@@ -184,9 +197,9 @@ type Mutation {
     )
   " Mutations for type 'Post' "
   deletePost(id: ID!): Post @dbquery(type: "postgresql", schema: "public", table: "post", dml: DELETE, configuration: "postgresql_config")
-  insertPost(body: String, subreddit_id: ID, title: String, username: String, images: String): Post
+  insertPost(body: String, username: String, subreddit_id: ID, title: String, images: String): Post
     @dbquery(type: "postgresql", schema: "public", table: "post", dml: INSERT, configuration: "postgresql_config")
-  updatePost(id: ID!, body: String, created_at: DateTime, images: String, subreddit_id: ID, title: String, username: String): Post
+  updatePost(id: ID!, body: String, images: String, subreddit_id: ID, title: String, username: String): Post
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -207,15 +220,58 @@ type Mutation {
   " Mutations for type 'Subreddit' "
   deleteSubreddit(id: ID!): Subreddit
     @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: DELETE, configuration: "postgresql_config")
-  insertSubreddit(name: String!, topic: String!, subType: String!, isChildrenContent: Boolean!): Subreddit
-    @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: INSERT, configuration: "postgresql_config")
-  updateSubreddit(id: ID!, created_at: DateTime): Subreddit
+  insertSubreddit(
+    name: String
+    coverUrl: String
+    description: String
+    member: ID!
+    created_at: DateTime
+    subType: String
+    isChildrenContent: Boolean
+    headline: String
+    topics: [String]
+  ): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: INSERT, configuration: "postgresql_config")
+  updateSubreddit(
+    id: ID!
+    coverUrl: String
+    created_at: DateTime
+    description: String
+    headline: String
+    isChildrenContent: Boolean
+    member: ID
+    name: String
+    subType: String
+    topics: [String]
+  ): Subreddit
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
       UPDATE "subreddit" SET
-        "created_at" = COALESCE($2, "created_at")
+        "coverUrl" = COALESCE($2, "coverUrl"),
+        "created_at" = COALESCE($3, "created_at"),
+        "description" = COALESCE($4, "description"),
+        "headline" = COALESCE($5, "headline"),
+        "isChildrenContent" = COALESCE($6, "isChildrenContent"),
+        "member" = COALESCE($7, "member"),
+        "name" = COALESCE($8, "name"),
+        "subType" = COALESCE($9, "subType")
+      WHERE
+        "id" = $1
+      RETURNING *
+      """
+      configuration: "postgresql_config"
+    )
+  " Mutations for type 'Topic' "
+  deleteTopic(id: ID!): Topic @dbquery(type: "postgresql", schema: "public", table: "topic", dml: DELETE, configuration: "postgresql_config")
+  insertTopic(name: String): Topic @dbquery(type: "postgresql", schema: "public", table: "topic", dml: INSERT, configuration: "postgresql_config")
+  updateTopic(id: ID!, name: String): Topic
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      UPDATE "topic" SET
+        "name" = COALESCE($2, "name")
       WHERE
         "id" = $1
       RETURNING *
@@ -224,7 +280,7 @@ type Mutation {
     )
   " Mutations for type 'Vote' "
   deleteVote(id: ID!): Vote @dbquery(type: "postgresql", schema: "public", table: "vote", dml: DELETE, configuration: "postgresql_config")
-  insertVote(username: String, post_id: ID, created_at: DateTime!, upvote: Boolean): Vote
+  insertVote(username: String, post_id: ID, created_at: DateTime, upvote: Boolean): Vote
     @dbquery(type: "postgresql", schema: "public", table: "vote", dml: INSERT, configuration: "postgresql_config")
   updateVote(id: ID!, created_at: DateTime, post_id: ID, upvote: Boolean, username: String): Vote
     @dbquery(

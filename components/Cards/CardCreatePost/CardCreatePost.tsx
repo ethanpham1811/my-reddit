@@ -13,7 +13,7 @@ import toast from 'react-hot-toast'
 import { RdButton, RdCard, RdImageList, RdImageUploader, RdInput, RdSubredditSelect, RdTextEditor } from '../..'
 import { generateUserImage, uploadFiles } from '../../utilities'
 
-function CardCreatePost() {
+function CardCreatePost({ subId }: { subId?: number | undefined }) {
   const { data: session } = useSession()
   const [showLinkInput, setShowLinkInput] = useState(false)
   const userName: string = session?.user?.name || 'Guest user'
@@ -51,7 +51,7 @@ function CardCreatePost() {
     await addPost({
       variables: {
         body,
-        subreddit_id,
+        subreddit_id: subId ?? subreddit_id,
         title,
         username: session?.user?.name,
         images
@@ -106,7 +106,7 @@ function CardCreatePost() {
             <RdTextEditor<TCardCreatePostForm> control={control} name="body" placeholder="Start your essay.." />
             {imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} cols={5} />}
             <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">
-              <RdSubredditSelect control={control} name="subreddit_id" width="180px" />
+              {subId == null && <RdSubredditSelect control={control} name="subreddit_id" width="180px" />}
               <RdButton type="submit" text={'Post'} filled color="blue" invertColor width="30%" />
             </Stack>
           </Stack>

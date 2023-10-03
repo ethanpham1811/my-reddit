@@ -11,9 +11,9 @@ function RdSubredditAutoComplete<T extends FieldValues>({ name, control, width, 
   const options: TSubreddit[] = loading
     ? []
     : [
-        { topic: 'programming', name: 'Artificial Intelligent Arts', id: 23, subType: 'public', isChildrenContent: true },
-        { topic: 'programming', name: 'Programming languages', id: 12, subType: 'private', isChildrenContent: false },
-        { topic: 'social', name: 'Social and family issues', id: 14, subType: 'public', isChildrenContent: true }
+        { name: 'programming', id: 23 },
+        { name: 'programming', id: 12 },
+        { name: 'social', id: 14 }
       ]
 
   useEffect(() => {

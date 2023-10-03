@@ -18,9 +18,10 @@ const SubredditNavBar = styled(AppBar)(({ theme }) => {
 
 type TSubredditTopNavProps = {
   name: string | null | undefined
+  headline: string | null | undefined
 }
 
-function SubredditTopNav({ name }: TSubredditTopNavProps) {
+function SubredditTopNav({ name, headline }: TSubredditTopNavProps) {
   const { data: session, status } = useSession()
   return (
     <Box flexGrow={1}>
@@ -43,14 +44,14 @@ function SubredditTopNav({ name }: TSubredditTopNavProps) {
             />
             <Stack>
               <Typography fontWeight={700} variant="h4">
-                {'Subreddit description'}
+                {headline ?? name}
               </Typography>
               <Typography fontWeight={700} variant="subtitle1" sx={{ color: 'hintText.main' }}>
                 r/{name}
               </Typography>
             </Stack>
-            <Stack sx={{ ml: 'auto', alignSelf: 'flex-start' }} direction="row">
-              <RdButton text="Joined" filled invertColor color="blue" sx={{ px: 4, mr: 2 }} />
+            <Stack sx={{ alignSelf: 'flex-start' }} direction="row">
+              <RdButton text="Joined" color="blue" sx={{ px: 3, py: 0, mx: 2, fontWeight: 700, fontSize: '0.8rem' }} />
               <IconButton>
                 <NotificationsIcon sx={{ display: 'block', color: 'blue.main' }} />
               </IconButton>

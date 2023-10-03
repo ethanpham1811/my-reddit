@@ -48,7 +48,7 @@ const RdInput = <T extends FieldValues>({
             placeholder={placeholder}
             id={name}
             aria-describedby={`helper_${name}`}
-            sx={{ '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main`, ...sx } }}
+            sx={{ '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main` }, ...sx }}
           />
         )}
       />

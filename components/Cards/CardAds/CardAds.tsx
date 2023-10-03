@@ -7,7 +7,7 @@ function CardAds() {
     <RdCard>
       <CardHeader
         sx={{ p: 0 }}
-        avatar={<SecurityOutlinedIcon sx={{ ml: 0.5 }} color="orange" />}
+        avatar={<SecurityOutlinedIcon sx={{ ml: 0.5, color: 'orange.main' }} />}
         titleTypographyProps={{
           sx: {
             fontSize: '0.8rem'

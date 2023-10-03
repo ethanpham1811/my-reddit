@@ -1,10 +1,4 @@
 import { Box, TextField, styled } from '@mui/material'
-import { useEffect, useState } from 'react'
-
-import { RdAutoComplete } from '@/components'
-import { TSearchTerm } from '@/constants/types'
-import SearchIcon from '@mui/icons-material/Search'
-import { useForm } from 'react-hook-form'
 
 const SearchField = styled(TextField)(({ theme }) => {
   return {
@@ -29,42 +23,49 @@ const SearchField = styled(TextField)(({ theme }) => {
 })
 
 function SearchBar() {
-  const [loading, setLoading] = useState(true)
-  const {
-    reset,
-    handleSubmit,
-    watch,
-    control,
-    formState: { errors }
-  } = useForm<TSearchTerm>()
+  // const [loading, setLoading] = useState(true)
+  // const {
+  //   reset,
+  //   handleSubmit,
+  //   watch,
+  //   control,
+  //   formState: { errors }
+  // } = useForm<TSearchTerm>()
 
   /* mockup data */
-  const options: object[] = loading
-    ? []
-    : [
-        { topic: 'Artificial Intelligent Arts', name: 'khoi', id: 12 },
-        { topic: 'Programming languages', name: 'khoi', id: 12 },
-        { topic: 'Social and family issues', name: 'khoi', id: 12 }
-      ]
+  // const options: TSubreddit[] = loading
+  //   ? []
+  //   : [
+  //       { name: 'Artificial Intelligent Arts', id: 12 },
+  //       { name: 'Programming languages', id: 12 },
+  //       { name: 'Social and family issues', id: 12 }
+  //     ]
 
-  useEffect(() => {
-    if (!loading) return
-    const to = setTimeout(() => setLoading(false), 2000)
-    return () => clearTimeout(to)
-  }, [loading])
+  // useEffect(() => {
+  //   if (!loading) return
+  //   const to = setTimeout(() => setLoading(false), 2000)
+  //   return () => clearTimeout(to)
+  // }, [loading])
+
+  // const onSubmit = handleSubmit(async (formData) => {
+  //   // form submit logic
+  //   reset()
+  // })
 
   return (
     <Box flex={1}>
-      <RdAutoComplete
-        control={control}
-        name="term"
-        options={options}
-        loading={loading}
-        startAdornment={<SearchIcon />}
-        placeholder="Search Reddit"
-        id="top-search-auto"
-        flex={1}
-      />
+      {/* <form onSubmit={onSubmit}> */}
+      {/* <RdAutoComplete
+          control={control}
+          name="term"
+          options={options}
+          loading={loading}
+          startAdornment={<SearchIcon />}
+          placeholder="Search Reddit"
+          id="top-search-auto"
+          flex={1}
+        /> */}
+      {/* </form> */}
     </Box>
   )
 }

@@ -1,4 +1,5 @@
-import { CardAds, CardCreatePost, CardFeedSorter, CardPageInfo, NewFeeds, TopNav } from '@/components'
+import { CardAds, CardCreatePost, CardFeedSorter, CardPageInfo, NewFeeds } from '@/components'
+import withPostList from '@/components/HOCs/withPostList'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TSortOptions } from '@/constants/types'
 
@@ -8,13 +9,13 @@ import { useState } from 'react'
 
 export default function Home() {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.new, ordering: ORDERING.desc })
+  const HomeNewFeeds = withPostList(NewFeeds)
 
   return (
     <div>
       <Head>
         <title>My Reddit</title>
       </Head>
-      <TopNav />
       <Container maxWidth="md" sx={{ pt: '70px' }}>
         <Box>
           <Grid container spacing={3}>
@@ -22,7 +23,7 @@ export default function Home() {
               <Stack spacing={2}>
                 <CardCreatePost />
                 <CardFeedSorter sortOptions={sortOptions} setSortOptions={setSortOptions} />
-                <NewFeeds sortOptions={sortOptions} />
+                <HomeNewFeeds sortOptions={sortOptions} />
               </Stack>
             </Grid>
             <Grid xs={16} md={4} item>

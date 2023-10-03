@@ -1,5 +1,6 @@
 import { Controller, FieldValues } from 'react-hook-form'
 
+import { SUBREDDIT_LIST_FOR } from '@/constants/enums'
 import { TRdSubredditSelectProps } from '@/constants/types'
 import useSubredditList from '@/hooks/useSubredditList'
 import { Box, FormControl, MenuItem, Typography } from '@mui/material'
@@ -9,15 +10,15 @@ import { generateUserImage } from '..'
 import { RdDropdown } from '../..'
 
 function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, sx }: TRdSubredditSelectProps<T>) {
-  const [subredditList, loading] = useSubredditList()
+  const [subredditList, loading] = useSubredditList(SUBREDDIT_LIST_FOR.createPostSelect)
 
   function renderSelectedOption(selectedValue: string) {
     const seletedItem = subredditList && subredditList.find((item) => item.id == +selectedValue)
 
     return seletedItem ? (
       <Box sx={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        <Image alt={`${seletedItem.topic} image`} src={generateUserImage(seletedItem.topic)} width={20} height={20} />
-        {seletedItem.topic}
+        <Image alt={`${seletedItem.name} image`} src={generateUserImage(seletedItem.name)} width={20} height={20} />
+        {seletedItem.name}
       </Box>
     ) : (
       <Typography>Subreddit</Typography>
@@ -45,8 +46,8 @@ function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, 
               subredditList.map((item) => {
                 return (
                   <MenuItem value={item.id} key={`menu_${rid()}`}>
-                    <Image alt={`${item.topic} image`} src={generateUserImage(item.topic)} width={20} height={20} />
-                    {item.topic || 'unknown'}
+                    <Image alt={`${item.name} image`} src={generateUserImage(item.name)} width={20} height={20} />
+                    {item.name || 'unknown'}
                   </MenuItem>
                 )
               })

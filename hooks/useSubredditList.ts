@@ -1,21 +1,13 @@
-import { client } from '@/apollo-client'
+import { SUBREDDIT_LIST_FOR } from '@/constants/enums'
 import { TSubreddit } from '@/constants/types'
-import { GET_SUBREDDIT_LIST } from '@/graphql/quries'
-import { useEffect, useState } from 'react'
+import { GET_SUBREDDIT_LIST_FULL, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/quries'
+import { ApolloError, useQuery } from '@apollo/client'
 
-function useSubredditList(): [TSubreddit[] | null, boolean] {
-  const [subredditList, setSubredditList] = useState<TSubreddit[] | null>(null)
-  const loading = !subredditList
+function useSubredditList(useFor: SUBREDDIT_LIST_FOR): [TSubreddit[] | null, boolean, ApolloError | undefined] {
+  const { data, loading, error } = useQuery(useFor == SUBREDDIT_LIST_FOR.createPostSelect ? GET_SUBREDDIT_LIST_SHORT : GET_SUBREDDIT_LIST_FULL)
+  const subredditList = data?.subredditList
 
-  useEffect(() => {
-    ;(async function () {
-      const res = await client.query({ query: GET_SUBREDDIT_LIST })
-      const list: TSubreddit[] = res?.data?.subredditList
-      setSubredditList(list)
-    })()
-  }, [])
-
-  return [subredditList, loading]
+  return [subredditList, loading, error]
 }
 
 export default useSubredditList

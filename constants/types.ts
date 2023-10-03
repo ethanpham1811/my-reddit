@@ -1,4 +1,5 @@
-import { ButtonOwnProps, ImageListOwnProps, PaletteOptions, SelectChangeEvent, SelectProps, SxProps, Theme } from '@mui/material'
+import { ApolloError } from '@apollo/client'
+import { ButtonOwnProps, ButtonProps, ImageListOwnProps, PaletteOptions, SelectChangeEvent, SelectProps, SxProps, Theme } from '@mui/material'
 import { Session } from 'next-auth'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues } from 'react-hook-form'
@@ -19,12 +20,16 @@ export type TPost = {
 }
 
 export type TSubreddit = {
-  topic: string
   name: string
   id: number
-  subType: string
-  isChildrenContent: boolean
-  // image: string
+}
+
+export type TSubredditPage = TSubreddit & {
+  topics: string[]
+  coverUrl?: string
+  headline?: string
+  description?: string
+  member: number
 }
 
 export type TComment = {
@@ -122,15 +127,16 @@ export type TRdAutoCompleteProps<T extends FieldValues> = {
   flex?: number
   bgcolor?: string
 }
-export type TRdButtonProps = ButtonOwnProps & {
-  text: string
-  filled?: boolean
-  color?: TButtonColor
-  invertColor?: boolean
-  sx?: SxProps<Theme>
-  flex?: number
-  width?: string
-}
+export type TRdButtonProps = ButtonOwnProps &
+  Pick<ButtonProps, 'type' | 'onClick'> & {
+    text: string
+    filled?: boolean
+    color?: TButtonColor
+    invertColor?: boolean
+    sx?: SxProps<Theme>
+    flex?: number
+    width?: string
+  }
 export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children'> & {
   renderSelectedOption: (value: string) => ReactNode
   value: string
@@ -210,6 +216,9 @@ export type TCardCreatePostForm = Pick<TPost, 'title' | 'body' | 'username'> & {
   images: FileList
   link: string
 }
+
+/* ------------------------------------------Hook response Types------------------------------------------ */
+export type TUsePostListResponse = { postList: TPost[] | null; loading: boolean; error: ApolloError | undefined }
 
 /* ------------------------------------------Data structure Types------------------------------------------ */
 export type TCommunityTypeOPtions = {

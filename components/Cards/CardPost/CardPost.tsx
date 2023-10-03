@@ -2,7 +2,7 @@ import { RdCard, RdImageCarousel } from '@/components'
 import { generateUserImage } from '@/components/utilities'
 import { ArrowDownwardOutlinedIcon, ArrowUpwardOutlinedIcon } from '@/constants/icons'
 import { TCardPostProps, TImage } from '@/constants/types'
-import { Avatar, Box, IconButton, Stack, Typography } from '@mui/material'
+import { Avatar, Box, IconButton, Link, Stack, Typography } from '@mui/material'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import ReactHtmlParser from 'react-html-parser'
 
@@ -36,23 +36,25 @@ function CardPost({ images, body, title, username, createdAt, upvote, subreddit,
         </Box>
         <Box flex={1} ml={1} pl={1}>
           <Stack direction="row" alignItems="center">
-            <Avatar
-              sx={{
-                width: 20,
-                height: 20,
-                backgroundColor: 'inputBgOutfocused.main'
-                // border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
-              }}
-              alt={username}
-              src={generateUserImage(username)}
-            />
+            <Link href={`/r/${subreddit}`}>
+              <Avatar
+                sx={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: 'inputBgOutfocused.main'
+                  // border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+                }}
+                alt={username}
+                src={generateUserImage(username)}
+              />
+            </Link>
 
             <Typography variant="caption">
-              <a href="">
+              <Link href={`/r/${subreddit}`}>
                 <Typography fontWeight={600} color="black">
                   r/{subreddit}{' '}
                 </Typography>
-              </a>
+              </Link>
               • Posted by{' '}
               <a href="#" style={{ color: 'inherit' }}>
                 u/{username}

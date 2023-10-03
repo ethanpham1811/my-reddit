@@ -10,3 +10,7 @@ export enum SORT_METHOD {
   'hot' = 'upvote',
   'rising' = 'trending'
 }
+export enum SUBREDDIT_LIST_FOR {
+  'createPostSelect' = 'createPostSelect',
+  'other' = 'uotherpvote'
+}

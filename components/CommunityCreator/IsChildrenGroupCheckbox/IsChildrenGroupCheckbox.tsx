@@ -14,7 +14,7 @@ function IsChildrenGroupCheckbox<T extends FieldValues>({ name, control }: IsChi
       </FormLabel>
       <RdCheckbox<T>
         control={control}
-        name="isChildrenContent"
+        name={name}
         label={
           <Stack direction="row" alignItems="center">
             <RdChip clickable={false} size="small" label="Super SFW" color="success" variant="filled" />

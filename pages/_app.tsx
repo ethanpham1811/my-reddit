@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app'
 import { Toaster } from 'react-hot-toast'
 import { client } from '../apollo-client'
 
+import { TopNav } from '@/components'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
@@ -14,7 +15,7 @@ import { theme } from '../mui/theme'
 
 const clientSideEmotionCache = createEmotionCache()
 
-export const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_PROJECT_URL, process.env.NEXT_PUBLIC_SUPABASE_CLIENT_ANON_KEY)
+export const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_PROJECT_URL ?? '', process.env.NEXT_PUBLIC_SUPABASE_CLIENT_ANON_KEY ?? '')
 
 export interface TMyAppProps extends AppProps {
   emotionCache?: EmotionCache
@@ -30,6 +31,7 @@ export default function App({ Component, emotionCache = clientSideEmotionCache, 
         <CssBaseline />
         <ApolloProvider client={client}>
           <SessionProvider session={session}>
+            <TopNav />
             <Component {...pageProps} />
             <Toaster />
           </SessionProvider>

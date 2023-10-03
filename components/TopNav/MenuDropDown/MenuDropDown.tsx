@@ -4,11 +4,15 @@ import { HomeIcon } from '@/constants/icons'
 import { TMenuItem, TMenuProps } from '@/constants/types'
 import { MenuItem } from '@mui/material'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { v4 as rid } from 'uuid'
 
 function MenuDropDown({ session }: TMenuProps) {
-  const [page, setPage] = useState('home')
+  const {
+    query: { subreddit },
+    pathname
+  } = useRouter()
+  const page = pathname === '/' ? 'home' : subreddit
   const loading = false
   const list: TMenuItem[] = [
     {
@@ -43,8 +47,8 @@ function MenuDropDown({ session }: TMenuProps) {
     <RdDropdown
       loading={loading}
       renderSelectedOption={renderSelectedOption}
-      value={page}
-      onChange={(e) => setPage(e.target.value)}
+      value={page as string}
+      onChange={() => console.log('change')}
       flex={1}
       sx={{ minWidth: '200px' }}
     >

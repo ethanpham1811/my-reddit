@@ -37,8 +37,8 @@ function RdAutoComplete<T extends FieldValues>({
               },
               ...borderColorStyle
             }}
-            isOptionEqualToValue={(option, value) => option.topic === value.topic}
-            getOptionLabel={(option) => option.topic}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            getOptionLabel={(option) => option.name}
             options={options}
             onChange={onChange}
             value={value}
