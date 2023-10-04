@@ -1,0 +1,165 @@
+type Subreddit {
+  id: ID!
+  name: String!
+  topic_ids: [String]!
+  subType: String!
+  member: ID
+  created_at: DateTime!
+  coverUrl: String
+  description: String
+  headline: String
+  isChildrenContent: Boolean!
+  post: [Post] @materializer(query: "postUsingPost_subreddit_id_fkey")
+}
+# type TopResult {
+#   id: ID!
+#   title: String
+#   coverUrl: String
+#   created_at: DateTime
+#   description: String
+#   headline: String
+#   isChildrenContent: Boolean
+#   member: ID
+#   name: String
+#   subType: String
+#   totalUpvotes: Int
+#   groupBy: String
+# }
+
+"""
+The following queries are just a set of examples of how to access your schema.
+Feel free to modify them or aggregate more.
+"""
+type Query {
+  " Queries for type 'Subreddit' "
+  subreddit(id: ID!): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
+  subredditByName(name: String!): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
+  subredditList: [Subreddit] @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
+  subredditPaginatedList(first: Int, after: Int): [Subreddit]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "coverUrl", "created_at", "description", "headline", "id", "isChildrenContent", "member", "name", "subType" FROM "subreddit" ORDER BY "id" LIMIT $1 OFFSET $2
+      """
+      configuration: "postgresql_config"
+    )
+  subredditUsingPost_subreddit_id_fkey(subreddit_id: ID!): Subreddit
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "coverUrl", "created_at", "description", "headline", "id", "isChildrenContent", "member", "name", "subType" FROM "subreddit" WHERE "id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  # topSubreddits: [TopResult]
+  #   @dbquery(
+  #     type: "postgresql"
+  #     schema: "public"
+  #     query: """
+  #     SELECT
+  #       s.id,
+  #       null AS title, -- Placeholder for title
+  #       s."coverUrl",
+  #       s."created_at",
+  #       s."description",
+  #       s."headline",
+  #       s."isChildrenContent",
+  #       s."member",
+  #       s."name",
+  #       s."subType",
+  #       SUM(p."totalUpvotes") AS "totalUpvotes",
+  #       'popular' AS "groupBy"
+  #     FROM
+  #       "subreddit" s
+  #       LEFT JOIN "post" p ON s.id = p."subreddit_id"
+  #     GROUP BY
+  #       s.id
+  #     ORDER BY
+  #       "totalUpvotes" DESC
+  #     LIMIT 3
+  #     """
+  #   )
+
+  # topPosts: [TopResult]
+  #   @dbquery(
+  #     type: "postgresql"
+  #     schema: "public"
+  #     query: """
+  #     SELECT
+  #       p.id,
+  #       p.title,
+  #       null AS "coverUrl", -- Placeholder for coverUrl
+  #       p."created_at",
+  #       null AS "description", -- Placeholder for description
+  #       null AS "headline", -- Placeholder for headline
+  #       null AS "isChildrenContent", -- Placeholder for isChildrenContent
+  #       null AS "member", -- Placeholder for member
+  #       null AS "name", -- Placeholder for name
+  #       null AS "subType", -- Placeholder for subType
+  #       SUM(v."upvotes") AS "totalUpvotes",
+  #       'popular' AS "groupBy"
+  #     FROM
+  #       "post" p
+  #       LEFT JOIN "vote" v ON p.id = v."post_id"
+  #     GROUP BY
+  #       p.id
+  #     ORDER BY
+  #       "totalUpvotes" DESC
+  #     LIMIT 3
+  #     """
+  #   )
+
+  # topSubredditsAndPosts: [TopResult] @sequence(steps: [{ query: "topPosts" }, { query: "topSubreddits" }])
+}
+
+"""
+The following mutations are just a set of examples of how to access your schema.
+Feel free to modify them or aggregate more.
+"""
+type Mutation {
+  " Mutations for type 'Subreddit' "
+  deleteSubreddit(id: ID!): Subreddit
+    @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: DELETE, configuration: "postgresql_config")
+  insertSubreddit(
+    name: String!
+    subType: String!
+    topic_ids: [String]!
+    isChildrenContent: Boolean!
+    member: ID
+    coverUrl: String
+    description: String
+    headline: String
+  ): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: INSERT, configuration: "postgresql_config")
+  updateSubreddit(
+    id: ID!
+    coverUrl: String
+    description: String
+    headline: String
+    isChildrenContent: Boolean
+    member: ID
+    name: String
+    subType: String
+    topic_ids: [String]
+  ): Subreddit
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      UPDATE "subreddit" SET
+        "coverUrl" = COALESCE($2, "coverUrl"),
+        "created_at" = COALESCE($3, "created_at"),
+        "description" = COALESCE($4, "description"),
+        "headline" = COALESCE($5, "headline"),
+        "isChildrenContent" = COALESCE($6, "isChildrenContent"),
+        "member" = COALESCE($7, "member"),
+        "name" = COALESCE($8, "name"),
+        "subType" = COALESCE($9, "subType")
+      WHERE
+        "id" = $1
+      RETURNING *
+      """
+      configuration: "postgresql_config"
+    )
+}

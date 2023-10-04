@@ -1,5 +1,5 @@
 import { TSubredditPage } from '@/constants/types'
-import { GET_SUBREDDIT_BY_NAME } from '@/graphql/quries'
+import { GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
 
 function useSubredditByName(name: string | string[] | undefined): [TSubredditPage | null, boolean, ApolloError | undefined] {

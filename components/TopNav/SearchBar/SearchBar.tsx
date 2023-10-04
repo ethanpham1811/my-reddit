@@ -1,5 +1,11 @@
 import { Box, TextField, styled } from '@mui/material'
 
+import { RdAutoComplete } from '@/components'
+import { TSearchTerm, TSubreddit } from '@/constants/types'
+import useTop3PostsNSubreddit from '@/hooks/useTop3PostsNSubreddit'
+import SearchIcon from '@mui/icons-material/Search'
+import { useForm } from 'react-hook-form'
+
 const SearchField = styled(TextField)(({ theme }) => {
   return {
     '.MuiInputBase-root': {
@@ -23,23 +29,24 @@ const SearchField = styled(TextField)(({ theme }) => {
 })
 
 function SearchBar() {
-  // const [loading, setLoading] = useState(true)
-  // const {
-  //   reset,
-  //   handleSubmit,
-  //   watch,
-  //   control,
-  //   formState: { errors }
-  // } = useForm<TSearchTerm>()
+  const { queryList, loading, error } = useTop3PostsNSubreddit()
+  // const [loading, setLoading] = useState(false)
+  const {
+    reset,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors }
+  } = useForm<TSearchTerm>()
 
   /* mockup data */
-  // const options: TSubreddit[] = loading
-  //   ? []
-  //   : [
-  //       { name: 'Artificial Intelligent Arts', id: 12 },
-  //       { name: 'Programming languages', id: 12 },
-  //       { name: 'Social and family issues', id: 12 }
-  //     ]
+  const options: TSubreddit[] = loading
+    ? []
+    : [
+        { name: 'Artificial Intelligent Arts', id: 12 },
+        { name: 'Programming languages', id: 12 },
+        { name: 'Social and family issues', id: 12 }
+      ]
 
   // useEffect(() => {
   //   if (!loading) return
@@ -47,15 +54,15 @@ function SearchBar() {
   //   return () => clearTimeout(to)
   // }, [loading])
 
-  // const onSubmit = handleSubmit(async (formData) => {
-  //   // form submit logic
-  //   reset()
-  // })
+  const onSubmit = handleSubmit(async (formData) => {
+    // form submit logic
+    reset()
+  })
 
   return (
     <Box flex={1}>
-      {/* <form onSubmit={onSubmit}> */}
-      {/* <RdAutoComplete
+      <form onSubmit={onSubmit}>
+        <RdAutoComplete
           control={control}
           name="term"
           options={options}
@@ -64,8 +71,8 @@ function SearchBar() {
           placeholder="Search Reddit"
           id="top-search-auto"
           flex={1}
-        /> */}
-      {/* </form> */}
+        />
+      </form>
     </Box>
   )
 }

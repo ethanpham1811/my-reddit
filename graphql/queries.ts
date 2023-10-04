@@ -4,7 +4,7 @@ export const GET_SUBREDDIT_BY_TOPIC = gql`
   query MyQuery($topic: String!) {
     subredditListByTopic(topic: $topic) {
       id
-      topic
+      topic_ids
       created_at
     }
   }
@@ -21,7 +21,7 @@ export const GET_SUBREDDIT_BY_NAME = gql`
       member
       name
       subType
-      topics
+      topic_ids
       post {
         username
         title
@@ -52,9 +52,11 @@ export const GET_SUBREDDIT_LIST_FULL = gql`
   query {
     subredditList {
       id
-      topic
+      topic_ids
       name
+      subType
       created_at
+      isChildrenContent
     }
   }
 `
@@ -81,6 +83,14 @@ export const GET_POST_LIST = gql`
     }
   }
 `
+export const GET_TOPIC_LIST = gql`
+  query {
+    topicList {
+      name
+      id
+    }
+  }
+`
 export const GET_POST_LIST_BY_SUB_ID = gql`
   query MyQuery($id: ID!) {
     postUsingPost_subreddit_id_fkey(id: $id) {
@@ -102,5 +112,35 @@ export const GET_POST_LIST_BY_SUB_ID = gql`
         username
       }
     }
+  }
+`
+export const GET_TOP_3_POSTS_AND_SUBREDDITS = gql`
+  query {
+    topSubredditsAndPosts {
+      id
+      name
+      totalUpvotes
+      totalMembers
+      groupBy
+    }
+    # subredditSearch(id: $id) {
+    #   images
+    #   body
+    #   created_at
+    #   title
+    #   username
+    #   comment {
+    #     created_at
+    #     username
+    #     text
+    #   }
+    #   subreddit {
+    #     name
+    #   }
+    #   vote {
+    #     upvote
+    #     username
+    #   }
+    # }
   }
 `

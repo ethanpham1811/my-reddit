@@ -77,7 +77,7 @@ function CardFeedSorter({ sortOptions, setSortOptions }: TCardFeedSorterProps) {
           ))}
         <IconButton
           sx={{ ml: 'auto !important' }}
-          onClick={(e) => setSortOptions({ ...sortOptions, ordering: sortOptions.ordering === ORDERING.asc ? ORDERING.desc : ORDERING.asc })}
+          onClick={(e) => setSortOptions({ ...sortOptions, ordering: sortOptions.ordering === ORDERING.Desc ? ORDERING.Desc : ORDERING.Asc })}
         >
           <SwapVertOutlinedIcon sx={{ display: 'block' }} />
         </IconButton>

@@ -6,6 +6,7 @@ import CardPost from './Cards/CardPost/CardPost'
 import BottomNavigator from './CommunityCreator/BottomNavigator/BottomNavigator'
 import CommunityCreator from './CommunityCreator/CommunityCreator'
 import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/IsChildrenGroupCheckbox'
+import TopicDropdown from './CommunityCreator/TopicDropdown/TopicDropdown'
 import MainLayout from './Layouts/MainLayout'
 import NewFeeds from './NewFeeds/NewFeeds'
 import SubredditTopNav from './SubredditTopNav/SubredditTopNav'
@@ -26,6 +27,7 @@ import RdImageCarousel from './utilities/RdImageCarousel/RdImageCarousel'
 import RdImageList from './utilities/RdImageList/RdImageList'
 import RdImageUploader from './utilities/RdImageUploader/RdImageUploader'
 import RdInput from './utilities/RdInput/RdInput'
+import RdMultipleDropdown from './utilities/RdMultipleDropdown/RdMultipleDropdown'
 import RdNotiBubble from './utilities/RdNotiBubble/RdNotiBubble'
 import RdRadioGroup from './utilities/RdRadioGroup/RdRadioGroup'
 import RdSubredditAutoComplete from './utilities/RdSubredditAutoComplete/RdSubredditAutoComplete'
@@ -59,6 +61,7 @@ export {
   RdImageList,
   RdImageUploader,
   RdInput,
+  RdMultipleDropdown,
   RdNotiBubble,
   RdRadioGroup,
   RdSubredditAutoComplete,
@@ -67,5 +70,6 @@ export {
   RdToast,
   SearchBar,
   SubredditTopNav,
-  TopNav
+  TopNav,
+  TopicDropdown
 }

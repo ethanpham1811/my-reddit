@@ -45,7 +45,7 @@ export const theme: Theme = createTheme({
       main: '#F6F7F8' // Custom color value
     },
     inputBorder: {
-      main: '#EDEFF1' // Custom color value
+      main: '#cccecf' // Custom color value
     },
     inputText: {
       main: '#1c1c1c' // Custom color value

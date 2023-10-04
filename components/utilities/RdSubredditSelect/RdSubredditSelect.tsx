@@ -13,12 +13,12 @@ function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, 
   const { subredditList, loading, error } = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
 
   function renderSelectedOption(selectedValue: string) {
-    const seletedItem = subredditList && subredditList.find((item) => item.id == +selectedValue)
+    const selectedItem = subredditList && subredditList.find((item) => item.id == +selectedValue)
 
-    return seletedItem ? (
+    return selectedItem ? (
       <Box sx={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        <Image alt={`${seletedItem.name} image`} src={generateUserImage(seletedItem.name)} width={20} height={20} />
-        {seletedItem.name}
+        <Image alt={`${selectedItem.name} image`} src={generateUserImage(selectedItem.name)} width={20} height={20} />
+        {selectedItem.name}
       </Box>
     ) : (
       <Typography>Subreddit</Typography>

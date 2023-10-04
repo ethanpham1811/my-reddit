@@ -15,10 +15,10 @@ export const ADD_POST = gql`
 `
 
 export const ADD_SUBREDDIT = gql`
-  mutation AddSubreddit($name: String!, $topic: String!, $subType: String!, $isChildrenContent: Boolean!) {
-    insertSubreddit(name: $name, topic: $topic, subType: $subType, isChildrenContent: $isChildrenContent) {
+  mutation AddSubreddit($name: String!, $topic_ids: [String]!, $subType: String!, $isChildrenContent: Boolean!) {
+    insertSubreddit(name: $name, topic_ids: $topic_ids, subType: $subType, isChildrenContent: $isChildrenContent) {
       name
-      topic
+      topic_ids
       subType
       isChildrenContent
       created_at

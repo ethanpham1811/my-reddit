@@ -1,13 +1,12 @@
 import { DEFAULT_GROUP_TYPE } from '@/constants/enums'
 import { LockIcon, PersonIcon, RemoveRedEyeIcon } from '@/constants/icons'
-import { TCommuinityCreatorForm, TCommunityCreatorProps, TCommunityTypeOPtions } from '@/constants/types'
+import { TCommunityCreatorForm, TCommunityCreatorProps, TCommunityTypeOPtions } from '@/constants/types'
 import { ADD_SUBREDDIT } from '@/graphql/mutations'
 import { ApolloError, useMutation } from '@apollo/client'
 import { Box, Divider, Stack, Typography } from '@mui/material'
-import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { BottomNavigator, IsChildrenGroupCheckbox, RdInput, RdRadioGroup } from '..'
+import { BottomNavigator, IsChildrenGroupCheckbox, RdInput, RdRadioGroup, TopicDropdown } from '..'
 
 export const groupTypeOptions: TCommunityTypeOPtions[] = [
   {
@@ -60,7 +59,7 @@ export const groupTypeOptions: TCommunityTypeOPtions[] = [
 function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   const [addSubreddit] = useMutation(ADD_SUBREDDIT, {
     onCompleted: () => {
-      toast.success('Your post sucessfully added!')
+      toast.success('Your Subreddit sucessfully added!')
       setOpen(false)
     },
     onError: (error: ApolloError) => {
@@ -69,27 +68,19 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   })
 
   const {
-    reset,
     handleSubmit,
-    watch,
     control,
-    setValue,
     formState: { errors }
-  } = useForm<TCommuinityCreatorForm>()
-
-  /* set group type default value */
-  useEffect(() => {
-    setValue('type', DEFAULT_GROUP_TYPE)
-  }, [])
+  } = useForm<TCommunityCreatorForm>({ defaultValues: { subType: DEFAULT_GROUP_TYPE, isChildrenContent: false } })
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
-    const { name, topic, type, isChildrenContent } = formData
+    const { name, topic_ids, subType, isChildrenContent } = formData
     await addSubreddit({
       variables: {
         name,
-        topic,
-        type,
+        topic_ids,
+        subType,
         isChildrenContent
       }
     })
@@ -110,14 +101,14 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
             Community names including capitalization cannot be changed.
           </Typography>
           <Stack direction="row" gap={1} sx={{ mt: 2 }}>
-            <RdInput control={control} name="name" helper="21 Characters remaining" width="60%" bgcolor="white.main" />
-            <RdInput control={control} name="topic" placeholder="Topic" width="40%" bgcolor="white.main" />
+            <RdInput control={control} name="name" helper="21 Characters remaining" width="60%" bgcolor="white" />
+            <TopicDropdown control={control} name="topic_ids" />
           </Stack>
 
           {/* Community types  */}
-          <RdRadioGroup<TCommuinityCreatorForm>
+          <RdRadioGroup<TCommunityCreatorForm>
             options={groupTypeOptions}
-            name="type"
+            name="subType"
             control={control}
             label={
               <Typography variant="h5" sx={{ mt: 2 }}>
@@ -127,7 +118,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
           />
 
           {/* Community isChildrenGroup */}
-          <IsChildrenGroupCheckbox<TCommuinityCreatorForm> name="isChildrenContent" control={control} />
+          <IsChildrenGroupCheckbox<TCommunityCreatorForm> name="isChildrenContent" control={control} />
 
           {/* bottom button controller */}
           <BottomNavigator setOpen={setOpen} />

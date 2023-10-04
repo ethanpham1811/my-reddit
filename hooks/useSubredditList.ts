@@ -1,6 +1,6 @@
 import { SUBREDDIT_LIST_MODE } from '@/constants/enums'
 import { TUseSubredditListResponse } from '@/constants/types'
-import { GET_SUBREDDIT_LIST_FULL, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/quries'
+import { GET_SUBREDDIT_LIST_FULL, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
 import { useQuery } from '@apollo/client'
 
 function useSubredditList(mode: SUBREDDIT_LIST_MODE): TUseSubredditListResponse {

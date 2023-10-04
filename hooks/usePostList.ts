@@ -1,5 +1,5 @@
 import { TPost, TUsePostListResponse } from '@/constants/types'
-import { GET_POST_LIST } from '@/graphql/quries'
+import { GET_POST_LIST } from '@/graphql/queries'
 import { useQuery } from '@apollo/client'
 
 function usePostList(): TUsePostListResponse {

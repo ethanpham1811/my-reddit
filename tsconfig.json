@@ -9,6 +9,8 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
     "noEmit": true,
     // "composite": false,
     "esModuleInterop": true,
@@ -37,9 +39,13 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "constants/data.tss"  ],
+    ".next/types/**/*.ts",
+    "constants/data.tss"  
+  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "stepzen",
+    "public",
+    ".next"
   ]
 }

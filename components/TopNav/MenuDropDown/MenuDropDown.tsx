@@ -24,13 +24,13 @@ function MenuDropDown({ session, subredditListData }: TMenuDropdownProps) {
   ]
 
   function renderSelectedOption(selectedValue: string) {
-    const seletedItem = list.find((item) => item.name == selectedValue)
+    const selectedItem = list.find((item) => item.name == selectedValue)
     return (
       <>
-        {seletedItem ? (
+        {selectedItem ? (
           <>
-            {seletedItem.icon ?? <Image alt={`${seletedItem.name} image`} src={generateUserImage(seletedItem.name)} width={20} height={20} />}
-            {seletedItem.name || 'unknown'}
+            {selectedItem.icon ?? <Image alt={`${selectedItem.name} image`} src={generateUserImage(selectedItem.name)} width={20} height={20} />}
+            {selectedItem.name || 'unknown'}
           </>
         ) : (
           <div></div>

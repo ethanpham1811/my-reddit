@@ -19,6 +19,11 @@ export type TPost = {
   vote: TVote[]
 }
 
+export type TTopic = {
+  id: number
+  name: string
+}
+
 export type TSubreddit = {
   name: string
   id: number
@@ -142,11 +147,20 @@ export type TRdButtonProps = ButtonOwnProps &
   }
 export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children'> & {
   renderSelectedOption: (value: string) => ReactNode
-  value: string
   onChange: (event: SelectChangeEvent<string>, child: ReactNode) => void
+  value: string
   width?: string
   flex?: number
   loading: boolean
+  borderColor?: string
+}
+export type TRdMultipleDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'open'> & {
+  renderSelectedOption: (value: string[], setSelectedArray: Dispatch<SetStateAction<string[]>>) => ReactNode
+  onChange: (event: SelectChangeEvent<string[]>, child: ReactNode) => void
+  max?: number
+  width?: string
+  flex?: number
+  loading?: boolean
   borderColor?: string
 }
 export type TRdImageCarouselProps = {
@@ -208,11 +222,11 @@ export type TCardFeedSorterProps = {
 }
 
 /* ------------------------------------------Form Types------------------------------------------ */
-export type TCommuinityCreatorForm = {
+export type TCommunityCreatorForm = {
   name: string
-  type: string
+  subType: string
   isChildrenContent: boolean
-  topic: string
+  topic_ids: string[]
 }
 export type TCardCreatePostForm = Pick<TPost, 'title' | 'body' | 'username'> & {
   subreddit_id: number
@@ -222,6 +236,7 @@ export type TCardCreatePostForm = Pick<TPost, 'title' | 'body' | 'username'> & {
 
 /* ------------------------------------------Hook response Types------------------------------------------ */
 export type TUsePostListResponse = { postList: TPost[] | null; loading: boolean; error: ApolloError | undefined }
+export type TUseTopicListResponse = { topicList: TTopic[] | null; loading: boolean; error: ApolloError | undefined }
 export type TUseSubredditListResponse = { subredditList: TSubreddit[] | null; loading: boolean; error: ApolloError | undefined }
 
 /* ------------------------------------------Data structure Types------------------------------------------ */

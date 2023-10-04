@@ -1,4 +1,5 @@
 export const MAX_UPLOADS = 5
+export const MAX_TOPIC_CHOSEN = 2
 export const DEFAULT_GROUP_TYPE = 'public'
 export const DEFAULT_BUTTON_COLOR = 'orange'
 export enum ORDERING {
