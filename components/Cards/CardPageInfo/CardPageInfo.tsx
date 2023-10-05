@@ -1,5 +1,5 @@
 import homeBannerUrl from '@/public/home_banner.png'
-import redditRobotUrl from '@/public/reddit_robbot.png'
+import redditRobotUrl from '@/public/reddit_robot.png'
 import { CardActions, CardContent, CardHeader, CardMedia, Divider, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useState } from 'react'

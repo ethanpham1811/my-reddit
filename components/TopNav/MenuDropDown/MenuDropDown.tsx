@@ -7,17 +7,12 @@ import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
 import { Avatar, Box, List, ListItemText, ListSubheader, MenuItem, Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { createElement } from 'react'
 import { v4 as rid } from 'uuid'
 
-function MenuDropDown({ session, subredditListData }: TMenuDropdownProps) {
-  const { subredditList, loading, error } = subredditListData
-  const {
-    query: { subreddit },
-    pathname
-  } = useRouter()
-  const activePage: string = pathname === '/' ? 'Home' : (subreddit as string)
+function MenuDropDown({ session, subListData, subName, pathName }: TMenuDropdownProps) {
+  const { subredditList, loading, error } = subListData
+  const activePage: string = pathName === '/' ? 'Home' : (subName as string)
 
   const feedsOptions: TMenuItem[] = [
     {
@@ -55,7 +50,7 @@ function MenuDropDown({ session, subredditListData }: TMenuDropdownProps) {
               />
             )}
             <Box sx={{ display: { xs: 'none', lg: 'block' } }} display="block" textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
-              {`${subreddit ? 'r/' : ''}${selectedMenu.name}` || 'unknown'}
+              {`${subName ? 'r/' : ''}${selectedMenu.name}` || 'unknown'}
             </Box>
           </>
         ) : (

@@ -1,6 +1,7 @@
 import CardAds from './Cards/CardAds/CardAds'
 import CardCreatePost from './Cards/CardCreatePost/CardCreatePost'
 import CardFeedSorter from './Cards/CardFeedSorter/CardFeedSorter'
+import CardNotFound from './Cards/CardNotFound/CardNotFound'
 import CardPageInfo from './Cards/CardPageInfo/CardPageInfo'
 import CardPost from './Cards/CardPost/CardPost'
 import BottomNavigator from './CommunityCreator/BottomNavigator/BottomNavigator'
@@ -30,7 +31,6 @@ import RdInput from './utilities/RdInput/RdInput'
 import RdMultipleDropdown from './utilities/RdMultipleDropdown/RdMultipleDropdown'
 import RdNotiBubble from './utilities/RdNotiBubble/RdNotiBubble'
 import RdRadioGroup from './utilities/RdRadioGroup/RdRadioGroup'
-import RdSubredditAutoComplete from './utilities/RdSubredditAutoComplete/RdSubredditAutoComplete'
 import RdSubredditSelect from './utilities/RdSubredditSelect/RdSubredditSelect'
 import RdTextEditor from './utilities/RdTextEditor/RdTextEditor'
 import RdToast from './utilities/RdToast/RdToast'
@@ -40,6 +40,7 @@ export {
   CardAds,
   CardCreatePost,
   CardFeedSorter,
+  CardNotFound,
   CardPageInfo,
   CardPost,
   CommunityCreator,
@@ -64,7 +65,6 @@ export {
   RdMultipleDropdown,
   RdNotiBubble,
   RdRadioGroup,
-  RdSubredditAutoComplete,
   RdSubredditSelect,
   RdTextEditor,
   RdToast,

@@ -1,5 +1,6 @@
 import { ApolloError } from '@apollo/client'
 import {
+  AutocompleteProps,
   ButtonOwnProps,
   ButtonProps,
   ImageListOwnProps,
@@ -88,7 +89,9 @@ export type TIconBox = {
 }
 export type TMenuDropdownProps = {
   session: Session | null
-  subredditListData: TUseSubredditListResponse
+  subListData: TUseSubredditListResponse
+  subName: string | string[] | undefined
+  pathName: string
 }
 export type TProfileDropdownProps = {
   session: Session | null
@@ -134,18 +137,16 @@ export type TBottomNavigatorProps = {
 export type TCommunityCreatorProps = {
   setOpen: Dispatch<SetStateAction<boolean>>
 }
-export type TRdAutoCompleteProps<T extends FieldValues> = {
-  options: TSubreddit[]
-  startAdornment?: ReactNode
-  placeholder: string
-  id: string
-  loading: boolean
-  arrow?: boolean
-  name: FieldPath<T>
-  control: Control<T>
+
+export type TRdAutoCompleteProps<
+  OptionType,
+  Multiple extends boolean | undefined,
+  DisableClearable extends boolean | undefined,
+  FreeSolo extends boolean | undefined,
+  ChipCom extends React.ElementType<any> = 'div'
+> = AutocompleteProps<OptionType, Multiple, DisableClearable, FreeSolo, ChipCom> & {
   width?: string
   flex?: number
-  bgcolor?: string
 }
 export type TRdButtonProps = ButtonOwnProps &
   Pick<ButtonProps, 'type' | 'onClick'> & {

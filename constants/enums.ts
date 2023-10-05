@@ -19,3 +19,8 @@ export enum MAIN_MENU_GROUP {
   Feeds = 'Feeds',
   Communities = 'Your Communities'
 }
+export enum BORDER_TYPES {
+  Rounded = '4px',
+  Circular = '999px',
+  Square = 0
+}

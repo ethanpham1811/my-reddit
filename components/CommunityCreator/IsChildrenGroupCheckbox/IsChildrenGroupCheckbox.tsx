@@ -1,3 +1,4 @@
+import { BORDER_TYPES } from '@/constants/enums'
 import { IsChildrenGroupCheckboxProps } from '@/constants/types'
 import { FormControl, FormLabel, Stack, Typography } from '@mui/material'
 import { FieldValues } from 'react-hook-form'
@@ -17,7 +18,7 @@ function IsChildrenGroupCheckbox<T extends FieldValues>({ name, control }: IsChi
         name={name}
         label={
           <Stack direction="row" alignItems="center">
-            <RdChip clickable={false} size="small" label="Super SFW" color="success" variant="filled" />
+            <RdChip shape={BORDER_TYPES.Rounded} clickable={false} size="small" label="Super SFW" color="success" variant="filled" />
             &nbsp;
             <Typography variant="body1" fontWeight={600} component="span">
               18- year old community

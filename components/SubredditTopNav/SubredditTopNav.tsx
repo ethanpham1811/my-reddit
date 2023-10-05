@@ -1,7 +1,6 @@
 import { NotificationsIcon } from '@/constants/icons'
 import coverUrl from '@/public/1.jpg'
 import { AppBar, Avatar, Box, Container, IconButton, Stack, Typography, styled } from '@mui/material'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { RdButton } from '..'
 import { generateSeededHexColor, generateUserImage } from '../utilities'
@@ -22,7 +21,6 @@ type TSubredditTopNavProps = {
 }
 
 function SubredditTopNav({ name, headline }: TSubredditTopNavProps) {
-  const { data: session, status } = useSession()
   return (
     <Box flexGrow={1}>
       <SubredditNavBar>

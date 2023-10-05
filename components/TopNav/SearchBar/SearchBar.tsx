@@ -1,10 +1,11 @@
-import { Box, TextField, styled } from '@mui/material'
-
 import { RdAutoComplete } from '@/components'
-import { TSearchTerm, TSubreddit } from '@/constants/types'
-import useTop3PostsNSubreddit from '@/hooks/useTop3PostsNSubreddit'
-import SearchIcon from '@mui/icons-material/Search'
-import { useForm } from 'react-hook-form'
+import { TSubreddit } from '@/constants/types'
+import useTopSearchList from '@/hooks/useTopSearchList'
+import { AutocompleteRenderInputParams, Box, ListItem, TextField, Typography, styled } from '@mui/material'
+import { Session } from 'next-auth'
+import Link from 'next/link'
+import { HTMLAttributes, ReactNode, SyntheticEvent, useState } from 'react'
+import Input from './Input'
 
 const SearchField = styled(TextField)(({ theme }) => {
   return {
@@ -28,51 +29,70 @@ const SearchField = styled(TextField)(({ theme }) => {
   }
 })
 
-function SearchBar() {
-  const { queryList, loading, error } = useTop3PostsNSubreddit()
-  // const [loading, setLoading] = useState(false)
-  const {
-    reset,
-    handleSubmit,
-    watch,
-    control,
-    formState: { errors }
-  } = useForm<TSearchTerm>()
+type TSearchBarProps = {
+  session: Session | null
+  subName: string | string[] | undefined
+  pathName: string
+}
 
-  /* mockup data */
-  const options: TSubreddit[] = loading
-    ? []
-    : [
-        { name: 'Artificial Intelligent Arts', id: 12 },
-        { name: 'Programming languages', id: 12 },
-        { name: 'Social and family issues', id: 12 }
-      ]
+function SearchBar({ session, subName, pathName }: TSearchBarProps) {
+  const { queryList, loading, error, searchTerm, setSearchTerm } = useTopSearchList()
+  const [chip, setChip] = useState(true)
+  const [selectedOption, setSelectedOption] = useState<TSubreddit | null>(null)
+  const [isFocused, setIsFocused] = useState(false)
 
-  // useEffect(() => {
-  //   if (!loading) return
-  //   const to = setTimeout(() => setLoading(false), 2000)
-  //   return () => clearTimeout(to)
-  // }, [loading])
+  const getOptionLabel = (option: TSubreddit | string) => (typeof option === 'string' ? option : option.name)
 
-  const onSubmit = handleSubmit(async (formData) => {
-    // form submit logic
-    reset()
-  })
+  /* Autocomplete props */
+  const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TSubreddit): ReactNode => (
+    <Link href={`/r/${option.name}`}>
+      <ListItem sx={{ '&:hover': { bgcolor: 'inputBgOutfocused.main' } }}>
+        <Typography>{option.name}</Typography>
+      </ListItem>
+    </Link>
+  )
+
+  const renderInput = (params: AutocompleteRenderInputParams) => <Input params={params} chip={chip} subName={subName} onDeleteChip={onDeleteChip} />
+  const handleSearch = (event: SyntheticEvent<Element, Event>, value: string) => {
+    setSearchTerm(value)
+  }
+
+  const onDeleteChip = () => {
+    setChip(false)
+  }
+  const onAddChip = () => {
+    setIsFocused(false)
+    setChip(true)
+  }
 
   return (
     <Box flex={1}>
-      <form onSubmit={onSubmit}>
-        <RdAutoComplete
-          control={control}
-          name="term"
-          options={options}
-          loading={loading}
-          startAdornment={<SearchIcon />}
-          placeholder="Search Reddit"
-          id="top-search-auto"
-          flex={1}
-        />
-      </form>
+      <RdAutoComplete<TSubreddit, false, false, true, 'span'>
+        options={queryList}
+        selectOnFocus
+        disablePortal
+        // freeSolo
+        openOnFocus
+        handleHomeEndKeys
+        loading={loading}
+        // open={searchTerm !== '' && isFocused}
+        popupIcon={false}
+        onBlur={onAddChip}
+        onFocus={() => setIsFocused(true)}
+        onInputChange={handleSearch}
+        onChange={(e, val) => console.log(val)}
+        renderInput={renderInput}
+        renderOption={renderOption}
+        // value={selectedOption}
+        // isOptionEqualToValue={(option, value) => {
+        //   console.log(option, value)
+        //   return option.name === value.name
+        // }}
+        // getOptionLabel={getOptionLabel}
+        // noOptionsText={<div>Nothing found</div>}
+        id="top-search-auto"
+        flex={1}
+      />
     </Box>
   )
 }

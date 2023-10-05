@@ -5,6 +5,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined'
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined'
 import CloseIcon from '@mui/icons-material/Close'
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
 import HomeIcon from '@mui/icons-material/Home'
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -31,6 +32,7 @@ export {
   ArrowUpwardOutlinedIcon,
   CampaignOutlinedIcon,
   CloseIcon,
+  HighlightOffOutlinedIcon,
   HomeIcon,
   ImageOutlinedIcon,
   KeyboardArrowDownIcon,
