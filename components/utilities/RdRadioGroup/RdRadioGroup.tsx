@@ -18,12 +18,12 @@ const RdRadioGroup = <T extends FieldValues>({ options, name, control, label }: 
         control={control}
         render={({ field: { onChange, value } }) => (
           <RadioGroup onChange={onChange} value={value} aria-labelledby={`${name} radio group`} name={`${name}-radio-group`}>
-            {options.map((option: TRadioOption) => (
+            {options.map(({ value, label }: TRadioOption) => (
               <FormControlLabel
                 key={`option_${rid()}`}
-                value={option.value}
+                value={value}
                 control={<Radio sx={{ '&.Mui-checked': { color: 'unset' } }} />}
-                label={option.label}
+                label={label}
               />
             ))}
           </RadioGroup>

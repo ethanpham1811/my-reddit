@@ -3,15 +3,36 @@ import { TRdDropdownProps } from '@/constants/types'
 import { Box, Select } from '@mui/material'
 import { ReactNode } from 'react'
 
-function RdDropdown({ flex, width, loading, borderColor, onChange, value, children, sx, renderSelectedOption, ...rest }: TRdDropdownProps) {
+function RdDropdown({
+  sx,
+  flex,
+  width,
+  maxWidth,
+  minWidth,
+  borderColor,
+  value,
+  children,
+  mobileMode,
+  onChange,
+  renderSelectedOption,
+  ...rest
+}: TRdDropdownProps) {
   return (
-    <Box flex={flex} sx={{ width, ...sx }}>
+    <Box
+      flex={flex}
+      sx={{
+        width: { xs: mobileMode ? 'auto' : width, lg: width },
+        maxWidth: { xs: mobileMode ? 'auto' : maxWidth, lg: maxWidth },
+        minWidth: { xs: mobileMode ? 'auto' : minWidth, lg: minWidth },
+        ...sx
+      }}
+    >
       <Select
         value={value}
         onChange={onChange}
         displayEmpty
         IconComponent={(props): ReactNode => <KeyboardArrowDownIcon {...props} />}
-        renderValue={renderSelectedOption}
+        renderValue={(value) => renderSelectedOption(value, mobileMode)}
         sx={{
           flex: 1,
           display: 'flex',
@@ -21,10 +42,7 @@ function RdDropdown({ flex, width, loading, borderColor, onChange, value, childr
             gap: 1,
             textTransform: 'none',
             alignItems: 'center',
-            display: 'flex',
-            overflow: 'hidden', // Add overflow property
-            whiteSpace: 'nowrap', // Add white-space property
-            textOverflow: 'ellipsis'
+            display: 'flex'
           },
           fieldset: {
             borderColor: `${borderColor ?? 'white'}.main`

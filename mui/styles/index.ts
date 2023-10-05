@@ -14,12 +14,12 @@ const borderColorStyle: SxProps<Theme> = {
     }
   }
 }
-
 /* ---------------------------------------STYLED COMPONENTS --------------------------------------------- */
 const OnlineDotStyle = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
     width: 10,
     height: 10,
+    minWidth: 0,
     borderRadius: '50%',
     backgroundColor: theme.palette.green.main,
     color: theme.palette.green.main,

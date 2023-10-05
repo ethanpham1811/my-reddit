@@ -15,3 +15,7 @@ export enum SUBREDDIT_LIST_MODE {
   Simple = 'simple',
   Other = 'other'
 }
+export enum MAIN_MENU_GROUP {
+  Feeds = 'Feeds',
+  Communities = 'Your Communities'
+}

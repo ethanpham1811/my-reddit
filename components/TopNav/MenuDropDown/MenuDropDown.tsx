@@ -1,36 +1,62 @@
 import { RdDropdown } from '@/components'
-import { generateUserImage } from '@/components/utilities'
+import { RdSkeleton } from '@/components/Skeletons'
+import { generateSeededHexColor, generateUserImage } from '@/components/utilities'
+import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { HomeIcon } from '@/constants/icons'
 import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
-import { MenuItem, SelectChangeEvent } from '@mui/material'
+import { Avatar, Box, List, ListItemText, ListSubheader, MenuItem, Typography } from '@mui/material'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { createElement } from 'react'
 import { v4 as rid } from 'uuid'
 
 function MenuDropDown({ session, subredditListData }: TMenuDropdownProps) {
   const { subredditList, loading, error } = subredditListData
   const {
     query: { subreddit },
-    pathname,
-    push: navigate
+    pathname
   } = useRouter()
   const activePage: string = pathname === '/' ? 'Home' : (subreddit as string)
-  const list: TMenuItem[] = [
+
+  const feedsOptions: TMenuItem[] = [
     {
       name: 'Home',
-      icon: <HomeIcon />
-    },
-    ...(subredditList ?? [])
+      icon: HomeIcon,
+      group: MAIN_MENU_GROUP.Feeds
+    }
   ]
+  const communityOptions: TMenuItem[] | [] = subredditList
+    ? subredditList.map(({ name }): TMenuItem => {
+        return { name, group: MAIN_MENU_GROUP.Communities }
+      })
+    : []
 
-  function renderSelectedOption(selectedValue: string) {
-    const selectedItem = list.find((item) => item.name == selectedValue)
+  function renderSelectedOption() {
+    const compositeMenu = [...feedsOptions, ...communityOptions]
+    const selectedMenu = compositeMenu.find((option) => option.name == activePage)
     return (
       <>
-        {selectedItem ? (
+        {selectedMenu ? (
           <>
-            {selectedItem.icon ?? <Image alt={`${selectedItem.name} image`} src={generateUserImage(selectedItem.name)} width={20} height={20} />}
-            {selectedItem.name || 'unknown'}
+            {selectedMenu.icon ? (
+              createElement(selectedMenu.icon)
+            ) : (
+              <Avatar
+                variant="rounded"
+                sx={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: generateSeededHexColor(selectedMenu.name),
+                  border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+                }}
+                alt={`${selectedMenu.name} avatar`}
+                src={generateUserImage(selectedMenu.name)}
+              />
+            )}
+            <Box sx={{ display: { xs: 'none', lg: 'block' } }} display="block" textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
+              {`${subreddit ? 'r/' : ''}${selectedMenu.name}` || 'unknown'}
+            </Box>
           </>
         ) : (
           <div></div>
@@ -39,32 +65,56 @@ function MenuDropDown({ session, subredditListData }: TMenuDropdownProps) {
     )
   }
 
-  const onChange = (e: SelectChangeEvent<string>) => {
-    const name = e.target.value
-    navigate(name === 'Home' ? '/' : `/r/${name}`)
-  }
-
   return (
-    <RdDropdown
-      loading={loading}
-      renderSelectedOption={renderSelectedOption}
-      value={activePage}
-      onChange={onChange}
-      flex={1}
-      sx={{ minWidth: '200px' }}
-    >
-      {session && list.length > 0 ? (
-        list.map((item) => {
-          return (
-            <MenuItem value={item.name} key={`menu_${rid()}`}>
-              {item.icon ?? <Image alt={`${item.name} image`} src={generateUserImage(item.name)} width={20} height={20} />}
-              {item.name || 'unknown'}
+    <RdDropdown renderSelectedOption={renderSelectedOption} value={activePage} flex={1} width="20vw" maxWidth="250px" minWidth="50px" mobileMode>
+      <List>
+        <ListSubheader sx={{ bgcolor: 'background.paper' }}>
+          <Typography variant="subtitle1" sx={{ color: 'hintText.main' }}>
+            {MAIN_MENU_GROUP.Feeds.toUpperCase()}
+          </Typography>
+        </ListSubheader>
+        {feedsOptions.map(({ name, icon }) => (
+          <Link href="/" style={{ color: 'unset', textDecoration: 'none' }} key={`feeds_menu_${rid()}`}>
+            <MenuItem value={name}>
+              {icon && createElement(icon)}
+              <ListItemText primary={name} />
+            </MenuItem>
+          </Link>
+        ))}
+      </List>
+      <List>
+        <ListSubheader sx={{ bgcolor: 'background.paper' }}>
+          <Typography variant="subtitle1" sx={{ color: 'hintText.main' }}>
+            {MAIN_MENU_GROUP.Communities.toUpperCase()}
+          </Typography>
+        </ListSubheader>
+        {session && !loading ? (
+          communityOptions.length > 0 ? (
+            communityOptions.map(({ name }) => (
+              <Link href={`/r/${name}`} style={{ color: 'unset', textDecoration: 'none' }} key={`communities_menu_${rid()}`}>
+                <MenuItem value={name}>
+                  <Avatar variant="circular" sx={{ bgcolor: generateSeededHexColor(name), width: 20, height: 20 }}>
+                    <Image
+                      src={generateUserImage(name)}
+                      alt={`community ${name} avatar`}
+                      aria-label={`community ${name} avatar`}
+                      width={20}
+                      height={20}
+                    />
+                  </Avatar>
+                  <ListItemText primary={`r/${name}`} />
+                </MenuItem>
+              </Link>
+            ))
+          ) : (
+            <MenuItem>
+              <ListItemText primary="You didn't join any community"></ListItemText>
             </MenuItem>
           )
-        })
-      ) : (
-        <div></div>
-      )}
+        ) : (
+          <RdSkeleton />
+        )}
+      </List>
     </RdDropdown>
   )
 }

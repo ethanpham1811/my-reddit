@@ -8,6 +8,17 @@ export const notificationHandler = () => {
 }
 
 export const generateUserImage = (seed: string | null | undefined): string => `https://robohash.org/${seed ?? 'seed'}.png`
+export const generateSeededHexColor = (seed: string | null | undefined): string => {
+  let sum = 0
+  for (const letter of seed || 'seed') sum += letter.charCodeAt(0)
+
+  const colorNumber = Math.floor(Math.abs(Math.sin(sum) * 16777215))
+  let colorString = colorNumber.toString(16)
+  // pad any colors shorter than 6 characters with leading 0s
+  while (colorString.length < 6) colorString = '0' + colorString
+
+  return '#' + colorString
+}
 
 export const getTotalUpvote = (votes: TVote[]): number => votes.reduce((prev, cur): number => (cur.upvote ? prev + 1 : prev - 1), 0)
 

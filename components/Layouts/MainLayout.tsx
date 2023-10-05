@@ -6,6 +6,11 @@ import { TopNav } from '..'
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const subredditListData = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
+
+  // const childrenWithProps = Children.map(children, (child) => {
+  //   if (!isValidElement<{ subredditListData: any }>(child)) return child
+  //   return cloneElement(child, { subredditListData })
+  // })
   return (
     <>
       <TopNav subredditListData={subredditListData} />

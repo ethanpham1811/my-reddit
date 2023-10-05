@@ -61,17 +61,17 @@ function CardFeedSorter({ sortOptions, setSortOptions }: TCardFeedSorterProps) {
         aria-label="new feeds sorter"
       >
         {data.length > 0 &&
-          data.map((item) => (
+          data.map(({ disabled, methodValue, description, icon, label }) => (
             <ToggleButton
-              disabled={item.disabled}
+              disabled={disabled}
               key={`sorter_${rid()}`}
-              value={item.methodValue}
-              aria-label={item.description}
+              value={methodValue}
+              aria-label={description}
               sx={{ borderRadius: '9999px !important', paddingRight: 1.5, gap: 0.5 }}
             >
-              {item.icon}
+              {icon}
               <Typography fontWeight={700} textTransform="capitalize">
-                {item.label}
+                {label}
               </Typography>
             </ToggleButton>
           ))}

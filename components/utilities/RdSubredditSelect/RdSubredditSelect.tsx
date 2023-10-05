@@ -43,11 +43,11 @@ function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, 
             borderColor="primary"
           >
             {subredditList && subredditList.length > 0 ? (
-              subredditList.map((item) => {
+              subredditList.map(({ id, name }) => {
                 return (
-                  <MenuItem value={item.id} key={`menu_${rid()}`}>
-                    <Image alt={`${item.name} image`} src={generateUserImage(item.name)} width={20} height={20} />
-                    {item.name || 'unknown'}
+                  <MenuItem value={id} key={`menu_${rid()}`}>
+                    <Image alt={`${name} image`} src={generateUserImage(name)} width={20} height={20} />
+                    {name || 'unknown'}
                   </MenuItem>
                 )
               })

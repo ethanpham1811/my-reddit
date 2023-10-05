@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
 
+/* --------------------------- SUBREDDIT ------------------------------ */
 export const GET_SUBREDDIT_BY_TOPIC = gql`
   query MyQuery($topic: String!) {
     subredditListByTopic(topic: $topic) {
@@ -60,6 +61,8 @@ export const GET_SUBREDDIT_LIST_FULL = gql`
     }
   }
 `
+
+/* ----------------------------- POST -------------------------------- */
 export const GET_POST_LIST = gql`
   query {
     postList {
@@ -80,14 +83,6 @@ export const GET_POST_LIST = gql`
         upvote
         username
       }
-    }
-  }
-`
-export const GET_TOPIC_LIST = gql`
-  query {
-    topicList {
-      name
-      id
     }
   }
 `
@@ -114,6 +109,17 @@ export const GET_POST_LIST_BY_SUB_ID = gql`
     }
   }
 `
+/* ----------------------------- TOPIC -------------------------------- */
+export const GET_TOPIC_LIST = gql`
+  query {
+    topicList {
+      name
+      id
+    }
+  }
+`
+
+/* ------------------------------- MIX --------------------------------- */
 export const GET_TOP_3_POSTS_AND_SUBREDDITS = gql`
   query {
     topSubredditsAndPosts {

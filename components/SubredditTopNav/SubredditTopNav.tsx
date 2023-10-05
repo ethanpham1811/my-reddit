@@ -4,7 +4,7 @@ import { AppBar, Avatar, Box, Container, IconButton, Stack, Typography, styled }
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { RdButton } from '..'
-import { generateUserImage } from '../utilities'
+import { generateSeededHexColor, generateUserImage } from '../utilities'
 
 const SubredditNavBar = styled(AppBar)(({ theme }) => {
   return {
@@ -33,7 +33,7 @@ function SubredditTopNav({ name, headline }: TSubredditTopNavProps) {
               sx={{
                 width: 100,
                 height: 100,
-                backgroundColor: 'orange.main',
+                backgroundColor: generateSeededHexColor(name),
                 border: (theme): string => `5px solid ${theme.palette.white.main}`,
                 position: 'relative',
                 top: '-2.5rem',

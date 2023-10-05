@@ -54,6 +54,7 @@ function RdAutoComplete<T extends FieldValues>({
                 }}
                 sx={{
                   '.MuiInputBase-root': {
+                    flexWrap: 'nowrap',
                     borderRadius: '1.5rem',
                     width: '100%',
                     pr: '1rem !important',

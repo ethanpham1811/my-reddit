@@ -21,7 +21,7 @@ function TopNav({ subredditListData }: TTopNavProps) {
   return (
     <Box flexGrow={1}>
       <NavBar>
-        <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
+        <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} sx={{ justifyContent: 'flex-start' }}>
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <Logo />
             {/* dropdown */}

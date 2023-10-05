@@ -1,13 +1,15 @@
 import { RdDropdown } from '@/components'
-import { generateUserImage } from '@/components/utilities'
+import { generateSeededHexColor, generateUserImage } from '@/components/utilities'
 import { TProfileDropdownProps } from '@/constants/types'
-import { MenuItem } from '@mui/material'
+import { OnlineDotStyle } from '@/mui/styles'
+import { Avatar, Box, MenuItem } from '@mui/material'
 import Image from 'next/image'
 import { useState } from 'react'
 import { v4 as rid } from 'uuid'
 
 function ProfileDropdownProp({ session }: TProfileDropdownProps) {
   const [page, setPage] = useState('home')
+  const user = session?.user
   const loading = false
 
   const list = [
@@ -21,13 +23,30 @@ function ProfileDropdownProp({ session }: TProfileDropdownProps) {
     }
   ]
 
-  function renderSelectedOption(_: string) {
+  function renderSelectedOption(_: string, mobileMode: boolean = false) {
     return (
       <>
-        {session ? (
+        {user ? (
           <>
-            <Image alt="profile image" src={session.user?.image || generateUserImage(session.user?.name)} width={20} height={20} />
-            {session.user?.name || 'unknown'}
+            <OnlineDotStyle
+              overlap="circular"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              variant="dot"
+              sx={{ '.MuiBadge-badge': { width: mobileMode ? 7 : 10, height: mobileMode ? 7 : 10 } }}
+            >
+              <Avatar
+                variant="rounded"
+                sx={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: generateSeededHexColor(user.name),
+                  border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+                }}
+                alt={`${user.name} avatar`}
+                src={generateUserImage(user.name)}
+              />
+            </OnlineDotStyle>
+            <Box sx={{ display: { xs: 'none', lg: 'block' } }}>{user.name}</Box>
           </>
         ) : (
           <div></div>
@@ -39,18 +58,20 @@ function ProfileDropdownProp({ session }: TProfileDropdownProps) {
   return (
     <RdDropdown
       loading={loading}
-      renderSelectedOption={renderSelectedOption}
       value={page}
-      onChange={(e) => setPage(e.target.value)}
       flex={1}
-      sx={{ minWidth: '200px' }}
+      mobileMode
+      minWidth="200px"
+      borderColor="inputBorder"
+      onChange={(e) => setPage(e.target.value)}
+      renderSelectedOption={renderSelectedOption}
     >
       {session && list.length > 0 ? (
-        list.map((item) => {
+        list.map(({ name, value }) => {
           return (
-            <MenuItem value={item.value} key={`menu_${rid()}`}>
-              <Image alt={`${item.name} image`} src={generateUserImage(item.name)} width={20} height={20} />
-              {item.name || 'unknown'}
+            <MenuItem value={value} key={`menu_${rid()}`}>
+              <Image alt={`${name} image`} src={generateUserImage(name)} width={20} height={20} />
+              {name || 'unknown'}
             </MenuItem>
           )
         })

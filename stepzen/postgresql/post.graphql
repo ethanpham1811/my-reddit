@@ -5,7 +5,7 @@ type Post {
   id: ID!
   images: String
   subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
-  subreddit_id: ID
+  subreddit_id: ID!
   title: String
   username: String
   vote: [Vote] @materializer(query: "voteUsingVote_post_id_fkey")

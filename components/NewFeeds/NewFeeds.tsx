@@ -16,8 +16,7 @@ type TNewFeedsProps = {
 function NewFeeds({ sortOptions: { method, ordering }, postList, loading, error }: TNewFeedsProps) {
   const cardPostList: TCardPostProps[] | [] = postList
     ? orderBy(
-        postList.map((post: TPost): TCardPostProps => {
-          const { title, body, images, comment, created_at, username, subreddit, vote } = post
+        postList.map(({ title, body, images, comment, created_at, username, subreddit, vote }: TPost): TCardPostProps => {
           return {
             title,
             body,
@@ -37,8 +36,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, error 
   return (
     <>
       {cardPostList.length > 0
-        ? cardPostList.map((post) => {
-            const { title, body, images, comment, createdAt, username, subreddit, upvote } = post
+        ? cardPostList.map(({ title, body, images, comment, createdAt, username, subreddit, upvote }) => {
             return (
               <CardPost
                 key={`post_${rid()}`}

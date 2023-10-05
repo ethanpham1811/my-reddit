@@ -27,11 +27,11 @@ function RdImageCarousel({ width, height, imgList }: TRdImageCarouselProps) {
       cycleNavigation={false}
       autoPlay={false}
     >
-      {imgList.map((item, i) => (
+      {imgList.map(({ imgSrc, caption }, i) => (
         <Paper key={`image_${rid()}`} sx={{ boxShadow: 'none' }}>
           <Image
-            src={item.imgSrc}
-            alt={item.caption || 'user image'}
+            src={imgSrc}
+            alt={caption || 'user image'}
             sizes="(min-width: 768px) 600px, 900px"
             style={{ width, height, objectFit: 'contain' }}
             width={300}

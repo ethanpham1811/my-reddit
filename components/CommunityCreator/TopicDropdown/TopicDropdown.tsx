@@ -1,8 +1,9 @@
 import { RdMultipleDropdown } from '@/components'
+import { RdSkeleton } from '@/components/Skeletons'
 import { MAX_TOPIC_CHOSEN } from '@/constants/enums'
 import { TTopic } from '@/constants/types'
 import useTopicList from '@/hooks/useTopicList'
-import { Box, Chip, FormControl, MenuItem, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, Chip, FormControl, MenuItem, Typography } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
 import { v4 as rid } from 'uuid'
@@ -44,20 +45,20 @@ function TopicDropdown<T extends FieldValues>({ name, control }: TTopicDropdown<
       <>
         {mappedArray.length !== 0 ? (
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-            {mappedArray.map((item) => (
+            {mappedArray.map(({ id, name }) => (
               <Chip
                 clickable={false}
                 size="small"
                 sx={{ bgcolor: 'blue.main', color: 'white.main', '.MuiChip-label': { position: 'relative' } }}
-                key={item.id}
+                key={id}
                 label={
                   <Typography variant="body2" fontWeight={400} sx={{ position: 'relative', top: '-1px' }}>
-                    {item.name}
+                    {name}
                   </Typography>
                 }
                 /* stop Select open event -> trigger onDelete of Chip on clicking Chip */
                 onMouseDown={(e) => e.stopPropagation()}
-                onDelete={() => setSelectedArray(selectedArray?.filter((option): boolean => Number(option.split('_')[0]) !== item.id))}
+                onDelete={() => setSelectedArray(selectedArray?.filter((option): boolean => Number(option.split('_')[0]) !== id))}
               />
             ))}
           </Box>
@@ -82,19 +83,15 @@ function TopicDropdown<T extends FieldValues>({ name, control }: TTopicDropdown<
             sx={{ minWidth: '200px' }}
           >
             {topicList ? (
-              topicList.map((item: TTopic) => {
+              topicList.map(({ id, name }: TTopic) => {
                 return (
-                  <MenuItem value={`${item.id}_${item.name}`} key={`menu_${rid()}`}>
-                    {item.name || 'unknown'}
+                  <MenuItem value={`${id}_${name}`} key={`menu_${rid()}`}>
+                    {name || 'unknown'}
                   </MenuItem>
                 )
               })
             ) : (
-              <Stack px={1} gap={1}>
-                <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="100%" height="25px" />
-                <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="100%" height="25px" />
-                <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="100%" height="25px" />
-              </Stack>
+              <RdSkeleton />
             )}
           </RdMultipleDropdown>
         )}

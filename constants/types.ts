@@ -1,9 +1,20 @@
 import { ApolloError } from '@apollo/client'
-import { ButtonOwnProps, ButtonProps, ImageListOwnProps, PaletteOptions, SelectChangeEvent, SelectProps, SxProps, Theme } from '@mui/material'
+import {
+  ButtonOwnProps,
+  ButtonProps,
+  ImageListOwnProps,
+  PaletteOptions,
+  SelectChangeEvent,
+  SelectProps,
+  SvgIconTypeMap,
+  SxProps,
+  Theme
+} from '@mui/material'
+import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from 'next-auth'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues } from 'react-hook-form'
-import { ORDERING, SORT_METHOD } from './enums'
+import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD } from './enums'
 
 /* ------------------------------------------Common Types------------------------------------------ */
 export type TPost = {
@@ -84,7 +95,8 @@ export type TProfileDropdownProps = {
 }
 export type TMenuItem = Omit<TSubreddit, 'id'> & {
   name: string
-  icon?: ReactNode
+  group: MAIN_MENU_GROUP
+  icon?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }
 export type TRadioOption = {
   value: string
@@ -146,12 +158,15 @@ export type TRdButtonProps = ButtonOwnProps &
     width?: string
   }
 export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children'> & {
-  renderSelectedOption: (value: string) => ReactNode
-  onChange: (event: SelectChangeEvent<string>, child: ReactNode) => void
+  renderSelectedOption: (value: string, mobileMode?: boolean) => ReactNode
+  onChange?: (event: SelectChangeEvent<string>, child: ReactNode) => void
   value: string
   width?: string
+  maxWidth?: string
+  minWidth?: string
   flex?: number
-  loading: boolean
+  loading?: boolean
+  mobileMode?: boolean
   borderColor?: string
 }
 export type TRdMultipleDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'open'> & {

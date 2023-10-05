@@ -39,19 +39,19 @@ function IconBox() {
   return (
     <Stack direction="row">
       {notiData.length > 0 &&
-        notiData.map((item) => (
+        notiData.map(({ name, notification, icon }) => (
           <IconButton
-            key={`noti_bubble_${item.name}`}
+            key={`noti_bubble_${name}`}
             size="large"
             sx={{ color: 'icon.main', p: 1.25, fontSize: '2rem' }}
             aria-label={notificationsLabel(100)}
           >
-            {item.notification ? (
-              <RdNotiBubble content={item.notification.content} max={item.notification.max}>
-                {item.icon}
+            {notification ? (
+              <RdNotiBubble content={notification.content} max={notification.max}>
+                {icon}
               </RdNotiBubble>
             ) : (
-              item.icon
+              icon
             )}
           </IconButton>
         ))}
