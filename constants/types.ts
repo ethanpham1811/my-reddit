@@ -19,16 +19,17 @@ import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD } from './enums'
 
 /* ------------------------------------------Common Types------------------------------------------ */
 export type TPost = {
+  id: number
   title: string
   body: string
   username: string
-  comment: TComment
   created_at: Date
   subreddit: {
     name: string
   }
-  images: string
-  vote: TVote[]
+  images?: string[]
+  comment?: TComment
+  vote?: TVote[]
 }
 
 export type TTopic = {
@@ -47,6 +48,8 @@ export type TSubredditPage = TSubreddit & {
   headline?: string
   description?: string
   member: number
+  isChildrenContent: boolean
+  subType: string
 }
 
 export type TComment = {
@@ -62,10 +65,6 @@ export type TUser = {
   image?: string
   id: string
   // image: string
-}
-export type TImage = {
-  imgSrc: string
-  caption?: string
 }
 export type TSearchTerm = {
   term: string
@@ -114,7 +113,7 @@ export type TSortOptions = {
 export type TCardPostProps = Pick<TPost, 'title' | 'body' | 'comment' | 'username'> & {
   createdAt: Date
   subreddit: string
-  images: TImage[]
+  images: string[] | undefined
   upvote: number
 }
 export type IsChildrenGroupCheckboxProps<T extends FieldValues> = {
@@ -182,7 +181,7 @@ export type TRdMultipleDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 
 export type TRdImageCarouselProps = {
   width: string
   height: string
-  imgList: TImage[]
+  imgList: string[]
 }
 export type TRdImageListProps = Omit<ImageListOwnProps, 'children'> & {
   images: FileList
@@ -259,4 +258,13 @@ export type TUseSubredditListResponse = { subredditList: TSubreddit[] | null; lo
 export type TCommunityTypeOPtions = {
   label: ReactNode
   value: string
+}
+
+/* --------------------------------------------- Query Types---------------------------------------------- */
+export type TTopTrending = TPost & {
+  groupBy: string
+  totalUpvotes: number
+}
+export type TPopularSub = TSubredditPage & {
+  groupBy: string
 }

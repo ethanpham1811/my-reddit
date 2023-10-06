@@ -1,10 +1,10 @@
-import { TSubreddit } from '@/constants/types'
-import { GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
+import { TPopularSub, TTopTrending } from '@/constants/types'
+import { GET_TOP_TRENDING_POSTS_AND_SUBS } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 type TUseTopSearchListResponse = {
-  queryList: TSubreddit[]
+  topTrendingData: (TTopTrending | TPopularSub)[]
   loading: boolean
   error: ApolloError | undefined
   searchTerm: string
@@ -13,15 +13,18 @@ type TUseTopSearchListResponse = {
 
 function useTopSearchList(): TUseTopSearchListResponse {
   const [searchTerm, setSearchTerm] = useState('')
-  const { data, loading, error, refetch } = useQuery(GET_SUBREDDIT_LIST_SHORT)
-  const queryList: TSubreddit[] = data?.subredditList ?? []
+  const { data, loading, error, refetch } = useQuery(GET_TOP_TRENDING_POSTS_AND_SUBS, { variables: { quantity: 3 } })
+  const topTrending: TTopTrending[] = data?.topTrending ?? []
+  const topSubreddits: TPopularSub[] = data?.topSubreddits ?? []
+
+  const topTrendingData = [...topTrending, ...topSubreddits]
 
   useEffect(() => {
     refetch()
     //TODO: abort controller
   }, [searchTerm, refetch])
 
-  return { queryList, loading, error, searchTerm, setSearchTerm }
+  return { topTrendingData, loading, error, searchTerm, setSearchTerm }
 }
 
 export default useTopSearchList

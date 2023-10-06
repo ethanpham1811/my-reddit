@@ -4,7 +4,7 @@ import { Skeleton, Stack } from '@mui/material'
 import orderBy from 'lodash/orderBy'
 import { v4 as rid } from 'uuid'
 import { CardPost } from '..'
-import { getTotalUpvote, parseImages } from '../utilities'
+import { getTotalUpvote } from '../utilities'
 
 type TNewFeedsProps = {
   sortOptions: TSortOptions
@@ -24,8 +24,8 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, error 
             username,
             createdAt: new Date(created_at),
             subreddit: subreddit.name,
-            images: parseImages(images),
-            upvote: getTotalUpvote(vote)
+            images,
+            upvote: vote ? getTotalUpvote(vote) : 0
           }
         }),
         method,

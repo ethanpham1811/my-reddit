@@ -10,7 +10,6 @@ import { v4 as rid } from 'uuid'
 function ProfileDropdownProp({ session }: TProfileDropdownProps) {
   const [page, setPage] = useState('home')
   const user = session?.user
-  const loading = false
 
   const list = [
     {
@@ -57,7 +56,6 @@ function ProfileDropdownProp({ session }: TProfileDropdownProps) {
 
   return (
     <RdDropdown
-      loading={loading}
       value={page}
       flex={1}
       mobileMode

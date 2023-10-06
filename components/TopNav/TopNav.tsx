@@ -1,6 +1,7 @@
 import { TUseSubredditListResponse } from '@/constants/types'
 import { AppBar, Box, Stack, styled } from '@mui/material'
 import { Session } from 'next-auth'
+import { NextRouter } from 'next/router'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
 
 const NavBar = styled(AppBar)(({ theme }) => {
@@ -14,11 +15,15 @@ const NavBar = styled(AppBar)(({ theme }) => {
 type TTopNavProps = {
   subListData: TUseSubredditListResponse
   session: Session | null
-  subName: string | string[] | undefined
-  pathName: string
+  router: NextRouter
 }
 
-function TopNav({ subListData, session, subName, pathName }: TTopNavProps) {
+function TopNav({ subListData, session, router }: TTopNavProps) {
+  const {
+    query: { subreddit: subName },
+    pathname: pathName,
+    push: navigate
+  } = router
   return (
     <Box flexGrow={1}>
       <NavBar>
@@ -29,7 +34,7 @@ function TopNav({ subListData, session, subName, pathName }: TTopNavProps) {
             <MenuDropDown session={session} subName={subName} pathName={pathName} subListData={subListData} />
           </Stack>
           {/* search */}
-          <SearchBar session={session} subName={subName} pathName={pathName} />
+          <SearchBar session={session} subName={subName} pathName={pathName} navigate={navigate} />
           {/* Icons */}
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <IconBox />

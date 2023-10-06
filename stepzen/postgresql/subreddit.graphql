@@ -3,7 +3,7 @@ type Subreddit {
   name: String!
   topic_ids: [String]!
   subType: String!
-  member: ID
+  member: Int
   created_at: DateTime!
   coverUrl: String
   description: String
@@ -11,20 +11,6 @@ type Subreddit {
   isChildrenContent: Boolean!
   post: [Post] @materializer(query: "postUsingPost_subreddit_id_fkey")
 }
-# type TopResult {
-#   id: ID!
-#   title: String
-#   coverUrl: String
-#   created_at: DateTime
-#   description: String
-#   headline: String
-#   isChildrenContent: Boolean
-#   member: ID
-#   name: String
-#   subType: String
-#   totalUpvotes: Int
-#   groupBy: String
-# }
 
 """
 The following queries are just a set of examples of how to access your schema.
@@ -53,67 +39,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  # topSubreddits: [TopResult]
-  #   @dbquery(
-  #     type: "postgresql"
-  #     schema: "public"
-  #     query: """
-  #     SELECT
-  #       s.id,
-  #       null AS title, -- Placeholder for title
-  #       s."coverUrl",
-  #       s."created_at",
-  #       s."description",
-  #       s."headline",
-  #       s."isChildrenContent",
-  #       s."member",
-  #       s."name",
-  #       s."subType",
-  #       SUM(p."totalUpvotes") AS "totalUpvotes",
-  #       'popular' AS "groupBy"
-  #     FROM
-  #       "subreddit" s
-  #       LEFT JOIN "post" p ON s.id = p."subreddit_id"
-  #     GROUP BY
-  #       s.id
-  #     ORDER BY
-  #       "totalUpvotes" DESC
-  #     LIMIT 3
-  #     """
-  #   )
-
-  # topPosts: [TopResult]
-  #   @dbquery(
-  #     type: "postgresql"
-  #     schema: "public"
-  #     query: """
-  #     SELECT
-  #       p.id,
-  #       p.title,
-  #       null AS "coverUrl", -- Placeholder for coverUrl
-  #       p."created_at",
-  #       null AS "description", -- Placeholder for description
-  #       null AS "headline", -- Placeholder for headline
-  #       null AS "isChildrenContent", -- Placeholder for isChildrenContent
-  #       null AS "member", -- Placeholder for member
-  #       null AS "name", -- Placeholder for name
-  #       null AS "subType", -- Placeholder for subType
-  #       SUM(v."upvotes") AS "totalUpvotes",
-  #       'popular' AS "groupBy"
-  #     FROM
-  #       "post" p
-  #       LEFT JOIN "vote" v ON p.id = v."post_id"
-  #     GROUP BY
-  #       p.id
-  #     ORDER BY
-  #       "totalUpvotes" DESC
-  #     LIMIT 3
-  #     """
-  #   )
-
-  # topSubredditsAndPosts: [TopResult] @sequence(steps: [{ query: "topPosts" }, { query: "topSubreddits" }])
 }
-
 """
 The following mutations are just a set of examples of how to access your schema.
 Feel free to modify them or aggregate more.
@@ -127,7 +53,7 @@ type Mutation {
     subType: String!
     topic_ids: [String]!
     isChildrenContent: Boolean!
-    member: ID
+    member: Int
     coverUrl: String
     description: String
     headline: String
@@ -138,7 +64,7 @@ type Mutation {
     description: String
     headline: String
     isChildrenContent: Boolean
-    member: ID
+    member: Int
     name: String
     subType: String
     topic_ids: [String]

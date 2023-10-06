@@ -1,4 +1,4 @@
-import { TImage, TVote } from '@/constants/types'
+import { TPopularSub, TTopTrending, TVote } from '@/constants/types'
 import { supabase } from '@/pages/_app'
 import { ApolloError } from '@apollo/client'
 import toast from 'react-hot-toast'
@@ -22,12 +22,6 @@ export const generateSeededHexColor = (seed: string | null | undefined): string 
 
 export const getTotalUpvote = (votes: TVote[]): number => votes.reduce((prev, cur): number => (cur.upvote ? prev + 1 : prev - 1), 0)
 
-export const parseImages = (imgString: string): TImage[] => {
-  const a = [{ name: 'khoi' }]
-
-  return JSON.parse(JSON.stringify(a)) as TImage[]
-}
-
 export const notificationsLabel = (count: number) => {
   if (count === 0) {
     return 'no notifications'
@@ -49,4 +43,13 @@ export const uploadFiles = async (files: FileList): Promise<string[]> => {
     // error && toast this
   }
   return filePaths
+}
+
+/*----------------------------------------- Type checker----------------------------------------- */
+
+export function isTopTrending(data: TTopTrending | TPopularSub): data is TTopTrending {
+  return data['groupBy'] === 'Top trending post'
+}
+export function isPopularSub(data: TTopTrending | TPopularSub): data is TPopularSub {
+  return data['groupBy'] === 'Popular communities'
 }

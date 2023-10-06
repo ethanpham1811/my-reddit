@@ -1,24 +1,17 @@
 import { RdCard, RdImageCarousel } from '@/components'
 import { generateUserImage } from '@/components/utilities'
 import { ArrowDownwardOutlinedIcon, ArrowUpwardOutlinedIcon } from '@/constants/icons'
-import { TCardPostProps, TImage } from '@/constants/types'
+import { TCardPostProps } from '@/constants/types'
 import { Avatar, Box, IconButton, Stack, Typography } from '@mui/material'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import Link from 'next/link'
 import ReactHtmlParser from 'react-html-parser'
 
 function CardPost({ images, body, title, username, createdAt, upvote, subreddit, comment }: TCardPostProps) {
-  const imgList: TImage[] = [
-    {
-      imgSrc:
-        process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL +
-        'post_images/Realtime%20Chat%20Application%20using%20PHP%20with%20MySQL%20&%20JavaScript%20Ajax.jpg',
-      caption: 'Scenery 1'
-    },
-    {
-      imgSrc: process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + 'post_images/wallpaperflare.com_wallpaper.jpg',
-      caption: 'Scenery 2'
-    }
+  const imgList: string[] = [
+    process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL +
+      'post_images/Realtime%20Chat%20Application%20using%20PHP%20with%20MySQL%20&%20JavaScript%20Ajax.jpg',
+    process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + 'post_images/wallpaperflare.com_wallpaper.jpg'
   ]
 
   return (

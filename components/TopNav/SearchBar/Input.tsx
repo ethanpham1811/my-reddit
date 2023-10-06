@@ -13,7 +13,7 @@ type TInputProps = {
 }
 
 /* Autocomplete input display */
-function Input({ params, chip, subName, onDeleteChip }: TInputProps) {
+function SearchBarInput({ params, chip, subName, onDeleteChip }: TInputProps) {
   const startAdornment = () => (
     <Stack direction="row" alignItems="center">
       <SearchIcon />
@@ -43,38 +43,38 @@ function Input({ params, chip, subName, onDeleteChip }: TInputProps) {
   return (
     <TextField
       {...params}
-      // InputProps={{
-      //   ...params.InputProps,
-      //   startAdornment: startAdornment(),
-      //   // endAdornment:  <>{!loading ? <CircularProgress color="inherit" size={20} /> : null}</>,
-      //   placeholder: 'Search Reddit'
-      // }}
-      // sx={{
-      //   '.MuiInputBase-root': {
-      //     flexWrap: 'nowrap',
-      //     borderRadius: '1.5rem',
-      //     width: '100%',
-      //     height: '40px',
-      //     pr: '1rem !important',
-      //     p: '0.2rem !important',
-      //     pl: 3,
-      //     bgcolor: 'inputBgOutfocused.main',
-      //     '.MuiStack-root > .MuiSvgIcon-root': {
-      //       mx: 1
-      //     },
-      //     '&.Mui-focused, &:hover': {
-      //       bgcolor: 'white.main'
-      //     }
-      //   },
-      //   'input.MuiAutocomplete-input': {
-      //     p: '0 !important'
-      //   },
-      //   '[aria-expanded=true]': {
-      //     '~ fieldset': { borderBottom: 'none' }
-      //   }
-      // }}
+      InputProps={{
+        ...params.InputProps,
+        startAdornment: startAdornment(),
+        // endAdornment:  <>{!loading ? <CircularProgress color="inherit" size={20} /> : null}</>,
+        placeholder: 'Search Reddit'
+      }}
+      sx={{
+        '.MuiInputBase-root': {
+          flexWrap: 'nowrap',
+          borderRadius: '1.5rem',
+          width: '100%',
+          height: '40px',
+          pr: '1rem !important',
+          p: '0.2rem !important',
+          pl: 3,
+          bgcolor: 'inputBgOutfocused.main',
+          '.MuiStack-root > .MuiSvgIcon-root': {
+            mx: 1
+          },
+          '&.Mui-focused, &:hover': {
+            bgcolor: 'white.main'
+          }
+        },
+        'input.MuiAutocomplete-input': {
+          p: '0 !important'
+        },
+        '[aria-expanded=true]': {
+          '~ fieldset': { borderBottom: 'none' }
+        }
+      }}
     />
   )
 }
 
-export default Input
+export default SearchBarInput

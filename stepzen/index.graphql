@@ -1,7 +1,7 @@
 schema
   @sdl(
     files: [
-      "postgresql/index.graphql"
+      "postgresql/mix.graphql"
       "postgresql/comment.graphql"
       "postgresql/post.graphql"
       "postgresql/subreddit.graphql"

@@ -66,10 +66,11 @@ export const GET_SUBREDDIT_LIST_FULL = gql`
 export const GET_POST_LIST = gql`
   query {
     postList {
-      images
-      body
-      created_at
+      id
       title
+      body
+      images
+      created_at
       username
       comment {
         created_at
@@ -89,6 +90,7 @@ export const GET_POST_LIST = gql`
 export const GET_POST_LIST_BY_SUB_ID = gql`
   query MyQuery($id: ID!) {
     postUsingPost_subreddit_id_fkey(id: $id) {
+      id
       images
       body
       created_at
@@ -120,33 +122,23 @@ export const GET_TOPIC_LIST = gql`
 `
 
 /* ------------------------------- MIX --------------------------------- */
-export const GET_TOP_3_POSTS_AND_SUBREDDITS = gql`
-  query {
-    topSubredditsAndPosts {
+export const GET_TOP_TRENDING_POSTS_AND_SUBS = gql`
+  query MyQuery($quantity: Int!) {
+    topTrending(quantity: $quantity) {
       id
-      name
+      title
+      body
+      created_at
       totalUpvotes
-      totalMembers
       groupBy
     }
-    # subredditSearch(id: $id) {
-    #   images
-    #   body
-    #   created_at
-    #   title
-    #   username
-    #   comment {
-    #     created_at
-    #     username
-    #     text
-    #   }
-    #   subreddit {
-    #     name
-    #   }
-    #   vote {
-    #     upvote
-    #     username
-    #   }
-    # }
+    topSubreddits(quantity: $quantity) {
+      id
+      name
+      headline
+      member
+      isChildrenContent
+      groupBy
+    }
   }
 `

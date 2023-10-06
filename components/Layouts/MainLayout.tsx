@@ -8,10 +8,7 @@ import { TopNav } from '..'
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession()
-  const {
-    query: { subreddit: subName },
-    pathname
-  } = useRouter()
+  const router = useRouter()
   const subListData = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
 
   // const childrenWithProps = Children.map(children, (child) => {
@@ -20,7 +17,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   // })
   return (
     <>
-      <TopNav subListData={subListData} session={session} subName={subName} pathName={pathname} />
+      <TopNav subListData={subListData} session={session} router={router} />
       <main>{children}</main>
       <Toaster />
     </>
