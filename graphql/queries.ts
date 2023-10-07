@@ -130,6 +130,9 @@ export const GET_TOP_TRENDING_POSTS_AND_SUBS = gql`
       body
       created_at
       totalUpvotes
+      subreddit {
+        name
+      }
       groupBy
     }
     topSubreddits(quantity: $quantity) {

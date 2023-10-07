@@ -4,6 +4,8 @@ type TopTrending {
   body: String!
   groupBy: String
   totalUpvotes: Int
+  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
+  subreddit_id: ID!
   created_at: Date
 }
 type PopularSub {
@@ -26,6 +28,7 @@ type Query {
         p."title",
         p."body",
         p."created_at",
+        p."subreddit_id",
         "totalUpvotes",
         'Top trending post' AS "groupBy"
       FROM "post" "p"

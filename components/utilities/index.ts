@@ -7,19 +7,6 @@ export const notificationHandler = () => {
   return { onCompleted: () => toast.success('sucessful!'), onError: (error: ApolloError) => toast.error(error.message) }
 }
 
-export const generateUserImage = (seed: string | null | undefined): string => `https://robohash.org/${seed ?? 'seed'}.png`
-export const generateSeededHexColor = (seed: string | null | undefined): string => {
-  let sum = 0
-  for (const letter of seed || 'seed') sum += letter.charCodeAt(0)
-
-  const colorNumber = Math.floor(Math.abs(Math.sin(sum) * 16777215))
-  let colorString = colorNumber.toString(16)
-  // pad any colors shorter than 6 characters with leading 0s
-  while (colorString.length < 6) colorString = '0' + colorString
-
-  return '#' + colorString
-}
-
 export const getTotalUpvote = (votes: TVote[]): number => votes.reduce((prev, cur): number => (cur.upvote ? prev + 1 : prev - 1), 0)
 
 export const notificationsLabel = (count: number) => {
@@ -45,8 +32,37 @@ export const uploadFiles = async (files: FileList): Promise<string[]> => {
   return filePaths
 }
 
-/*----------------------------------------- Type checker----------------------------------------- */
+/*------------------------------------------ Generators ----------------------------------------- */
+export const generateUserImage = (seed: string | null | undefined): string => `https://robohash.org/${seed ?? 'seed'}.png`
+export const generateSeededHexColor = (seed: string | null | undefined): string => {
+  let sum = 0
+  for (const letter of seed || 'seed') sum += letter.charCodeAt(0)
 
+  const colorNumber = Math.floor(Math.abs(Math.sin(sum) * 16777215))
+  let colorString = colorNumber.toString(16)
+  // pad any colors shorter than 6 characters with leading 0s
+  while (colorString.length < 6) colorString = '0' + colorString
+
+  return '#' + colorString
+}
+
+/*------------------------------------------- Formats ------------------------------------------- */
+export function formatNumber(number: number): string {
+  // million format => '5.9M'
+  if (number >= 1000000) {
+    return new Intl.NumberFormat('en-US', { style: 'decimal', maximumFractionDigits: 1 }).format(number / 1000000) + 'M'
+  }
+  // thousand format => '22.3k'
+  else if (number >= 1000) {
+    return new Intl.NumberFormat('en-US', { style: 'decimal', maximumFractionDigits: 1 }).format(number / 1000) + 'k'
+  }
+  // normal format => '16.2'
+  else {
+    return new Intl.NumberFormat('en-US').format(number)
+  }
+}
+
+/*----------------------------------------- Type checker----------------------------------------- */
 export function isTopTrending(data: TTopTrending | TPopularSub): data is TTopTrending {
   return data['groupBy'] === 'Top trending post'
 }

@@ -23,7 +23,7 @@ type TSubredditTopNavProps = {
 function SubredditTopNav({ name, headline }: TSubredditTopNavProps) {
   return (
     <Box flexGrow={1}>
-      <SubredditNavBar>
+      <SubredditNavBar sx={{ pb: 2 }}>
         <Image src={coverUrl} style={{ width: '100%', height: '30vh', objectFit: 'cover' }} alt="subreddit cover" aria-label="subreddit cover" />
         <Container maxWidth="md" sx={{ pt: 2 }}>
           <Stack direction="row" justifyContent="flex-start">
