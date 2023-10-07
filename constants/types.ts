@@ -18,6 +18,21 @@ import { Control, FieldPath, FieldValues } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD } from './enums'
 
 /* ------------------------------------------Common Types------------------------------------------ */
+
+export type TUser = {
+  id: number
+  username: string
+  fullName: string
+  followers: number
+}
+export type TUserDetail = TUser & {
+  created_at: Date
+  email?: string
+  dob?: Date
+  coverUrl?: string
+  photoUrl?: string
+  post?: TPost
+}
 export type TPost = {
   id: number
   title: string
@@ -31,18 +46,15 @@ export type TPost = {
   comment?: TComment
   vote?: TVote[]
 }
-
 export type TTopic = {
   id: number
   name: string
 }
-
 export type TSubreddit = {
   name: string
   id: number
 }
-
-export type TSubredditPage = TSubreddit & {
+export type TSubredditDetail = TSubreddit & {
   topics: string[]
   coverUrl?: string
   headline?: string
@@ -51,7 +63,6 @@ export type TSubredditPage = TSubreddit & {
   isChildrenContent: boolean
   subType: string
 }
-
 export type TComment = {
   created_at: Date
   username: string
@@ -59,12 +70,6 @@ export type TComment = {
 }
 export type TVote = {
   upvote: boolean
-}
-export type TUser = {
-  name: string
-  image?: string
-  id: string
-  // image: string
 }
 export type TSearchTerm = {
   term: string
@@ -261,10 +266,14 @@ export type TCommunityTypeOPtions = {
 }
 
 /* --------------------------------------------- Query Types---------------------------------------------- */
-export type TTopTrending = TPost & {
+export type TQueriedTrending = TPost & {
   groupBy: string
   totalUpvotes: number
 }
-export type TPopularSub = TSubredditPage & {
+export type TQueriedSub = TSubredditDetail & {
   groupBy: string
 }
+export type TQueriedUser = TUser & {
+  groupBy: string
+}
+export type TAutocompleteOptions = TQueriedTrending | TQueriedSub | TQueriedUser

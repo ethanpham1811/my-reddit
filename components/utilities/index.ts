@@ -1,4 +1,4 @@
-import { TPopularSub, TTopTrending, TVote } from '@/constants/types'
+import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TVote } from '@/constants/types'
 import { supabase } from '@/pages/_app'
 import { ApolloError } from '@apollo/client'
 import toast from 'react-hot-toast'
@@ -63,9 +63,22 @@ export function formatNumber(number: number): string {
 }
 
 /*----------------------------------------- Type checker----------------------------------------- */
-export function isTopTrending(data: TTopTrending | TPopularSub): data is TTopTrending {
-  return data['groupBy'] === 'Top trending post'
+export function isQueriedTrending(data: TAutocompleteOptions): data is TQueriedTrending {
+  return data['groupBy'] === 'Top trending'
 }
-export function isPopularSub(data: TTopTrending | TPopularSub): data is TPopularSub {
-  return data['groupBy'] === 'Popular communities'
+export function isQueriedSub(data: TAutocompleteOptions): data is TQueriedSub {
+  return data['groupBy'] === 'Communities'
+}
+export function isQueriedUser(data: TAutocompleteOptions): data is TQueriedUser {
+  return data['groupBy'] === 'People'
+}
+
+/*--------------------------------------------- Misc -------------------------------------------- */
+export function generateAutoCompleteUrl(option: TAutocompleteOptions): string {
+  let url = null
+  if (isQueriedTrending(option)) url = `/p/${option.id}`
+  if (isQueriedSub(option)) url = `/r/${option.name}`
+  if (isQueriedUser(option)) url = `/u/${option.username}`
+
+  return url || '/'
 }

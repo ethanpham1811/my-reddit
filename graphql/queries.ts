@@ -122,9 +122,9 @@ export const GET_TOPIC_LIST = gql`
 `
 
 /* ------------------------------- MIX --------------------------------- */
-export const GET_TOP_TRENDING_POSTS_AND_SUBS = gql`
+export const GET_TOP_TRENDING_POSTS = gql`
   query MyQuery($quantity: Int!) {
-    topTrending(quantity: $quantity) {
+    queriedTrending(quantity: $quantity) {
       id
       title
       body
@@ -135,12 +135,23 @@ export const GET_TOP_TRENDING_POSTS_AND_SUBS = gql`
       }
       groupBy
     }
-    topSubreddits(quantity: $quantity) {
+  }
+`
+export const GET_QUERIED_SUBS_USERS = gql`
+  query MyQuery($quantity: Int!, $term: String!) {
+    queriedSubs(quantity: $quantity, term: $term) {
       id
       name
       headline
       member
       isChildrenContent
+      groupBy
+    }
+    queriedUsers(quantity: $quantity, term: $term) {
+      id
+      username
+      fullName
+      followers
       groupBy
     }
   }

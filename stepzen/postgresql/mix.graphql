@@ -1,16 +1,15 @@
-type TopTrending {
+type QueriedTrending {
   id: ID!
   title: String!
   body: String!
   groupBy: String
   totalUpvotes: Int
-  subreddit: Subreddit
-    @materializer(query: "subredditUsingPost_subreddit_id_fkey")
+  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
   subreddit_id: ID!
   created_at: Date
 }
 
-type PopularSub {
+type QueriedSub {
   id: ID!
   name: String!
   headline: String
@@ -19,8 +18,16 @@ type PopularSub {
   groupBy: String
 }
 
+type QueriedUser {
+  id: ID!
+  username: String!
+  fullName: String
+  followers: Int
+  groupBy: String
+}
+
 type Query {
-  topTrending(quantity: Int!): [TopTrending]
+  queriedTrending(quantity: Int!): [QueriedTrending]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -32,7 +39,7 @@ type Query {
         p."created_at",
         p."subreddit_id",
         "totalUpvotes",
-        'Top trending post' AS "groupBy"
+        'Top trending' AS "groupBy"
       FROM "post" "p"
       JOIN (
         SELECT
@@ -47,7 +54,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  topSubreddits(quantity: Int!): [PopularSub]
+  queriedSubs(quantity: Int!, term: String!): [QueriedSub]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -58,9 +65,28 @@ type Query {
         s."headline",
         s."member",
         s."isChildrenContent",
-        'Popular communities' AS "groupBy"
+        'Communities' AS "groupBy"
       FROM "subreddit" s
+      WHERE s."name" LIKE '%' || $2 || '%' OR s."headline" LIKE '%' || $2 || '%'
       ORDER BY s."member" DESC
+      LIMIT $1
+      """
+      configuration: "postgresql_config"
+    )
+  queriedUsers(quantity: Int!, term: String!): [QueriedUser]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT
+        u."id",
+        u."username",
+        u."fullName",
+        u."followers",
+        'People' AS "groupBy"
+      FROM "user" u
+      WHERE u."username" LIKE '%' || $2 || '%' OR u."fullName" LIKE '%' || $2 || '%'
+      ORDER BY u."username" DESC
       LIMIT $1
       """
       configuration: "postgresql_config"

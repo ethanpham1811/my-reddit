@@ -1,6 +1,13 @@
-import { formatNumber, generateSeededHexColor, generateUserImage, isTopTrending } from '@/components/utilities'
+import {
+  formatNumber,
+  generateAutoCompleteUrl,
+  generateSeededHexColor,
+  generateUserImage,
+  isQueriedSub,
+  isQueriedTrending
+} from '@/components/utilities'
 import { OutboundOutlinedIcon } from '@/constants/icons'
-import { TPopularSub, TTopTrending } from '@/constants/types'
+import { TAutocompleteOptions } from '@/constants/types'
 import { AutocompleteRenderGroupParams, Avatar, Box, Divider, ListItem, ListSubheader, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -20,10 +27,10 @@ export const renderGroup = (params: AutocompleteRenderGroupParams) => {
   )
 }
 
-export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TTopTrending | TPopularSub): ReactNode => {
-  const isPost = isTopTrending(option)
-  const label = isPost ? option.title : option.name
-  const url = isPost ? `/p/${option.id}` : `/r/${option.name}`
+export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TAutocompleteOptions): ReactNode => {
+  const isPost = isQueriedTrending(option)
+  const isSub = isQueriedSub(option)
+  const url = generateAutoCompleteUrl(option)
 
   return (
     // use Link only for prefetch functionality, disable navigation on click
@@ -39,18 +46,18 @@ export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TTopT
           </Box>
           <Stack flex={1}>
             <Typography color="black" fontSize="1.1rem">
-              {label}
+              {option.title}
             </Typography>
             <Typography variant="subtitle1" sx={{ color: 'hintText.main' }}>
-              {label}
+              {option.title}
             </Typography>
             <Typography variant="body2" sx={{ color: 'blue.main' }}>
               r/{option.subreddit?.name}
             </Typography>
           </Stack>
           <Box>
-            <Box borderRadius="0.3rem" bgcolor={generateSeededHexColor(label)}>
-              <Image alt="post image" src={generateUserImage(label)} style={{ objectFit: 'cover' }} width={100} height={70} />
+            <Box borderRadius="0.3rem" bgcolor={generateSeededHexColor(option.title)}>
+              <Image alt="post image" src={generateUserImage(option.title)} style={{ objectFit: 'cover' }} width={100} height={70} />
             </Box>
           </Box>
           <Divider />
@@ -63,16 +70,17 @@ export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TTopT
               sx={{
                 width: 20,
                 height: 20,
-                backgroundColor: generateSeededHexColor(label)
+                backgroundColor: generateSeededHexColor(isSub ? option.name : option.username)
               }}
-              alt={label}
-              src={generateUserImage(label)}
+              alt={isSub ? option.name : option.username}
+              src={generateUserImage(isSub ? option.name : option.username)}
             />
           </Box>
           <Stack>
-            <Typography>r/{label}</Typography>
+            <Typography>r/{isSub ? option.name : option.username}</Typography>
             <Typography variant="caption" sx={{ color: 'hintText.main' }}>
-              Community • {formatNumber(option.member)} members
+              {isSub && `Community • ${formatNumber(option.member)} members`}
+              {!isSub && `User • ${formatNumber(option.followers)} followers`}
             </Typography>
           </Stack>
         </ListItem>
@@ -81,6 +89,6 @@ export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TTopT
   )
 }
 
-// export const getOptionLabel = (option: TTopTrending | TPopularSub | string): string => {
-//   return typeof option === 'string' ? option : isTopTrending(option) ? option.title : option.name
+// export const getOptionLabel = (option: TQueriedTrending | TPopularSub | string): string => {
+//   return typeof option === 'string' ? option : isQueriedTrending(option) ? option.title : option.name
 // }

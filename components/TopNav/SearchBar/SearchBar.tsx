@@ -1,7 +1,7 @@
 import { RdAutoComplete } from '@/components'
-import { isTopTrending } from '@/components/utilities'
-import { TPopularSub, TTopTrending } from '@/constants/types'
-import useTopSearchList from '@/hooks/useTopSearchList'
+import { generateAutoCompleteUrl } from '@/components/utilities'
+import { TAutocompleteOptions } from '@/constants/types'
+import useTopSearchListByTerm from '@/hooks/useTopSearchListByTerm'
 import { AutocompleteRenderInputParams, Box } from '@mui/material'
 import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
@@ -17,7 +17,8 @@ type TSearchBarProps = {
 }
 
 function SearchBar({ session, subName, pathName, navigate }: TSearchBarProps) {
-  const { topTrendingData, loading, error, searchTerm, setSearchTerm } = useTopSearchList()
+  // const { topTrendingData, loading, error, searchTerm, setSearchTerm } = useTopSearchListDefault()
+  const { searchByTermData, loading, error, searchTerm, setSearchTerm } = useTopSearchListByTerm()
   const [chip, setChip] = useState(true)
   const [isFocused, setIsFocused] = useState(false)
 
@@ -29,11 +30,11 @@ function SearchBar({ session, subName, pathName, navigate }: TSearchBarProps) {
 
   const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
 
-  const onChange = (_: SyntheticEvent<Element, Event>, option: string | TTopTrending | TPopularSub | null) => {
+  const onChange = (_: SyntheticEvent<Element, Event>, option: string | TAutocompleteOptions | null) => {
+    if (!option || typeof option === 'string') return
     /* navigate to corresponding page */
-    const url = !option || typeof option === 'string' ? null : isTopTrending(option) ? `/p/${option.id}` : `/r/${option.name}`
+    const url = generateAutoCompleteUrl(option)
     url && navigate(url)
-    setSearchTerm('')
   }
   const onDeleteChip = () => setChip(false)
   const onBlur = () => {
@@ -43,8 +44,8 @@ function SearchBar({ session, subName, pathName, navigate }: TSearchBarProps) {
 
   return (
     <Box flex={1}>
-      <RdAutoComplete<TTopTrending | TPopularSub, false, false, true, 'span'>
-        options={topTrendingData}
+      <RdAutoComplete<TAutocompleteOptions, false, false, true, 'span'>
+        options={searchByTermData}
         disablePortal
         freeSolo
         selectOnFocus
@@ -67,7 +68,7 @@ function SearchBar({ session, subName, pathName, navigate }: TSearchBarProps) {
         // isOptionEqualToValue={undefined}
         noOptionsText={<div>Nothing found</div>}
         getOptionLabel={() => ''} // prevent displaying selected option value
-        filterOptions={() => topTrendingData} // filtering disabled
+        filterOptions={() => searchByTermData} // filtering disabled
         id="top-search-auto"
         flex={1}
       />
