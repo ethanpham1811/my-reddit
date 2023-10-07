@@ -1,7 +1,7 @@
 import { RdAutoComplete } from '@/components'
-import { generateAutoCompleteUrl } from '@/components/utilities'
+import { generateAutoCompleteUrl, isNotFound } from '@/components/utilities'
 import { TAutocompleteOptions } from '@/constants/types'
-import useTopSearchListByTerm from '@/hooks/useTopSearchListByTerm'
+import useTopSearchQueriedList from '@/hooks/useTopSearchQueriedList'
 import { AutocompleteRenderInputParams, Box } from '@mui/material'
 import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
@@ -11,30 +11,35 @@ import SearchBarInput from './renderedComponents/SearchBarInput'
 
 type TSearchBarProps = {
   session: Session | null
-  subName: string | string[] | undefined
+  subOrUserId: string | string[] | undefined
   pathName: string
   navigate: NextRouter['push']
 }
 
-function SearchBar({ session, subName, pathName, navigate }: TSearchBarProps) {
+function SearchBar({ session, subOrUserId, pathName, navigate }: TSearchBarProps) {
   // const { topTrendingData, loading, error, searchTerm, setSearchTerm } = useTopSearchListDefault()
-  const { searchByTermData, loading, error, searchTerm, setSearchTerm } = useTopSearchListByTerm()
+  const { queriedDataList, loading, error, searchTerm, setSearchTerm } = useTopSearchQueriedList()
   const [chip, setChip] = useState(true)
   const [isFocused, setIsFocused] = useState(false)
 
   /* Autocomplete props */
 
   const renderInput = (params: AutocompleteRenderInputParams) => (
-    <SearchBarInput params={params} chip={chip} subName={subName} onDeleteChip={onDeleteChip} />
+    <SearchBarInput params={params} chip={chip} name={subOrUserId} onDeleteChip={onDeleteChip} />
   )
 
   const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
 
   const onChange = (_: SyntheticEvent<Element, Event>, option: string | TAutocompleteOptions | null) => {
-    if (!option || typeof option === 'string') return
-    /* navigate to corresponding page */
-    const url = generateAutoCompleteUrl(option)
-    url && navigate(url)
+    if (!option) return
+    if (typeof option === 'string') {
+      /* navigate to search page */
+      navigate(`/search?q=${option}`)
+    } else {
+      /* navigate to corresponding page */
+      const url = !isNotFound(option) ? generateAutoCompleteUrl(option) : null
+      url && navigate(url)
+    }
   }
   const onDeleteChip = () => setChip(false)
   const onBlur = () => {
@@ -45,7 +50,7 @@ function SearchBar({ session, subName, pathName, navigate }: TSearchBarProps) {
   return (
     <Box flex={1}>
       <RdAutoComplete<TAutocompleteOptions, false, false, true, 'span'>
-        options={searchByTermData}
+        options={queriedDataList}
         disablePortal
         freeSolo
         selectOnFocus
@@ -68,7 +73,7 @@ function SearchBar({ session, subName, pathName, navigate }: TSearchBarProps) {
         // isOptionEqualToValue={undefined}
         noOptionsText={<div>Nothing found</div>}
         getOptionLabel={() => ''} // prevent displaying selected option value
-        filterOptions={() => searchByTermData} // filtering disabled
+        filterOptions={() => queriedDataList} // filtering disabled
         id="top-search-auto"
         flex={1}
       />

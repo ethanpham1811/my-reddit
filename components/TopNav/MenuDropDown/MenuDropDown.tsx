@@ -10,9 +10,9 @@ import Link from 'next/link'
 import { createElement } from 'react'
 import { v4 as rid } from 'uuid'
 
-function MenuDropDown({ session, subListData, subName, pathName }: TMenuDropdownProps) {
+function MenuDropDown({ session, subListData, subOrUserId, pathName }: TMenuDropdownProps) {
   const { subredditList, loading, error } = subListData
-  const activePage: string = pathName === '/' ? 'Home' : (subName as string)
+  const activePage: string = pathName === '/' ? 'Home' : (subOrUserId as string)
 
   const feedsOptions: TMenuItem[] = [
     {
@@ -50,7 +50,7 @@ function MenuDropDown({ session, subListData, subName, pathName }: TMenuDropdown
               />
             )}
             <Box sx={{ display: { xs: 'none', lg: 'block' } }} display="block" textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
-              {`${subName ? 'r/' : ''}${selectedMenu.name}` || 'unknown'}
+              {`${subOrUserId ? 'r/' : ''}${selectedMenu.name}` || 'unknown'}
             </Box>
           </>
         ) : (

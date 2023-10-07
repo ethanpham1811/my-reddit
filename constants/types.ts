@@ -94,7 +94,7 @@ export type TIconBox = {
 export type TMenuDropdownProps = {
   session: Session | null
   subListData: TUseSubredditListResponse
-  subName: string | string[] | undefined
+  subOrUserId: string | string[] | undefined
   pathName: string
 }
 export type TProfileDropdownProps = {
@@ -276,4 +276,8 @@ export type TQueriedSub = TSubredditDetail & {
 export type TQueriedUser = TUser & {
   groupBy: string
 }
-export type TAutocompleteOptions = TQueriedTrending | TQueriedSub | TQueriedUser
+export type TQueryNotFound = {
+  text: 'Nothing found.'
+  groupBy: string
+}
+export type TAutocompleteOptions = TQueriedTrending | TQueriedSub | TQueriedUser | TQueryNotFound

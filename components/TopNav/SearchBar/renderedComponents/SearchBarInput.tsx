@@ -8,16 +8,16 @@ import SearchIcon from '@mui/icons-material/Search'
 type TInputProps = {
   params: AutocompleteRenderInputParams
   chip: boolean
-  subName: string | string[] | undefined
+  name: string | string[] | undefined
   onDeleteChip: () => void
 }
 
 /* Autocomplete input display */
-function SearchBarInput({ params, chip, subName, onDeleteChip }: TInputProps) {
+function SearchBarInput({ params, chip, name, onDeleteChip }: TInputProps) {
   const startAdornment = () => (
     <Stack direction="row" alignItems="center">
       <SearchIcon />
-      {chip && subName && (
+      {chip && name && (
         <RdChip
           avatar={
             <Avatar
@@ -25,15 +25,15 @@ function SearchBarInput({ params, chip, subName, onDeleteChip }: TInputProps) {
               sx={{
                 width: '20px !important',
                 height: '20px !important',
-                backgroundColor: generateSeededHexColor(subName as string),
+                backgroundColor: generateSeededHexColor(name as string),
                 border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
               }}
-              src={generateUserImage(subName as string)}
+              src={generateUserImage(name as string)}
             />
           }
           onDelete={onDeleteChip}
           deleteIcon={<HighlightOffOutlinedIcon sx={{ opacity: 0.6, color: '#1A1A1B !important' }} />}
-          label={`r/${subName}`}
+          label={`r/${name}`}
           sx={{ bgcolor: 'inputBorder.main', mr: 1, height: 28 }}
         />
       )}

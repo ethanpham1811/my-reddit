@@ -1,4 +1,4 @@
-import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TVote } from '@/constants/types'
+import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TQueryNotFound, TVote } from '@/constants/types'
 import { supabase } from '@/pages/_app'
 import { ApolloError } from '@apollo/client'
 import toast from 'react-hot-toast'
@@ -72,13 +72,14 @@ export function isQueriedSub(data: TAutocompleteOptions): data is TQueriedSub {
 export function isQueriedUser(data: TAutocompleteOptions): data is TQueriedUser {
   return data['groupBy'] === 'People'
 }
+// this is a hack for Displaying no record bug with autocomplete
+export function isNotFound(data: TAutocompleteOptions): data is TQueryNotFound {
+  return data['groupBy'] === 'Not Found'
+}
 
 /*--------------------------------------------- Misc -------------------------------------------- */
-export function generateAutoCompleteUrl(option: TAutocompleteOptions): string {
-  let url = null
-  if (isQueriedTrending(option)) url = `/p/${option.id}`
-  if (isQueriedSub(option)) url = `/r/${option.name}`
-  if (isQueriedUser(option)) url = `/u/${option.username}`
-
-  return url || '/'
+export function generateAutoCompleteUrl(option: Exclude<TAutocompleteOptions, TQueryNotFound>): string {
+  if (isQueriedTrending(option)) return `/p/${option.id}`
+  if (isQueriedSub(option)) return `/r/${option.name}`
+  return `/u/${option.username}`
 }
