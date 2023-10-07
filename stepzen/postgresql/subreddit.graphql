@@ -3,7 +3,7 @@ type Subreddit {
   name: String!
   topic_ids: [String]!
   subType: String!
-  member: Int
+  member: ID!
   created_at: DateTime!
   coverUrl: String
   description: String
@@ -18,9 +18,27 @@ Feel free to modify them or aggregate more.
 """
 type Query {
   " Queries for type 'Subreddit' "
-  subreddit(id: ID!): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
-  subredditByName(name: String!): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
-  subredditList: [Subreddit] @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
+  subreddit(id: ID!): Subreddit
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subreddit"
+      configuration: "postgresql_config"
+    )
+  subredditByName(name: String!): Subreddit
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subreddit"
+      configuration: "postgresql_config"
+    )
+  subredditList: [Subreddit]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subreddit"
+      configuration: "postgresql_config"
+    )
   subredditPaginatedList(first: Int, after: Int): [Subreddit]
     @dbquery(
       type: "postgresql"
@@ -40,6 +58,7 @@ type Query {
       configuration: "postgresql_config"
     )
 }
+
 """
 The following mutations are just a set of examples of how to access your schema.
 Feel free to modify them or aggregate more.
@@ -47,24 +66,37 @@ Feel free to modify them or aggregate more.
 type Mutation {
   " Mutations for type 'Subreddit' "
   deleteSubreddit(id: ID!): Subreddit
-    @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: DELETE, configuration: "postgresql_config")
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subreddit"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
   insertSubreddit(
     name: String!
     subType: String!
     topic_ids: [String]!
     isChildrenContent: Boolean!
-    member: Int
+    member: ID
     coverUrl: String
     description: String
     headline: String
-  ): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: INSERT, configuration: "postgresql_config")
+  ): Subreddit
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subreddit"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
   updateSubreddit(
     id: ID!
     coverUrl: String
     description: String
     headline: String
     isChildrenContent: Boolean
-    member: Int
+    member: ID
     name: String
     subType: String
     topic_ids: [String]
