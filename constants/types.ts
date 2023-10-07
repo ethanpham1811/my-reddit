@@ -9,10 +9,12 @@ import {
   SelectProps,
   SvgIconTypeMap,
   SxProps,
+  TextFieldProps,
   Theme
 } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from 'next-auth'
+import { NextRouter } from 'next/router'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD } from './enums'
@@ -32,6 +34,8 @@ export type TUserDetail = TUser & {
   coverUrl?: string
   photoUrl?: string
   post?: TPost
+  karma?: number
+  socialLinks?: string[]
 }
 export type TPost = {
   id: number
@@ -94,11 +98,13 @@ export type TIconBox = {
 export type TMenuDropdownProps = {
   session: Session | null
   subListData: TUseSubredditListResponse
-  subOrUserId: string | string[] | undefined
+  subName: string | string[] | undefined
+  userName: string | string[] | undefined
   pathName: string
 }
 export type TProfileDropdownProps = {
   session: Session | null
+  navigate: NextRouter['push']
 }
 export type TMenuItem = Omit<TSubreddit, 'id'> & {
   name: string
@@ -165,7 +171,6 @@ export type TRdButtonProps = ButtonOwnProps &
 export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children'> & {
   renderSelectedOption: (value: string, mobileMode?: boolean) => ReactNode
   onChange?: (event: SelectChangeEvent<string>, child: ReactNode) => void
-  value: string
   width?: string
   maxWidth?: string
   minWidth?: string
@@ -173,6 +178,7 @@ export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'childre
   loading?: boolean
   mobileMode?: boolean
   borderColor?: string
+  value?: string
 }
 export type TRdMultipleDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'open'> & {
   renderSelectedOption: (value: string[], setSelectedArray: Dispatch<SetStateAction<string[]>>) => ReactNode
@@ -224,16 +230,18 @@ export type TRdTextEditorProps<T extends FieldValues> = {
   name: FieldPath<T>
   control: Control<T>
 }
-export type TRdInputProps<T extends FieldValues> = {
-  placeholder?: string
+export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
   name: FieldPath<T>
   control: Control<T>
-  label?: string
-  disabled?: boolean
   helper?: string
   width?: string
   flex?: number
-  sx?: SxProps<Theme>
+  bgcolor?: string
+}
+export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
+  helper?: string
+  width?: string
+  flex?: number
   bgcolor?: string
 }
 export type TCardFeedSorterProps = {

@@ -1,5 +1,23 @@
 import { gql } from '@apollo/client'
 
+/* ------------------------------ USER--------------------------------- */
+export const GET_USER_BY_USERNAME = gql`
+  query MyQuery($username: String!) {
+    userByUsername(username: $username) {
+      id
+      username
+      fullName
+      followers
+      coverUrl
+      email
+      dob
+      created_at
+      karma
+      socialLinks
+    }
+  }
+`
+
 /* --------------------------- SUBREDDIT ------------------------------ */
 export const GET_SUBREDDIT_BY_TOPIC = gql`
   query MyQuery($topic: String!) {
@@ -90,6 +108,30 @@ export const GET_POST_LIST = gql`
 export const GET_POST_LIST_BY_SUB_ID = gql`
   query MyQuery($id: ID!) {
     postUsingPost_subreddit_id_fkey(id: $id) {
+      id
+      images
+      body
+      created_at
+      title
+      username
+      comment {
+        created_at
+        username
+        text
+      }
+      subreddit {
+        name
+      }
+      vote {
+        upvote
+        username
+      }
+    }
+  }
+`
+export const GET_POST_LIST_BY_USER_ID = gql`
+  query MyQuery($id: ID!) {
+    postUsingPost_user_id_fkey(id: $id) {
       id
       images
       body

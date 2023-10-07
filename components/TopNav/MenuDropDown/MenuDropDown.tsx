@@ -1,19 +1,29 @@
 import { RdDropdown } from '@/components'
-import { RdSkeleton } from '@/components/Skeletons'
-import { generateSeededHexColor, generateUserImage } from '@/components/utilities'
+import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
 import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { HomeIcon } from '@/constants/icons'
 import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
-import { Avatar, Box, List, ListItemText, ListSubheader, MenuItem, Typography } from '@mui/material'
-import Image from 'next/image'
-import Link from 'next/link'
-import { createElement } from 'react'
-import { v4 as rid } from 'uuid'
+import { Box, List } from '@mui/material'
+import { ReactNode, useState } from 'react'
+import FeedsMenuList from './Components/FeedsMenuList'
+import PeopleMenuList from './Components/PeopleMenuList'
+import SubsMenuList from './Components/SubsMenuList'
+import { renderSelectedOption } from './RenderedCbs'
 
-function MenuDropDown({ session, subListData, subOrUserId, pathName }: TMenuDropdownProps) {
+function MenuDropDown({ session, subListData, subName, userName, pathName }: TMenuDropdownProps) {
   const { subredditList, loading, error } = subListData
-  const activePage: string = pathName === '/' ? 'Home' : (subOrUserId as string)
+  const [filterTerm, setFilterTerm] = useState('')
+  // const [subList, setSubList] = useState(subredditList)
 
+  // useEffect(()=>{
+  //   subredditList && setSubList(subredditList)
+  // },[subredditList])
+
+  const activePage: string = pathName === '/' ? 'Home' : (userName as string) ?? (subName as string)
+  console.log(activePage)
+  console.log(userName)
+
+  /* Mock data--------------------------------- */
   const feedsOptions: TMenuItem[] = [
     {
       name: 'Home',
@@ -21,95 +31,55 @@ function MenuDropDown({ session, subListData, subOrUserId, pathName }: TMenuDrop
       group: MAIN_MENU_GROUP.Feeds
     }
   ]
-  const communityOptions: TMenuItem[] | [] = subredditList
+  const communityOptions: TMenuItem[] = subredditList
     ? subredditList.map(({ name }): TMenuItem => {
         return { name, group: MAIN_MENU_GROUP.Communities }
       })
     : []
+  const peopleOptions: TMenuItem[] = userName
+    ? [
+        {
+          name: activePage,
+          group: MAIN_MENU_GROUP.People
+        }
+      ]
+    : []
+  /* End Mock data----------------------- */
+  console.log(peopleOptions)
 
-  function renderSelectedOption() {
-    const compositeMenu = [...feedsOptions, ...communityOptions]
-    const selectedMenu = compositeMenu.find((option) => option.name == activePage)
-    return (
-      <>
-        {selectedMenu ? (
-          <>
-            {selectedMenu.icon ? (
-              createElement(selectedMenu.icon)
-            ) : (
-              <Avatar
-                variant="rounded"
-                sx={{
-                  width: 20,
-                  height: 20,
-                  backgroundColor: generateSeededHexColor(selectedMenu.name),
-                  border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
-                }}
-                alt={`${selectedMenu.name} avatar`}
-                src={generateUserImage(selectedMenu.name)}
-              />
-            )}
-            <Box sx={{ display: { xs: 'none', lg: 'block' } }} display="block" textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
-              {`${subOrUserId ? 'r/' : ''}${selectedMenu.name}` || 'unknown'}
-            </Box>
-          </>
-        ) : (
-          <div></div>
-        )}
-      </>
-    )
+  function handleFilter(e: React.ChangeEvent<HTMLInputElement>) {
+    setFilterTerm(e.target.value)
   }
 
+  const filterByTerm = (option: TMenuItem): boolean => option.name.toLowerCase().includes(filterTerm.toLowerCase())
+  const handleRenderSelectedOption = (value: string): ReactNode =>
+    renderSelectedOption(value, true, [...feedsOptions, ...communityOptions, ...peopleOptions], activePage, subName)
+
   return (
-    <RdDropdown renderSelectedOption={renderSelectedOption} value={activePage} flex={1} width="20vw" maxWidth="250px" minWidth="50px" mobileMode>
+    <RdDropdown
+      renderSelectedOption={handleRenderSelectedOption}
+      value={activePage}
+      flex={1}
+      width="20vw"
+      maxWidth="250px"
+      minWidth="50px"
+      mobileMode
+    >
+      {/* Filter input */}
       <List>
-        <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-          <Typography variant="subtitle1" sx={{ color: 'hintText.main' }}>
-            {MAIN_MENU_GROUP.Feeds.toUpperCase()}
-          </Typography>
-        </ListSubheader>
-        {feedsOptions.map(({ name, icon }) => (
-          <Link href="/" style={{ color: 'unset', textDecoration: 'none' }} key={`feeds_menu_${rid()}`}>
-            <MenuItem value={name}>
-              {icon && createElement(icon)}
-              <ListItemText primary={name} />
-            </MenuItem>
-          </Link>
-        ))}
+        <Box px={2}>
+          <RdStaticInput autoFocus onChange={handleFilter} placeholder="Filter" />
+        </Box>
       </List>
-      <List>
-        <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-          <Typography variant="subtitle1" sx={{ color: 'hintText.main' }}>
-            {MAIN_MENU_GROUP.Communities.toUpperCase()}
-          </Typography>
-        </ListSubheader>
-        {session && !loading ? (
-          communityOptions.length > 0 ? (
-            communityOptions.map(({ name }) => (
-              <Link href={`/r/${name}`} style={{ color: 'unset', textDecoration: 'none' }} key={`communities_menu_${rid()}`}>
-                <MenuItem value={name}>
-                  <Avatar variant="circular" sx={{ bgcolor: generateSeededHexColor(name), width: 20, height: 20 }}>
-                    <Image
-                      src={generateUserImage(name)}
-                      alt={`community ${name} avatar`}
-                      aria-label={`community ${name} avatar`}
-                      width={20}
-                      height={20}
-                    />
-                  </Avatar>
-                  <ListItemText primary={`r/${name}`} />
-                </MenuItem>
-              </Link>
-            ))
-          ) : (
-            <MenuItem>
-              <ListItemText primary="You didn't join any community"></ListItemText>
-            </MenuItem>
-          )
-        ) : (
-          <RdSkeleton />
-        )}
-      </List>
+
+      {/* Feeds list */}
+      <FeedsMenuList feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
+
+      {/* Subreddit list */}
+      <SubsMenuList session={session} loading={loading} options={communityOptions} filterByTerm={filterByTerm} />
+
+      {/* Hidden user list - A little hack for displaying unlisted Item (for profile pages) */}
+      <PeopleMenuList session={session} loading={loading} options={peopleOptions} filterByTerm={filterByTerm} />
     </RdDropdown>
   )
 }

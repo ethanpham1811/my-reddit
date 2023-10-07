@@ -10,7 +10,6 @@ function RdDropdown({
   maxWidth,
   minWidth,
   borderColor,
-  value,
   children,
   mobileMode,
   onChange,
@@ -28,11 +27,10 @@ function RdDropdown({
       }}
     >
       <Select
-        value={value}
         onChange={onChange}
         displayEmpty
         IconComponent={(props): ReactNode => <KeyboardArrowDownIcon {...props} />}
-        renderValue={(value) => renderSelectedOption(value, mobileMode)}
+        renderValue={renderSelectedOption}
         sx={{
           flex: 1,
           display: 'flex',

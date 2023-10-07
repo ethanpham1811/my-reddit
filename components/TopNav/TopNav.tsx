@@ -20,7 +20,7 @@ type TTopNavProps = {
 
 function TopNav({ subListData, session, router }: TTopNavProps) {
   const {
-    query: { subreddit: subName, userId },
+    query: { subreddit: subName, username },
     pathname: pathName,
     push: navigate
   } = router
@@ -31,15 +31,15 @@ function TopNav({ subListData, session, router }: TTopNavProps) {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <Logo />
             {/* dropdown */}
-            <MenuDropDown session={session} subOrUserId={subName || userId} pathName={pathName} subListData={subListData} />
+            <MenuDropDown session={session} subName={subName} userName={username} pathName={pathName} subListData={subListData} />
           </Stack>
           {/* search */}
-          <SearchBar session={session} subOrUserId={subName || userId} pathName={pathName} navigate={navigate} />
+          <SearchBar session={session} subOrUserName={subName ?? username} pathName={pathName} navigate={navigate} />
           {/* Icons */}
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <IconBox />
             {/* Profile dropdown */}
-            <ProfileDropdown session={session} />
+            <ProfileDropdown session={session} navigate={navigate} />
           </Stack>
         </Stack>
       </NavBar>

@@ -12,6 +12,7 @@ type User {
   post: [Post] @materializer(query: "postUsingPost_user_id_fkey")
   username: String!
   vote: [Vote] @materializer(query: "voteUsingVote_user_id_fkey")
+  socialLinks: [String]
 }
 
 """
@@ -38,20 +39,10 @@ type Query {
       configuration: "postgresql_config"
     )
   " Queries for type 'User' "
-  user(id: ID!): User
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "user"
-      configuration: "postgresql_config"
-    )
-  userList: [User]
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "user"
-      configuration: "postgresql_config"
-    )
+  user(id: ID!): User @dbquery(type: "postgresql", schema: "public", table: "user", configuration: "postgresql_config")
+  userByUsername(username: String!): User @dbquery(type: "postgresql", schema: "public", table: "user", configuration: "postgresql_config")
+
+  userList: [User] @dbquery(type: "postgresql", schema: "public", table: "user", configuration: "postgresql_config")
   userPaginatedList(first: Int, after: Int): [User]
     @dbquery(
       type: "postgresql"
@@ -105,14 +96,7 @@ Feel free to modify them or aggregate more.
 """
 type Mutation {
   " Mutations for type 'User' "
-  deleteUser(id: ID!): User
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "user"
-      dml: DELETE
-      configuration: "postgresql_config"
-    )
+  deleteUser(id: ID!): User @dbquery(type: "postgresql", schema: "public", table: "user", dml: DELETE, configuration: "postgresql_config")
   insertUser(
     email: String!
     fullName: String!
@@ -123,14 +107,7 @@ type Mutation {
     photoUrl: String
     username: String!
     dob: Date
-  ): User
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "user"
-      dml: INSERT
-      configuration: "postgresql_config"
-    )
+  ): User @dbquery(type: "postgresql", schema: "public", table: "user", dml: INSERT, configuration: "postgresql_config")
   updateUser(
     id: ID!
     coverUrl: String

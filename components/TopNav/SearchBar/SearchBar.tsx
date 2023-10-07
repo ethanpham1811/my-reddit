@@ -6,17 +6,17 @@ import { AutocompleteRenderInputParams, Box } from '@mui/material'
 import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
 import { SyntheticEvent, useState } from 'react'
-import { renderGroup, renderOption } from './renderedComponents'
-import SearchBarInput from './renderedComponents/SearchBarInput'
+import { renderGroup, renderOption } from './renderedCbs'
+import SearchBarInput from './renderedCbs/SearchBarInput'
 
 type TSearchBarProps = {
   session: Session | null
-  subOrUserId: string | string[] | undefined
+  subOrUserName: string | string[] | undefined
   pathName: string
   navigate: NextRouter['push']
 }
 
-function SearchBar({ session, subOrUserId, pathName, navigate }: TSearchBarProps) {
+function SearchBar({ session, subOrUserName, pathName, navigate }: TSearchBarProps) {
   // const { topTrendingData, loading, error, searchTerm, setSearchTerm } = useTopSearchListDefault()
   const { queriedDataList, loading, error, searchTerm, setSearchTerm } = useTopSearchQueriedList()
   const [chip, setChip] = useState(true)
@@ -25,7 +25,7 @@ function SearchBar({ session, subOrUserId, pathName, navigate }: TSearchBarProps
   /* Autocomplete props */
 
   const renderInput = (params: AutocompleteRenderInputParams) => (
-    <SearchBarInput params={params} chip={chip} name={subOrUserId} onDeleteChip={onDeleteChip} />
+    <SearchBarInput params={params} chip={chip} name={subOrUserName} onDeleteChip={onDeleteChip} />
   )
 
   const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
@@ -56,6 +56,7 @@ function SearchBar({ session, subOrUserId, pathName, navigate }: TSearchBarProps
         selectOnFocus
         openOnFocus
         handleHomeEndKeys
+        includeInputInList
         loading={loading}
         inputValue={searchTerm}
         popupIcon={false}

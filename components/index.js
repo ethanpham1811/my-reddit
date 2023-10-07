@@ -1,9 +1,11 @@
 import CardAds from './Cards/CardAds/CardAds'
 import CardCreatePost from './Cards/CardCreatePost/CardCreatePost'
 import CardFeedSorter from './Cards/CardFeedSorter/CardFeedSorter'
+import CardHomeInfo from './Cards/CardHomeInfo/CardHomeInfo'
 import CardNotFound from './Cards/CardNotFound/CardNotFound'
-import CardPageInfo from './Cards/CardPageInfo/CardPageInfo'
 import CardPost from './Cards/CardPost/CardPost'
+import CardSubredditInfo from './Cards/CardSubredditInfo/CardSubredditInfo'
+import CardUserInfo from './Cards/CardUserInfo/CardUserInfo'
 import BottomNavigator from './CommunityCreator/BottomNavigator/BottomNavigator'
 import CommunityCreator from './CommunityCreator/CommunityCreator'
 import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/IsChildrenGroupCheckbox'
@@ -40,9 +42,11 @@ export {
   CardAds,
   CardCreatePost,
   CardFeedSorter,
+  CardHomeInfo,
   CardNotFound,
-  CardPageInfo,
   CardPost,
+  CardSubredditInfo,
+  CardUserInfo,
   CommunityCreator,
   IconBox,
   IsChildrenGroupCheckbox,

@@ -16,18 +16,7 @@ const RdInputBase = styled(TextField)(({ theme }) => {
   }
 })
 
-const RdInput = <T extends FieldValues>({
-  name,
-  control,
-  label,
-  flex,
-  width,
-  placeholder,
-  disabled = false,
-  helper,
-  sx,
-  bgcolor
-}: TRdInputProps<T>) => {
+const RdInput = <T extends FieldValues>({ name, control, label, flex, width, helper, sx, bgcolor, ...rest }: TRdInputProps<T>) => {
   return (
     <FormControl sx={{ flex, '.MuiFormControl-root': { bgcolor: 'transparent' }, ...borderColorStyle, width }}>
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
@@ -44,11 +33,10 @@ const RdInput = <T extends FieldValues>({
             fullWidth
             label={label}
             variant="outlined"
-            disabled={disabled}
-            placeholder={placeholder}
             id={name}
             aria-describedby={`helper_${name}`}
             sx={{ '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main` }, ...sx }}
+            {...rest}
           />
         )}
       />

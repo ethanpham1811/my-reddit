@@ -5,12 +5,12 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { CommunityCreator, RdButton, RdCard, RdDrawer } from '../..'
 
-function CardPageInfo() {
+function CardHomeInfo() {
   const [isDrawerOpened, setIsDrawerOpened] = useState(false)
 
   return (
     <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
-      <CardMedia component="img" height={34} image={homeBannerUrl.src} alt="Paella dish" sx={{ mx: -1, mt: -1, width: 'auto' }} />
+      <CardMedia component="img" height={34} image={homeBannerUrl.src} alt="Home cover" sx={{ mx: -1, mt: -1, width: 'auto' }} />
       <CardHeader
         avatar={<Image alt="reddit robot" aria-label="reddit robot" src={redditRobotUrl.src} width={40} height={68} />}
         titleTypographyProps={{ sx: { fontWeight: 600, fontSize: '0.9rem', mt: 3 } }}
@@ -34,4 +34,4 @@ function CardPageInfo() {
   )
 }
 
-export default CardPageInfo
+export default CardHomeInfo

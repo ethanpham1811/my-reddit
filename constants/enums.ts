@@ -17,10 +17,16 @@ export enum SUBREDDIT_LIST_MODE {
 }
 export enum MAIN_MENU_GROUP {
   Feeds = 'Feeds',
-  Communities = 'Your Communities'
+  Communities = 'Your Communities',
+  People = 'People'
 }
 export enum BORDER_TYPES {
   Rounded = '4px',
   Circular = '999px',
   Square = 0
+}
+export enum SEARCH_TABS {
+  Post = 'post',
+  Communities = 'subreddit',
+  People = 'user'
 }

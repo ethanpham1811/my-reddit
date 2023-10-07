@@ -4,21 +4,23 @@ import { TProfileDropdownProps } from '@/constants/types'
 import { OnlineDotStyle } from '@/mui/styles'
 import { Avatar, Box, MenuItem } from '@mui/material'
 import Image from 'next/image'
-import { useState } from 'react'
+import Link from 'next/link'
 import { v4 as rid } from 'uuid'
 
-function ProfileDropdownProp({ session }: TProfileDropdownProps) {
-  const [page, setPage] = useState('home')
+function ProfileDropdownProp({ session, navigate }: TProfileDropdownProps) {
+  // const [page, setPage] = useState('home')
   const user = session?.user
 
   const list = [
     {
-      name: 'Home',
-      value: 'home'
+      name: 'Profile',
+      value: 'profile',
+      url: '/u/Ok_SuMetal4423'
     },
     {
       name: 'Ai generated arts',
-      value: 'ai'
+      value: 'ai',
+      url: '/u/Ok_SuMetal4423'
     }
   ]
 
@@ -56,21 +58,22 @@ function ProfileDropdownProp({ session }: TProfileDropdownProps) {
 
   return (
     <RdDropdown
-      value={page}
+      // value={page}
       flex={1}
       mobileMode
       minWidth="200px"
       borderColor="inputBorder"
-      onChange={(e) => setPage(e.target.value)}
       renderSelectedOption={renderSelectedOption}
     >
       {session && list.length > 0 ? (
-        list.map(({ name, value }) => {
+        list.map(({ name, value, url }) => {
           return (
-            <MenuItem value={value} key={`menu_${rid()}`}>
-              <Image alt={`${name} image`} src={generateUserImage(name)} width={20} height={20} />
-              {name || 'unknown'}
-            </MenuItem>
+            <Link href={url} key={`menu_${rid()}`}>
+              <MenuItem value={value}>
+                <Image alt={`${name} image`} src={generateUserImage(name)} width={20} height={20} />
+                {name || 'unknown'}
+              </MenuItem>
+            </Link>
           )
         })
       ) : (

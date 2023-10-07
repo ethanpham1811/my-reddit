@@ -1,8 +1,8 @@
-import { CardAds, CardCreatePost, CardFeedSorter, CardPageInfo } from '@/components'
+import { CardCreatePost, CardFeedSorter } from '@/components'
 import { TSortOptions } from '@/constants/types'
 
 import { Box, Container, Grid, Stack } from '@mui/material'
-import { Dispatch, ReactNode, SetStateAction } from 'react'
+import { Children, Dispatch, ReactNode, SetStateAction } from 'react'
 
 type TFeedLayoutProps = {
   children: ReactNode
@@ -13,6 +13,9 @@ type TFeedLayoutProps = {
 }
 
 function FeedLayout({ children, top, subredditId, sortOptions, setSortOptions }: TFeedLayoutProps) {
+  const mainContent = Children.toArray(children)[0]
+  const sideContent = Children.toArray(children)[1]
+
   return (
     <Container maxWidth="md" sx={{ pt: top }}>
       <Box>
@@ -21,14 +24,11 @@ function FeedLayout({ children, top, subredditId, sortOptions, setSortOptions }:
             <Stack spacing={2}>
               <CardCreatePost subId={subredditId} />
               <CardFeedSorter sortOptions={sortOptions} setSortOptions={setSortOptions} />
-              {children}
+              {mainContent}
             </Stack>
           </Grid>
           <Grid xs={16} md={4} item>
-            <Stack spacing={2}>
-              <CardAds />
-              <CardPageInfo />
-            </Stack>
+            {sideContent}
           </Grid>
         </Grid>
       </Box>

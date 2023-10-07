@@ -1,9 +1,10 @@
-import { NewFeeds, SubredditTopNav } from '@/components'
+import { CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
 import withSubredditPostList from '@/components/HOCs/withSubredditPostList'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TSortOptions } from '@/constants/types'
 import useSubredditByName from '@/hooks/useSubredditByName'
+import { Stack } from '@mui/material'
 
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -27,6 +28,9 @@ const Subreddit: NextPage = () => {
       <SubredditTopNav name={subredditData?.name} headline={subredditData?.headline} />
       <FeedLayout top="1rem" subredditId={subredditData?.id} sortOptions={sortOptions} setSortOptions={setSortOptions}>
         <SubredditNewFeeds sortOptions={sortOptions} />
+        <Stack spacing={2}>
+          <CardSubredditInfo subreddit={subredditData} loading={loading} />
+        </Stack>
       </FeedLayout>
     </div>
   )
