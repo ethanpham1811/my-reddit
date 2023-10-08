@@ -53,7 +53,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
         body,
         subreddit_id: subId ?? subreddit_id,
         title,
-        username: session?.user?.name,
+        user_id: session?.user?.name, //FIXME: use id not name
         images
       }
     })

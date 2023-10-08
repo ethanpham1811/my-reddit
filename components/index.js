@@ -12,6 +12,7 @@ import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/
 import TopicDropdown from './CommunityCreator/TopicDropdown/TopicDropdown'
 import MainLayout from './Layouts/MainLayout'
 import NewFeeds from './NewFeeds/NewFeeds'
+import NoOwnedPost from './NewFeeds/NoOwnedPost/NoOwnedPost'
 import SubredditTopNav from './SubredditTopNav/SubredditTopNav'
 import IconBox from './TopNav/IconBox/IconBox'
 import Logo from './TopNav/Logo/Logo'
@@ -43,6 +44,7 @@ export {
   CardCreatePost,
   CardFeedSorter,
   CardHomeInfo,
+  NoOwnedPost as CardNoOwnedPost,
   CardNotFound,
   CardPost,
   CardSubredditInfo,

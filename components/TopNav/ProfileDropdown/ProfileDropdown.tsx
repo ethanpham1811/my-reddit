@@ -15,7 +15,7 @@ function ProfileDropdownProp({ session, navigate }: TProfileDropdownProps) {
     {
       name: 'Profile',
       value: 'profile',
-      url: '/u/Ok_SuMetal4423'
+      url: '/u/Ok_Inflation4166'
     },
     {
       name: 'Ai generated arts',

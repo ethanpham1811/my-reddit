@@ -84,7 +84,7 @@ export type TSorter = {
   methodValue: SORT_METHOD
   label: string
   description: string
-  disabled: boolean
+  optionDisabled: boolean
 }
 export type TNotiData = {
   content: number
@@ -245,6 +245,7 @@ export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
   bgcolor?: string
 }
 export type TCardFeedSorterProps = {
+  disabled: boolean
   sortOptions: TSortOptions
   setSortOptions: Dispatch<SetStateAction<TSortOptions>>
 }

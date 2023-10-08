@@ -42,7 +42,9 @@ export const GET_SUBREDDIT_BY_NAME = gql`
       subType
       topic_ids
       post {
-        username
+        user {
+          username
+        }
         title
         body
         comment {
@@ -89,10 +91,14 @@ export const GET_POST_LIST = gql`
       body
       images
       created_at
-      username
+      user {
+        username
+      }
       comment {
         created_at
-        username
+        user {
+          username
+        }
         text
       }
       subreddit {
@@ -100,7 +106,6 @@ export const GET_POST_LIST = gql`
       }
       vote {
         upvote
-        username
       }
     }
   }
@@ -113,10 +118,14 @@ export const GET_POST_LIST_BY_SUB_ID = gql`
       body
       created_at
       title
-      username
+      user {
+        username
+      }
       comment {
         created_at
-        username
+        user {
+          username
+        }
         text
       }
       subreddit {
@@ -124,7 +133,6 @@ export const GET_POST_LIST_BY_SUB_ID = gql`
       }
       vote {
         upvote
-        username
       }
     }
   }
@@ -137,10 +145,14 @@ export const GET_POST_LIST_BY_USER_ID = gql`
       body
       created_at
       title
-      username
+      user {
+        username
+      }
       comment {
         created_at
-        username
+        user {
+          username
+        }
         text
       }
       subreddit {
@@ -148,7 +160,6 @@ export const GET_POST_LIST_BY_USER_ID = gql`
       }
       vote {
         upvote
-        username
       }
     }
   }

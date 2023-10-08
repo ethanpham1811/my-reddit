@@ -17,7 +17,7 @@ const User: NextPage = () => {
   } = useRouter()
 
   const [user, loading] = useUserByUsername(username)
-  const SubredditNewFeeds = withUserPostList(NewFeeds, user?.id)
+  const UserNewFeeds = withUserPostList(NewFeeds, user?.id)
 
   return (
     <div>
@@ -25,7 +25,7 @@ const User: NextPage = () => {
         <title>u/{username}</title>
       </Head>
       <FeedLayout top="70px" sortOptions={sortOptions} setSortOptions={setSortOptions}>
-        <SubredditNewFeeds sortOptions={sortOptions} />
+        <UserNewFeeds sortOptions={sortOptions} />
         <CardUserInfo user={user} loading={loading} />
       </FeedLayout>
     </div>

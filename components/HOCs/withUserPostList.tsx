@@ -4,7 +4,7 @@ import { ApolloError } from '@apollo/client'
 import { ComponentType } from 'react'
 
 type TWrappedProps = {
-  postList: TPost[]
+  postList: TPost[] | null
   loading: boolean
   error: ApolloError
 }

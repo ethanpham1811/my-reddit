@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const ADD_POST = gql`
-  mutation AddPost($body: String!, $images: String, $subreddit_id: ID!, $title: String!, $username: String!) {
-    insertPost(body: $body, title: $title, username: $username, subreddit_id: $subreddit_id, images: $images) {
+  mutation AddPost($body: String!, $images: String, $subreddit_id: ID!, $title: String!, $user_id: ID!) {
+    insertPost(body: $body, title: $title, user_id: $username, subreddit_id: $subreddit_id, images: $images) {
       body
       created_at
       id

@@ -4,11 +4,9 @@ type Post {
   created_at: DateTime!
   id: ID!
   images: String
-  subreddit: Subreddit
-    @materializer(query: "subredditUsingPost_subreddit_id_fkey")
+  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
   subreddit_id: ID!
   title: String!
-  username: String
   vote: [Vote] @materializer(query: "voteUsingVote_post_id_fkey")
   user: User @materializer(query: "userUsingPost_user_id_fkey")
   user_id: ID!
@@ -20,20 +18,8 @@ Feel free to modify them or aggregate more.
 """
 type Query {
   " Queries for type 'Post' "
-  post(id: ID!): Post
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "post"
-      configuration: "postgresql_config"
-    )
-  postList: [Post]
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "post"
-      configuration: "postgresql_config"
-    )
+  post(id: ID!): Post @dbquery(type: "postgresql", schema: "public", table: "post", configuration: "postgresql_config")
+  postList: [Post] @dbquery(type: "postgresql", schema: "public", table: "post", configuration: "postgresql_config")
   postPaginatedList(first: Int, after: Int): [Post]
     @dbquery(
       type: "postgresql"
@@ -78,36 +64,10 @@ Feel free to modify them or aggregate more.
 """
 type Mutation {
   " Mutations for type 'Post' "
-  deletePost(id: ID!): Post
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "post"
-      dml: DELETE
-      configuration: "postgresql_config"
-    )
-  insertPost(
-    body: String
-    username: String
-    subreddit_id: ID
-    title: String
-    images: String
-  ): Post
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "post"
-      dml: INSERT
-      configuration: "postgresql_config"
-    )
-  updatePost(
-    id: ID!
-    body: String
-    images: String
-    subreddit_id: ID
-    title: String
-    username: String
-  ): Post
+  deletePost(id: ID!): Post @dbquery(type: "postgresql", schema: "public", table: "post", dml: DELETE, configuration: "postgresql_config")
+  insertPost(body: String, user_id: ID, subreddit_id: ID, title: String, images: String): Post
+    @dbquery(type: "postgresql", schema: "public", table: "post", dml: INSERT, configuration: "postgresql_config")
+  updatePost(id: ID!, body: String, images: String, subreddit_id: ID, title: String, user_id: ID): Post
     @dbquery(
       type: "postgresql"
       schema: "public"

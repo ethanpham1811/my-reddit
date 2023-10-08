@@ -11,21 +11,21 @@ const data: TSorter[] = [
     methodValue: SORT_METHOD.New,
     description: 'New posts',
     label: 'New',
-    disabled: false
+    optionDisabled: false
   },
   {
     icon: <LocalFireDepartmentIcon />,
     methodValue: SORT_METHOD.Hot,
     description: 'Most upvoted',
     label: 'Hot',
-    disabled: false
+    optionDisabled: false
   },
   {
     icon: <TrendingUpOutlinedIcon />,
     methodValue: SORT_METHOD.Rising,
     description: 'Top trending',
     label: 'Rising',
-    disabled: true
+    optionDisabled: true
   }
 ]
 
@@ -45,7 +45,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   }
 }))
 
-function CardFeedSorter({ sortOptions, setSortOptions }: TCardFeedSorterProps) {
+function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSorterProps) {
   const onChange = (_: any, method: SORT_METHOD | null) => {
     method && setSortOptions({ ordering: ORDERING.Desc, method })
   }
@@ -61,9 +61,9 @@ function CardFeedSorter({ sortOptions, setSortOptions }: TCardFeedSorterProps) {
         aria-label="new feeds sorter"
       >
         {data.length > 0 &&
-          data.map(({ disabled, methodValue, description, icon, label }) => (
+          data.map(({ optionDisabled, methodValue, description, icon, label }) => (
             <ToggleButton
-              disabled={disabled}
+              disabled={disabled || optionDisabled}
               key={`sorter_${rid()}`}
               value={methodValue}
               aria-label={description}
