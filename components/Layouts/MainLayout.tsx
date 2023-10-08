@@ -8,7 +8,7 @@ import { TopNav } from '..'
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession()
-  console.log(session)
+  console.log(session, status)
   const router = useRouter()
   const subListData = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
 

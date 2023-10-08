@@ -2,6 +2,7 @@ import CardAds from './Cards/CardAds/CardAds'
 import CardCreatePost from './Cards/CardCreatePost/CardCreatePost'
 import CardFeedSorter from './Cards/CardFeedSorter/CardFeedSorter'
 import CardHomeInfo from './Cards/CardHomeInfo/CardHomeInfo'
+import CardLogout from './Cards/CardLogout/CardLogout'
 import CardNotFound from './Cards/CardNotFound/CardNotFound'
 import CardPost from './Cards/CardPost/CardPost'
 import CardSubredditInfo from './Cards/CardSubredditInfo/CardSubredditInfo'
@@ -45,6 +46,7 @@ export {
   CardCreatePost,
   CardFeedSorter,
   CardHomeInfo,
+  CardLogout,
   CardNotFound,
   CardPost,
   CardSubredditInfo,

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const ADD_USER = gql`
-  mutation AddUser($email: String, $fullName: String, $coverUrl: String, $username: String!, $dob: Date) {
-    insertUser(email: $email, fullName: $fullName, coverUrl: $coverUrl, username: $username, dob: $dob) {
+  mutation AddUser($email: String, $fullName: String, $coverUrl: String, $username: String!, $dob: Date, $password: String!) {
+    insertUser(email: $email, fullName: $fullName, coverUrl: $coverUrl, username: $username, dob: $dob, password: $password) {
       id
       username
       fullName
@@ -36,6 +36,34 @@ export const ADD_SUBREDDIT = gql`
       isChildrenContent
       created_at
       id
+    }
+  }
+`
+
+export const LOGIN_MUTATION = gql`
+  mutation Login($username: String!, $password: String!) {
+    userSession(username: $username, password: $password) {
+      token
+      user {
+        id
+        username
+        fullName
+        email
+        coverUrl
+        dob
+      }
+    }
+  }
+`
+export const REGISTER_MUTATION = gql`
+  mutation Register($username: String!, $password: String!) {
+    userRegisterSession(username: $username, password: $password) {
+      id
+      username
+      fullName
+      email
+      coverUrl
+      dob
     }
   }
 `

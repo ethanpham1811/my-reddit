@@ -12,17 +12,6 @@ type TRegisterForm = {
   repassword: string
 }
 function RegisterForm({ setIsLoginForm }: TRegisterFormProps) {
-  /* mutations */
-  // const [addPost] = useMutation(ADD_POST, {
-  //   onCompleted: () => {
-  //     toast.success('Your post sucessfully added!')
-  //   },
-  //   onError: (error: ApolloError) => {
-  //     toast.error(error.message)
-  //   },
-  //   refetchQueries: [GET_POST_LIST, 'postList']
-  // })
-
   /* form controllers */
   const {
     reset,
@@ -35,22 +24,26 @@ function RegisterForm({ setIsLoginForm }: TRegisterFormProps) {
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
     const { username, password, repassword } = formData
-    await login({
-      variables: {
+    if (password !== repassword) return
+
+    const result = await fetch(`/api/auth/register`, {
+      method: 'POST',
+      body: JSON.stringify({
         username,
-        password,
-        repassword
-      }
+        password
+      })
     })
-    reset()
+    // result?.error
+    //   ? toast.error(result.error) // Display an error message
+    //   : toast.success('login succeeded')
   })
 
   return (
     <form onSubmit={onSubmit}>
       <Stack spacing={2}>
         <RdInput<TRegisterForm> bgcolor="white" flex={1} control={control} name="username" placeholder="Username" />
-        <RdInput<TRegisterForm> bgcolor="white" flex={1} control={control} name="password" placeholder="Password" />
-        <RdInput<TRegisterForm> bgcolor="white" flex={1} control={control} name="repassword" placeholder="Re-enter your password" />
+        <RdInput<TRegisterForm> type="password" bgcolor="white" flex={1} control={control} name="password" placeholder="Password" />
+        <RdInput<TRegisterForm> type="password" bgcolor="white" flex={1} control={control} name="repassword" placeholder="Re-enter your password" />
         <RdButton text="Register" type="submit" />
         <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
           Back to{' '}

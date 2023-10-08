@@ -22,8 +22,10 @@
     "@types/node": "20.6.0",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
+    "apollo-link-context": "^1.0.20",
     "axios": "^1.5.0",
     "axios-hooks": "^5.0.0",
+    "bcrypt": "^5.1.1",
     "csstype": "^3.1.2",
     "date-fns": "^2.30.0",
     "eslint": "8.49.0",
@@ -45,6 +47,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/lodash": "^4.14.199",
     "@types/react-html-parser": "^2.0.3",
     "@types/uuid": "^9.0.4"

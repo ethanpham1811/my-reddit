@@ -4,7 +4,8 @@ type QueriedTrending {
   body: String!
   groupBy: String
   totalUpvotes: Int
-  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
+  subreddit: Subreddit
+    @materializer(query: "subredditUsingPost_subreddit_id_fkey")
   subreddit_id: ID!
   created_at: Date
 }

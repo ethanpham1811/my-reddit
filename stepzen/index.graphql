@@ -8,6 +8,7 @@ schema
       "postgresql/topic.graphql"
       "postgresql/vote.graphql"
       "postgresql/user.graphql"
+      "postgresql/session.graphql"
     ]
   ) {
   query: Query

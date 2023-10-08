@@ -83,3 +83,5 @@ export function generateAutoCompleteUrl(option: Exclude<TAutocompleteOptions, TQ
   if (isQueriedSub(option)) return `/r/${option.name}`
   return `/u/${option.username}`
 }
+
+// export const pairPassword = async (password: string, dbPassword: string): Promise<boolean> => await bcrypt.compare(password, dbPassword)

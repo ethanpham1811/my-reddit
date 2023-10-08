@@ -1,26 +1,68 @@
 import { client } from '@/apollo-client'
 import { ADD_USER } from '@/graphql/mutations'
 import { GET_USER_BY_USERNAME } from '@/graphql/queries'
+import bcrypt from 'bcrypt'
 import NextAuth from 'next-auth'
+import Credentials from 'next-auth/providers/credentials'
 import RedditProvider from 'next-auth/providers/reddit'
 // import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions = {
-  // Configure one or more authentication providers
+  session: {
+    // strategy: 'jwt'
+    jwt: true,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60 // 24 hours
+  },
+  pages: {
+    signOut: '/auth/signout'
+  },
   providers: [
-    RedditProvider({
-      clientId: process.env.REDDIT_CLIENT_ID,
-      clientSecret: process.env.REDDIT_CLIENT_SECRET
-    })
     // GoogleProvider({
     //   clientId: process.env.REDDIT_CLIENT_ID,
     //   clientSecret: process.env.REDDIT_CLIENT_SECRET
     // })
-    // ...add more providers here
+    RedditProvider({
+      clientId: process.env.REDDIT_CLIENT_ID,
+      clientSecret: process.env.REDDIT_CLIENT_SECRET
+    }),
+    Credentials({
+      // The name to display on the sign-in form (e.g., "Sign in with...")
+      name: 'Credentials',
+      credentials: {
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' }
+      },
+      authorize: async (credentials) => {
+        const { username, password } = credentials
+
+        // check if username has already existed
+        const {
+          data: { userByUsername: existedUser },
+          error
+        } = await client.query({
+          variables: { username },
+          query: GET_USER_BY_USERNAME
+        })
+
+        if (error) throw new Error(error.message)
+        if (!existedUser) throw new Error('User not found')
+
+        // Validate the password (you should hash and compare)
+        const passCheckRes = await bcrypt.compare(password, existedUser.password)
+        if (!passCheckRes) throw new Error('Invalid password')
+
+        return { name: existedUser.username }
+      }
+    })
   ],
   callbacks: {
     async signIn(user, account, profile) {
       if (user) {
+        /* ------------signin with credentials --------------*/
+        if (user.credentials) return Promise.resolve(true)
+
+        /* ----------signin with socials accounts ------------*/
         const {
           user: { email, name: username },
           profile: {
@@ -47,11 +89,21 @@ export const authOptions = {
           mutation: ADD_USER
         })
 
-        return newUser?.insertUser ? true : false
+        return newUser?.insertUser ? true : false // reject if db insertion fails
       }
-      // return false if db insertion fails
+      // reject if no user found
       return Promise.resolve(false)
     }
+    // async redirect({ url, baseUrl }) {
+    //   return baseUrl
+    // },
+    // async session({ session, user }) {
+    //   console.log(session, user)
+    //   return session
+    // }
+    // async jwt({ token, user, account, profile, isNewUser }) {
+    //   return token
+    // }
   }
 }
 

@@ -1,4 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache, from } from '@apollo/client'
+// import { setContext } from 'apollo-link-context'
 
 // const authLink = setContext((_, { headers }) => {
 //   // get the authentication token from local storage if it exists
@@ -18,6 +19,18 @@ const httpLink = new HttpLink({
     Authorization: `Apikey ${process.env.NEXT_PUBLIC_STEPZEN_API_KEY}`
   }
 })
+
+// const authLink = setContext((_, { headers }) => {
+//   // Get the session cookie from your authentication provider
+//   const sessionCookie = 'YOUR_SESSION_COOKIE'
+
+//   return {
+//     headers: {
+//       ...headers,
+//       cookie: sessionCookie ? `next-auth.session=${sessionCookie}` : ''
+//     }
+//   }
+// })
 
 // const errorLink = onError(({ graphQLErrors, networkError }) => {
 //   if (graphQLErrors)

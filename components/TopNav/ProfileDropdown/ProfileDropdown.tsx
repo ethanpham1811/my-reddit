@@ -1,24 +1,23 @@
-import { RdDropdown } from '@/components'
+import { CardLogout, RdDialog, RdDropdown } from '@/components'
 import { generateSeededHexColor, generateUserImage } from '@/components/utilities'
-import { LogoutIcon } from '@/constants/icons'
+import { LogoutIcon, PersonIcon } from '@/constants/icons'
 import { TProfileDropdownProps } from '@/constants/types'
 import { OnlineDotStyle } from '@/mui/styles'
 import { Avatar, Box, MenuItem } from '@mui/material'
-import { signOut } from 'next-auth/react'
-import Image from 'next/image'
 import Link from 'next/link'
-
+import { useState } from 'react'
 import { v4 as rid } from 'uuid'
 
 function ProfileDropdownProp({ session, navigate }: TProfileDropdownProps) {
   // const [page, setPage] = useState('home')
+  const [isOpenedLogoutDialog, setIsOpenedLogoutDialog] = useState(false)
   const user = session?.user
 
   const list = [
     {
       name: 'Profile',
       value: 'profile',
-      url: '/u/Ok_Inflation4166'
+      url: `/u/${user?.name}`
     },
     {
       name: 'Ai generated arts',
@@ -71,10 +70,10 @@ function ProfileDropdownProp({ session, navigate }: TProfileDropdownProps) {
       {session && list.length > 0 ? (
         list.map(({ name, value, url }) => {
           return (
-            <Link href={url} key={`menu_${rid()}`}>
-              <MenuItem value={value}>
-                <Image alt={`${name} icon`} src={generateUserImage(name)} width={20} height={20} />
+            <Link href={url} key={`menu_${rid()}`} style={{ textDecoration: 'none', color: 'unset' }}>
+              <MenuItem value={value} sx={{ '&.MuiButtonBase-root': { justifyContent: 'flex-end' } }}>
                 {name || 'unknown'}
+                <PersonIcon />
               </MenuItem>
             </Link>
           )
@@ -82,10 +81,22 @@ function ProfileDropdownProp({ session, navigate }: TProfileDropdownProps) {
       ) : (
         <div></div>
       )}
-      <MenuItem onClick={() => signOut()}>
-        <LogoutIcon />
+      <MenuItem
+        sx={{
+          '&.MuiButtonBase-root': { fontWeight: 600, justifyContent: 'flex-end', color: 'orange.main', '&:hover': { bgcolor: 'primary.main' } }
+        }}
+        onClick={(e) => {
+          e.stopPropagation()
+          e.preventDefault()
+          setIsOpenedLogoutDialog(true)
+        }}
+      >
         Logout
+        <LogoutIcon />
       </MenuItem>
+      <RdDialog open={isOpenedLogoutDialog} setOpen={setIsOpenedLogoutDialog}>
+        <CardLogout setOpen={setIsOpenedLogoutDialog} />
+      </RdDialog>
     </RdDropdown>
   )
 }
