@@ -1,8 +1,21 @@
 import { gql } from '@apollo/client'
 
+export const ADD_USER = gql`
+  mutation AddUser($email: String, $fullName: String, $coverUrl: String, $username: String!, $dob: Date) {
+    insertUser(email: $email, fullName: $fullName, coverUrl: $coverUrl, username: $username, dob: $dob) {
+      id
+      username
+      fullName
+      email
+      coverUrl
+      dob
+    }
+  }
+`
+
 export const ADD_POST = gql`
   mutation AddPost($body: String!, $images: String, $subreddit_id: ID!, $title: String!, $user_id: ID!) {
-    insertPost(body: $body, title: $title, user_id: $username, subreddit_id: $subreddit_id, images: $images) {
+    insertPost(body: $body, title: $title, user_id: $user_id, subreddit_id: $subreddit_id, images: $images) {
       body
       created_at
       id

@@ -40,7 +40,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "constants/data.tss"  
+    "constants/data.tss",
+    "pages/api/auth/[...nextauth].js"
   ],
   "exclude": [
     "node_modules",

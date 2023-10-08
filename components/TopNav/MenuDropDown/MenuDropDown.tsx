@@ -20,8 +20,6 @@ function MenuDropDown({ session, subListData, subName, userName, pathName }: TMe
   // },[subredditList])
 
   const activePage: string = pathName === '/' ? 'Home' : (userName as string) ?? (subName as string)
-  console.log(activePage)
-  console.log(userName)
 
   /* Mock data--------------------------------- */
   const feedsOptions: TMenuItem[] = [
@@ -45,7 +43,6 @@ function MenuDropDown({ session, subListData, subName, userName, pathName }: TMe
       ]
     : []
   /* End Mock data----------------------- */
-  console.log(peopleOptions)
 
   function handleFilter(e: React.ChangeEvent<HTMLInputElement>) {
     setFilterTerm(e.target.value)

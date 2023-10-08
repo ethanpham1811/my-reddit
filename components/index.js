@@ -11,8 +11,8 @@ import CommunityCreator from './CommunityCreator/CommunityCreator'
 import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/IsChildrenGroupCheckbox'
 import TopicDropdown from './CommunityCreator/TopicDropdown/TopicDropdown'
 import MainLayout from './Layouts/MainLayout'
+import LoginPortal from './LoginPortal/LoginPortal'
 import NewFeeds from './NewFeeds/NewFeeds'
-import NoOwnedPost from './NewFeeds/NoOwnedPost/NoOwnedPost'
 import SubredditTopNav from './SubredditTopNav/SubredditTopNav'
 import IconBox from './TopNav/IconBox/IconBox'
 import Logo from './TopNav/Logo/Logo'
@@ -25,6 +25,7 @@ import RdButton from './utilities/RdButton/RdButton'
 import RdCard from './utilities/RdCard/RdCard'
 import RdCheckbox from './utilities/RdCheckbox/RdCheckbox'
 import RdChip from './utilities/RdChip/RdChip'
+import RdDialog from './utilities/RdDialog/RdDialog'
 import RdDrawer from './utilities/RdDrawer/RdDrawer'
 import RdDropdown from './utilities/RdDropdown/RdDropdown'
 import RdImageCarousel from './utilities/RdImageCarousel/RdImageCarousel'
@@ -44,7 +45,6 @@ export {
   CardCreatePost,
   CardFeedSorter,
   CardHomeInfo,
-  NoOwnedPost as CardNoOwnedPost,
   CardNotFound,
   CardPost,
   CardSubredditInfo,
@@ -52,6 +52,7 @@ export {
   CommunityCreator,
   IconBox,
   IsChildrenGroupCheckbox,
+  LoginPortal,
   Logo,
   MainLayout,
   MenuDropDown,
@@ -62,6 +63,7 @@ export {
   RdCard,
   RdCheckbox,
   RdChip,
+  RdDialog,
   RdDrawer,
   RdDropdown,
   RdImageCarousel,

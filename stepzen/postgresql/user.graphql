@@ -3,9 +3,9 @@ type User {
   coverUrl: String
   created_at: DateTime!
   dob: Date
-  email: String!
+  email: String
   followers: ID
-  fullName: String!
+  fullName: String
   id: ID!
   karma: ID
   photoUrl: String
@@ -97,17 +97,8 @@ Feel free to modify them or aggregate more.
 type Mutation {
   " Mutations for type 'User' "
   deleteUser(id: ID!): User @dbquery(type: "postgresql", schema: "public", table: "user", dml: DELETE, configuration: "postgresql_config")
-  insertUser(
-    email: String!
-    fullName: String!
-    followers: ID
-    created_at: DateTime!
-    karma: ID
-    coverUrl: String
-    photoUrl: String
-    username: String!
-    dob: Date
-  ): User @dbquery(type: "postgresql", schema: "public", table: "user", dml: INSERT, configuration: "postgresql_config")
+  insertUser(email: String, fullName: String, coverUrl: String, username: String!, dob: Date): User
+    @dbquery(type: "postgresql", schema: "public", table: "user", dml: INSERT, configuration: "postgresql_config")
   updateUser(
     id: ID!
     coverUrl: String

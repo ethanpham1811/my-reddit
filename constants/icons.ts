@@ -12,6 +12,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LinkIcon from '@mui/icons-material/Link'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import LockIcon from '@mui/icons-material/Lock'
+import LogoutIcon from '@mui/icons-material/Logout'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import OutboundOutlinedIcon from '@mui/icons-material/OutboundOutlined'
@@ -23,6 +24,8 @@ import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined'
 import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
+import { BsReddit } from 'react-icons/bs'
+import { FcGoogle } from 'react-icons/fc'
 
 export {
   AddSharpIcon,
@@ -30,8 +33,10 @@ export {
   ArrowDownwardOutlinedIcon,
   ArrowForwardIosIcon,
   ArrowUpwardOutlinedIcon,
+  BsReddit,
   CampaignOutlinedIcon,
   CloseIcon,
+  FcGoogle,
   HighlightOffOutlinedIcon,
   HomeIcon,
   ImageOutlinedIcon,
@@ -39,6 +44,7 @@ export {
   LinkIcon,
   LocalFireDepartmentIcon,
   LockIcon,
+  LogoutIcon,
   NotificationsIcon,
   NotificationsOutlinedIcon,
   OutboundOutlinedIcon,

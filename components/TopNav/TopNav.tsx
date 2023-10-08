@@ -3,6 +3,7 @@ import { AppBar, Box, Stack, styled } from '@mui/material'
 import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
+import LoginButton from './LoginButton/LoginButton'
 
 const NavBar = styled(AppBar)(({ theme }) => {
   return {
@@ -39,7 +40,7 @@ function TopNav({ subListData, session, router }: TTopNavProps) {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <IconBox />
             {/* Profile dropdown */}
-            <ProfileDropdown session={session} navigate={navigate} />
+            {session ? <ProfileDropdown session={session} navigate={navigate} /> : <LoginButton />}
           </Stack>
         </Stack>
       </NavBar>

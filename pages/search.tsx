@@ -11,8 +11,8 @@ const Search: NextPage = () => {
   const searchTerm = q ?? ''
   const tabKey = q ?? SEARCH_TABS.Post
 
-  console.log(searchTerm)
-  console.log(tabKey)
+  // console.log(searchTerm)
+  // console.log(tabKey)
 
   return (
     <div>

@@ -1,10 +1,13 @@
 import { RdDropdown } from '@/components'
 import { generateSeededHexColor, generateUserImage } from '@/components/utilities'
+import { LogoutIcon } from '@/constants/icons'
 import { TProfileDropdownProps } from '@/constants/types'
 import { OnlineDotStyle } from '@/mui/styles'
 import { Avatar, Box, MenuItem } from '@mui/material'
+import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+
 import { v4 as rid } from 'uuid'
 
 function ProfileDropdownProp({ session, navigate }: TProfileDropdownProps) {
@@ -70,7 +73,7 @@ function ProfileDropdownProp({ session, navigate }: TProfileDropdownProps) {
           return (
             <Link href={url} key={`menu_${rid()}`}>
               <MenuItem value={value}>
-                <Image alt={`${name} image`} src={generateUserImage(name)} width={20} height={20} />
+                <Image alt={`${name} icon`} src={generateUserImage(name)} width={20} height={20} />
                 {name || 'unknown'}
               </MenuItem>
             </Link>
@@ -79,6 +82,10 @@ function ProfileDropdownProp({ session, navigate }: TProfileDropdownProps) {
       ) : (
         <div></div>
       )}
+      <MenuItem onClick={() => signOut()}>
+        <LogoutIcon />
+        Logout
+      </MenuItem>
     </RdDropdown>
   )
 }
