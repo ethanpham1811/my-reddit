@@ -40,6 +40,7 @@ function LoginForm({ setIsLoginForm, newUsername }: TLoginFormProps) {
       username,
       password
     })
+    console.log(result)
     result?.error
       ? setError(true) // Display an error message
       : toast.success('login succeeded')

@@ -1,9 +1,8 @@
 import { NotificationsIcon } from '@/constants/icons'
-import coverUrl from '@/public/1.jpg'
 import { AppBar, Avatar, Box, Container, IconButton, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import { RdButton } from '..'
-import { generateSeededHexColor, generateUserImage } from '../../services'
+import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../services'
 
 const SubredditNavBar = styled(AppBar)(({ theme }) => {
   return {
@@ -24,7 +23,14 @@ function SubredditTopNav({ name, headline }: TSubredditTopNavProps) {
   return (
     <Box flexGrow={1}>
       <SubredditNavBar sx={{ pb: 2 }}>
-        <Image src={coverUrl} style={{ width: '100%', height: '30vh', objectFit: 'cover' }} alt="subreddit cover" aria-label="subreddit cover" />
+        <Image
+          src={generateUserCover(name, 2000, 300)}
+          width={2000}
+          height={300}
+          style={{ width: '100%', height: '30vh', objectFit: 'cover' }}
+          alt="subreddit cover"
+          aria-label="subreddit cover"
+        />
         <Container maxWidth="md" sx={{ pt: 2 }}>
           <Stack direction="row" justifyContent="flex-start">
             <Avatar

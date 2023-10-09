@@ -34,7 +34,7 @@ function SearchBarInput({ params, chip, name, onDeleteChip }: TInputProps) {
           onDelete={onDeleteChip}
           deleteIcon={<HighlightOffOutlinedIcon sx={{ opacity: 0.6, color: '#1A1A1B !important' }} />}
           label={`r/${name}`}
-          sx={{ bgcolor: 'inputBorder.main', mr: 1, height: 28 }}
+          sx={{ mr: 1, height: 28 }}
         />
       )}
     </Stack>

@@ -1,7 +1,6 @@
 import { SESSION_STATUS } from '@/constants/enums'
-import { SessionStatus, TUseSubredditListResponse } from '@/constants/types'
+import { TSession, TUseSubredditListResponse } from '@/constants/types'
 import { AppBar, Box, Stack, styled } from '@mui/material'
-import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
 import LoginButton from './LoginButton/LoginButton'
@@ -14,7 +13,6 @@ const NavBar = styled(AppBar)(({ theme }) => {
   }
 })
 
-type TSession = { data: Session | null; status: SessionStatus }
 type TTopNavProps = {
   subListData: TUseSubredditListResponse
   session: TSession

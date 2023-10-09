@@ -26,7 +26,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
     onError: (error: ApolloError) => {
       toast.error(error.message)
     },
-    refetchQueries: [GET_POST_LIST, 'postList']
+    refetchQueries: [GET_POST_LIST]
   })
 
   /* form controllers */
@@ -39,7 +39,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
   } = useForm<TCardCreatePostForm>()
   const titleValue = watch('title')
   const imagesValue = watch('images')
-  titleValue === '' && reset()
+  // titleValue === '' && reset()
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
@@ -61,7 +61,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
   })
 
   return (
-    <RdCard>
+    <RdCard sx={{ p: 1.5 }}>
       <form onSubmit={onSubmit}>
         <Stack direction="row" useFlexGap spacing={1}>
           <OnlineDotStyle overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">

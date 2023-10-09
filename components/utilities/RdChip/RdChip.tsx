@@ -5,8 +5,8 @@ type TRdChipProps = ChipOwnProps & {
   shape?: BORDER_TYPES
 }
 
-function RdChip({ shape = BORDER_TYPES.Circular, ...props }: TRdChipProps) {
-  return <Chip sx={{ borderRadius: shape }} {...props} />
+function RdChip({ shape = BORDER_TYPES.Circular, sx, ...rest }: TRdChipProps) {
+  return <Chip sx={{ borderRadius: shape, ...sx }} {...rest} />
 }
 
 export default RdChip

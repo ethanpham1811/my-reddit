@@ -1,6 +1,6 @@
 import { client } from '@/apollo-client'
 import { ADD_USER } from '@/graphql/mutations'
-import { GET_USER_BY_USERNAME } from '@/graphql/queries'
+import { findUser } from '@/services'
 import { hash } from 'bcrypt'
 
 export default async function register(req, res) {
@@ -8,14 +8,7 @@ export default async function register(req, res) {
     const { username, password } = req.body
 
     // check if username has already existed
-    const {
-      data: { userByUsername: existedUser },
-      error: existedUserError
-    } = await client.query({
-      variables: { username },
-      query: GET_USER_BY_USERNAME
-    })
-    if (existedUserError) throw new Error(existedUserError.message)
+    const existedUser = await findUser(username, password)
     if (existedUser) throw new Error('Username has existed')
 
     /* If username does not exist, insert the new user */

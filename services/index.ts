@@ -1,4 +1,6 @@
+import { client } from '@/apollo-client'
 import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TQueryNotFound, TVote } from '@/constants/types'
+import { GET_USER_BY_USERNAME } from '@/graphql/queries'
 import { supabase } from '@/pages/_app'
 import { ApolloError } from '@apollo/client'
 import toast from 'react-hot-toast'
@@ -34,6 +36,8 @@ export const uploadFiles = async (files: FileList): Promise<string[]> => {
 
 /*------------------------------------------ Generators ----------------------------------------- */
 export const generateUserImage = (seed: string | null | undefined): string => `https://robohash.org/${seed ?? 'seed'}.png`
+export const generateUserCover = (seed: string | null | undefined, width: number, height: number): string =>
+  `https://picsum.photos/seed/${seed ?? 'seed'}/${width}/${height}`
 export const generateSeededHexColor = (seed: string | null | undefined): string => {
   let sum = 0
   for (const letter of seed || 'seed') sum += letter.charCodeAt(0)
@@ -92,16 +96,45 @@ export const usernameValidation = (value: string): boolean | string => {
   if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(value)) {
     return 'It should start with an alphabet, should contain "_", no space allowed'
   }
-  if (value.length < 5) return 'Username must be at least 5 characters long'
+  if (value?.length < 5) return 'Username must be at least 5 characters long'
   return true
 }
 export const passwordValidation = (value: string): boolean | string => {
   if (value == '') return 'Password is required'
-  if (value.length < 3) return 'Password must be at least 3 characters long'
+  if (value?.length < 3) return 'Password must be at least 3 characters long'
   return true
 }
 export const rePasswordValidation = (value: string, password: string): boolean | string => {
   if (value == '') return 'You need to re-type your password'
   if (value !== password) return `Your passwords doesn't match`
   return true
+}
+export const emailValidation = (value: string): boolean | string => {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+  if (value === '') return true
+  if (!emailRegex.test(value)) return 'Invalid email address'
+  return true
+}
+export const fullNameValidation = (value: string): boolean | string => {
+  const nameRegex = /^[A-Za-z]+( [A-Za-z]+)*$/
+  if (value === '') return true
+  if (value?.length > 16) return 'Sorry, too long'
+  if (!nameRegex.test(value)) return 'Invalid name'
+  return true
+}
+
+/*------------------------------------- Server side utils --------------------------------------- */
+// A separate function to check if a user exists and validate credentials
+export const findUser = async (username: string) => {
+  const {
+    data: { userByUsername: existedUser },
+    error
+  } = await client.query({
+    variables: { username },
+    query: GET_USER_BY_USERNAME
+  })
+
+  if (error) throw new Error(error.message)
+
+  return existedUser
 }

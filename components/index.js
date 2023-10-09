@@ -32,6 +32,7 @@ import RdDropdown from './utilities/RdDropdown/RdDropdown'
 import RdImageCarousel from './utilities/RdImageCarousel/RdImageCarousel'
 import RdImageList from './utilities/RdImageList/RdImageList'
 import RdImageUploader from './utilities/RdImageUploader/RdImageUploader'
+import RdInlineInput from './utilities/RdInput/RdInlineInput'
 import RdInput from './utilities/RdInput/RdInput'
 import RdMultipleDropdown from './utilities/RdMultipleDropdown/RdMultipleDropdown'
 import RdNotiBubble from './utilities/RdNotiBubble/RdNotiBubble'
@@ -71,6 +72,7 @@ export {
   RdImageCarousel,
   RdImageList,
   RdImageUploader,
+  RdInlineInput,
   RdInput,
   RdMultipleDropdown,
   RdNotiBubble,

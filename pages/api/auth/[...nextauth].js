@@ -1,6 +1,7 @@
 import { client } from '@/apollo-client'
 import { ADD_USER } from '@/graphql/mutations'
 import { GET_USER_BY_USERNAME } from '@/graphql/queries'
+import { findUser } from '@/services'
 import bcrypt from 'bcrypt'
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
@@ -34,16 +35,10 @@ export const authOptions = {
         const { username, password } = credentials
 
         // check if username has already existed
-        const {
-          data: { userByUsername: existedUser },
-          error
-        } = await client.query({
-          variables: { username },
-          query: GET_USER_BY_USERNAME
-        })
+        const existedUser = await findUser(username, password)
+        console.log(existedUser)
 
-        if (error) throw new Error(error.message)
-        if (!existedUser) throw new Error('User not found')
+        if (!existedUser || !existedUser.password) throw new Error('User not found')
 
         // Validate the password (you should hash and compare)
         const passCheckRes = await bcrypt.compare(password, existedUser.password)
@@ -58,7 +53,7 @@ export const authOptions = {
       console.log(user, account, profile)
       if (user) {
         /* ------------signin with credentials --------------*/
-        if (account.provider === 'credentials') Promise.resolve(true)
+        if (account.provider === 'credentials') return Promise.resolve(true)
 
         /* ----------signin with Reddit account ------------*/
         if (account.provider === 'reddit') {

@@ -15,7 +15,7 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
-import { Dispatch, ReactNode, SetStateAction } from 'react'
+import { Dispatch, FocusEvent, KeyboardEvent, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD } from './enums'
 
@@ -240,6 +240,18 @@ export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
   bgcolor?: string
   endIcon?: ReactNode
 }
+export type TRdInlineInputProps<T extends FieldValues> = TextFieldProps & {
+  registerOptions?: RegisterOptions
+  editable?: boolean
+  name: FieldPath<T>
+  control: Control<T>
+  helper?: string
+  width?: string
+  flex?: number
+  bgcolor?: string
+  endIcon?: ReactNode
+  onSubmit: (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element> | KeyboardEvent<HTMLDivElement>, field: T) => void
+}
 export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
   helper?: string
   width?: string
@@ -294,4 +306,5 @@ export type TQueryNotFound = {
 export type TAutocompleteOptions = TQueriedTrending | TQueriedSub | TQueriedUser | TQueryNotFound
 
 /* ------------------------------------------- Next auth Types-------------------------------------------- */
+export type TSession = { data: Session | null; status: SessionStatus }
 export type SessionStatus = 'loading' | 'authenticated' | 'unauthenticated'

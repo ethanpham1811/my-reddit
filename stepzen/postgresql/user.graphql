@@ -98,12 +98,11 @@ Feel free to modify them or aggregate more.
 type Mutation {
   " Mutations for type 'User' "
   deleteUser(id: ID!): User @dbquery(type: "postgresql", schema: "public", table: "user", dml: DELETE, configuration: "postgresql_config")
-  insertUser(email: String, fullName: String, coverUrl: String, username: String!, dob: Date, password: String!): User
+  insertUser(email: String, fullName: String, coverUrl: String, username: String!, dob: Date, password: String): User
     @dbquery(type: "postgresql", schema: "public", table: "user", dml: INSERT, configuration: "postgresql_config")
   updateUser(
     id: ID!
     coverUrl: String
-    created_at: DateTime
     dob: Date
     email: String
     followers: ID
@@ -111,6 +110,7 @@ type Mutation {
     karma: ID
     photoUrl: String
     username: String
+    password: String
   ): User
     @dbquery(
       type: "postgresql"
@@ -118,15 +118,14 @@ type Mutation {
       query: """
       UPDATE "user" SET
         "coverUrl" = COALESCE($2, "coverUrl"),
-        "created_at" = COALESCE($3, "created_at"),
-        "dob" = COALESCE($4, "dob"),
-        "email" = COALESCE($5, "email"),
-        "followers" = COALESCE($6, "followers"),
-        "fullName" = COALESCE($7, "fullName"),
-        "karma" = COALESCE($8, "karma"),
-        "password" = COALESCE($9, "password"),
-        "photoUrl" = COALESCE($10, "photoUrl"),
-        "username" = COALESCE($11, "username")
+        "dob" = COALESCE($3, "dob"),
+        "email" = COALESCE($4, "email"),
+        "followers" = COALESCE($5, "followers"),
+        "fullName" = COALESCE($6, "fullName"),
+        "karma" = COALESCE($7, "karma"),
+        "photoUrl" = COALESCE($8, "photoUrl"),
+        "username" = COALESCE($9, "username"),
+        "password" = COALESCE($10, "password")
       WHERE
         "id" = $1
       RETURNING *
