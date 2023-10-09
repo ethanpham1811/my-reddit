@@ -292,3 +292,6 @@ export type TQueryNotFound = {
   groupBy: string
 }
 export type TAutocompleteOptions = TQueriedTrending | TQueriedSub | TQueriedUser | TQueryNotFound
+
+/* ------------------------------------------- Next auth Types-------------------------------------------- */
+export type SessionStatus = 'loading' | 'authenticated' | 'unauthenticated'

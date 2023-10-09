@@ -1,4 +1,5 @@
-import { TUseSubredditListResponse } from '@/constants/types'
+import { SESSION_STATUS } from '@/constants/enums'
+import { SessionStatus, TUseSubredditListResponse } from '@/constants/types'
 import { AppBar, Box, Stack, styled } from '@mui/material'
 import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
@@ -13,9 +14,10 @@ const NavBar = styled(AppBar)(({ theme }) => {
   }
 })
 
+type TSession = { data: Session | null; status: SessionStatus }
 type TTopNavProps = {
   subListData: TUseSubredditListResponse
-  session: Session | null
+  session: TSession
   router: NextRouter
 }
 
@@ -32,15 +34,16 @@ function TopNav({ subListData, session, router }: TTopNavProps) {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <Logo />
             {/* dropdown */}
-            <MenuDropDown session={session} subName={subName} userName={username} pathName={pathName} subListData={subListData} />
+            <MenuDropDown session={session.data} subName={subName} userName={username} pathName={pathName} subListData={subListData} />
           </Stack>
           {/* search */}
-          <SearchBar session={session} subOrUserName={subName ?? username} pathName={pathName} navigate={navigate} />
+          <SearchBar session={session.data} subOrUserName={subName ?? username} pathName={pathName} navigate={navigate} />
           {/* Icons */}
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <IconBox />
             {/* Profile dropdown */}
-            {session ? <ProfileDropdown session={session} navigate={navigate} /> : <LoginButton />}
+            {session.status === SESSION_STATUS.Authenticated && <ProfileDropdown session={session.data} navigate={navigate} />}
+            {session.status === SESSION_STATUS.Unauthenticated && <LoginButton />}
           </Stack>
         </Stack>
       </NavBar>

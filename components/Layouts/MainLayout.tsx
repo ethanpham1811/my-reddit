@@ -7,8 +7,8 @@ import { Toaster } from 'react-hot-toast'
 import { TopNav } from '..'
 
 export default function MainLayout({ children }: { children: ReactNode }) {
-  const { data: session, status } = useSession()
-  console.log(session, status)
+  const { data, status } = useSession()
+  console.log(data, status)
   const router = useRouter()
   const subListData = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
 
@@ -18,7 +18,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   // })
   return (
     <>
-      <TopNav subListData={subListData} session={session} router={router} />
+      <TopNav subListData={subListData} session={{ data, status }} router={router} />
       <main>{children}</main>
       <Toaster />
     </>

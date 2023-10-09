@@ -59,45 +59,49 @@ function ProfileDropdownProp({ session, navigate }: TProfileDropdownProps) {
   }
 
   return (
-    <RdDropdown
-      // value={page}
-      flex={1}
-      mobileMode
-      minWidth="200px"
-      borderColor="inputBorder"
-      renderSelectedOption={renderSelectedOption}
-    >
-      {session && list.length > 0 ? (
-        list.map(({ name, value, url }) => {
-          return (
-            <Link href={url} key={`menu_${rid()}`} style={{ textDecoration: 'none', color: 'unset' }}>
-              <MenuItem value={value} sx={{ '&.MuiButtonBase-root': { justifyContent: 'flex-end' } }}>
-                {name || 'unknown'}
-                <PersonIcon />
-              </MenuItem>
-            </Link>
-          )
-        })
-      ) : (
-        <div></div>
-      )}
-      <MenuItem
-        sx={{
-          '&.MuiButtonBase-root': { fontWeight: 600, justifyContent: 'flex-end', color: 'orange.main', '&:hover': { bgcolor: 'primary.main' } }
-        }}
-        onClick={(e) => {
-          e.stopPropagation()
-          e.preventDefault()
-          setIsOpenedLogoutDialog(true)
-        }}
+    <>
+      <RdDropdown
+        // value={page}
+        flex={1}
+        mobileMode
+        minWidth="200px"
+        borderColor="inputBorder"
+        renderSelectedOption={renderSelectedOption}
       >
-        Logout
-        <LogoutIcon />
-      </MenuItem>
+        {session && list.length > 0 ? (
+          list.map(({ name, value, url }) => {
+            return (
+              <MenuItem value={value} key={`menu_${rid()}`} sx={{ '&.MuiButtonBase-root': { p: 0 } }}>
+                <Link
+                  href={url}
+                  style={{ padding: '6px 16px', display: 'flex', flex: '1', justifyContent: 'flex-end', textDecoration: 'none', color: 'unset' }}
+                >
+                  {name || 'unknown'}
+                  <PersonIcon />
+                </Link>
+              </MenuItem>
+            )
+          })
+        ) : (
+          <div></div>
+        )}
+        <MenuItem
+          sx={{
+            '&.MuiButtonBase-root': { fontWeight: 600, justifyContent: 'flex-end', color: 'orange.main', '&:hover': { bgcolor: 'primary.main' } }
+          }}
+          onClick={(e) => {
+            setIsOpenedLogoutDialog(true)
+          }}
+        >
+          Logout
+          <LogoutIcon />
+        </MenuItem>
+      </RdDropdown>
+
       <RdDialog open={isOpenedLogoutDialog} setOpen={setIsOpenedLogoutDialog}>
         <CardLogout setOpen={setIsOpenedLogoutDialog} />
       </RdDialog>
-    </RdDropdown>
+    </>
   )
 }
 

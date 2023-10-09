@@ -14,9 +14,6 @@ export const authOptions = {
     // maxAge: 30 * 24 * 60 * 60, // 30 days
     // updateAge: 24 * 60 * 60 // 24 hours
   },
-  pages: {
-    signOut: '/auth/signout'
-  },
   providers: [
     // GoogleProvider({
     //   clientId: process.env.REDDIT_CLIENT_ID,
@@ -51,45 +48,43 @@ export const authOptions = {
         // Validate the password (you should hash and compare)
         const passCheckRes = await bcrypt.compare(password, existedUser.password)
         if (!passCheckRes) throw new Error('Invalid password')
-
+        console.log(existedUser)
         return existedUser
       }
     })
   ],
   callbacks: {
-    async signIn(user, account, profile) {
+    async signIn({ user, account, profile }) {
+      console.log(user, account, profile)
       if (user) {
         /* ------------signin with credentials --------------*/
-        if (user.credentials) return Promise.resolve(true)
+        if (account.provider === 'credentials') Promise.resolve(true)
 
-        /* ----------signin with socials accounts ------------*/
-        const {
-          user: { email, name: username },
-          profile: {
-            subreddit: { banner_img: coverUrl }
-          }
-        } = user
+        /* ----------signin with Reddit account ------------*/
+        if (account.provider === 'reddit') {
+          const { email, name: username } = user
+          const coverUrl = profile?.subreddit?.banner_img
 
-        // check if username has already existed
-        const { data: existedUser } = await client.query({
-          variables: { username },
-          query: GET_USER_BY_USERNAME
-        })
+          // check if username has already existed
+          const { data: existedUser } = await client.query({
+            variables: { username },
+            query: GET_USER_BY_USERNAME
+          })
+          // Return existed user
+          if (existedUser?.userByUsername) return true
 
-        // Return existed user
-        if (existedUser?.userByUsername) return true
+          // If username does not exist, insert the new user
+          const { data: newUser } = await client.mutate({
+            variables: {
+              email,
+              username,
+              coverUrl
+            },
+            mutation: ADD_USER
+          })
 
-        // If username does not exist, insert the new user
-        const { data: newUser } = await client.mutate({
-          variables: {
-            email,
-            username,
-            coverUrl
-          },
-          mutation: ADD_USER
-        })
-
-        return newUser?.insertUser ? true : false // reject if db insertion fails
+          return newUser?.insertUser ? true : false // reject if db insertion fails
+        }
       }
       // reject if no user found
       return Promise.resolve(false)
@@ -97,14 +92,8 @@ export const authOptions = {
     // async redirect({ url, baseUrl }) {
     //   return baseUrl
     // },
-    async createUser(user) {
-      // After registering the user, store newUser data in the session
-      const session = await getSession({ req })
-      session.user = user // Assuming `newUser` is available as `user`
-
-      return user
-    },
     async jwt({ token, account, user, session, trigger }) {
+      console.log(account, user, token)
       if (trigger === 'update' && session?.name) token.name = session.name
 
       if (account) token.accessToken = account.access_token
@@ -113,12 +102,13 @@ export const authOptions = {
         return {
           ...token,
           id: user.id,
-          name: user.username
+          name: user.username || user.name
         }
       }
       return token
     },
     async session({ token, user, session }) {
+      console.log(token, user, session)
       session.accessToken = token.accessToken
       if (token) {
         return {
@@ -133,7 +123,7 @@ export const authOptions = {
       }
       return session
     },
-    secret: process.env.NEXT_AUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
     debug: process.env.NODE_ENV === 'development'
   }
 }

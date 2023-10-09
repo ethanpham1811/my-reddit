@@ -30,3 +30,8 @@ export enum SEARCH_TABS {
   Communities = 'subreddit',
   People = 'user'
 }
+export enum SESSION_STATUS {
+  Loading = 'loading',
+  Authenticated = 'authenticated',
+  Unauthenticated = 'unauthenticated'
+}
