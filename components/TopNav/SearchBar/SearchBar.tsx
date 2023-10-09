@@ -1,7 +1,7 @@
 import { RdAutoComplete } from '@/components'
-import { generateAutoCompleteUrl, isNotFound } from '@/components/utilities'
 import { TAutocompleteOptions } from '@/constants/types'
 import useTopSearchQueriedList from '@/hooks/useTopSearchQueriedList'
+import { generateAutoCompleteUrl, isNotFound } from '@/services'
 import { AutocompleteRenderInputParams, Box } from '@mui/material'
 import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'

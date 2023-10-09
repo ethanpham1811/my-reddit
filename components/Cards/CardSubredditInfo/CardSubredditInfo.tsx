@@ -1,6 +1,6 @@
 import { RdSkeleton } from '@/components/Skeletons'
-import { formatNumber, generateSeededHexColor } from '@/components/utilities'
 import { TSubredditDetail } from '@/constants/types'
+import { formatNumber, generateSeededHexColor } from '@/services'
 import { Box, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material'
 import { RdButton, RdCard } from '../..'
 

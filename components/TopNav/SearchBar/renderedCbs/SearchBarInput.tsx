@@ -1,8 +1,8 @@
 import { AutocompleteRenderInputParams, Avatar, Stack, TextField } from '@mui/material'
 
 import { RdChip } from '@/components'
-import { generateSeededHexColor, generateUserImage } from '@/components/utilities'
 import { HighlightOffOutlinedIcon } from '@/constants/icons'
+import { generateSeededHexColor, generateUserImage } from '@/services'
 import SearchIcon from '@mui/icons-material/Search'
 
 type TInputProps = {

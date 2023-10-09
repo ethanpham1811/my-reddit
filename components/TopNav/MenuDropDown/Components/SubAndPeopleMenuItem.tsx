@@ -1,4 +1,4 @@
-import { generateSeededHexColor, generateUserImage } from '@/components/utilities'
+import { generateSeededHexColor, generateUserImage } from '@/services'
 import { Avatar, ListItemText, MenuItem } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'

@@ -9,10 +9,10 @@ import RedditProvider from 'next-auth/providers/reddit'
 
 export const authOptions = {
   session: {
-    // strategy: 'jwt'
-    jwt: true,
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60 // 24 hours
+    strategy: 'jwt'
+    // jwt: true,
+    // maxAge: 30 * 24 * 60 * 60, // 30 days
+    // updateAge: 24 * 60 * 60 // 24 hours
   },
   pages: {
     signOut: '/auth/signout'
@@ -52,7 +52,7 @@ export const authOptions = {
         const passCheckRes = await bcrypt.compare(password, existedUser.password)
         if (!passCheckRes) throw new Error('Invalid password')
 
-        return { name: existedUser.username }
+        return existedUser
       }
     })
   ],
@@ -93,17 +93,48 @@ export const authOptions = {
       }
       // reject if no user found
       return Promise.resolve(false)
-    }
+    },
     // async redirect({ url, baseUrl }) {
     //   return baseUrl
     // },
-    // async session({ session, user }) {
-    //   console.log(session, user)
-    //   return session
-    // }
-    // async jwt({ token, user, account, profile, isNewUser }) {
-    //   return token
-    // }
+    async createUser(user) {
+      // After registering the user, store newUser data in the session
+      const session = await getSession({ req })
+      session.user = user // Assuming `newUser` is available as `user`
+
+      return user
+    },
+    async jwt({ token, account, user, session, trigger }) {
+      if (trigger === 'update' && session?.name) token.name = session.name
+
+      if (account) token.accessToken = account.access_token
+
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+          name: user.username
+        }
+      }
+      return token
+    },
+    async session({ token, user, session }) {
+      session.accessToken = token.accessToken
+      if (token) {
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            id: token.id,
+            name: token.name,
+            accessToken: token.accessToken
+          }
+        }
+      }
+      return session
+    },
+    secret: process.env.NEXT_AUTH_SECRET,
+    debug: process.env.NODE_ENV === 'development'
   }
 }
 

@@ -17,12 +17,14 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import OutboundOutlinedIcon from '@mui/icons-material/OutboundOutlined'
 import PersonIcon from '@mui/icons-material/Person'
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RocketIcon from '@mui/icons-material/Rocket'
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined'
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined'
 import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import { BsReddit } from 'react-icons/bs'
 import { FcGoogle } from 'react-icons/fc'
@@ -49,11 +51,13 @@ export {
   NotificationsOutlinedIcon,
   OutboundOutlinedIcon,
   PersonIcon,
+  PriorityHighIcon,
   RemoveRedEyeIcon,
   RocketIcon,
   SecurityOutlinedIcon,
   SmsOutlinedIcon,
   SwapVertOutlinedIcon,
   TrendingUpOutlinedIcon,
+  VisibilityOffIcon,
   WbSunnyIcon
 }

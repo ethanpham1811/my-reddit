@@ -5,7 +5,7 @@ import orderBy from 'lodash/orderBy'
 import { Dispatch, SetStateAction } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost } from '..'
-import { getTotalUpvote } from '../utilities'
+import { getTotalUpvote } from '../../services'
 import NoOwnedPost from './NoOwnedPost/NoOwnedPost'
 
 type TNewFeedsProps = {

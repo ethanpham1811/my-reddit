@@ -1,3 +1,5 @@
+import { OutboundOutlinedIcon } from '@/constants/icons'
+import { TAutocompleteOptions } from '@/constants/types'
 import {
   formatNumber,
   generateAutoCompleteUrl,
@@ -7,9 +9,7 @@ import {
   isQueriedSub,
   isQueriedTrending,
   isQueriedUser
-} from '@/components/utilities'
-import { OutboundOutlinedIcon } from '@/constants/icons'
-import { TAutocompleteOptions } from '@/constants/types'
+} from '@/services'
 import { AutocompleteRenderGroupParams, Avatar, Box, Divider, ListItem, ListSubheader, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'

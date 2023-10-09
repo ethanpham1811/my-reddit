@@ -16,13 +16,26 @@ const RdInputBase = styled(TextField)(({ theme }) => {
   }
 })
 
-const RdInput = <T extends FieldValues>({ name, control, label, flex, width, helper, sx, bgcolor, ...rest }: TRdInputProps<T>) => {
+const RdInput = <T extends FieldValues>({
+  registerOptions,
+  name,
+  control,
+  label,
+  flex,
+  width,
+  helper,
+  sx,
+  bgcolor,
+  endIcon,
+  ...rest
+}: TRdInputProps<T>) => {
   return (
     <FormControl sx={{ flex, '.MuiFormControl-root': { bgcolor: 'transparent' }, ...borderColorStyle, width }}>
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
       <Controller
         name={name}
         control={control}
+        rules={registerOptions}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <RdInputBase
             helperText={error ? error.message : null}
@@ -33,9 +46,21 @@ const RdInput = <T extends FieldValues>({ name, control, label, flex, width, hel
             fullWidth
             label={label}
             variant="outlined"
+            autoComplete="off"
             id={name}
             aria-describedby={`helper_${name}`}
-            sx={{ '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main` }, ...sx }}
+            sx={{
+              '.MuiFormHelperText-root.Mui-error': { color: 'orange.main', mx: 0 },
+              '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main` },
+              ...sx
+            }}
+            InputProps={
+              endIcon
+                ? {
+                    endAdornment: endIcon
+                  }
+                : {}
+            }
             {...rest}
           />
         )}

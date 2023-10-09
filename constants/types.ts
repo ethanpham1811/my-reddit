@@ -16,7 +16,7 @@ import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
-import { Control, FieldPath, FieldValues } from 'react-hook-form'
+import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD } from './enums'
 
 /* ------------------------------------------Common Types------------------------------------------ */
@@ -231,12 +231,14 @@ export type TRdTextEditorProps<T extends FieldValues> = {
   control: Control<T>
 }
 export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
+  registerOptions?: RegisterOptions
   name: FieldPath<T>
   control: Control<T>
   helper?: string
   width?: string
   flex?: number
   bgcolor?: string
+  endIcon?: ReactNode
 }
 export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
   helper?: string

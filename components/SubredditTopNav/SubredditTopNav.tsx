@@ -3,7 +3,7 @@ import coverUrl from '@/public/1.jpg'
 import { AppBar, Avatar, Box, Container, IconButton, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import { RdButton } from '..'
-import { generateSeededHexColor, generateUserImage } from '../utilities'
+import { generateSeededHexColor, generateUserImage } from '../../services'
 
 const SubredditNavBar = styled(AppBar)(({ theme }) => {
   return {

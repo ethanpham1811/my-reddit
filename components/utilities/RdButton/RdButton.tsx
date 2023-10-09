@@ -35,6 +35,10 @@ function RdButton({ text, filled = false, flex, color = DEFAULT_BUTTON_COLOR, in
         textTransform: 'none',
         transitionDuration: '0.2s',
         width,
+        '.MuiButton-endIcon': {
+          position: 'absolute',
+          right: '15px'
+        },
         ...hoverStyle,
         ...sx
       }}

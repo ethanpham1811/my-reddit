@@ -6,8 +6,8 @@ import useSubredditList from '@/hooks/useSubredditList'
 import { Box, FormControl, MenuItem, Typography } from '@mui/material'
 import Image from 'next/image'
 import { v4 as rid } from 'uuid'
-import { generateUserImage } from '..'
 import { RdDropdown } from '../..'
+import { generateUserImage } from '../../../services'
 
 function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, sx }: TRdSubredditSelectProps<T>) {
   const { subredditList, loading, error } = useSubredditList(SUBREDDIT_LIST_MODE.Simple)

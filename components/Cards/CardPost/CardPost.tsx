@@ -1,7 +1,7 @@
 import { RdCard, RdImageCarousel } from '@/components'
-import { generateUserImage } from '@/components/utilities'
 import { ArrowDownwardOutlinedIcon, ArrowUpwardOutlinedIcon } from '@/constants/icons'
 import { TCardPostProps } from '@/constants/types'
+import { generateUserImage } from '@/services'
 import { Avatar, Box, IconButton, Stack, Typography } from '@mui/material'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import Link from 'next/link'

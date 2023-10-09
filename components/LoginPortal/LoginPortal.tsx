@@ -8,10 +8,15 @@ import RegisterForm from './RegisterForm/RegisterForm'
 
 function LoginPortal() {
   const [isLoginForm, setIsLoginForm] = useState(true)
+  const [newUsername, setNewUsername] = useState<string | null>(null)
 
   return (
     <RdCard sx={{ p: 3 }}>
-      {isLoginForm ? <LoginForm setIsLoginForm={setIsLoginForm} /> : <RegisterForm setIsLoginForm={setIsLoginForm} />}
+      {isLoginForm ? (
+        <LoginForm setIsLoginForm={setIsLoginForm} newUsername={newUsername} />
+      ) : (
+        <RegisterForm setNewUsername={setNewUsername} setIsLoginForm={setIsLoginForm} />
+      )}
       <Divider sx={{ my: 1 }} />
       <Stack justifyContent="center" spacing={1}>
         <Typography variant="body2" sx={{ color: 'hintText.main' }}>

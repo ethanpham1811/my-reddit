@@ -41,8 +41,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "constants/data.tss",
-    "pages/api/auth/[...nextauth].js"
-, "pages/api/auth/register.js"  ],
+    "pages/api/auth/[...nextauth].js",
+    "pages/api/auth/register.ts"
+  ],
   "exclude": [
     "node_modules",
     "stepzen",

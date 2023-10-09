@@ -1,5 +1,5 @@
-import { generateSeededHexColor, generateUserImage } from '@/components/utilities'
 import { TMenuItem } from '@/constants/types'
+import { generateSeededHexColor, generateUserImage } from '@/services'
 import { Avatar, Box } from '@mui/material'
 import { ReactNode, createElement } from 'react'
 

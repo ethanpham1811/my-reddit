@@ -1,7 +1,7 @@
 import { RdSkeleton } from '@/components/Skeletons'
-import { formatNumber, generateSeededHexColor, generateUserImage } from '@/components/utilities'
 import { TUserDetail } from '@/constants/types'
 import homeBannerUrl from '@/public/home_banner.png'
+import { formatNumber, generateSeededHexColor, generateUserImage } from '@/services'
 import { Avatar, Box, CardActions, CardContent, CardHeader, CardMedia, Divider, Stack, Typography } from '@mui/material'
 import format from 'date-fns/format'
 import { RdButton, RdCard } from '../..'

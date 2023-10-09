@@ -85,3 +85,23 @@ export function generateAutoCompleteUrl(option: Exclude<TAutocompleteOptions, TQ
 }
 
 // export const pairPassword = async (password: string, dbPassword: string): Promise<boolean> => await bcrypt.compare(password, dbPassword)
+
+/*--------------------------------------- Custom Validation --------------------------------------- */
+export const usernameValidation = (value: string): boolean | string => {
+  if (value === '' || value == null) return 'Username is required'
+  if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(value)) {
+    return 'It should start with an alphabet, should contain "_", no space allowed'
+  }
+  if (value.length < 5) return 'Username must be at least 5 characters long'
+  return true
+}
+export const passwordValidation = (value: string): boolean | string => {
+  if (value == '') return 'Password is required'
+  if (value.length < 3) return 'Password must be at least 3 characters long'
+  return true
+}
+export const rePasswordValidation = (value: string, password: string): boolean | string => {
+  if (value == '') return 'You need to re-type your password'
+  if (value !== password) return `Your passwords doesn't match`
+  return true
+}
