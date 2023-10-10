@@ -9,7 +9,7 @@ import { v4 as rid } from 'uuid'
 import { RdDropdown } from '../..'
 import { generateUserImage } from '../../../services'
 
-function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, sx }: TRdSubredditSelectProps<T>) {
+function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, control, width, flex, sx }: TRdSubredditSelectProps<T>) {
   const { subredditList, loading, error } = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
 
   function renderSelectedOption(selectedValue: string) {
@@ -30,9 +30,11 @@ function RdSubredditSelect<T extends FieldValues>({ name, control, width, flex, 
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value } }) => (
+        rules={registerOptions}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
           <RdDropdown
             onChange={onChange}
+            error={!!error}
             value={value}
             renderSelectedOption={renderSelectedOption}
             loading={loading}

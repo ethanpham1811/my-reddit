@@ -1,7 +1,8 @@
 import { CardCreatePost, CardFeedSorter } from '@/components'
-import { TSortOptions } from '@/constants/types'
+import { TSession, TSortOptions } from '@/constants/types'
 
 import { Box, Container, Grid, Stack } from '@mui/material'
+import { useSession } from 'next-auth/react'
 import { Children, Dispatch, ReactElement, ReactNode, SetStateAction, cloneElement, isValidElement, useState } from 'react'
 
 type TFeedLayoutProps = {
@@ -14,6 +15,7 @@ type TFeedLayoutProps = {
 
 function FeedLayout({ children, top, subredditId, sortOptions, setSortOptions }: TFeedLayoutProps) {
   const [hasNoPost, setHasNoPost] = useState(false)
+  const { data: session }: TSession = useSession()
   const mainContent = Children.toArray(children)[0]
   const sideContent = Children.toArray(children)[1]
 
@@ -26,7 +28,7 @@ function FeedLayout({ children, top, subredditId, sortOptions, setSortOptions }:
         <Grid container spacing={3}>
           <Grid xs={16} md={8} item order={{ xs: 2, md: 1 }}>
             <Stack spacing={2}>
-              <CardCreatePost subId={subredditId} />
+              {session && <CardCreatePost subId={subredditId} />}
               <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
               {mainWithProps}
             </Stack>

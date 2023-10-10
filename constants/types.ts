@@ -41,7 +41,7 @@ export type TPost = {
   id: number
   title: string
   body: string
-  username: string
+  user: TUserDetail
   created_at: Date
   subreddit: {
     name: string
@@ -121,11 +121,13 @@ export type TSortOptions = {
 }
 
 /* ------------------------------------------Props Types------------------------------------------ */
-export type TCardPostProps = Pick<TPost, 'title' | 'body' | 'comment' | 'username'> & {
+export type TCardPostProps = Pick<TPost, 'id' | 'title' | 'body' | 'comment'> & {
   createdAt: Date
   subreddit: string
+  username: string
   images: string[] | undefined
   upvote: number
+  inGroup?: boolean
 }
 export type IsChildrenGroupCheckboxProps<T extends FieldValues> = {
   name: FieldPath<T>
@@ -168,7 +170,7 @@ export type TRdButtonProps = ButtonOwnProps &
     flex?: number
     width?: string
   }
-export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children'> & {
+export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'error'> & {
   renderSelectedOption: (value: string, mobileMode?: boolean) => ReactNode
   onChange?: (event: SelectChangeEvent<string>, child: ReactNode) => void
   width?: string
@@ -219,6 +221,7 @@ export type TRdSubredditAutoCompleteProps<T extends FieldValues> = {
   flex?: number
 }
 export type TRdSubredditSelectProps<T extends FieldValues> = {
+  registerOptions?: RegisterOptions
   name: FieldPath<T>
   control: Control<T>
   width?: string
@@ -226,6 +229,7 @@ export type TRdSubredditSelectProps<T extends FieldValues> = {
   sx?: SxProps<Theme>
 }
 export type TRdTextEditorProps<T extends FieldValues> = {
+  registerOptions?: RegisterOptions
   placeholder: string
   name: FieldPath<T>
   control: Control<T>
@@ -239,6 +243,7 @@ export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
   flex?: number
   bgcolor?: string
   endIcon?: ReactNode
+  indentedHelper?: boolean
 }
 export type TRdInlineInputProps<T extends FieldValues> = TextFieldProps & {
   registerOptions?: RegisterOptions
@@ -318,5 +323,5 @@ export type TQueryNotFound = {
 export type TAutocompleteOptions = TQueriedTrending | TQueriedSub | TQueriedUser | TQueryNotFound
 
 /* ------------------------------------------- Next auth Types-------------------------------------------- */
-export type TSession = { data: Session | null; status: SessionStatus }
+export type TSession = { data: Session | null; status?: SessionStatus }
 export type SessionStatus = 'loading' | 'authenticated' | 'unauthenticated'

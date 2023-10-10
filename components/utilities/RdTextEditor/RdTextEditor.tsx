@@ -1,10 +1,10 @@
 import { TRdTextEditorProps } from '@/constants/types'
-import { Box, FormControl, Skeleton } from '@mui/material'
+import { Box, FormControl, Skeleton, Typography } from '@mui/material'
 import { Editor } from '@tinymce/tinymce-react'
 import { useState } from 'react'
 import { Controller, FieldValues } from 'react-hook-form'
 
-function RdTextEditor<T extends FieldValues>({ placeholder, control, name }: TRdTextEditorProps<T>) {
+function RdTextEditor<T extends FieldValues>({ placeholder, control, name, registerOptions }: TRdTextEditorProps<T>) {
   const [isFirstTimeFocused, setIsFirstTimeFocused] = useState(true)
   const [loading, setLoading] = useState(true)
 
@@ -13,8 +13,9 @@ function RdTextEditor<T extends FieldValues>({ placeholder, control, name }: TRd
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <Box height={300}>
+        rules={registerOptions}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <Box height={300} display="flex" flexDirection="column">
             {loading && (
               <Box position="absolute" width="100%" height={300}>
                 <Skeleton variant="text" width="100%" height="39px" sx={{ fontSize: '1rem' }} />
@@ -24,7 +25,7 @@ function RdTextEditor<T extends FieldValues>({ placeholder, control, name }: TRd
             )}
             <Editor
               apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
-              initialValue={`<p>${placeholder}</p>`}
+              // initialValue={`<p>${placeholder}</p>`}
               value={value}
               onEditorChange={onChange}
               id={name}
@@ -46,10 +47,15 @@ function RdTextEditor<T extends FieldValues>({ placeholder, control, name }: TRd
                 ],
                 toolbar:
                   'undo redo | formatselect | bold italic | \
-              alignleft aligncenter alignright | \
-              bullist numlist outdent indent | removeformat | help'
+                  alignleft aligncenter alignright | \
+                  bullist numlist outdent indent | removeformat | help'
               }}
             />
+            {error && (
+              <Typography sx={{ pl: 1, pt: 0.5, color: 'orange.main' }} variant="caption">
+                {error?.message}
+              </Typography>
+            )}
           </Box>
         )}
       />

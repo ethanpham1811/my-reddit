@@ -3,7 +3,9 @@ import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TQue
 import { GET_USER_BY_USERNAME } from '@/graphql/queries'
 import { supabase } from '@/pages/_app'
 import { ApolloError } from '@apollo/client'
+import { JSXElementConstructor, ReactElement } from 'react'
 import toast from 'react-hot-toast'
+import ReactHtmlParser from 'react-html-parser'
 
 export const notificationHandler = () => {
   return { onCompleted: () => toast.success('sucessful!'), onError: (error: ApolloError) => toast.error(error.message) }
@@ -83,6 +85,7 @@ export function generateAutoCompleteUrl(option: Exclude<TAutocompleteOptions, TQ
   if (isQueriedSub(option)) return `/r/${option.name}`
   return `/u/${option.username}`
 }
+export const parseHtml = (html: string): ReactElement<any, string | JSXElementConstructor<any>>[] => ReactHtmlParser(html)
 
 // export const pairPassword = async (password: string, dbPassword: string): Promise<boolean> => await bcrypt.compare(password, dbPassword)
 
@@ -116,6 +119,12 @@ export const fullNameValidation = (value: string): boolean | string => {
   if (value === '') return true
   if (value?.length > 16) return 'Sorry, too long'
   if (!nameRegex.test(value)) return 'Invalid name'
+  return true
+}
+export const postTitleValidation = (value: string): boolean | string => {
+  if (value === '' || value == null) return 'Title is required'
+  if (value.length < 10) return 'Title must be at least 10 characters long'
+  if (value.length > 100) return 'Title must not exceed 100 characters'
   return true
 }
 

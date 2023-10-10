@@ -4,7 +4,6 @@ type Vote {
   post: Post @materializer(query: "postUsingVote_post_id_fkey")
   post_id: ID
   upvote: Boolean
-  username: String
   user: User @materializer(query: "userUsingVote_user_id_fkey")
   user_id: ID!
 }
@@ -15,20 +14,8 @@ Feel free to modify them or aggregate more.
 """
 type Query {
   " Queries for type 'Vote' "
-  vote(id: ID!): Vote
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "vote"
-      configuration: "postgresql_config"
-    )
-  voteList: [Vote]
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "vote"
-      configuration: "postgresql_config"
-    )
+  vote(id: ID!): Vote @dbquery(type: "postgresql", schema: "public", table: "vote", configuration: "postgresql_config")
+  voteList: [Vote] @dbquery(type: "postgresql", schema: "public", table: "vote", configuration: "postgresql_config")
   votePaginatedList(first: Int, after: Int): [Vote]
     @dbquery(
       type: "postgresql"
@@ -55,34 +42,10 @@ Feel free to modify them or aggregate more.
 """
 type Mutation {
   " Mutations for type 'Vote' "
-  deleteVote(id: ID!): Vote
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "vote"
-      dml: DELETE
-      configuration: "postgresql_config"
-    )
-  insertVote(
-    username: String
-    post_id: ID
-    created_at: DateTime
-    upvote: Boolean
-  ): Vote
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "vote"
-      dml: INSERT
-      configuration: "postgresql_config"
-    )
-  updateVote(
-    id: ID!
-    created_at: DateTime
-    post_id: ID
-    upvote: Boolean
-    username: String
-  ): Vote
+  deleteVote(id: ID!): Vote @dbquery(type: "postgresql", schema: "public", table: "vote", dml: DELETE, configuration: "postgresql_config")
+  insertVote(user_id: ID!, post_id: ID!, upvote: Boolean!): Vote
+    @dbquery(type: "postgresql", schema: "public", table: "vote", dml: INSERT, configuration: "postgresql_config")
+  updateVote(id: ID!, created_at: DateTime, post_id: ID, upvote: Boolean, username: String): Vote
     @dbquery(
       type: "postgresql"
       schema: "public"

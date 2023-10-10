@@ -2,6 +2,7 @@ import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import { Skeleton, Stack } from '@mui/material'
 import orderBy from 'lodash/orderBy'
+import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost } from '..'
@@ -17,13 +18,16 @@ type TNewFeedsProps = {
 }
 
 function NewFeeds({ sortOptions: { method, ordering }, postList, loading, error, setHasNoPost }: TNewFeedsProps) {
+  const {
+    query: { subreddit: subPageName }
+  } = useRouter()
   setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
-
   const cardPostList: TCardPostProps[] | null =
     postList &&
     orderBy(
-      postList.map(({ title, body, images, comment, created_at, username, subreddit, vote }: TPost): TCardPostProps => {
+      postList.map(({ id, title, body, images, comment, created_at, user: { username }, subreddit, vote }: TPost): TCardPostProps => {
         return {
+          id,
           title,
           body,
           comment,
@@ -50,9 +54,10 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, error,
           </Stack>
         ))
       ) : cardPostList.length > 0 ? (
-        cardPostList.map(({ title, body, images, comment, createdAt, username, subreddit, upvote }) => {
+        cardPostList.map(({ id, title, body, images, comment, createdAt, username, subreddit, upvote }) => {
           return (
             <CardPost
+              id={id}
               key={`post_${rid()}`}
               images={images}
               title={title}
@@ -62,6 +67,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, error,
               subreddit={subreddit}
               username={username}
               comment={comment}
+              inGroup={!!subPageName}
             />
           )
         })

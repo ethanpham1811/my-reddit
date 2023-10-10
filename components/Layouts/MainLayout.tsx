@@ -1,5 +1,6 @@
 import { SUBREDDIT_LIST_MODE } from '@/constants/enums'
 import useSubredditList from '@/hooks/useSubredditList'
+import { Box } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
@@ -13,14 +14,14 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const subListData = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
 
   // const childrenWithProps = Children.map(children, (child) => {
-  //   if (!isValidElement<{ subListData: any }>(child)) return child
-  //   return cloneElement(child, { subListData })
+  //   if (!isValidElement<{ router: any }>(child)) return child
+  //   return cloneElement(child, { router })
   // })
   return (
-    <>
+    <Box pb={5}>
       <TopNav subListData={subListData} session={{ data, status }} router={router} />
       <main>{children}</main>
       <Toaster position="bottom-right" />
-    </>
+    </Box>
   )
 }

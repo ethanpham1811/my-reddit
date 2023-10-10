@@ -51,3 +51,12 @@ declare module '@mui/material/Button' {
     green: true
   }
 }
+
+declare module 'next-auth' {
+  interface User {
+    id?: number
+  }
+  interface Session extends DefaultSession {
+    user?: User
+  }
+}

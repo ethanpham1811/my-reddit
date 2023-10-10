@@ -26,6 +26,7 @@ const RdInput = <T extends FieldValues>({
   helper,
   sx,
   bgcolor,
+  indentedHelper,
   endIcon,
   ...rest
 }: TRdInputProps<T>) => {
@@ -52,6 +53,9 @@ const RdInput = <T extends FieldValues>({
             sx={{
               '.MuiFormHelperText-root.Mui-error': { color: 'orange.main', mx: 0 },
               '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main` },
+              '.MuiFormHelperText-root': {
+                pl: indentedHelper ? 1 : 0
+              },
               ...sx
             }}
             InputProps={{

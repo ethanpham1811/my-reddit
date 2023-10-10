@@ -1,7 +1,9 @@
 import { RdSkeleton } from '@/components/Skeletons'
-import { TSubredditDetail } from '@/constants/types'
+import { SESSION_STATUS } from '@/constants/enums'
+import { TSession, TSubredditDetail } from '@/constants/types'
 import { formatNumber, generateSeededHexColor } from '@/services'
 import { Box, CardActions, CardContent, CardHeader, Divider, Typography } from '@mui/material'
+import { useSession } from 'next-auth/react'
 import { RdButton, RdCard } from '../..'
 
 type TCardSubredditInfoProps = {
@@ -10,9 +12,11 @@ type TCardSubredditInfoProps = {
 }
 
 function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
+  const { data: session, status }: TSession = useSession()
+
   return (
     <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
-      {!loading ? (
+      {!loading && status === SESSION_STATUS.Authenticated ? (
         <>
           <CardHeader
             titleTypographyProps={{ sx: { fontWeight: 600, fontSize: '0.9rem', color: 'white.main' } }}
@@ -46,7 +50,16 @@ function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
           </CardContent>
           <Divider />
           <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <RdButton text={'Create Post'} filled color="blue" invertColor />
+            {status === SESSION_STATUS.Authenticated && (
+              <>
+                {false ? (
+                  <RdButton text={'Follow'} filled color="blue" invertColor />
+                ) : (
+                  <RdButton text={'Create Post'} filled color="blue" invertColor />
+                )}
+              </>
+            )}
+            {status === SESSION_STATUS.Unauthenticated && <RdButton text={'Login'} filled color="blue" invertColor />}
           </CardActions>
         </>
       ) : (

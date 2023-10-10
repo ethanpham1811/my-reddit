@@ -38,7 +38,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   }, [user, setValue, defaultValues])
 
   /* user mutations */
-  const [mutateUser, { loading }] = useMutation(UPDATE_USER, {
+  const [mutateUser] = useMutation(UPDATE_USER, {
     refetchQueries: [{ query: GET_USER_BY_USERNAME, variables: { username: user?.username } }]
   })
 
@@ -77,7 +77,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
         <>
           <UserInfoMedia user={user} />
           <form onSubmit={(e) => e.preventDefault()}>
-            <CardContent sx={{ p: 0 }}>
+            <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
               {/* Usser avatar & cover */}
               <UserInfoHeader<TCardUserInfoForm> isMe={isMe} getValues={getValues} control={control} onSubmitField={onSubmitField} user={user} />
               <Divider sx={{ my: 1 }} />
@@ -93,12 +93,24 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
               {/* User follower */}
               <UserInfoFollower user={user} />
             </CardContent>
-            <Divider sx={{ my: 1 }} />
 
             {/* Action buttons */}
-            <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <RdButton text={'New Post'} filled color="blue" invertColor />
-            </CardActions>
+            {status === SESSION_STATUS.Authenticated && (
+              <>
+                <Divider sx={{ my: 1 }} />
+                <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {!isMe ? (
+                    <>
+                      <RdButton text={'Follow'} filled color="blue" invertColor />
+                    </>
+                  ) : (
+                    <>
+                      <RdButton text={'New Post'} filled color="blue" invertColor />
+                    </>
+                  )}
+                </CardActions>
+              </>
+            )}
           </form>
         </>
       ) : (

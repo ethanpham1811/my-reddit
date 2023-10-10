@@ -1,32 +1,27 @@
 import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
-import { LinkIcon } from '@/constants/icons'
-import { TCardCreatePostForm } from '@/constants/types'
+import { TCardCreatePostForm, TSession } from '@/constants/types'
 import { ADD_POST } from '@/graphql/mutations'
-import { GET_POST_LIST } from '@/graphql/queries'
+import { GET_POST_LIST_BY_SUB_ID } from '@/graphql/queries'
 import { OnlineDotStyle } from '@/mui/styles'
-import { ApolloError, useMutation } from '@apollo/client'
-import { Avatar, IconButton, Stack, Tooltip } from '@mui/material'
+import { useMutation } from '@apollo/client'
+import { Avatar, Stack } from '@mui/material'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { RdButton, RdCard, RdImageList, RdImageUploader, RdInput, RdSubredditSelect, RdTextEditor } from '../..'
-import { generateUserImage, uploadFiles } from '../../../services'
+import { RdCard, RdInput, RdToast } from '../..'
+import { generateUserImage, postTitleValidation, uploadFiles } from '../../../services'
+import MainForm from './components/MainForm'
+import Tools from './components/Tools'
 
 function CardCreatePost({ subId }: { subId?: number | undefined }) {
-  const { data: session } = useSession()
+  const { data: session }: TSession = useSession()
   const [showLinkInput, setShowLinkInput] = useState(false)
-  const userName: string = session?.user?.name || 'Guest user'
+  const userName: string | undefined | null = session?.user?.name
 
   /* mutations */
   const [addPost] = useMutation(ADD_POST, {
-    onCompleted: () => {
-      toast.success('Your post sucessfully added!')
-    },
-    onError: (error: ApolloError) => {
-      toast.error(error.message)
-    },
-    refetchQueries: [GET_POST_LIST]
+    refetchQueries: [{ query: GET_POST_LIST_BY_SUB_ID, variables: { id: subId } }]
   })
 
   /* form controllers */
@@ -42,23 +37,36 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
   // titleValue === '' && reset()
 
   /* form submit handler */
-  const onSubmit = handleSubmit(async (formData) => {
-    const { body, subreddit_id, title } = formData
-    let images: string[] | null = null
-    if (formData.images && formData.images.length > 0) {
-      images = await uploadFiles(formData.images)
-    }
-    await addPost({
-      variables: {
-        body,
-        subreddit_id: subId ?? subreddit_id,
-        title,
-        user_id: session?.user?.name, //FIXME: use id not name
-        images
+  const onSubmit = handleSubmit(
+    async (formData) => {
+      console.log(formData)
+      const { body, subreddit_id, title } = formData
+      let images: string[] | null = null
+
+      // if there is any uploaded images
+      if (formData.images && formData.images.length > 0) {
+        images = await uploadFiles(formData.images)
       }
-    })
-    reset()
-  })
+
+      toast.promise(
+        addPost({
+          variables: {
+            body,
+            subreddit_id: subId ?? subreddit_id,
+            title,
+            user_id: session?.user?.id,
+            images
+          }
+        }).then(() => reset()),
+        {
+          loading: <RdToast message="Post processing..." />,
+          success: <RdToast message="Successfully posted" />,
+          error: <RdToast message="Posting failed" />
+        }
+      )
+    },
+    (err) => console.log(err)
+  )
 
   return (
     <RdCard sx={{ p: 1.5 }}>
@@ -73,7 +81,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
                 border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
               }}
               alt={userName}
-              src={generateUserImage(userName)}
+              src={generateUserImage(userName || 'seed')}
             />
           </OnlineDotStyle>
           <RdInput<TCardCreatePostForm>
@@ -81,37 +89,13 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
             flex={1}
             control={control}
             name="title"
-            placeholder={session ? 'Create Post' : 'Please login first'}
+            indentedHelper
+            placeholder="Create Post"
+            registerOptions={{ validate: (val) => postTitleValidation(val) }}
           />
-          <Stack direction="row">
-            <Tooltip title="Create Media Post">
-              <IconButton disabled={!watch('title')}>
-                <RdImageUploader<TCardCreatePostForm> control={control} name="images" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Create Link Post">
-              <IconButton
-                disabled={!titleValue}
-                sx={{ bgcolor: showLinkInput ? 'primary.main' : 'unset' }}
-                onClick={() => setShowLinkInput(!showLinkInput)}
-              >
-                <LinkIcon sx={{ display: 'block' }} />
-              </IconButton>
-            </Tooltip>
-          </Stack>
+          <Tools<TCardCreatePostForm> control={control} titleValue={titleValue} setShowLinkInput={setShowLinkInput} showLinkInput={showLinkInput} />
         </Stack>
-        {!!titleValue && (
-          <Stack spacing={1} sx={{ py: 1, px: '46px' }}>
-            {showLinkInput && <RdInput<TCardCreatePostForm> bgcolor="white" flex={1} control={control} name="link" placeholder="Link URL" />}
-            <RdTextEditor<TCardCreatePostForm> control={control} name="body" placeholder="Start your essay.." />
-            {imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} cols={5} />}
-            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">
-              {subId == null && <RdSubredditSelect control={control} name="subreddit_id" width="180px" />}
-              <RdButton type="submit" text={'Post'} filled color="blue" invertColor width="30%" />
-            </Stack>
-          </Stack>
-          // {/* <ErrorMessage errors={errors} render={({ message }) => <p>{message}</p>} /> */}
-        )}
+        {!!titleValue && <MainForm showLinkInput={showLinkInput} control={control} imagesValue={imagesValue} subId={subId} />}
       </form>
     </RdCard>
   )
