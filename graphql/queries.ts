@@ -15,6 +15,8 @@ export const GET_USER_BY_USERNAME = gql`
       karma
       socialLinks
       password
+      member_of_ids
+      following_ids
     }
   }
 `

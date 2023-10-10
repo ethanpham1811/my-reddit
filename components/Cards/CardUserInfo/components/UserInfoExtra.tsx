@@ -24,7 +24,7 @@ function UserInfoExtra({ user }: { user: TUserDetail | null }) {
           Cake day
         </Typography>
         <Typography variant="body1" fontSize="0.8rem" sx={{ color: 'hintText.main', ...centerStyle }}>
-          <CakeOutlinedIcon sx={{ fontSize: '0.8rem', mr: 1, color: 'blue.main' }} /> {user?.dob ? format(new Date(), 'P') : 'N/A'}
+          <CakeOutlinedIcon sx={{ fontSize: '0.8rem', mr: 1, color: 'blue.main' }} /> {user?.dob ? format(new Date(user?.dob), 'P') : 'N/A'}
         </Typography>
       </Stack>
     </Stack>

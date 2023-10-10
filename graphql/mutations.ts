@@ -17,6 +17,7 @@ export const UPDATE_USER = gql`
   mutation UpdateUser(
     $id: ID!
     $coverUrl: String
+    $created_at: Date
     $dob: Date
     $email: String
     $followers: ID
@@ -25,10 +26,13 @@ export const UPDATE_USER = gql`
     $photoUrl: String
     $username: String
     $password: String
+    $member_of_ids: [String]
+    $following_ids: [String]
   ) {
     updateUser(
       id: $id
       coverUrl: $coverUrl
+      created_at: $created_at
       dob: $dob
       email: $email
       followers: $followers
@@ -37,6 +41,8 @@ export const UPDATE_USER = gql`
       photoUrl: $photoUrl
       username: $username
       password: $password
+      member_of_ids: $member_of_ids
+      following_ids: $following_ids
     ) {
       id
       dob
@@ -46,6 +52,8 @@ export const UPDATE_USER = gql`
       karma
       username
       coverUrl
+      member_of_ids
+      following_ids
     }
   }
 `

@@ -36,6 +36,8 @@ export type TUserDetail = TUser & {
   post?: TPost
   karma?: number
   socialLinks?: string[]
+  member_of_ids?: string[]
+  following_ids?: string[]
 }
 export type TPost = {
   id: number
@@ -66,6 +68,7 @@ export type TSubredditDetail = TSubreddit & {
   member: number
   isChildrenContent: boolean
   subType: string
+  created_at: Date
 }
 export type TComment = {
   created_at: Date
@@ -161,7 +164,7 @@ export type TRdAutoCompleteProps<
   flex?: number
 }
 export type TRdButtonProps = ButtonOwnProps &
-  Pick<ButtonProps, 'type' | 'onClick'> & {
+  Pick<ButtonProps, 'type' | 'onClick' | 'onMouseEnter' | 'onMouseLeave'> & {
     text: string
     filled?: boolean
     color?: TButtonColor
@@ -284,7 +287,7 @@ export type TCommunityCreatorForm = {
   isChildrenContent: boolean
   topic_ids: string[]
 }
-export type TCardCreatePostForm = Pick<TPost, 'title' | 'body' | 'username'> & {
+export type TCardCreatePostForm = Pick<TPost, 'title' | 'body'> & {
   subreddit_id: number
   images: FileList
   link: string

@@ -25,7 +25,7 @@ const Subreddit: NextPage = () => {
       <Head>
         <title>r/{subName}</title>
       </Head>
-      <SubredditTopNav name={subredditData?.name} headline={subredditData?.headline} />
+      <SubredditTopNav name={subredditData?.name} subType={subredditData?.subType} headline={subredditData?.headline} />
       <FeedLayout top="1rem" subredditId={subredditData?.id} sortOptions={sortOptions} setSortOptions={setSortOptions}>
         <SubredditNewFeeds sortOptions={sortOptions} />
         <Stack spacing={2}>

@@ -14,7 +14,8 @@ type User {
   vote: [Vote] @materializer(query: "voteUsingVote_user_id_fkey")
   socialLinks: [String]
   password: String
-  session: [Session] @materializer(query: "sessionUsingSession_user_id_fkey")
+  member_of_ids: [String]
+  following_ids: [String]
 }
 
 """
@@ -103,6 +104,7 @@ type Mutation {
   updateUser(
     id: ID!
     coverUrl: String
+    created_at: Date
     dob: Date
     email: String
     followers: ID
@@ -111,6 +113,8 @@ type Mutation {
     photoUrl: String
     username: String
     password: String
+    member_of_ids: [String]
+    following_ids: [String]
   ): User
     @dbquery(
       type: "postgresql"
@@ -118,14 +122,17 @@ type Mutation {
       query: """
       UPDATE "user" SET
         "coverUrl" = COALESCE($2, "coverUrl"),
-        "dob" = COALESCE($3, "dob"),
-        "email" = COALESCE($4, "email"),
-        "followers" = COALESCE($5, "followers"),
-        "fullName" = COALESCE($6, "fullName"),
-        "karma" = COALESCE($7, "karma"),
-        "photoUrl" = COALESCE($8, "photoUrl"),
-        "username" = COALESCE($9, "username"),
-        "password" = COALESCE($10, "password")
+        "created_at" = COALESCE($3, "created_at"),
+        "dob" = COALESCE($4, "dob"),
+        "email" = COALESCE($5, "email"),
+        "followers" = COALESCE($6, "followers"),
+        "fullName" = COALESCE($7, "fullName"),
+        "karma" = COALESCE($8, "karma"),
+        "photoUrl" = COALESCE($9, "photoUrl"),
+        "username" = COALESCE($10, "username"),
+        "password" = COALESCE($11, "password"),
+        "member_of_ids" = COALESCE($12, "member_of_ids"),
+        "following_ids" = COALESCE($13, "following_ids")
       WHERE
         "id" = $1
       RETURNING *

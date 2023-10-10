@@ -6,10 +6,13 @@ import { parseHtml } from '@/services'
 import { useMutation } from '@apollo/client'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 import PostHeader from './components/PostHeader'
 
 function CardPost({ id, images, inGroup, body, title, username, createdAt, upvote, subreddit, comment }: TCardPostProps) {
   const { data: session }: TSession = useSession()
+  const [voteCount, setVoteCount] = useState(upvote)
   const [addVote] = useMutation(ADD_VOTE)
 
   const imgList: string[] = [
@@ -20,13 +23,18 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
 
   const vote = async (upvote: boolean) => {
     if (session) {
-      await addVote({
+      setVoteCount(voteCount + (upvote ? 1 : -1)) // optimistic manual update
+      const { errors } = await addVote({
         variables: {
           post_id: id,
           user_id: session?.user?.id,
           upvote
         }
       })
+      if (errors) {
+        setVoteCount(voteCount - (upvote ? 1 : -1)) // revert if mutation fails
+        toast.error(errors[0].message)
+      }
     }
   }
 
@@ -39,7 +47,7 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
             <IconButton onClick={() => vote(true)} disabled={!session}>
               <ArrowUpwardOutlinedIcon />
             </IconButton>
-            <Typography>{upvote}</Typography>
+            <Typography>{voteCount}</Typography>
             <IconButton onClick={() => vote(false)} disabled={!session}>
               <ArrowDownwardOutlinedIcon />
             </IconButton>

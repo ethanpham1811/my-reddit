@@ -1,15 +1,15 @@
 import { RdSkeleton } from '@/components/Skeletons'
-import { SESSION_STATUS } from '@/constants/enums'
 import { TCardUserInfoForm, TCardUserInfoProps, TSession } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
 import { GET_USER_BY_USERNAME } from '@/graphql/queries'
 import { useMutation } from '@apollo/client'
-import { CardActions, CardContent, Divider } from '@mui/material'
+import { CardContent, Divider } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { RdButton, RdCard, RdToast } from '../..'
+import { RdCard, RdToast } from '../..'
+import UserButtons from './components/UserButtons'
 import UserInfoEmail from './components/UserInfoEmail'
 import UserInfoExtra from './components/UserInfoExtra'
 import UserInfoFollower from './components/UserInfoFollower'
@@ -73,7 +73,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
 
   return (
     <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
-      {!userLoading && status === SESSION_STATUS.Authenticated ? (
+      {!userLoading ? (
         <>
           <UserInfoMedia user={user} />
           <form onSubmit={(e) => e.preventDefault()}>
@@ -95,22 +95,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
             </CardContent>
 
             {/* Action buttons */}
-            {status === SESSION_STATUS.Authenticated && (
-              <>
-                <Divider sx={{ my: 1 }} />
-                <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  {!isMe ? (
-                    <>
-                      <RdButton text={'Follow'} filled color="blue" invertColor />
-                    </>
-                  ) : (
-                    <>
-                      <RdButton text={'New Post'} filled color="blue" invertColor />
-                    </>
-                  )}
-                </CardActions>
-              </>
-            )}
+            <UserButtons user={user} isMe={isMe} status={status} />
           </form>
         </>
       ) : (

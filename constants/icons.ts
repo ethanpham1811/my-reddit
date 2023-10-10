@@ -11,6 +11,7 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
 import HomeIcon from '@mui/icons-material/Home'
+import HttpsOutlinedIcon from '@mui/icons-material/HttpsOutlined'
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LinkIcon from '@mui/icons-material/Link'
@@ -22,6 +23,7 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import OutboundOutlinedIcon from '@mui/icons-material/OutboundOutlined'
 import PersonIcon from '@mui/icons-material/Person'
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh'
+import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import RocketIcon from '@mui/icons-material/Rocket'
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined'
@@ -49,6 +51,7 @@ export {
   FcGoogle,
   HighlightOffOutlinedIcon,
   HomeIcon,
+  HttpsOutlinedIcon,
   ImageOutlinedIcon,
   KeyboardArrowDownIcon,
   LinkIcon,
@@ -60,6 +63,7 @@ export {
   OutboundOutlinedIcon,
   PersonIcon,
   PriorityHighIcon,
+  PublicOutlinedIcon,
   RemoveRedEyeIcon,
   RocketIcon,
   SecurityOutlinedIcon,

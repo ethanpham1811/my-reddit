@@ -47,7 +47,7 @@ export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TAuto
             /* Posts options */
             <ListItem
               {...props}
-              sx={{ '&.MuiListItem-root': { py: 2, gap: 2, alignItems: 'flex-start' }, '&:hover': { bgcolor: 'inputBgOutfocused.main' } }}
+              sx={{ '&.MuiListItem-root': { py: 1.5, gap: 2, alignItems: 'flex-start' }, '&:hover': { bgcolor: 'inputBgOutfocused.main' } }}
             >
               <Box pt={0.6}>
                 <OutboundOutlinedIcon sx={{ color: 'blue.main', fontSize: '1.5rem' }} />

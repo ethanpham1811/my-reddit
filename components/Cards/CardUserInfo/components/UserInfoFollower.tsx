@@ -1,6 +1,7 @@
 import { TUserDetail } from '@/constants/types'
 import { formatNumber } from '@/services'
 import { Box, Typography } from '@mui/material'
+
 function UserInfoFollower({ user }: { user: TUserDetail | null }) {
   return (
     <Box display="flex" justifyContent="center" py={0.5} alignItems="center">

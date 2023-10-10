@@ -3,10 +3,11 @@ import { ApolloError } from '@apollo/client'
 import { Skeleton, Stack } from '@mui/material'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useContext } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost } from '..'
 import { getTotalUpvote } from '../../services'
+import { AppContext } from '../Layouts/MainLayout'
 import NoOwnedPost from './NoOwnedPost/NoOwnedPost'
 
 type TNewFeedsProps = {
@@ -18,10 +19,15 @@ type TNewFeedsProps = {
 }
 
 function NewFeeds({ sortOptions: { method, ordering }, postList, loading, error, setHasNoPost }: TNewFeedsProps) {
+  const { me } = useContext(AppContext)
   const {
     query: { subreddit: subPageName }
   } = useRouter()
   setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
+
+  const showPost = me && me.member_of_ids?.includes(subPageName as string) //TODO: check sub type by accessing cache
+
+  /* postList mapping */
   const cardPostList: TCardPostProps[] | null =
     postList &&
     orderBy(

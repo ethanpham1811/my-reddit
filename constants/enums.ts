@@ -35,3 +35,8 @@ export enum SESSION_STATUS {
   Authenticated = 'authenticated',
   Unauthenticated = 'unauthenticated'
 }
+export enum SUBREDDIT_TYPE {
+  Private = 'Private',
+  Public = 'Public',
+  Restricted = 'Restricted'
+}

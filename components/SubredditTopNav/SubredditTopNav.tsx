@@ -1,8 +1,11 @@
-import { NotificationsIcon } from '@/constants/icons'
-import { AppBar, Avatar, Box, Container, IconButton, Stack, Typography, styled } from '@mui/material'
+import { SUBREDDIT_TYPE } from '@/constants/enums'
+import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
+import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
-import { RdButton } from '..'
+import { useContext, useState } from 'react'
+import { RdButton, RdChip } from '..'
 import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../services'
+import { AppContext } from '../Layouts/MainLayout'
 
 const SubredditNavBar = styled(AppBar)(({ theme }) => {
   return {
@@ -16,10 +19,14 @@ const SubredditNavBar = styled(AppBar)(({ theme }) => {
 
 type TSubredditTopNavProps = {
   name: string | null | undefined
+  subType: string | null | undefined
   headline: string | null | undefined
 }
 
-function SubredditTopNav({ name, headline }: TSubredditTopNavProps) {
+function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
+  const { me } = useContext(AppContext)
+  const [showLeaveBtn, setShowLeaveBtn] = useState(false)
+
   return (
     <Box flexGrow={1}>
       <SubredditNavBar sx={{ pb: 2 }}>
@@ -54,11 +61,28 @@ function SubredditTopNav({ name, headline }: TSubredditTopNavProps) {
                 r/{name}
               </Typography>
             </Stack>
-            <Stack sx={{ alignSelf: 'flex-start' }} direction="row">
-              <RdButton text="Joined" color="blue" sx={{ px: 3, py: 0, mx: 2, fontWeight: 700, fontSize: '0.8rem' }} />
-              <IconButton>
-                <NotificationsIcon sx={{ display: 'block', color: 'blue.main' }} />
-              </IconButton>
+            <Stack sx={{ alignSelf: 'flex-start', alignItems: 'center', ml: 'auto' }} direction="row">
+              {me?.member_of_ids?.includes(name as string) ? (
+                <RdButton
+                  filled={showLeaveBtn}
+                  text={showLeaveBtn ? 'Leave' : 'Joined'}
+                  onMouseEnter={() => setShowLeaveBtn(true)}
+                  onMouseLeave={() => setShowLeaveBtn(false)}
+                  color="blue"
+                  width="6rem"
+                  sx={{ px: 3, py: 0.5, fontWeight: 700, fontSize: '0.8rem' }}
+                />
+              ) : (
+                <RdChip
+                  label={subType === SUBREDDIT_TYPE.Private ? 'Private' : 'Public'}
+                  sx={{ fontSize: '0.8rem', p: 2, fontWeight: 700, color: 'blue.main' }}
+                />
+              )}
+              {subType === SUBREDDIT_TYPE.Private ? (
+                <HttpsOutlinedIcon sx={{ ml: 1, display: 'block', color: 'orange.main' }} />
+              ) : (
+                <PublicOutlinedIcon sx={{ ml: 1, display: 'block', color: 'blue.main' }} />
+              )}
             </Stack>
           </Stack>
         </Container>

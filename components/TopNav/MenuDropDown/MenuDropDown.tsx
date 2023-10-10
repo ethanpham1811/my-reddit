@@ -1,9 +1,10 @@
 import { RdDropdown } from '@/components'
 import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
-import { MAIN_MENU_GROUP } from '@/constants/enums'
+import { MAIN_MENU_GROUP, SESSION_STATUS } from '@/constants/enums'
 import { HomeIcon } from '@/constants/icons'
-import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
+import { TMenuDropdownProps, TMenuItem, TSession } from '@/constants/types'
 import { Box, List } from '@mui/material'
+import { useSession } from 'next-auth/react'
 import { ReactNode, useState } from 'react'
 import { renderSelectedOption } from './RenderedCbs'
 import FeedsMenuList from './components/FeedsMenuList'
@@ -11,13 +12,9 @@ import PeopleMenuList from './components/PeopleMenuList'
 import SubsMenuList from './components/SubsMenuList'
 
 function MenuDropDown({ session, subListData, subName, userName, pathName }: TMenuDropdownProps) {
+  const { status }: TSession = useSession()
   const { subredditList, loading, error } = subListData
   const [filterTerm, setFilterTerm] = useState('')
-  // const [subList, setSubList] = useState(subredditList)
-
-  // useEffect(()=>{
-  //   subredditList && setSubList(subredditList)
-  // },[subredditList])
 
   const activePage: string = pathName === '/' ? 'Home' : (userName as string) ?? (subName as string)
 
@@ -72,11 +69,14 @@ function MenuDropDown({ session, subListData, subName, userName, pathName }: TMe
       {/* Feeds list */}
       <FeedsMenuList feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
 
-      {/* Subreddit list */}
-      <SubsMenuList session={session} loading={loading} options={communityOptions} filterByTerm={filterByTerm} />
-
-      {/* Hidden user list - A little hack for displaying unlisted Item (for profile pages) */}
-      <PeopleMenuList session={session} loading={loading} options={peopleOptions} filterByTerm={filterByTerm} />
+      {status === SESSION_STATUS.Authenticated && (
+        <>
+          {/* Subreddit list */}
+          <SubsMenuList session={session} loading={loading} options={communityOptions} filterByTerm={filterByTerm} />
+          {/* Hidden user list - A little hack for displaying unlisted Item (for profile pages) */}
+          <PeopleMenuList session={session} loading={loading} options={peopleOptions} filterByTerm={filterByTerm} />
+        </>
+      )}
     </RdDropdown>
   )
 }

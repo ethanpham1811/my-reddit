@@ -80,7 +80,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
                 backgroundColor: 'inputBgOutfocused.main',
                 border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
               }}
-              alt={userName}
+              alt={userName || ''}
               src={generateUserImage(userName || 'seed')}
             />
           </OnlineDotStyle>
