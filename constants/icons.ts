@@ -3,8 +3,12 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined'
+import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined'
+import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined'
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined'
 import CloseIcon from '@mui/icons-material/Close'
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
 import HomeIcon from '@mui/icons-material/Home'
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined'
@@ -35,9 +39,13 @@ export {
   ArrowDownwardOutlinedIcon,
   ArrowForwardIosIcon,
   ArrowUpwardOutlinedIcon,
+  Brightness5OutlinedIcon,
   BsReddit,
+  CakeOutlinedIcon,
   CampaignOutlinedIcon,
   CloseIcon,
+  CreateOutlinedIcon,
+  EmailOutlinedIcon,
   FcGoogle,
   HighlightOffOutlinedIcon,
   HomeIcon,

@@ -12,12 +12,8 @@ export const notificationHandler = () => {
 export const getTotalUpvote = (votes: TVote[]): number => votes.reduce((prev, cur): number => (cur.upvote ? prev + 1 : prev - 1), 0)
 
 export const notificationsLabel = (count: number) => {
-  if (count === 0) {
-    return 'no notifications'
-  }
-  if (count > 99) {
-    return 'more than 99 notifications'
-  }
+  if (count === 0) return 'no notifications'
+  if (count > 99) return 'more than 99 notifications'
   return `${count} notifications`
 }
 
@@ -111,7 +107,7 @@ export const rePasswordValidation = (value: string, password: string): boolean |
 }
 export const emailValidation = (value: string): boolean | string => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-  if (value === '') return true
+  if (value === '' || value === 'N/A') return true
   if (!emailRegex.test(value)) return 'Invalid email address'
   return true
 }

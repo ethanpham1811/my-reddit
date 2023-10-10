@@ -15,7 +15,7 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
-import { Dispatch, FocusEvent, KeyboardEvent, ReactNode, SetStateAction } from 'react'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD } from './enums'
 
@@ -245,12 +245,16 @@ export type TRdInlineInputProps<T extends FieldValues> = TextFieldProps & {
   editable?: boolean
   name: FieldPath<T>
   control: Control<T>
+  initialVal: string | number | undefined
   helper?: string
   width?: string
   flex?: number
   bgcolor?: string
-  endIcon?: ReactNode
-  onSubmit: (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element> | KeyboardEvent<HTMLDivElement>, field: T) => void
+  center?: boolean
+  loading?: boolean
+  endIcon?: boolean
+  fontSize?: string
+  onFieldSubmit: (field: FieldPath<T>) => void
 }
 export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
   helper?: string
@@ -262,6 +266,10 @@ export type TCardFeedSorterProps = {
   disabled: boolean
   sortOptions: TSortOptions
   setSortOptions: Dispatch<SetStateAction<TSortOptions>>
+}
+export type TCardUserInfoProps = {
+  user: TUserDetail | null
+  loading: boolean
 }
 
 /* ------------------------------------------Form Types------------------------------------------ */
@@ -275,6 +283,10 @@ export type TCardCreatePostForm = Pick<TPost, 'title' | 'body' | 'username'> & {
   subreddit_id: number
   images: FileList
   link: string
+}
+export type TCardUserInfoForm = {
+  email: string
+  fullName: string
 }
 
 /* ------------------------------------------Hook response Types------------------------------------------ */

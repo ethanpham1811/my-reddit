@@ -62,9 +62,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
       toast.success('Your Subreddit sucessfully added!')
       setOpen(false)
     },
-    onError: (error: ApolloError) => {
-      toast.error(error.message)
-    }
+    onError: (error: ApolloError) => toast.error(error.message)
   })
 
   const {

@@ -20,7 +20,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     <>
       <TopNav subListData={subListData} session={{ data, status }} router={router} />
       <main>{children}</main>
-      <Toaster />
+      <Toaster position="bottom-right" />
     </>
   )
 }

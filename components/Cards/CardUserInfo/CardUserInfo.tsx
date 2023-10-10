@@ -1,150 +1,101 @@
 import { RdSkeleton } from '@/components/Skeletons'
-import { TUserDetail } from '@/constants/types'
+import { SESSION_STATUS } from '@/constants/enums'
+import { TCardUserInfoForm, TCardUserInfoProps, TSession } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
 import { GET_USER_BY_USERNAME } from '@/graphql/queries'
-import { emailValidation, formatNumber, fullNameValidation, generateSeededHexColor, generateUserCover, generateUserImage } from '@/services'
-import { ApolloError, useMutation } from '@apollo/client'
-import { Avatar, Box, CardActions, CardContent, CardHeader, CardMedia, Divider, Stack, Typography } from '@mui/material'
-import format from 'date-fns/format'
+import { useMutation } from '@apollo/client'
+import { CardActions, CardContent, Divider } from '@mui/material'
 import { useSession } from 'next-auth/react'
+import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { RdButton, RdCard, RdInlineInput } from '../..'
+import { RdButton, RdCard, RdToast } from '../..'
+import UserInfoEmail from './components/UserInfoEmail'
+import UserInfoExtra from './components/UserInfoExtra'
+import UserInfoFollower from './components/UserInfoFollower'
+import UserInfoHeader from './components/UserInfoHeader'
+import UserInfoMedia from './components/UserInfoMedia'
 
-type TCardUserInfoProps = {
-  user: TUserDetail | null
-  loading: boolean
-}
-type TCardUserInfoForm = {
-  email: string
-  fullName: string
-}
-type UpdateUserValue<T extends keyof TCardUserInfoForm> = TCardUserInfoForm[T]
-
-function CardUserInfo({ user, loading }: TCardUserInfoProps) {
-  const { control, handleSubmit } = useForm<TCardUserInfoForm>()
-  const { data } = useSession()
+function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
+  const { control, setValue, getValues, handleSubmit } = useForm<TCardUserInfoForm>()
+  const { data, status }: TSession = useSession()
   const isMe = data?.user?.name === user?.username
-  console.log(isMe)
+
+  /* custom default values */
+  const { fullName, email, username } = user || {}
+  const defaultValues = useMemo(() => {
+    return {
+      fullName: fullName == null || fullName === '' ? username : fullName,
+      email: email == null || email === '' ? 'N/A' : email
+    }
+  }, [fullName, email, username])
+
+  useEffect(() => {
+    if (user) {
+      setValue('fullName', defaultValues.fullName as string)
+      setValue('email', defaultValues.email as string)
+    }
+  }, [user, setValue, defaultValues])
 
   /* user mutations */
-  const [mutateUser] = useMutation(UPDATE_USER, {
-    onCompleted: () => {
-      toast.success('Updated!')
-    },
-    onError: (error: ApolloError) => {
-      toast.error(error.message)
-    },
+  const [mutateUser, { loading }] = useMutation(UPDATE_USER, {
     refetchQueries: [{ query: GET_USER_BY_USERNAME, variables: { username: user?.username } }]
   })
 
-  async function updateUser<T extends keyof TCardUserInfoForm>(field: T, value: UpdateUserValue<T>) {
-    user &&
-      value != null &&
-      value !== '' &&
-      (await mutateUser({
-        variables: {
-          id: user.id,
-          [field]: value
-        }
-      }))
-  }
+  /* onSubmit */
+  async function onSubmitField(field: keyof TCardUserInfoForm) {
+    const value = getValues(field)
 
-  const onSubmit = (e: any, field: keyof TCardUserInfoForm) => {
-    user &&
-      handleSubmit((formData) => {
-        if ((e.type === 'keyup' && e.key === 'Enter') || e.type === 'blur') {
-          updateUser(field, formData[field])
+    if (user && value != null && value !== '' && user[field] !== value) {
+      handleSubmit(
+        async (formData) => {
+          toast.promise(
+            mutateUser({
+              variables: {
+                id: user.id,
+                [field]: value
+              }
+            }),
+            {
+              loading: <RdToast message="Updating your profile..." />,
+              success: <RdToast message="Profile saved!" />,
+              error: <RdToast message="Could not save." />
+            }
+          )
+        },
+        (errors) => {
+          // reset the field with initial value
+          setValue(field, user?.[field] as any)
         }
-      })()
+      )()
+    } else user && setValue(field, user[field] as any) // reset the field with initial value
   }
 
   return (
     <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
-      {!loading ? (
+      {!userLoading && status === SESSION_STATUS.Authenticated ? (
         <>
-          <CardMedia
-            component="img"
-            height={80}
-            image={generateUserCover(user?.username || 'seed', 400, 100)}
-            alt="user cover"
-            sx={{ mx: -2, mt: -2, width: 'auto' }}
-          />
-          <CardHeader
-            avatar={
-              <Avatar
-                variant="rounded"
-                sx={{
-                  width: 70,
-                  height: 70,
-                  backgroundColor: generateSeededHexColor(user?.username || 'seed'),
-                  border: (theme): string => `4px solid ${theme.palette.white.main}`
-                }}
-                alt={`${user?.username} avatar`}
-                src={generateUserImage(user?.username || 'seed')}
-              />
-            }
-            sx={{ p: 0, mt: -5.5 }}
-          />
-          <form>
+          <UserInfoMedia user={user} />
+          <form onSubmit={(e) => e.preventDefault()}>
             <CardContent sx={{ p: 0 }}>
-              <Typography variant="h6" color="initial" fontWeight={700}>
-                <RdInlineInput<TCardUserInfoForm>
-                  editable={isMe}
-                  registerOptions={{ validate: (val) => emailValidation(val) }}
-                  onSubmit={(e) => onSubmit(e, 'fullName')}
-                  // onBlur={(e) => onSubmit(e, 'fullName')}
-                  control={control}
-                  name="fullName"
-                  placeholder={user?.username}
-                />
-              </Typography>
-              <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
-                u/{user?.username}
-              </Typography>
+              {/* Usser avatar & cover */}
+              <UserInfoHeader<TCardUserInfoForm> isMe={isMe} getValues={getValues} control={control} onSubmitField={onSubmitField} user={user} />
               <Divider sx={{ my: 1 }} />
-              <Typography variant="body1" sx={{ color: 'blue.main' }}>
-                <RdInlineInput<TCardUserInfoForm>
-                  editable={isMe}
-                  registerOptions={{ validate: (val) => fullNameValidation(val) }}
-                  onSubmit={(e) => onSubmit(e, 'email')}
-                  // onBlur={(e) => onSubmit(e, 'email')}
-                  control={control}
-                  name="email"
-                  placeholder="your email"
-                />
-              </Typography>
+
+              {/* User email */}
+              <UserInfoEmail<TCardUserInfoForm> isMe={isMe} getValues={getValues} control={control} onSubmitField={onSubmitField} />
               <Divider sx={{ my: 1 }} />
-              <Stack direction="row">
-                <Stack flex={1}>
-                  <Typography fontWeight={700} variant="body1">
-                    Karma
-                  </Typography>
-                  <Typography variant="body1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
-                    {user?.karma}
-                  </Typography>
-                </Stack>
-                <Stack flex={1}>
-                  <Typography fontWeight={700} variant="body1">
-                    Cake day
-                  </Typography>
-                  <Typography variant="body1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
-                    {user?.dob ? format(new Date(), 'PPP') : 'NaN'}
-                  </Typography>
-                </Stack>
-              </Stack>
+
+              {/* User karma & cake day */}
+              <UserInfoExtra user={user} />
               <Divider sx={{ my: 1 }} />
-              <Box display="flex" justifyContent="center" py={1} alignItems="center">
-                <Typography variant="subtitle1" fontWeight={700}>
-                  {formatNumber(user?.followers || 0)}
-                </Typography>{' '}
-                &nbsp;
-                <Typography variant="subtitle2" sx={{ color: 'hintText.main' }}>
-                  Followers
-                </Typography>
-              </Box>
+
+              {/* User follower */}
+              <UserInfoFollower user={user} />
             </CardContent>
-            <Divider />
+            <Divider sx={{ my: 1 }} />
+
+            {/* Action buttons */}
             <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
               <RdButton text={'New Post'} filled color="blue" invertColor />
             </CardActions>

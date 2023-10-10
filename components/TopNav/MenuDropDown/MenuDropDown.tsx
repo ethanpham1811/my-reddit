@@ -5,10 +5,10 @@ import { HomeIcon } from '@/constants/icons'
 import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
 import { Box, List } from '@mui/material'
 import { ReactNode, useState } from 'react'
-import FeedsMenuList from './Components/FeedsMenuList'
-import PeopleMenuList from './Components/PeopleMenuList'
-import SubsMenuList from './Components/SubsMenuList'
 import { renderSelectedOption } from './RenderedCbs'
+import FeedsMenuList from './components/FeedsMenuList'
+import PeopleMenuList from './components/PeopleMenuList'
+import SubsMenuList from './components/SubsMenuList'
 
 function MenuDropDown({ session, subListData, subName, userName, pathName }: TMenuDropdownProps) {
   const { subredditList, loading, error } = subListData
