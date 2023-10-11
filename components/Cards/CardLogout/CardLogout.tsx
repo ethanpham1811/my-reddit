@@ -1,3 +1,4 @@
+import { client } from '@/apollo-client'
 import { RdButton, RdCard } from '@/components'
 import { LogoutIcon } from '@/constants/icons'
 import { CircularProgress, Divider, Stack, Typography } from '@mui/material'
@@ -10,8 +11,10 @@ function CardLogout({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> })
 
   function onClick() {
     setLoading(true)
-    setTimeout(() => {
-      signOut({ redirect: false })
+    setTimeout(async () => {
+      signOut({ redirect: false }).then(() => {
+        client.clearStore() // reset apollo cache
+      })
       setLoading(false)
       toast.success('Logout Successfully')
     }, 2000) // for loading demonstration purpose

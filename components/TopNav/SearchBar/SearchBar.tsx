@@ -17,10 +17,8 @@ type TSearchBarProps = {
 }
 
 function SearchBar({ session, subOrUserName, pathName, navigate }: TSearchBarProps) {
-  // const { topTrendingData, loading, error, searchTerm, setSearchTerm } = useTopSearchListDefault()
   const { queriedDataList, loading, error, searchTerm, setSearchTerm } = useTopSearchQueriedList()
   const [chip, setChip] = useState(true)
-  const [isFocused, setIsFocused] = useState(false)
 
   /* Autocomplete props */
 

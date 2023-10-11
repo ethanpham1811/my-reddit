@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 /* ------------------------------ USER--------------------------------- */
 export const GET_USER_BY_USERNAME = gql`
-  query MyQuery($username: String!) {
+  query User_by_username($username: String!) {
     userByUsername(username: $username) {
       id
       username
@@ -23,7 +23,7 @@ export const GET_USER_BY_USERNAME = gql`
 
 /* --------------------------- SUBREDDIT ------------------------------ */
 export const GET_SUBREDDIT_BY_TOPIC = gql`
-  query MyQuery($topic: String!) {
+  query Sub_by_topic($topic: String!) {
     subredditListByTopic(topic: $topic) {
       id
       topic_ids
@@ -32,7 +32,7 @@ export const GET_SUBREDDIT_BY_TOPIC = gql`
   }
 `
 export const GET_SUBREDDIT_BY_NAME = gql`
-  query MyQuery($name: String!) {
+  query Sub_by_name($name: String!) {
     subredditByName(name: $name) {
       coverUrl
       created_at
@@ -65,7 +65,7 @@ export const GET_SUBREDDIT_BY_NAME = gql`
   }
 `
 export const GET_SUBREDDIT_LIST_SHORT = gql`
-  query {
+  query Subs_short {
     subredditList {
       id
       name
@@ -73,7 +73,7 @@ export const GET_SUBREDDIT_LIST_SHORT = gql`
   }
 `
 export const GET_SUBREDDIT_LIST_FULL = gql`
-  query {
+  query Subs_full {
     subredditList {
       id
       topic_ids
@@ -87,7 +87,7 @@ export const GET_SUBREDDIT_LIST_FULL = gql`
 
 /* ----------------------------- POST -------------------------------- */
 export const GET_POST_LIST = gql`
-  query {
+  query Posts {
     postList {
       id
       title
@@ -114,7 +114,7 @@ export const GET_POST_LIST = gql`
   }
 `
 export const GET_POST_LIST_BY_SUB_ID = gql`
-  query MyQuery($id: ID!) {
+  query Posts_by_subId($id: ID!) {
     postUsingPost_subreddit_id_fkey(id: $id) {
       id
       images
@@ -141,7 +141,7 @@ export const GET_POST_LIST_BY_SUB_ID = gql`
   }
 `
 export const GET_POST_LIST_BY_USER_ID = gql`
-  query MyQuery($id: ID!) {
+  query Posts_by_userId($id: ID!) {
     postUsingPost_user_id_fkey(id: $id) {
       id
       images
@@ -169,7 +169,7 @@ export const GET_POST_LIST_BY_USER_ID = gql`
 `
 /* ----------------------------- TOPIC -------------------------------- */
 export const GET_TOPIC_LIST = gql`
-  query {
+  query Topics {
     topicList {
       name
       id
@@ -179,7 +179,7 @@ export const GET_TOPIC_LIST = gql`
 
 /* ------------------------------- MIX --------------------------------- */
 export const GET_TOP_TRENDING_POSTS = gql`
-  query MyQuery($quantity: Int!) {
+  query Posts_trending($quantity: Int!) {
     queriedTrending(quantity: $quantity) {
       id
       title
@@ -194,7 +194,7 @@ export const GET_TOP_TRENDING_POSTS = gql`
   }
 `
 export const GET_QUERIED_SUBS_USERS = gql`
-  query MyQuery($quantity: Int!, $term: String!) {
+  query Subs_n_Users_by_term($quantity: Int!, $term: String!) {
     queriedSubs(quantity: $quantity, term: $term) {
       id
       name

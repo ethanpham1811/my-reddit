@@ -1,6 +1,5 @@
 import { client } from '@/apollo-client'
 import { ADD_USER } from '@/graphql/mutations'
-import { GET_USER_BY_USERNAME } from '@/graphql/queries'
 import { findUser } from '@/services'
 import bcrypt from 'bcrypt'
 import NextAuth from 'next-auth'
@@ -61,12 +60,9 @@ export const authOptions = {
           const coverUrl = profile?.subreddit?.banner_img
 
           // check if username has already existed
-          const { data: existedUser } = await client.query({
-            variables: { username },
-            query: GET_USER_BY_USERNAME
-          })
+          const existedUser = await findUser()
           // Return existed user
-          if (existedUser?.userByUsername) return true
+          if (existedUser) return true
 
           // If username does not exist, insert the new user
           const { data: newUser } = await client.mutate({

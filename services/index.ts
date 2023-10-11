@@ -135,7 +135,7 @@ export const findUser = async (username: string) => {
     data: { userByUsername: existedUser },
     error
   } = await client.query({
-    variables: { username },
+    variables: { username, fetchPolicy: 'no-cache' },
     query: GET_USER_BY_USERNAME
   })
 

@@ -25,7 +25,7 @@ function useTopSearchQueriedList(): TuseTopSearchQueriedListResponse {
     loading: queriedLoading,
     error,
     refetch
-  } = useQuery(GET_QUERIED_SUBS_USERS, { variables: { quantity: 3, term: searchTerm } })
+  } = useQuery(GET_QUERIED_SUBS_USERS, { skip: searchTerm === '', variables: { quantity: 3, term: searchTerm } })
   const queriedSubs: TQueriedSub[] = queriedData?.queriedSubs ?? []
   const queriedUsers: TQueriedUser[] = queriedData?.queriedUsers ?? []
 
@@ -35,7 +35,6 @@ function useTopSearchQueriedList(): TuseTopSearchQueriedListResponse {
 
   useEffect(() => {
     refetch()
-    //TODO: abort controller
   }, [searchTerm, refetch])
 
   return { queriedDataList: queriedDataList.length == 0 && !loading ? notFound : queriedDataList, loading, error, searchTerm, setSearchTerm }
