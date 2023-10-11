@@ -1,4 +1,4 @@
-import { DEFAULT_GROUP_TYPE } from '@/constants/enums'
+import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { LockIcon, PersonIcon, RemoveRedEyeIcon } from '@/constants/icons'
 import { TCommunityCreatorForm, TCommunityCreatorProps, TCommunityTypeOPtions } from '@/constants/types'
 import { ADD_SUBREDDIT } from '@/graphql/mutations'
@@ -22,22 +22,8 @@ export const groupTypeOptions: TCommunityTypeOPtions[] = [
         </Typography>
       </Stack>
     ),
-    value: 'public'
-  },
-  {
-    label: (
-      <Stack direction="row" alignItems="center">
-        <RemoveRedEyeIcon sx={{ mr: 1 }} />
-        <Typography variant="body1" fontWeight={600} component="span">
-          Restricted
-        </Typography>
-        <span style={{ padding: '0 0.5rem' }}>•</span>
-        <Typography variant="body1" sx={{ color: 'hintText.main' }}>
-          Anyone can view this community, but only approved users can post
-        </Typography>
-      </Stack>
-    ),
-    value: 'restricted'
+    value: 'public',
+    disabled: false
   },
   {
     label: (
@@ -52,7 +38,24 @@ export const groupTypeOptions: TCommunityTypeOPtions[] = [
         </Typography>
       </Stack>
     ),
-    value: 'private'
+    value: 'private',
+    disabled: false
+  },
+  {
+    label: (
+      <Stack direction="row" alignItems="center">
+        <RemoveRedEyeIcon sx={{ mr: 1 }} />
+        <Typography variant="body1" fontWeight={600} component="span">
+          Restricted
+        </Typography>
+        <span style={{ padding: '0 0.5rem' }}>•</span>
+        <Typography variant="body1" sx={{ color: 'hintText.main' }}>
+          Anyone can view this community, but only approved users can post
+        </Typography>
+      </Stack>
+    ),
+    value: 'restricted',
+    disabled: true
   }
 ]
 
@@ -69,7 +72,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
     handleSubmit,
     control,
     formState: { errors }
-  } = useForm<TCommunityCreatorForm>({ defaultValues: { subType: DEFAULT_GROUP_TYPE, isChildrenContent: false } })
+  } = useForm<TCommunityCreatorForm>({ defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false } })
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {

@@ -6,7 +6,7 @@ function usePostList(): TUsePostListResponse {
   const { data, loading, error } = useQuery(GET_POST_LIST)
   const postList: TPost[] = data?.postList
 
-  return { postList, loading, error }
+  return [postList, loading, error]
 }
 
 export default usePostList

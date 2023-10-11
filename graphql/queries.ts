@@ -17,6 +17,31 @@ export const GET_USER_BY_USERNAME = gql`
       password
       member_of_ids
       following_ids
+      post {
+        id
+        title
+        body
+        images
+        created_at
+        user {
+          username
+        }
+        comment {
+          created_at
+          user {
+            username
+          }
+          text
+        }
+        subreddit {
+          name
+          id
+          subType
+        }
+        vote {
+          upvote
+        }
+      }
     }
   }
 `
@@ -45,18 +70,26 @@ export const GET_SUBREDDIT_BY_NAME = gql`
       subType
       topic_ids
       post {
+        id
+        title
+        body
+        images
+        created_at
         user {
           username
         }
-        title
-        body
         comment {
           created_at
-          username
+          user {
+            username
+          }
           text
         }
-        created_at
-        images
+        subreddit {
+          name
+          id
+          subType
+        }
         vote {
           upvote
         }

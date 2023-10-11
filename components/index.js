@@ -13,7 +13,9 @@ import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/
 import TopicDropdown from './CommunityCreator/TopicDropdown/TopicDropdown'
 import MainLayout from './Layouts/MainLayout'
 import LoginPortal from './LoginPortal/LoginPortal'
+import MessageBoard from './NewFeeds/MessageBoard/MessageBoard'
 import NewFeeds from './NewFeeds/NewFeeds'
+import UserNewFeeds from './NewFeeds/UserNewFeeds'
 import SubredditTopNav from './SubredditTopNav/SubredditTopNav'
 import IconBox from './TopNav/IconBox/IconBox'
 import Logo from './TopNav/Logo/Logo'
@@ -59,6 +61,7 @@ export {
   Logo,
   MainLayout,
   MenuDropDown,
+  MessageBoard,
   NewFeeds,
   ProfileDropdown,
   RdAutoComplete,
@@ -83,5 +86,6 @@ export {
   SearchBar,
   SubredditTopNav,
   TopNav,
-  TopicDropdown
+  TopicDropdown,
+  UserNewFeeds
 }

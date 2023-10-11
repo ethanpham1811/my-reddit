@@ -1,4 +1,5 @@
 import { client } from '@/apollo-client'
+import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TQueryNotFound, TVote } from '@/constants/types'
 import { GET_USER_BY_USERNAME } from '@/graphql/queries'
 import { supabase } from '@/pages/_app'
@@ -7,6 +8,7 @@ import { JSXElementConstructor, ReactElement } from 'react'
 import toast from 'react-hot-toast'
 import ReactHtmlParser from 'react-html-parser'
 
+/*------------------------------------------ General utilities ----------------------------------------- */
 export const notificationHandler = () => {
   return { onCompleted: () => toast.success('sucessful!'), onError: (error: ApolloError) => toast.error(error.message) }
 }
@@ -32,7 +34,24 @@ export const uploadFiles = async (files: FileList): Promise<string[]> => {
   return filePaths
 }
 
-/*------------------------------------------ Generators ----------------------------------------- */
+// weather if the post belongs to the subreddit I have joined, or to the subreddit that is public
+export const validatePostBySubname = (memberOfIds: string[] | undefined, subPageName: unknown, subType: SUBREDDIT_TYPE | undefined): boolean => {
+  if (subPageName == undefined) return false
+  return memberOfIds?.includes(subPageName as string) || subType === SUBREDDIT_TYPE.Public
+}
+
+// weather if the post belongs to the user that I'm following
+export const validatePostByFollowing = (followingIds: string[] | undefined, followerUsername: unknown): boolean => {
+  return followingIds?.includes(followerUsername as string) || false
+}
+
+// weather if I belong to a subreddit
+export const validateSubredditMember = (memberOfIds: string[] | undefined, subPageName: unknown): boolean => {
+  if (subPageName == undefined) return false
+  return memberOfIds?.includes(subPageName as string) || false
+}
+
+/*--------------------------------------------- Generators -------------------------------------------- */
 export const generateUserImage = (seed: string | null | undefined): string => `https://robohash.org/${seed ?? 'seed'}.png`
 export const generateUserCover = (seed: string | null | undefined, width: number, height: number): string =>
   `https://picsum.photos/seed/${seed ?? 'seed'}/${width}/${height}`

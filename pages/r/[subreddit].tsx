@@ -1,10 +1,8 @@
-import { CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
-import withSubredditPostList from '@/components/HOCs/withSubredditPostList'
+import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TSortOptions } from '@/constants/types'
 import useSubredditByName from '@/hooks/useSubredditByName'
-import { Stack } from '@mui/material'
 
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -16,9 +14,8 @@ const Subreddit: NextPage = () => {
   const {
     query: { subreddit: subName }
   } = useRouter()
-
-  const [subredditData, loading] = useSubredditByName(subName)
-  const SubredditNewFeeds = withSubredditPostList(NewFeeds, subredditData?.id)
+  const [subredditData, subredditPosts, loading, error] = useSubredditByName(subName)
+  const [hasNoPost, setHasNoPost] = useState(false)
 
   return (
     <div>
@@ -27,10 +24,16 @@ const Subreddit: NextPage = () => {
       </Head>
       <SubredditTopNav name={subredditData?.name} subType={subredditData?.subType} headline={subredditData?.headline} />
       <FeedLayout top="1rem" subredditId={subredditData?.id} sortOptions={sortOptions} setSortOptions={setSortOptions}>
-        <SubredditNewFeeds sortOptions={sortOptions} />
-        <Stack spacing={2}>
-          <CardSubredditInfo subreddit={subredditData} loading={loading} />
-        </Stack>
+        <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
+        <NewFeeds
+          subType={subredditData?.subType}
+          postList={subredditPosts}
+          loading={loading}
+          error={error}
+          sortOptions={sortOptions}
+          setHasNoPost={setHasNoPost}
+        />
+        <CardSubredditInfo subreddit={subredditData} loading={loading} />
       </FeedLayout>
     </div>
   )

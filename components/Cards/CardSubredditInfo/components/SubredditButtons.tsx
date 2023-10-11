@@ -1,7 +1,10 @@
+import { client } from '@/apollo-client'
 import { AppContext } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { TSession, TSubredditDetail } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
+import { GET_USER_BY_USERNAME } from '@/graphql/queries'
+import useUserByUsername from '@/hooks/useUserByUsername'
 import { useMutation } from '@apollo/client'
 import { CardActions, Divider } from '@mui/material'
 import { useSession } from 'next-auth/react'
@@ -10,7 +13,8 @@ import toast from 'react-hot-toast'
 import { RdButton } from '../../..'
 
 function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null }) {
-  const { me } = useContext(AppContext)
+  const { userName } = useContext(AppContext)
+  const [me] = useUserByUsername(userName)
   const [mutateMemberOf] = useMutation(UPDATE_USER)
   const { status }: TSession = useSession()
 
@@ -23,11 +27,23 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
         member_of_ids: me.member_of_ids ? [...me.member_of_ids, subreddit.name] : [subreddit.name]
       }
     })
-    if (errors) {
-      // setVoteCount(voteCount - (upvote ? 1 : -1)) // revert if mutation fails
-      // TODO: optimistic - cache update
-      toast.error(errors[0].message)
-    }
+    if (errors) toast.error(errors[0].message)
+
+    // get cached data
+    const cachedData = client.readQuery({ query: GET_USER_BY_USERNAME, variables: { username: userName } })
+    const userData = cachedData.userByUsername
+
+    // updating subreddit page cache
+    client.writeQuery({
+      query: GET_USER_BY_USERNAME,
+      data: {
+        userByUsername: {
+          ...userData,
+          member_of_ids: userData.member_of_ids ? [...userData.member_of_ids, subreddit.name] : [subreddit.name]
+        }
+      },
+      variables: { username: userName }
+    })
   }
 
   const onCreatePost = () => {}

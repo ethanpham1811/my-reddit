@@ -17,7 +17,7 @@ import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
-import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD } from './enums'
+import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
 
 /* ------------------------------------------Common Types------------------------------------------ */
 
@@ -33,11 +33,11 @@ export type TUserDetail = TUser & {
   dob?: Date
   coverUrl?: string
   photoUrl?: string
-  post?: TPost
   karma?: number
   socialLinks?: string[]
   member_of_ids?: string[]
   following_ids?: string[]
+  post: TPost[]
 }
 export type TPost = {
   id: number
@@ -45,9 +45,7 @@ export type TPost = {
   body: string
   user: TUserDetail
   created_at: Date
-  subreddit: {
-    name: string
-  }
+  subreddit: Pick<TSubredditDetail, 'id' | 'name' | 'subType'>
   images?: string[]
   comment?: TComment
   vote?: TVote[]
@@ -67,8 +65,9 @@ export type TSubredditDetail = TSubreddit & {
   description?: string
   member: number
   isChildrenContent: boolean
-  subType: string
+  subType: SUBREDDIT_TYPE
   created_at: Date
+  post: TPost[]
 }
 export type TComment = {
   created_at: Date
@@ -100,9 +99,8 @@ export type TIconBox = {
 }
 export type TMenuDropdownProps = {
   session: Session | null
-  subListData: TUseSubredditListResponse
   subName: string | string[] | undefined
-  userName: string | string[] | undefined
+  userPageName: string | string[] | undefined
   pathName: string
 }
 export type TProfileDropdownProps = {
@@ -117,6 +115,7 @@ export type TMenuItem = Omit<TSubreddit, 'id'> & {
 export type TRadioOption = {
   value: string
   label: string | ReactNode
+  disabled: boolean
 }
 export type TSortOptions = {
   method: SORT_METHOD
@@ -283,7 +282,7 @@ export type TCardUserInfoProps = {
 /* ------------------------------------------Form Types------------------------------------------ */
 export type TCommunityCreatorForm = {
   name: string
-  subType: string
+  subType: SUBREDDIT_TYPE
   isChildrenContent: boolean
   topic_ids: string[]
 }
@@ -298,7 +297,7 @@ export type TCardUserInfoForm = {
 }
 
 /* ------------------------------------------Hook response Types------------------------------------------ */
-export type TUsePostListResponse = { postList: TPost[] | null; loading: boolean; error: ApolloError | undefined }
+export type TUsePostListResponse = [postList: TPost[] | null, loading: boolean, error: ApolloError | undefined]
 export type TUseTopicListResponse = { topicList: TTopic[] | null; loading: boolean; error: ApolloError | undefined }
 export type TUseSubredditListResponse = { subredditList: TSubreddit[] | null; loading: boolean; error: ApolloError | undefined }
 
@@ -306,6 +305,7 @@ export type TUseSubredditListResponse = { subredditList: TSubreddit[] | null; lo
 export type TCommunityTypeOPtions = {
   label: ReactNode
   value: string
+  disabled: boolean
 }
 
 /* --------------------------------------------- Query Types---------------------------------------------- */

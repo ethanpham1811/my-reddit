@@ -1,13 +1,13 @@
 import { Box, Typography } from '@mui/material'
 
-function NoOwnedPost() {
+function MessageBoard({ message }: { message: string }) {
   return (
     <Box display="flex" justifyContent="center">
       <Typography variant="body1" color="initial" fontWeight={400}>
-        This user has no post
+        {message}
       </Typography>
     </Box>
   )
 }
 
-export default NoOwnedPost
+export default MessageBoard

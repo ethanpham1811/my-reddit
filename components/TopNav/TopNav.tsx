@@ -1,5 +1,5 @@
 import { SESSION_STATUS } from '@/constants/enums'
-import { TSession, TUseSubredditListResponse } from '@/constants/types'
+import { TSession } from '@/constants/types'
 import { AppBar, Box, Stack, styled } from '@mui/material'
 import { NextRouter } from 'next/router'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
@@ -14,12 +14,11 @@ const NavBar = styled(AppBar)(({ theme }) => {
 })
 
 type TTopNavProps = {
-  subListData: TUseSubredditListResponse
   session: TSession
   router: NextRouter
 }
 
-function TopNav({ subListData, session, router }: TTopNavProps) {
+function TopNav({ session, router }: TTopNavProps) {
   const {
     query: { subreddit: subName, username },
     pathname: pathName,
@@ -32,7 +31,7 @@ function TopNav({ subListData, session, router }: TTopNavProps) {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <Logo />
             {/* dropdown */}
-            <MenuDropDown session={session.data} subName={subName} userName={username} pathName={pathName} subListData={subListData} />
+            <MenuDropDown session={session.data} subName={subName} userPageName={username} pathName={pathName} />
           </Stack>
           {/* search */}
           <SearchBar session={session.data} subOrUserName={subName ?? username} pathName={pathName} navigate={navigate} />

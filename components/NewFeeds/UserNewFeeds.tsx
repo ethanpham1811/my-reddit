@@ -1,4 +1,3 @@
-import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
 import useUserByUsername from '@/hooks/useUserByUsername'
 import { ApolloError } from '@apollo/client'
@@ -8,11 +7,10 @@ import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useContext } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
-import { getTotalUpvote, validatePostBySubname, validateSubredditMember } from '../../services'
+import { getTotalUpvote, validatePostByFollowing, validatePostBySubname } from '../../services'
 import { AppContext } from '../Layouts/MainLayout'
 
-type TNewFeedsProps = {
-  subType?: SUBREDDIT_TYPE | undefined
+type TUserNewFeedsProps = {
   sortOptions: TSortOptions
   postList: TPost[] | null
   loading: boolean
@@ -20,26 +18,26 @@ type TNewFeedsProps = {
   setHasNoPost?: Dispatch<SetStateAction<boolean>>
 }
 
-function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subType, setHasNoPost }: TNewFeedsProps) {
+function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, setHasNoPost }: TUserNewFeedsProps) {
   const { userName } = useContext(AppContext)
   const [me] = useUserByUsername(userName)
   const {
-    query: { subreddit: subPageName }
+    query: { username: userPageName }
   } = useRouter()
   setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
 
-  // weather if the post belongs to the public subreddit
-  const verifyIsMember = (): boolean => {
-    return validateSubredditMember(me?.member_of_ids, subPageName)
+  // weather if the post belongs to the subreddit that I've join
+  const verifyPost = (post: TPost): boolean => {
+    return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post?.subreddit?.subType)
   }
 
-  // weather if the post belongs to the public subreddit
-  const verifyPost = (post: TPost): boolean => {
-    return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, subType)
+  // weather if the post belongs to user that I'm following
+  const verifyFollower = (): boolean => {
+    return validatePostByFollowing(me?.following_ids, userPageName) || me?.username === userPageName
   }
 
   /* postList mapping */
-  const cardPostList: TCardPostProps[] | null =
+  const mappedPostList: TCardPostProps[] | null =
     postList &&
     orderBy(
       postList
@@ -63,7 +61,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
 
   return (
     <>
-      {loading || !cardPostList ? (
+      {loading || !mappedPostList ? (
         [0, 1].map((el) => (
           <Stack height={400} py={2} gap={1} key={`loading_ske_${el}`}>
             <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="60%" height="25px" />
@@ -72,11 +70,12 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
             <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="30%" height="12px" />
           </Stack>
         ))
-      ) : // ON SUBREDDIT FEEDS: check weather if I haven't join this subreddit or this subreddit is not public
-      subPageName && !verifyIsMember() && subType !== SUBREDDIT_TYPE.Public ? (
-        <MessageBoard message="This community is private, please Join" />
-      ) : cardPostList.length > 0 ? (
-        cardPostList.map(({ id, title, body, images, comment, createdAt, username, subreddit, upvote }) => {
+      ) : !userName ? ( // if this is USER PAGE and user is not logged in
+        <MessageBoard message="You need to login to view their content" />
+      ) : !verifyFollower() ? ( // if this is USER PAGE and user is not logged in
+        <MessageBoard message="You need to follow this user to view their content" />
+      ) : mappedPostList.length > 0 ? (
+        mappedPostList.map(({ id, title, body, images, comment, createdAt, username, subreddit, upvote }) => {
           return (
             <CardPost
               id={id}
@@ -89,15 +88,14 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
               subreddit={subreddit}
               username={username}
               comment={comment}
-              inGroup={!!subPageName}
             />
           )
         })
       ) : (
-        <MessageBoard message="This Subreddit has no post" />
+        <MessageBoard message="This user has no post" />
       )}
     </>
   )
 }
 
-export default NewFeeds
+export default UserNewFeeds

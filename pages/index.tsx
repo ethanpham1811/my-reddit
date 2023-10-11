@@ -1,8 +1,8 @@
-import { CardAds, CardHomeInfo, NewFeeds } from '@/components'
-import withPostList from '@/components/HOCs/withPostList'
+import { CardAds, CardFeedSorter, CardHomeInfo, NewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TSortOptions } from '@/constants/types'
+import usePostList from '@/hooks/usePostList'
 import { Stack } from '@mui/material'
 
 import { GetServerSidePropsContext, NextPage } from 'next'
@@ -11,7 +11,6 @@ import Head from 'next/head'
 import { useState } from 'react'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  // console.log(context)
   const session = await getSession(context)
   console.log(session)
 
@@ -33,7 +32,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 const Home: NextPage = () => {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
-  const HomeNewFeeds = withPostList(NewFeeds)
+  const [postList, loading, error] = usePostList()
+  const [hasNoPost, setHasNoPost] = useState(false)
 
   return (
     <div>
@@ -41,7 +41,8 @@ const Home: NextPage = () => {
         <title>My Reddit</title>
       </Head>
       <FeedLayout top="70px" sortOptions={sortOptions} setSortOptions={setSortOptions}>
-        <HomeNewFeeds sortOptions={sortOptions} />
+        <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
+        <NewFeeds postList={postList} loading={loading} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
         <Stack spacing={2}>
           <CardAds />
           <CardHomeInfo />

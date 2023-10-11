@@ -2,9 +2,10 @@ import { AppContext } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { SessionStatus, TUserDetail } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
+import useUserByUsername from '@/hooks/useUserByUsername'
 import { useMutation } from '@apollo/client'
 import { CardActions, Divider } from '@mui/material'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import toast from 'react-hot-toast'
 import { RdButton } from '../../..'
 
@@ -15,23 +16,26 @@ type TUserButtonsProps = {
 }
 
 function UserButtons({ user, isMe, status }: TUserButtonsProps) {
-  const { me } = useContext(AppContext)
+  const { userName } = useContext(AppContext)
+  const [me] = useUserByUsername(userName)
   const [mutateFollowing] = useMutation(UPDATE_USER)
+  const [showUnfollowBtn, setShowUnfollowBtn] = useState(false)
 
   /* onSubmit */
-  async function onFollow() {
+  async function handleFollowingAction(isUnfollow: boolean) {
     if (!user || !me) return
+    let newValue: string[] = []
+
+    if (isUnfollow) newValue = me.following_ids ? me.following_ids?.filter((follower) => follower !== user.username) : []
+    else newValue = me.following_ids ? [...me.following_ids, user.username] : [user.username]
+
     const { errors } = await mutateFollowing({
       variables: {
-        id: me?.id,
-        following_ids: me.following_ids ? [...me.following_ids, user.username] : [user.username]
+        id: me.id,
+        following_ids: newValue
       }
     })
-    if (errors) {
-      // setVoteCount(voteCount - (upvote ? 1 : -1)) // revert if mutation fails
-      // TODO: optimistic - cache update
-      toast.error(errors[0].message)
-    }
+    if (errors) toast.error(errors[0].message)
   }
 
   const onCreatePost = () => {}
@@ -44,9 +48,18 @@ function UserButtons({ user, isMe, status }: TUserButtonsProps) {
             {!isMe ? (
               <>
                 {user && me?.following_ids?.includes(user.username) ? (
-                  <RdButton onClick={onFollow} text={'Followed'} color="blue" invertColor disabled />
+                  <RdButton
+                    onClick={() => handleFollowingAction(true)}
+                    filled={showUnfollowBtn}
+                    text={showUnfollowBtn ? 'Unfollow' : 'Followed'}
+                    onMouseEnter={() => setShowUnfollowBtn(true)}
+                    onMouseLeave={() => setShowUnfollowBtn(false)}
+                    color="blue"
+                    width="6rem"
+                    sx={{ px: 3, py: 0.5, fontWeight: 700, fontSize: '0.8rem' }}
+                  />
                 ) : (
-                  <RdButton onClick={onFollow} text={'Follow'} filled color="blue" invertColor />
+                  <RdButton onClick={() => handleFollowingAction(false)} text={'Follow'} filled color="blue" invertColor />
                 )}
               </>
             ) : (

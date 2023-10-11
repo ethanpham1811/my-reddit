@@ -1,8 +1,12 @@
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
+import { UPDATE_USER } from '@/graphql/mutations'
+import useUserByUsername from '@/hooks/useUserByUsername'
+import { useMutation } from '@apollo/client'
 import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import { useContext, useState } from 'react'
+import toast from 'react-hot-toast'
 import { RdButton, RdChip } from '..'
 import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../services'
 import { AppContext } from '../Layouts/MainLayout'
@@ -11,9 +15,7 @@ const SubredditNavBar = styled(AppBar)(({ theme }) => {
   return {
     backgroundColor: '#fff',
     boxShadow: 'none',
-    // padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
     position: 'static'
-    // height: '50vh'
   }
 })
 
@@ -24,8 +26,17 @@ type TSubredditTopNavProps = {
 }
 
 function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
-  const { me } = useContext(AppContext)
+  const { userName } = useContext(AppContext)
+  const [me] = useUserByUsername(userName)
   const [showLeaveBtn, setShowLeaveBtn] = useState(false)
+  const [leaveSubreddit] = useMutation(UPDATE_USER)
+
+  const onLeaveSubreddit = async () => {
+    if (!me) return
+    const newValue = me?.member_of_ids?.filter((subName) => subName !== name)
+    const { errors } = await leaveSubreddit({ variables: { id: me.id, member_of_ids: newValue } })
+    if (errors) toast.error(errors[0].message)
+  }
 
   return (
     <Box flexGrow={1}>
@@ -64,6 +75,7 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
             <Stack sx={{ alignSelf: 'flex-start', alignItems: 'center', ml: 'auto' }} direction="row">
               {me?.member_of_ids?.includes(name as string) ? (
                 <RdButton
+                  onClick={onLeaveSubreddit}
                   filled={showLeaveBtn}
                   text={showLeaveBtn ? 'Leave' : 'Joined'}
                   onMouseEnter={() => setShowLeaveBtn(true)}

@@ -17,7 +17,7 @@ type TPeopleMenuListProps = {
 function PeopleMenuList({ session, loading, options, filterByTerm }: TPeopleMenuListProps) {
   return (
     <List>
-      <GroupHeader label={MAIN_MENU_GROUP.People} />
+      <GroupHeader label={MAIN_MENU_GROUP.CurrentPage} />
       {session && !loading ? (
         options.length > 0 ? (
           options.filter(filterByTerm).map(({ name }) => <SubAndPeopleMenuItem name={name} key={`people_menu_${rid()}`} />)

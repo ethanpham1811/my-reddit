@@ -1,5 +1,4 @@
-import { CardUserInfo, NewFeeds } from '@/components'
-import withUserPostList from '@/components/HOCs/withUserPostList'
+import { CardFeedSorter, CardUserInfo, UserNewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TSortOptions } from '@/constants/types'
@@ -15,9 +14,8 @@ const User: NextPage = () => {
   const {
     query: { username }
   } = useRouter()
-
-  const [user, loading] = useUserByUsername(username)
-  const UserNewFeeds = withUserPostList(NewFeeds, user?.id)
+  const [user, userPosts, loading, error] = useUserByUsername(username)
+  const [hasNoPost, setHasNoPost] = useState(false)
 
   return (
     <div>
@@ -25,7 +23,8 @@ const User: NextPage = () => {
         <title>u/{username}</title>
       </Head>
       <FeedLayout top="70px" sortOptions={sortOptions} setSortOptions={setSortOptions}>
-        <UserNewFeeds sortOptions={sortOptions} />
+        <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
+        <UserNewFeeds postList={userPosts} loading={loading} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
         <CardUserInfo user={user} loading={loading} />
       </FeedLayout>
     </div>

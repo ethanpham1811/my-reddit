@@ -1,10 +1,11 @@
-import { CardCreatePost, CardFeedSorter } from '@/components'
+import { CardCreatePost } from '@/components'
 import { TSession, TSortOptions } from '@/constants/types'
 
+import useUserByUsername from '@/hooks/useUserByUsername'
 import { Box, Container, Grid, Stack } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { Children, Dispatch, ReactElement, ReactNode, SetStateAction, cloneElement, isValidElement, useContext, useState } from 'react'
+import { Children, Dispatch, ReactNode, SetStateAction, useContext } from 'react'
 import { AppContext } from './MainLayout'
 
 type TFeedLayoutProps = {
@@ -16,17 +17,15 @@ type TFeedLayoutProps = {
 }
 
 function FeedLayout({ children, top, subredditId, sortOptions, setSortOptions }: TFeedLayoutProps) {
-  const { me } = useContext(AppContext)
+  const { userName } = useContext(AppContext)
+  const [me] = useUserByUsername(userName)
   const {
     query: { subreddit, username }
   } = useRouter()
-  const [hasNoPost, setHasNoPost] = useState(false)
   const { data: session }: TSession = useSession()
-  const mainContent = Children.toArray(children)[0]
-  const sideContent = Children.toArray(children)[1]
-
-  const mainWithProps =
-    isValidElement(mainContent) && cloneElement(mainContent as ReactElement<{ setHasNoPost: Dispatch<SetStateAction<boolean>> }>, { setHasNoPost })
+  const sorter = Children.toArray(children)[0]
+  const mainContent = Children.toArray(children)[1]
+  const sideContent = Children.toArray(children)[2]
 
   let allowCreatePost = false
   if (subreddit && me) {
@@ -43,8 +42,8 @@ function FeedLayout({ children, top, subredditId, sortOptions, setSortOptions }:
           <Grid xs={16} md={8} item order={{ xs: 2, md: 1 }}>
             <Stack spacing={2}>
               {session && allowCreatePost && <CardCreatePost subId={subredditId} />}
-              <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
-              {mainWithProps}
+              {sorter}
+              {mainContent}
             </Stack>
           </Grid>
           <Grid xs={16} md={4} item order={{ xs: 1, md: 2 }}>

@@ -1,6 +1,5 @@
 export const MAX_UPLOADS = 5
 export const MAX_TOPIC_CHOSEN = 2
-export const DEFAULT_GROUP_TYPE = 'public'
 export const DEFAULT_BUTTON_COLOR = 'orange'
 export enum ORDERING {
   Asc = 'asc',
@@ -18,7 +17,8 @@ export enum SUBREDDIT_LIST_MODE {
 export enum MAIN_MENU_GROUP {
   Feeds = 'Feeds',
   Communities = 'Your Communities',
-  People = 'People'
+  People = 'People',
+  CurrentPage = 'Active'
 }
 export enum BORDER_TYPES {
   Rounded = '4px',
@@ -36,7 +36,7 @@ export enum SESSION_STATUS {
   Unauthenticated = 'unauthenticated'
 }
 export enum SUBREDDIT_TYPE {
-  Private = 'Private',
-  Public = 'Public',
-  Restricted = 'Restricted'
+  Private = 'private',
+  Public = 'public',
+  Restricted = 'restricted'
 }

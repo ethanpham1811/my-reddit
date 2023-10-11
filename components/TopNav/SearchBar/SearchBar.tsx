@@ -25,25 +25,19 @@ function SearchBar({ session, subOrUserName, pathName, navigate }: TSearchBarPro
   const renderInput = (params: AutocompleteRenderInputParams) => (
     <SearchBarInput params={params} chip={chip} name={subOrUserName} onDeleteChip={onDeleteChip} />
   )
-
   const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
 
   const onChange = (_: SyntheticEvent<Element, Event>, option: string | TAutocompleteOptions | null) => {
     if (!option) return
-    if (typeof option === 'string') {
-      /* navigate to search page */
-      navigate(`/search?q=${option}`)
-    } else {
+    if (typeof option === 'string') navigate(`/search?q=${option}`) /* navigate to search page */
+    else {
       /* navigate to corresponding page */
       const url = !isNotFound(option) ? generateAutoCompleteUrl(option) : null
       url && navigate(url)
     }
   }
   const onDeleteChip = () => setChip(false)
-  const onBlur = () => {
-    // setIsFocused(false)
-    setChip(true)
-  }
+  const onBlur = () => setChip(true)
 
   return (
     <Box flex={1}>

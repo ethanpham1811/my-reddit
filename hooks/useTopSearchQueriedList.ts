@@ -34,7 +34,7 @@ function useTopSearchQueriedList(): TuseTopSearchQueriedListResponse {
   const loading = trendingLoading || queriedLoading
 
   useEffect(() => {
-    refetch()
+    searchTerm !== '' && refetch()
   }, [searchTerm, refetch])
 
   return { queriedDataList: queriedDataList.length == 0 && !loading ? notFound : queriedDataList, loading, error, searchTerm, setSearchTerm }
