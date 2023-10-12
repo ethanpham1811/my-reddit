@@ -4,7 +4,7 @@ import { TMenuItem } from '@/constants/types'
 import { List, ListItemText, MenuItem } from '@mui/material'
 import { Session } from 'next-auth'
 import { v4 as rid } from 'uuid'
-import GroupHeader from './GroupHeader'
+import GroupHeader from './MenuGroupHeader'
 import SubAndPeopleMenuItem from './SubAndPeopleMenuItem'
 
 type TPeopleMenuListProps = {

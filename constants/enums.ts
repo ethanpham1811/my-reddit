@@ -40,3 +40,7 @@ export enum SUBREDDIT_TYPE {
   Public = 'public',
   Restricted = 'restricted'
 }
+export enum PROFILE_DIALOG_TYPE {
+  Logout = 'logout',
+  UserAgreement = 'userAgreement'
+}

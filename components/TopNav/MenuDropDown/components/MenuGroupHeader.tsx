@@ -1,7 +1,7 @@
 import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { ListSubheader, Typography } from '@mui/material'
 
-function GroupHeader({ label }: { label: MAIN_MENU_GROUP }) {
+function MenuGroupHeader({ label }: { label: MAIN_MENU_GROUP }) {
   return (
     <ListSubheader sx={{ bgcolor: 'background.paper' }}>
       <Typography variant="subtitle1" sx={{ color: 'hintText.main' }}>
@@ -11,4 +11,4 @@ function GroupHeader({ label }: { label: MAIN_MENU_GROUP }) {
   )
 }
 
-export default GroupHeader
+export default MenuGroupHeader

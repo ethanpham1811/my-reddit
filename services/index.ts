@@ -4,6 +4,9 @@ import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TQue
 import { GET_USER_BY_USERNAME } from '@/graphql/queries'
 import { supabase } from '@/pages/_app'
 import { ApolloError } from '@apollo/client'
+import { SvgIconTypeMap } from '@mui/material'
+import { OverridableComponent } from '@mui/material/OverridableComponent'
+import groupBy from 'lodash/groupBy'
 import { JSXElementConstructor, ReactElement } from 'react'
 import toast from 'react-hot-toast'
 import ReactHtmlParser from 'react-html-parser'
@@ -49,6 +52,15 @@ export const validatePostByFollowing = (followingIds: string[] | undefined, foll
 export const validateSubredditMember = (memberOfIds: string[] | undefined, subPageName: unknown): boolean => {
   if (subPageName == undefined) return false
   return memberOfIds?.includes(subPageName as string) || false
+}
+
+export const createGroupedList = (list: { groupBy: string; groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>; [key: string]: any }[]) => {
+  const groupedArray = groupBy(list, 'groupBy')
+  return Object.keys(groupedArray).map((group) => ({
+    group,
+    groupIcon: groupedArray[group][0].groupIcon,
+    items: groupedArray[group]
+  }))
 }
 
 /*--------------------------------------------- Generators -------------------------------------------- */

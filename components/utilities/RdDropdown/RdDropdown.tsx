@@ -12,6 +12,8 @@ function RdDropdown({
   borderColor,
   children,
   mobileMode,
+  offsetTop,
+  offsetBot,
   onChange,
   renderSelectedOption,
   ...rest
@@ -51,13 +53,15 @@ function RdDropdown({
           '&.Mui-focused': {
             fieldset: { borderWidth: '1px' },
             '[aria-expanded=true]': {
-              '~ fieldset': { borderBottom: 'none' }
+              '~ fieldset': { borderBottomColor: offsetTop ? 'primary.main' : 'none' }
             }
           }
         }}
         MenuProps={{
           PaperProps: {
             sx: {
+              mt: offsetTop,
+              mb: offsetBot,
               boxShadow: 2,
               '& .MuiMenuItem-root': {
                 pY: 0.6,

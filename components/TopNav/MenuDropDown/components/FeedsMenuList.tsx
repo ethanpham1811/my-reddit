@@ -4,7 +4,7 @@ import { List, ListItemText, MenuItem } from '@mui/material'
 import Link from 'next/link'
 import { createElement } from 'react'
 import { v4 as rid } from 'uuid'
-import GroupHeader from './GroupHeader'
+import GroupHeader from './MenuGroupHeader'
 
 type TFeedsMenuListProps = {
   feedsOptions: TMenuItem[]

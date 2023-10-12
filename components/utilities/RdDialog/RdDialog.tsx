@@ -8,10 +8,12 @@ type TRdDialogProps = DialogProps & {
   children: ReactNode
 }
 
-const RdDialog = ({ open, setOpen, children }: TRdDialogProps) => {
+const RdDialog = ({ open, setOpen, children, sx }: TRdDialogProps) => {
   return (
     <Dialog
+      sx={{ ...sx }}
       open={open}
+      scroll="body"
       TransitionComponent={RdTransition}
       keepMounted
       onClose={() => setOpen(false)}

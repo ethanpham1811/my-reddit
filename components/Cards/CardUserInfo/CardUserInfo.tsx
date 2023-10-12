@@ -23,12 +23,13 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
 
   /* custom default values */
   const { fullName, email, username } = user || {}
-  const defaultValues = useMemo(() => {
-    return {
+  const defaultValues = useMemo(
+    () => ({
       fullName: fullName == null || fullName === '' ? username : fullName,
       email: email == null || email === '' ? 'N/A' : email
-    }
-  }, [fullName, email, username])
+    }),
+    [fullName, email, username]
+  )
 
   useEffect(() => {
     if (user) {

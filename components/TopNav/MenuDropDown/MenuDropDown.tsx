@@ -31,9 +31,7 @@ function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdow
     }
   ]
   const communityOptions: TMenuItem[] = joinedSubListNames
-    ? joinedSubListNames.map((name: string): TMenuItem => {
-        return { name, group: MAIN_MENU_GROUP.Communities }
-      })
+    ? joinedSubListNames.map((name: string): TMenuItem => ({ name, group: MAIN_MENU_GROUP.Communities }))
     : []
   const peopleOptions: TMenuItem[] =
     userPageName || subName

@@ -3,17 +3,15 @@ import { styled } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { FieldValues } from 'react-hook-form'
 
-const RdInputBase = styled(TextField)(({ theme }) => {
-  return {
-    '.MuiInputBase-root': {
-      borderRadius: '4px',
-      color: theme.palette.inputText.main,
-      '&.Mui-focused, &:hover': {
-        backgroundColor: 'white'
-      }
+const RdInputBase = styled(TextField)(({ theme }) => ({
+  '.MuiInputBase-root': {
+    borderRadius: '4px',
+    color: theme.palette.inputText.main,
+    '&.Mui-focused, &:hover': {
+      backgroundColor: 'white'
     }
   }
-})
+}))
 
 const RdStaticInput = <T extends FieldValues>({ placeholder, label, sx, bgcolor, ...rest }: TRdStaticInputProps<T>) => {
   return (

@@ -11,13 +11,11 @@ import { RdButton, RdChip } from '..'
 import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../services'
 import { AppContext } from '../Layouts/MainLayout'
 
-const SubredditNavBar = styled(AppBar)(({ theme }) => {
-  return {
-    backgroundColor: '#fff',
-    boxShadow: 'none',
-    position: 'static'
-  }
-})
+const SubredditNavBar = styled(AppBar)(({ theme }) => ({
+  backgroundColor: '#fff',
+  boxShadow: 'none',
+  position: 'static'
+}))
 
 type TSubredditTopNavProps = {
   name: string | null | undefined

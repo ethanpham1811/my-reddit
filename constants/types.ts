@@ -104,7 +104,6 @@ export type TMenuDropdownProps = {
   pathName: string
 }
 export type TProfileDropdownProps = {
-  session: Session | null
   navigate: NextRouter['push']
 }
 export type TMenuItem = Omit<TSubreddit, 'id'> & {
@@ -183,6 +182,8 @@ export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'childre
   mobileMode?: boolean
   borderColor?: string
   value?: string
+  offsetTop?: string
+  offsetBot?: string
 }
 export type TRdMultipleDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'open'> & {
   renderSelectedOption: (value: string[], setSelectedArray: Dispatch<SetStateAction<string[]>>) => ReactNode

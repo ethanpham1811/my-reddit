@@ -44,8 +44,8 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
     orderBy(
       postList
         .filter((post): boolean => verifyPost(post))
-        .map(({ id, title, body, images, comment, created_at, user: { username }, subreddit, vote }: TPost): TCardPostProps => {
-          return {
+        .map(
+          ({ id, title, body, images, comment, created_at, user: { username }, subreddit, vote }: TPost): TCardPostProps => ({
             id,
             title,
             body,
@@ -55,8 +55,8 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
             subreddit: subreddit.name,
             images,
             upvote: vote ? getTotalUpvote(vote) : 0
-          }
-        }),
+          })
+        ),
       method,
       ordering
     )
