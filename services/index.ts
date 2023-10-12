@@ -6,6 +6,7 @@ import { supabase } from '@/pages/_app'
 import { ApolloError } from '@apollo/client'
 import { SvgIconTypeMap } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
+import { formatDistanceToNow } from 'date-fns'
 import groupBy from 'lodash/groupBy'
 import { JSXElementConstructor, ReactElement } from 'react'
 import toast from 'react-hot-toast'
@@ -61,6 +62,31 @@ export const createGroupedList = (list: { groupBy: string; groupIcon: Overridabl
     groupIcon: groupedArray[group][0].groupIcon,
     items: groupedArray[group]
   }))
+}
+
+/* from fns-default "about x hours ago" => "x hr. ago" format */
+export const customFormatDistance = (targetDate: Date) => {
+  const distance = formatDistanceToNow(targetDate, { addSuffix: true })
+  const matches = [...distance.matchAll(/(\d+)\s+(\w+)\s+ago/g)]
+
+  if (matches.length == 0) return 'Unknown'
+
+  const unitsMap: { [key: string]: string } = {
+    second: 'sec',
+    minute: 'min',
+    hour: 'hr',
+    day: 'day',
+    month: 'month',
+    year: 'year',
+    hours: 'hr'
+  }
+  const formattedDate = matches
+    .map((match) => {
+      const [fullMatch, value, unit] = match
+      return `${value} ${unitsMap[unit] || unit}. ago`
+    })
+    .join(' ')
+  return formattedDate
 }
 
 /*--------------------------------------------- Generators -------------------------------------------- */

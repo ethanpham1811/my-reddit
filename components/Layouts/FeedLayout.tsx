@@ -18,7 +18,7 @@ function FeedLayout({ children, top, subredditId }: TFeedLayoutProps) {
   const { userName } = useContext(AppContext)
   const [me] = useUserByUsername(userName)
   const {
-    query: { subreddit, username }
+    query: { subreddit, username, postid }
   } = useRouter()
   const { data: session }: TSession = useSession()
   const mainContent = Children.toArray(children)[0]
@@ -31,6 +31,9 @@ function FeedLayout({ children, top, subredditId }: TFeedLayoutProps) {
   }
   if (username && me) {
     allowCreatePost = username === me.username.toString() ?? false
+  }
+  if (postid) {
+    allowCreatePost = false
   }
 
   return (

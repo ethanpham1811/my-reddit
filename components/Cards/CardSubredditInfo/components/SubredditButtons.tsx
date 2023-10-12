@@ -31,6 +31,7 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
 
     // get cached data
     const cachedData = client.readQuery({ query: GET_USER_BY_USERNAME, variables: { username: userName } })
+    if (!cachedData) return
     const userData = cachedData.userByUsername
 
     // updating subreddit page cache

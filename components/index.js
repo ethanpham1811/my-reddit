@@ -1,4 +1,5 @@
 import CardAds from './Cards/CardAds/CardAds'
+import CardCommentBox from './Cards/CardCommentBox/CardCommentBox'
 import CardCreatePost from './Cards/CardCreatePost/CardCreatePost'
 import CardFeedSorter from './Cards/CardFeedSorter/CardFeedSorter'
 import CardHomeInfo from './Cards/CardHomeInfo/CardHomeInfo'
@@ -46,6 +47,7 @@ import RdToast from './utilities/RdToast/RdToast'
 export {
   BottomNavigator,
   CardAds,
+  CardCommentBox,
   CardCreatePost,
   CardFeedSorter,
   CardHomeInfo,

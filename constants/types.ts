@@ -47,7 +47,7 @@ export type TPost = {
   created_at: Date
   subreddit: Pick<TSubredditDetail, 'id' | 'name' | 'subType'>
   images?: string[]
-  comment?: TComment
+  comment?: TComment[]
   vote?: TVote[]
 }
 export type TTopic = {
@@ -70,8 +70,9 @@ export type TSubredditDetail = TSubreddit & {
   post: TPost[]
 }
 export type TComment = {
+  id: number
   created_at: Date
-  username: string
+  user: TUser
   text: string
 }
 export type TVote = {
@@ -236,6 +237,7 @@ export type TRdTextEditorProps<T extends FieldValues> = {
   placeholder: string
   name: FieldPath<T>
   control: Control<T>
+  height?: number
 }
 export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
   registerOptions?: RegisterOptions

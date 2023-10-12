@@ -62,6 +62,9 @@ export const theme: Theme = createTheme({
     blue: {
       main: '#0079D3' // Custom color value
     },
+    lightblue: {
+      main: '#e9f5fd' // Custom color value
+    },
     orange: {
       main: '#ff4500' // Custom color value
     },

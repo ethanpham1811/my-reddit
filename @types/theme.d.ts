@@ -12,6 +12,7 @@ declare module '@mui/material/styles' {
     hintText: Palette['primary']
     white: Palette['primary']
     blue: Palette['primary']
+    lightblue: Palette['primary']
     orange: Palette['primary']
     green: Palette['primary']
   }
@@ -25,6 +26,7 @@ declare module '@mui/material/styles' {
     hintText?: PaletteOptions['primary']
     white?: PaletteOptions['primary']
     blue?: PaletteOptions['primary']
+    lightblue?: PaletteOptions['primary']
     orange?: PaletteOptions['primary']
     green?: PaletteOptions['primary']
   }

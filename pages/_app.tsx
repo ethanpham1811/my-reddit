@@ -11,6 +11,7 @@ import { createClient } from '@supabase/supabase-js'
 import Head from 'next/head'
 import { createEmotionCache } from '../mui/createEmotionCache'
 import { theme } from '../mui/theme'
+import '../styles/global.css'
 
 const clientSideEmotionCache = createEmotionCache()
 

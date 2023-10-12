@@ -98,6 +98,18 @@ export const ADD_SUBREDDIT = gql`
   }
 `
 
+/* ----------------------------- COMMENT -------------------------------- */
+export const ADD_COMMENT = gql`
+  mutation AddComment($user_id: ID!, $post_id: ID!, $text: String!) {
+    insertComment(user_id: $user_id, post_id: $post_id, text: $text) {
+      post_id
+      text
+      user_id
+      created_at
+    }
+  }
+`
+
 /* ------------------------------ AUTHEN --------------------------------- */
 export const LOGIN_MUTATION = gql`
   mutation Login($username: String!, $password: String!) {

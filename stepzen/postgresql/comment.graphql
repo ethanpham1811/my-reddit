@@ -4,7 +4,6 @@ type Comment {
   post: Post @materializer(query: "postUsingComment_post_id_fkey")
   post_id: ID
   text: String
-  username: String
   user: User @materializer(query: "userUsingComment_user_id_fkey")
   user_id: ID!
 }
@@ -15,20 +14,8 @@ Feel free to modify them or aggregate more.
 """
 type Query {
   " Queries for type 'Comment' "
-  comment(id: ID!): Comment
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "comment"
-      configuration: "postgresql_config"
-    )
-  commentList: [Comment]
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "comment"
-      configuration: "postgresql_config"
-    )
+  comment(id: ID!): Comment @dbquery(type: "postgresql", schema: "public", table: "comment", configuration: "postgresql_config")
+  commentList: [Comment] @dbquery(type: "postgresql", schema: "public", table: "comment", configuration: "postgresql_config")
   commentPaginatedList(first: Int, after: Int): [Comment]
     @dbquery(
       type: "postgresql"
@@ -55,34 +42,10 @@ Feel free to modify them or aggregate more.
 """
 type Mutation {
   " Mutations for type 'Comment' "
-  deleteComment(id: ID!): Comment
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "comment"
-      dml: DELETE
-      configuration: "postgresql_config"
-    )
-  insertComment(
-    username: String
-    post_id: ID
-    text: String
-    created_at: DateTime
-  ): Comment
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "comment"
-      dml: INSERT
-      configuration: "postgresql_config"
-    )
-  updateComment(
-    id: ID!
-    created_at: DateTime
-    post_id: ID
-    text: String
-    username: String
-  ): Comment
+  deleteComment(id: ID!): Comment @dbquery(type: "postgresql", schema: "public", table: "comment", dml: DELETE, configuration: "postgresql_config")
+  insertComment(user_id: ID!, post_id: ID!, text: String!): Comment
+    @dbquery(type: "postgresql", schema: "public", table: "comment", dml: INSERT, configuration: "postgresql_config")
+  updateComment(id: ID!, created_at: DateTime, post_id: ID!, text: String!, user_id: ID!): Comment
     @dbquery(
       type: "postgresql"
       schema: "public"

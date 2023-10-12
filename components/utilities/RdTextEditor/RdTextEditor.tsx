@@ -4,7 +4,7 @@ import { Editor } from '@tinymce/tinymce-react'
 import { useState } from 'react'
 import { Controller, FieldValues } from 'react-hook-form'
 
-function RdTextEditor<T extends FieldValues>({ placeholder, control, name, registerOptions }: TRdTextEditorProps<T>) {
+function RdTextEditor<T extends FieldValues>({ height = 300, placeholder, control, name, registerOptions }: TRdTextEditorProps<T>) {
   const [isFirstTimeFocused, setIsFirstTimeFocused] = useState(true)
   const [loading, setLoading] = useState(true)
 
@@ -15,7 +15,7 @@ function RdTextEditor<T extends FieldValues>({ placeholder, control, name, regis
         control={control}
         rules={registerOptions}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <Box height={300} display="flex" flexDirection="column">
+          <Box height={height} display="flex" flexDirection="column">
             {loading && (
               <Box position="absolute" width="100%" height={300}>
                 <Skeleton variant="text" width="100%" height="39px" sx={{ fontSize: '1rem' }} />

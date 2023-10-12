@@ -224,6 +224,7 @@ export const GET_POST_AND_SUB_BY_POST_ID = gql`
         username
       }
       comment {
+        id
         created_at
         user {
           username

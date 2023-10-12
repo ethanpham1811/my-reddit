@@ -1,8 +1,8 @@
-import { Box, Typography } from '@mui/material'
+import { Box, BoxProps, Typography } from '@mui/material'
 
-function MessageBoard({ head, highlight, tail }: { head: string; highlight?: string; tail?: string }) {
+function MessageBoard({ head, highlight, tail, pt }: BoxProps & { head: string; highlight?: string; tail?: string }) {
   return (
-    <Box display="flex" justifyContent="center">
+    <Box display="flex" justifyContent="center" pt={pt}>
       <Typography variant="body1" color="initial" fontWeight={400}>
         {head}
         <Typography fontWeight={500} sx={{ color: 'blue.main' }}>

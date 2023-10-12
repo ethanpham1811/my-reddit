@@ -47,10 +47,12 @@ function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdow
   function handleFilter(e: React.ChangeEvent<HTMLInputElement>) {
     setFilterTerm(e.target.value)
   }
-
-  const filterByTerm = (option: TMenuItem): boolean => option.name.toLowerCase().includes(filterTerm.toLowerCase())
-  const handleRenderSelectedOption = (value: string): ReactNode =>
-    renderSelectedOption(value, true, [...feedsOptions, ...communityOptions, ...peopleOptions], activePage, subName)
+  function filterByTerm(option: TMenuItem): boolean {
+    return option.name.toLowerCase().includes(filterTerm.toLowerCase())
+  }
+  function handleRenderSelectedOption(value: string): ReactNode {
+    return renderSelectedOption(value, true, [...feedsOptions, ...communityOptions, ...peopleOptions], activePage, subName)
+  }
 
   return (
     <RdDropdown
