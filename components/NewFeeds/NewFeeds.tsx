@@ -5,7 +5,7 @@ import { ApolloError } from '@apollo/client'
 import { Skeleton, Stack } from '@mui/material'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useContext } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
 import { getTotalUpvote, validatePostBySubname, validateSubredditMember } from '../../services'
@@ -26,7 +26,10 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
   const {
     query: { subreddit: subPageName }
   } = useRouter()
-  setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
+
+  useEffect(() => {
+    setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
+  }, [postList, loading, setHasNoPost])
 
   // weather if the post belongs to the public subreddit
   const verifyIsMember = (): boolean => {
@@ -52,7 +55,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
             comment,
             username,
             createdAt: new Date(created_at),
-            subreddit: subreddit.name,
+            subName: subreddit.name,
             images,
             upvote: vote ? getTotalUpvote(vote) : 0
           })
@@ -74,9 +77,9 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
         ))
       ) : // ON SUBREDDIT FEEDS: check weather if I haven't join this subreddit or this subreddit is not public
       subPageName && !verifyIsMember() && subType !== SUBREDDIT_TYPE.Public ? (
-        <MessageBoard message="This community is private, please Join" />
+        <MessageBoard head="This community is private, please join " highlight={subPageName as string} />
       ) : cardPostList.length > 0 ? (
-        cardPostList.map(({ id, title, body, images, comment, createdAt, username, subreddit, upvote }) => {
+        cardPostList.map(({ id, title, body, images, comment, createdAt, username, subName, upvote }) => {
           return (
             <CardPost
               id={id}
@@ -86,7 +89,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
               body={body}
               createdAt={createdAt}
               upvote={upvote}
-              subreddit={subreddit}
+              subName={subName}
               username={username}
               comment={comment}
               inGroup={!!subPageName}
@@ -94,7 +97,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
           )
         })
       ) : (
-        <MessageBoard message="This Subreddit has no post" />
+        <MessageBoard head="This Subreddit has no post" />
       )}
     </>
   )

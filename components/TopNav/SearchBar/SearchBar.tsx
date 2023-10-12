@@ -20,13 +20,12 @@ function SearchBar({ session, subOrUserName, pathName, navigate }: TSearchBarPro
   const { queriedDataList, loading, error, searchTerm, setSearchTerm } = useTopSearchQueriedList()
   const [chip, setChip] = useState(true)
 
-  /* Autocomplete props */
-
   const renderInput = (params: AutocompleteRenderInputParams) => (
     <SearchBarInput params={params} chip={chip} name={subOrUserName} onDeleteChip={onDeleteChip} />
   )
-  const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
 
+  /* Autocomplete listeners */
+  const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
   const onChange = (_: SyntheticEvent<Element, Event>, option: string | TAutocompleteOptions | null) => {
     if (!option) return
     if (typeof option === 'string') navigate(`/search?q=${option}`) /* navigate to search page */

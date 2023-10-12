@@ -5,16 +5,16 @@ import Link from 'next/link'
 
 type TPostHeader = {
   inGroup: boolean | undefined
-  subreddit: string
+  subName: string
   username: string
   createdAt: Date
 }
 
-function PostHeader({ inGroup, subreddit, username, createdAt }: TPostHeader) {
+function PostHeader({ inGroup, subName, username, createdAt }: TPostHeader) {
   return (
     <Stack direction="row" alignItems="center" sx={{ px: 1 }}>
       {!inGroup && (
-        <Link href={`/r/${subreddit}`}>
+        <Link href={`/r/${subName}`}>
           <Avatar
             sx={{
               width: 20,
@@ -23,17 +23,17 @@ function PostHeader({ inGroup, subreddit, username, createdAt }: TPostHeader) {
               backgroundColor: 'inputBgOutfocused.main'
               // border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
             }}
-            alt={subreddit}
-            src={generateUserImage(subreddit)}
+            alt={subName}
+            src={generateUserImage(subName)}
           />
         </Link>
       )}
 
       {!inGroup && (
         <Stack direction="row">
-          <Link href={`/r/${subreddit}`}>
+          <Link href={`/r/${subName}`} onClick={(e) => e.stopPropagation()}>
             <Typography fontWeight={600} color="black">
-              r/{subreddit}{' '}
+              r/{subName}{' '}
             </Typography>
           </Link>
           <Box mx={0.5}>•</Box>
@@ -41,10 +41,10 @@ function PostHeader({ inGroup, subreddit, username, createdAt }: TPostHeader) {
       )}
       <Typography variant="caption">
         Posted by{' '}
-        <Link href={`/u/${username}`} style={{ color: 'inherit' }}>
+        <Link href={`/u/${username}`} onClick={(e) => e.stopPropagation()} style={{ color: 'inherit' }}>
           u/{username}
         </Link>{' '}
-        {formatDistanceToNow(createdAt, { addSuffix: true })}
+        {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
       </Typography>
     </Stack>
   )

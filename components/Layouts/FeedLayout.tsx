@@ -1,32 +1,30 @@
 import { CardCreatePost } from '@/components'
-import { TSession, TSortOptions } from '@/constants/types'
+import { TSession } from '@/constants/types'
 
 import useUserByUsername from '@/hooks/useUserByUsername'
 import { Box, Container, Grid, Stack } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { Children, Dispatch, ReactNode, SetStateAction, useContext } from 'react'
+import { Children, ReactNode, useContext } from 'react'
 import { AppContext } from './MainLayout'
 
 type TFeedLayoutProps = {
   children: ReactNode
   top: string
   subredditId?: number
-  sortOptions: TSortOptions
-  setSortOptions: Dispatch<SetStateAction<TSortOptions>>
 }
 
-function FeedLayout({ children, top, subredditId, sortOptions, setSortOptions }: TFeedLayoutProps) {
+function FeedLayout({ children, top, subredditId }: TFeedLayoutProps) {
   const { userName } = useContext(AppContext)
   const [me] = useUserByUsername(userName)
   const {
     query: { subreddit, username }
   } = useRouter()
   const { data: session }: TSession = useSession()
-  const sorter = Children.toArray(children)[0]
-  const mainContent = Children.toArray(children)[1]
-  const sideContent = Children.toArray(children)[2]
+  const mainContent = Children.toArray(children)[0]
+  const sideContent = Children.toArray(children)[1]
 
+  // check weather user has permission to create post
   let allowCreatePost = false
   if (subreddit && me) {
     allowCreatePost = me.member_of_ids?.includes(subreddit as string) ?? false
@@ -42,7 +40,6 @@ function FeedLayout({ children, top, subredditId, sortOptions, setSortOptions }:
           <Grid xs={16} md={8} item order={{ xs: 2, md: 1 }}>
             <Stack spacing={2}>
               {session && allowCreatePost && <CardCreatePost subId={subredditId} />}
-              {sorter}
               {mainContent}
             </Stack>
           </Grid>

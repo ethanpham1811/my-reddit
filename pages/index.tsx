@@ -40,9 +40,11 @@ const Home: NextPage = () => {
       <Head>
         <title>My Reddit</title>
       </Head>
-      <FeedLayout top="70px" sortOptions={sortOptions} setSortOptions={setSortOptions}>
-        <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
-        <NewFeeds postList={postList} loading={loading} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
+      <FeedLayout top="70px">
+        <Stack spacing={2}>
+          <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
+          <NewFeeds postList={postList} loading={loading} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
+        </Stack>
         <Stack spacing={2}>
           <CardAds />
           <CardHomeInfo />

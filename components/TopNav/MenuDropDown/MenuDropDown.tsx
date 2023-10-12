@@ -55,7 +55,7 @@ function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdow
   return (
     <RdDropdown
       renderSelectedOption={handleRenderSelectedOption}
-      value={activePage}
+      value={activePage || ''}
       flex={1}
       width="20vw"
       maxWidth="250px"
@@ -73,12 +73,12 @@ function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdow
       <FeedsMenuList feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
 
       {status === SESSION_STATUS.Authenticated && (
-        <>
+        <Box>
           {/* Subreddit list */}
           <SubsMenuList session={session} loading={loading} options={communityOptions} filterByTerm={filterByTerm} />
           {/* Hidden user list - A little hack for displaying unlisted Item (for profile pages) */}
           <PeopleMenuList session={session} loading={loading} options={peopleOptions} filterByTerm={filterByTerm} />
-        </>
+        </Box>
       )}
     </RdDropdown>
   )

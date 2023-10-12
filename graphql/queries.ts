@@ -200,6 +200,47 @@ export const GET_POST_LIST_BY_USER_ID = gql`
     }
   }
 `
+export const GET_POST_AND_SUB_BY_POST_ID = gql`
+  query Post_Sub_by_id($id: ID!, $name: String!) {
+    subredditByName(name: $name) {
+      coverUrl
+      created_at
+      description
+      headline
+      id
+      isChildrenContent
+      member
+      name
+      subType
+      topic_ids
+    }
+    post(id: $id) {
+      id
+      title
+      body
+      images
+      created_at
+      user {
+        username
+      }
+      comment {
+        created_at
+        user {
+          username
+        }
+        text
+      }
+      subreddit {
+        name
+        id
+        subType
+      }
+      vote {
+        upvote
+      }
+    }
+  }
+`
 /* ----------------------------- TOPIC -------------------------------- */
 export const GET_TOPIC_LIST = gql`
   query Topics {

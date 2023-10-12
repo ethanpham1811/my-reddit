@@ -82,7 +82,7 @@ export type TSearchTerm = {
 }
 export type TButtonColor = Extract<keyof PaletteOptions, 'orange' | 'blue' | 'white'>
 export type TSorter = {
-  icon: ReactNode
+  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
   methodValue: SORT_METHOD
   label: string
   description: string
@@ -124,7 +124,7 @@ export type TSortOptions = {
 /* ------------------------------------------Props Types------------------------------------------ */
 export type TCardPostProps = Pick<TPost, 'id' | 'title' | 'body' | 'comment'> & {
   createdAt: Date
-  subreddit: string
+  subName: string
   username: string
   images: string[] | undefined
   upvote: number

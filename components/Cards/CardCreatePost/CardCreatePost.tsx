@@ -7,6 +7,7 @@ import { GET_POST_LIST_BY_SUB_ID } from '@/graphql/queries'
 import { OnlineDotStyle } from '@/mui/styles'
 import { useMutation } from '@apollo/client'
 import { Avatar, Stack } from '@mui/material'
+import Link from 'next/link'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { RdCard, RdInput, RdToast } from '../..'
@@ -23,6 +24,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
   const [addPost] = useMutation(ADD_POST, {
     refetchQueries: [{ query: GET_POST_LIST_BY_SUB_ID, variables: { id: subId } }]
   })
+  // FIXME: adjust this to modify cache
 
   /* form controllers */
   const {
@@ -39,7 +41,6 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
   /* form submit handler */
   const onSubmit = handleSubmit(
     async (formData) => {
-      console.log(formData)
       const { body, subreddit_id, title } = formData
       let images: string[] | null = null
 
@@ -73,16 +74,18 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
       <form onSubmit={onSubmit}>
         <Stack direction="row" useFlexGap spacing={1}>
           <OnlineDotStyle overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
-            <Avatar
-              sx={{
-                width: 38,
-                height: 38,
-                backgroundColor: 'inputBgOutfocused.main',
-                border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
-              }}
-              alt={userName || ''}
-              src={generateUserImage(userName || 'seed')}
-            />
+            <Link href={`/u/${session?.user?.name}`}>
+              <Avatar
+                sx={{
+                  width: 38,
+                  height: 38,
+                  backgroundColor: 'inputBgOutfocused.main',
+                  border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+                }}
+                alt={userName || ''}
+                src={generateUserImage(userName || 'seed')}
+              />
+            </Link>
           </OnlineDotStyle>
           <RdInput<TCardCreatePostForm>
             bgcolor="white"

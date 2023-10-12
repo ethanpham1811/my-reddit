@@ -3,25 +3,26 @@ import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { LocalFireDepartmentIcon, SwapVertOutlinedIcon, TrendingUpOutlinedIcon, WbSunnyIcon } from '@/constants/icons'
 import { TCardFeedSorterProps, TSorter } from '@/constants/types'
 import { IconButton, ToggleButton, ToggleButtonGroup, Typography, styled } from '@mui/material'
+import { createElement } from 'react'
 import { v4 as rid } from 'uuid'
 
 const data: TSorter[] = [
   {
-    icon: <WbSunnyIcon />,
+    icon: WbSunnyIcon,
     methodValue: SORT_METHOD.New,
     description: 'New posts',
     label: 'New',
     optionDisabled: false
   },
   {
-    icon: <LocalFireDepartmentIcon />,
+    icon: LocalFireDepartmentIcon,
     methodValue: SORT_METHOD.Hot,
     description: 'Most upvoted',
     label: 'Hot',
     optionDisabled: false
   },
   {
-    icon: <TrendingUpOutlinedIcon />,
+    icon: TrendingUpOutlinedIcon,
     methodValue: SORT_METHOD.Rising,
     description: 'Top trending',
     label: 'Rising',
@@ -69,7 +70,7 @@ function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSort
               aria-label={description}
               sx={{ borderRadius: '9999px !important', paddingRight: 1.5, gap: 0.5 }}
             >
-              {icon}
+              {createElement(icon)}
               <Typography fontWeight={700} textTransform="capitalize">
                 {label}
               </Typography>

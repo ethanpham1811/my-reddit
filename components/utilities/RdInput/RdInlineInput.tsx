@@ -64,7 +64,7 @@ const RdInlineInput = <T extends FieldValues>({
               e.currentTarget.querySelector('input')?.blur()
             }}
             onBlur={handleSubmit}
-            value={value}
+            value={value || ''}
             label={label}
             autoComplete="off"
             id={name}

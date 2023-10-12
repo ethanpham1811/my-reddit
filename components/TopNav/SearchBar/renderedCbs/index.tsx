@@ -13,21 +13,21 @@ import {
 import { AutocompleteRenderGroupParams, Avatar, Box, Divider, ListItem, ListSubheader, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
-import { HTMLAttributes, ReactNode } from 'react'
+import { Fragment, HTMLAttributes, ReactNode } from 'react'
 import { v4 as rid } from 'uuid'
 
 export const renderGroup = (params: AutocompleteRenderGroupParams) => {
   return (
-    <li {...params}>
+    <Stack {...params} key={`top_search_group_${rid()}`}>
       {params.group !== 'Not Found' && (
-        <ListSubheader sx={{ pt: 1.5, pb: 1 }} disableSticky>
+        <ListSubheader sx={{ pt: 1.5, pb: 1 }} disableSticky key={`top_search_group_${rid()}`}>
           <Typography variant="subtitle1" fontSize={10}>
             {params.group?.toUpperCase()}
           </Typography>
         </ListSubheader>
       )}
-      <Stack>{params.children}</Stack>
-    </li>
+      <Stack key={`top_search_group_${rid()}`}>{params.children}</Stack>
+    </Stack>
   )
 }
 
@@ -40,12 +40,13 @@ export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TAuto
 
   return (
     // use Link only for prefetch functionality, disable navigation on click
-    <>
+    <Fragment key={`search_result_${rid()}`}>
       {!isNF ? (
-        <Link href={url} onClick={(e) => e.preventDefault()} key={`search_result_${rid()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Link href={url} onClick={(e) => e.preventDefault()} style={{ textDecoration: 'none', color: 'inherit' }}>
           {isPost && (
             /* Posts options */
             <ListItem
+              key={`search_result_item_${option.title}`}
               {...props}
               sx={{ '&.MuiListItem-root': { py: 1.5, gap: 2, alignItems: 'flex-start' }, '&:hover': { bgcolor: 'inputBgOutfocused.main' } }}
             >
@@ -74,6 +75,7 @@ export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TAuto
           {(isSub || isUser) && (
             /* Communities options  */
             <ListItem
+              key={`search_result_item_${isSub ? option.name : option.username}`}
               {...props}
               sx={{ '&.MuiListItem-root': { gap: 2, alignItems: 'flex-start' }, '&:hover': { bgcolor: 'inputBgOutfocused.main' } }}
             >
@@ -100,6 +102,7 @@ export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TAuto
         </Link>
       ) : (
         <ListItem
+          key={`search_result_item_${option.text}`}
           onClick={(e) => e.stopPropagation()}
           {...props}
           sx={{
@@ -110,10 +113,6 @@ export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TAuto
           <Typography>{option.text}</Typography>
         </ListItem>
       )}
-    </>
+    </Fragment>
   )
 }
-
-// export const getOptionLabel = (option: TQueriedTrending | TPopularSub | string): string => {
-//   return typeof option === 'string' ? option : isQueriedTrending(option) ? option.title : option.name
-// }

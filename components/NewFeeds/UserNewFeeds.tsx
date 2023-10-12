@@ -4,7 +4,7 @@ import { ApolloError } from '@apollo/client'
 import { Skeleton, Stack } from '@mui/material'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useContext } from 'react'
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
 import { getTotalUpvote, validatePostByFollowing, validatePostBySubname } from '../../services'
@@ -24,7 +24,10 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
   const {
     query: { username: userPageName }
   } = useRouter()
-  setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
+
+  useEffect(() => {
+    setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
+  }, [postList, loading, setHasNoPost])
 
   // weather if the post belongs to the subreddit that I've join
   const verifyPost = (post: TPost): boolean => {
@@ -50,7 +53,7 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
             comment,
             username,
             createdAt: new Date(created_at),
-            subreddit: subreddit.name,
+            subName: subreddit.name,
             images,
             upvote: vote ? getTotalUpvote(vote) : 0
           }
@@ -71,11 +74,11 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
           </Stack>
         ))
       ) : !userName ? ( // if this is USER PAGE and user is not logged in
-        <MessageBoard message="You need to login to view their content" />
+        <MessageBoard head="You need to login to view their content" />
       ) : !verifyFollower() ? ( // if this is USER PAGE and user is not logged in
-        <MessageBoard message="You need to follow this user to view their content" />
+        <MessageBoard head="You need to follow " highlight={userPageName as string} tail=" to view their posts" />
       ) : mappedPostList.length > 0 ? (
-        mappedPostList.map(({ id, title, body, images, comment, createdAt, username, subreddit, upvote }) => {
+        mappedPostList.map(({ id, title, body, images, comment, createdAt, username, subName, upvote }) => {
           return (
             <CardPost
               id={id}
@@ -85,14 +88,14 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
               body={body}
               createdAt={createdAt}
               upvote={upvote}
-              subreddit={subreddit}
+              subName={subName}
               username={username}
               comment={comment}
             />
           )
         })
       ) : (
-        <MessageBoard message="This user has no post" />
+        <MessageBoard head="This user has no post" />
       )}
     </>
   )

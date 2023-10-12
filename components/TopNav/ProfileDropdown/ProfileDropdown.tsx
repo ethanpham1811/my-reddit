@@ -121,7 +121,7 @@ function ProfileDropdownProp({ navigate }: TProfileDropdownProps) {
             )
           })
         ) : (
-          <div></div>
+          <Box></Box>
         )}
         <MenuItem
           sx={{
@@ -137,7 +137,7 @@ function ProfileDropdownProp({ navigate }: TProfileDropdownProps) {
         </MenuItem>
         {/* <LogoutOption setIsOpenDialog={setIsOpenDialog} setDialogType={setDialogType} /> */}
         <Box px={2}>
-          <Typography variant="caption" sx={{ color: 'hintText.main' }}>
+          <Typography variant="caption" sx={{ color: 'hintText.main', textWrap: 'nowrap' }}>
             Ethan Reddit, Inc. © 2023. All rights reserved.
           </Typography>
         </Box>

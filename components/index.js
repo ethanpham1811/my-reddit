@@ -13,7 +13,7 @@ import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/
 import TopicDropdown from './CommunityCreator/TopicDropdown/TopicDropdown'
 import MainLayout from './Layouts/MainLayout'
 import LoginPortal from './LoginPortal/LoginPortal'
-import MessageBoard from './NewFeeds/MessageBoard/MessageBoard'
+import MessageBoard from './MessageBoard/MessageBoard'
 import NewFeeds from './NewFeeds/NewFeeds'
 import UserNewFeeds from './NewFeeds/UserNewFeeds'
 import SubredditTopNav from './SubredditTopNav/SubredditTopNav'
