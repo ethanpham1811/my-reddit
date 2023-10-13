@@ -27,8 +27,8 @@ export enum BORDER_TYPES {
 }
 export enum SEARCH_TABS {
   Post = 'post',
-  Communities = 'subreddit',
-  People = 'user'
+  Communities = 'communities',
+  People = 'people'
 }
 export enum SESSION_STATUS {
   Loading = 'loading',

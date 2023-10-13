@@ -51,7 +51,7 @@ function UserButtons({ user, isMe, status }: TUserButtonsProps) {
                   <RdButton
                     onClick={() => handleFollowingAction(true)}
                     filled={showUnfollowBtn}
-                    text={showUnfollowBtn ? 'Unfollow' : 'Followed'}
+                    text={showUnfollowBtn ? 'Unfollow' : 'Following'}
                     onMouseEnter={() => setShowUnfollowBtn(true)}
                     onMouseLeave={() => setShowUnfollowBtn(false)}
                     color="blue"

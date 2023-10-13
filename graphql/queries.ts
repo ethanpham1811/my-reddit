@@ -287,3 +287,46 @@ export const GET_QUERIED_SUBS_USERS = gql`
     }
   }
 `
+export const GET_SEARCHED_RESULTS = gql`
+  query Search_result($quantity: Int!, $term: String!) {
+    queriedPosts(quantity: $quantity, term: $term) {
+      id
+      title
+      body
+      images
+      created_at
+      user {
+        username
+      }
+      comment {
+        created_at
+        user {
+          username
+        }
+        text
+      }
+      subreddit {
+        name
+      }
+      vote {
+        upvote
+      }
+      groupBy
+    }
+    queriedSubs(quantity: $quantity, term: $term) {
+      id
+      name
+      headline
+      member
+      isChildrenContent
+      groupBy
+    }
+    queriedUsers(quantity: $quantity, term: $term) {
+      id
+      username
+      fullName
+      followers
+      groupBy
+    }
+  }
+`

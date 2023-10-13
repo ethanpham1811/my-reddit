@@ -2,17 +2,17 @@ import notFoundUrl from '@/public/telescope-robot.png'
 import { CardContent, CardMedia, Link, Stack, Typography } from '@mui/material'
 import { RdCard } from '../..'
 
-function CardNotFound() {
+export const NotFound = ({ searchTerm }: { searchTerm: string }) => {
   const focusSearchBar = () => {
     // TODO: focus search bar
   }
   return (
-    <RdCard>
+    <>
       <CardMedia sx={{ objectFit: 'contain', pt: 2 }} component="img" height="150" image={notFoundUrl.src} alt="Content not found" />
       <CardContent>
         <Stack alignItems="center">
           <Typography variant="h6" color="black" gutterBottom>
-            Hm... we couldn’t find any results for “j”
+            Hm... we couldn’t find any results for “{searchTerm}”
           </Typography>
           <Typography variant="body1" sx={{ color: 'hintText.main' }}>
             Double-check your spelling or try different keywords to{' '}
@@ -22,6 +22,13 @@ function CardNotFound() {
           </Typography>
         </Stack>
       </CardContent>
+    </>
+  )
+}
+function CardNotFound({ searchTerm }: { searchTerm: string }) {
+  return (
+    <RdCard>
+      <NotFound searchTerm={searchTerm} />
     </RdCard>
   )
 }

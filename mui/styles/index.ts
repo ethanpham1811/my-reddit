@@ -1,9 +1,8 @@
 import { Badge, SxProps, Theme, styled } from '@mui/material'
-import { noLayout } from './button'
 
 /* -------------------------------------------STYLES --------------------------------------------------- */
 
-const borderColorStyle: SxProps<Theme> = {
+export const borderColorStyle: SxProps<Theme> = {
   fieldset: {
     borderColor: (theme): string => theme.palette.inputBorder.main + '!important'
   },
@@ -15,7 +14,7 @@ const borderColorStyle: SxProps<Theme> = {
   }
 }
 /* ---------------------------------------STYLED COMPONENTS --------------------------------------------- */
-const OnlineDotStyle = styled(Badge)(({ theme }) => ({
+export const OnlineDotStyle = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
     width: 10,
     height: 10,
@@ -48,4 +47,17 @@ const OnlineDotStyle = styled(Badge)(({ theme }) => ({
   }
 }))
 
-export { OnlineDotStyle, borderColorStyle, noLayout }
+export const postHoverStyle = (postId?: string | null | undefined) => ({
+  '&:hover': !postId ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {}
+})
+export const blurBottomStyle = {
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    height: '100px',
+    width: '100%',
+    background: 'linear-gradient(to top, #fff, transparent)'
+  }
+}

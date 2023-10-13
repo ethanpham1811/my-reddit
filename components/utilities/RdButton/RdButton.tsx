@@ -33,7 +33,7 @@ function RdButton({ text, filled = false, flex, color = DEFAULT_BUTTON_COLOR, in
         fontFamily: notoSans.style.fontFamily,
         borderRadius: '9999px',
         textTransform: 'none',
-        transitionDuration: '0.2s',
+        transition: 'none',
         width,
         '.MuiButton-endIcon': {
           position: 'absolute',

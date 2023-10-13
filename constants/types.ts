@@ -17,7 +17,7 @@ import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
-import { MAIN_MENU_GROUP, ORDERING, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
+import { MAIN_MENU_GROUP, ORDERING, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
 
 /* ------------------------------------------Common Types------------------------------------------ */
 
@@ -88,6 +88,10 @@ export type TSorter = {
   label: string
   description: string
   optionDisabled: boolean
+}
+export type TSearchTabBtn = {
+  value: SEARCH_TABS
+  title: string
 }
 export type TNotiData = {
   content: number
@@ -316,6 +320,9 @@ export type TQueriedTrending = TPost & {
   groupBy: string
   totalUpvotes: number
 }
+export type TQueriedPost = TPost & {
+  groupBy: string
+}
 export type TQueriedSub = TSubredditDetail & {
   groupBy: string
 }
@@ -327,6 +334,7 @@ export type TQueryNotFound = {
   groupBy: string
 }
 export type TAutocompleteOptions = TQueriedTrending | TQueriedSub | TQueriedUser | TQueryNotFound
+export type TSearchOptions = TQueriedPost | TQueriedSub | TQueriedUser
 
 /* ------------------------------------------- Next auth Types-------------------------------------------- */
 export type TSession = { data: Session | null; status?: SessionStatus }

@@ -28,9 +28,12 @@ function SearchBar({ session, subOrUserName, pathName, navigate }: TSearchBarPro
   const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
   const onChange = (_: SyntheticEvent<Element, Event>, option: string | TAutocompleteOptions | null) => {
     if (!option) return
-    if (typeof option === 'string') navigate(`/search?q=${option}`) /* navigate to search page */
-    else {
-      /* navigate to corresponding page */
+
+    if (typeof option === 'string') {
+      /* navigate to search page upon enter (enter emits a string)  */
+      navigate(`/search?q=${option}`)
+    } else {
+      /* navigate to corresponding page upon selecting from dropdown (selecting emits the selected object) */
       const url = !isNotFound(option) ? generateAutoCompleteUrl(option) : null
       url && navigate(url)
     }

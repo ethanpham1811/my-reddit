@@ -4,10 +4,24 @@ type QueriedTrending {
   body: String!
   groupBy: String
   totalUpvotes: Int
-  subreddit: Subreddit
-    @materializer(query: "subredditUsingPost_subreddit_id_fkey")
+  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
   subreddit_id: ID!
   created_at: Date
+}
+
+type QueriedPost {
+  id: ID!
+  title: String!
+  body: String!
+  created_at: Date!
+  images: [String]
+  groupBy: String
+  vote: [Vote] @materializer(query: "voteUsingVote_post_id_fkey")
+  user: User @materializer(query: "userUsingPost_user_id_fkey")
+  user_id: ID!
+  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
+  subreddit_id: ID!
+  comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
 }
 
 type QueriedSub {
@@ -52,6 +66,29 @@ type Query {
         LIMIT $1
       ) AS "subquery"
       ON "p"."id" = "subquery"."post_id";
+      """
+      configuration: "postgresql_config"
+    )
+  queriedPosts(quantity: Int!, term: String!): [QueriedPost]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT
+        p."id",
+        p."title",
+        p."body",
+        p."created_at",
+        p."images",
+        p."subreddit_id",
+        p."user_id",
+        'Post' AS "groupBy",
+        (SELECT array_agg(v) FROM "vote" v WHERE v."post_id" = p."id") AS "vote",
+        (SELECT array_agg(c) FROM "comment" c WHERE c."post_id" = p."id") AS "comment"
+      FROM "post" p
+      WHERE p."title" LIKE '%' || $2 || '%' OR p."body" LIKE '%' || $2 || '%'
+      ORDER BY p."created_at" DESC
+      LIMIT $1
       """
       configuration: "postgresql_config"
     )

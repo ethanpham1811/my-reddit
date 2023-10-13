@@ -1,6 +1,15 @@
 import { client } from '@/apollo-client'
-import { SUBREDDIT_TYPE } from '@/constants/enums'
-import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TQueryNotFound, TVote } from '@/constants/types'
+import { SEARCH_TABS, SUBREDDIT_TYPE } from '@/constants/enums'
+import {
+  TAutocompleteOptions,
+  TQueriedPost,
+  TQueriedSub,
+  TQueriedTrending,
+  TQueriedUser,
+  TQueryNotFound,
+  TSearchOptions,
+  TVote
+} from '@/constants/types'
 import { GET_USER_BY_USERNAME } from '@/graphql/queries'
 import { supabase } from '@/pages/_app'
 import { ApolloError } from '@apollo/client'
@@ -130,6 +139,16 @@ export function isQueriedSub(data: TAutocompleteOptions): data is TQueriedSub {
 }
 export function isQueriedUser(data: TAutocompleteOptions): data is TQueriedUser {
   return data['groupBy'] === 'People'
+}
+
+export function isSearchQueriedPost(data: TSearchOptions): data is TQueriedPost {
+  return data['groupBy'].toLocaleLowerCase() === SEARCH_TABS.Post
+}
+export function isSearchQueriedSub(data: TSearchOptions): data is TQueriedSub {
+  return data['groupBy'].toLocaleLowerCase() === SEARCH_TABS.Communities
+}
+export function isSearchQueriedUser(data: TSearchOptions): data is TQueriedUser {
+  return data['groupBy'].toLocaleLowerCase() === SEARCH_TABS.People
 }
 // this is a hack for Displaying no record bug with autocomplete
 export function isNotFound(data: TAutocompleteOptions): data is TQueryNotFound {

@@ -30,9 +30,7 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
   ]
 
   /* navigate to post detail page */
-  const goToPost = () => {
-    !postid && navigate(`/r/${subName}/post/${id}`)
-  }
+  const goToPost = () => !postid && navigate(`/r/${subName}/post/${id}`)
 
   /* vote function */
   const vote = async (upvote: boolean) => {

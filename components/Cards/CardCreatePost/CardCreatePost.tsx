@@ -66,7 +66,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
         }
       )
     },
-    (err) => console.log(err)
+    (err) => toast.error('Post failed, please try again')
   )
 
   return (

@@ -1,9 +1,7 @@
 import { CardCreatePost } from '@/components'
-import { TSession } from '@/constants/types'
 
 import useUserByUsername from '@/hooks/useUserByUsername'
 import { Box, Container, Grid, Stack } from '@mui/material'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { Children, ReactNode, useContext } from 'react'
 import { AppContext } from './MainLayout'
@@ -12,15 +10,15 @@ type TFeedLayoutProps = {
   children: ReactNode
   top: string
   subredditId?: number
+  single?: boolean
 }
 
-function FeedLayout({ children, top, subredditId }: TFeedLayoutProps) {
+function FeedLayout({ children, top, subredditId, single = false }: TFeedLayoutProps) {
   const { userName } = useContext(AppContext)
   const [me] = useUserByUsername(userName)
   const {
     query: { subreddit, username, postid }
   } = useRouter()
-  const { data: session }: TSession = useSession()
   const mainContent = Children.toArray(children)[0]
   const sideContent = Children.toArray(children)[1]
 
@@ -40,15 +38,17 @@ function FeedLayout({ children, top, subredditId }: TFeedLayoutProps) {
     <Container maxWidth="md" sx={{ pt: top }}>
       <Box>
         <Grid container spacing={3}>
-          <Grid xs={16} md={8} item order={{ xs: 2, md: 1 }}>
+          <Grid xs={16} md={single ? 16 : 8} item order={!single ? { xs: 2, md: 1 } : {}}>
             <Stack spacing={2}>
-              {session && allowCreatePost && <CardCreatePost subId={subredditId} />}
+              {me && allowCreatePost && <CardCreatePost subId={subredditId} />}
               {mainContent}
             </Stack>
           </Grid>
-          <Grid xs={16} md={4} item order={{ xs: 1, md: 2 }}>
-            {sideContent}
-          </Grid>
+          {!single && (
+            <Grid xs={16} md={4} item order={{ xs: 1, md: 2 }}>
+              {sideContent}
+            </Grid>
+          )}
         </Grid>
       </Box>
     </Container>

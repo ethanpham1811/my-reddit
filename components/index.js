@@ -17,6 +17,8 @@ import LoginPortal from './LoginPortal/LoginPortal'
 import MessageBoard from './MessageBoard/MessageBoard'
 import NewFeeds from './NewFeeds/NewFeeds'
 import UserNewFeeds from './NewFeeds/UserNewFeeds'
+import SearchFeedsTabBar from './SearchNewFeeds/components/SearchFeedsTabBar'
+import SearchFeeds from './SearchNewFeeds/SearchFeeds'
 import SubredditTopNav from './SubredditTopNav/SubredditTopNav'
 import IconBox from './TopNav/IconBox/IconBox'
 import Logo from './TopNav/Logo/Logo'
@@ -86,8 +88,10 @@ export {
   RdTextEditor,
   RdToast,
   SearchBar,
+  SearchFeeds,
+  SearchFeedsTabBar,
   SubredditTopNav,
-  TopNav,
   TopicDropdown,
+  TopNav,
   UserNewFeeds
 }

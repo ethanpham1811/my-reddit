@@ -1,12 +1,11 @@
 import { RdDropdown } from '@/components'
 import { AppContext } from '@/components/Layouts/MainLayout'
 import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
-import { MAIN_MENU_GROUP, SESSION_STATUS } from '@/constants/enums'
+import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { HomeIcon } from '@/constants/icons'
-import { TMenuDropdownProps, TMenuItem, TSession } from '@/constants/types'
+import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
 import useUserByUsername from '@/hooks/useUserByUsername'
 import { Box, List } from '@mui/material'
-import { useSession } from 'next-auth/react'
 import { ReactNode, useContext, useState } from 'react'
 import { renderSelectedOption } from './RenderedCbs'
 import FeedsMenuList from './components/FeedsMenuList'
@@ -14,7 +13,6 @@ import PeopleMenuList from './components/PeopleMenuList'
 import SubsMenuList from './components/SubsMenuList'
 
 function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdownProps) {
-  const { status }: TSession = useSession()
   const { userName } = useContext(AppContext)
   const [filterTerm, setFilterTerm] = useState('')
   const [me, _, loading] = useUserByUsername(userName)
@@ -74,7 +72,7 @@ function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdow
       {/* Feeds list */}
       <FeedsMenuList feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
 
-      {status === SESSION_STATUS.Authenticated && (
+      {me && (
         <Box>
           {/* Subreddit list */}
           <SubsMenuList session={session} loading={loading} options={communityOptions} filterByTerm={filterByTerm} />

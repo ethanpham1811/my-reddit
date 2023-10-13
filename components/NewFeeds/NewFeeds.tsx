@@ -2,7 +2,6 @@ import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
 import useUserByUsername from '@/hooks/useUserByUsername'
 import { ApolloError } from '@apollo/client'
-import { Skeleton, Stack } from '@mui/material'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react'
@@ -10,6 +9,7 @@ import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
 import { getTotalUpvote, validatePostBySubname, validateSubredditMember } from '../../services'
 import { AppContext } from '../Layouts/MainLayout'
+import { RdSkeletonListItem } from '../Skeletons'
 
 type TNewFeedsProps = {
   subType?: SUBREDDIT_TYPE | undefined
@@ -67,14 +67,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
   return (
     <>
       {loading || !cardPostList ? (
-        [0, 1].map((el) => (
-          <Stack height={400} py={2} gap={1} key={`loading_ske_${el}`}>
-            <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="60%" height="25px" />
-            <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="80%" height="12px" />
-            <Skeleton sx={{ display: 'flex', flex: 1 }} variant="rectangular" width="100%" />
-            <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="30%" height="12px" />
-          </Stack>
-        ))
+        [0, 1].map((el) => <RdSkeletonListItem key={el.toString()} />)
       ) : // ON SUBREDDIT FEEDS: check weather if I haven't join this subreddit or this subreddit is not public
       subPageName && !verifyIsMember() && subType !== SUBREDDIT_TYPE.Public ? (
         <MessageBoard head="This community is private, please join " highlight={subPageName as string} />
