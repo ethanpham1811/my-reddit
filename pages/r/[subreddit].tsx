@@ -13,10 +13,14 @@ import { useState } from 'react'
 const Subreddit: NextPage = () => {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
-    query: { subreddit: subName }
+    query: { subreddit: subName },
+    push: navigate
   } = useRouter()
   const [subreddit, subredditPosts, loading, error] = useSubredditByName(subName)
   const [hasNoPost, setHasNoPost] = useState(false)
+
+  // redirect to 404 if no data found
+  subreddit === null && !loading && !error && navigate('/404')
 
   return (
     <div>

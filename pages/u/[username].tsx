@@ -13,10 +13,14 @@ import { useState } from 'react'
 const User: NextPage = () => {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
-    query: { username }
+    query: { username },
+    push: navigate
   } = useRouter()
   const [user, userPosts, loading, error] = useUserByUsername(username)
   const [hasNoPost, setHasNoPost] = useState(false)
+
+  // redirect to 404 if no data found
+  user === null && !loading && !error && navigate('/404')
 
   return (
     <div>

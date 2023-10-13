@@ -1,6 +1,7 @@
 import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { AppContext } from '@/components/Layouts/MainLayout'
+import { SUBREDDIT_TYPE } from '@/constants/enums'
 import useSubPostByNameAndPostId from '@/hooks/useSubPostByNameAndPostId'
 import useUserByUsername from '@/hooks/useUserByUsername'
 import { getTotalUpvote, validateSubredditMember } from '@/services'
@@ -15,13 +16,17 @@ const Post: NextPage = () => {
   const { userName } = useContext(AppContext)
   const [me] = useUserByUsername(userName)
   const {
-    query: { subreddit: subName, postid }
+    query: { subreddit: subName, postid },
+    push: navigate
   } = useRouter()
   const [subreddit, post, loading, error] = useSubPostByNameAndPostId(subName, postid)
 
+  // redirect to 404 if no data found
+  post === null && !loading && !error && navigate('/404')
+
   // weather if the post belongs to the public subreddit
   const verifyIsMember = (): boolean => {
-    return validateSubredditMember(me?.member_of_ids, subName)
+    return me ? validateSubredditMember(me?.member_of_ids, subName) : post?.subreddit?.subType === SUBREDDIT_TYPE.Public
   }
 
   const cardPost = () => {

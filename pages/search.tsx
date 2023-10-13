@@ -54,7 +54,7 @@ const Search: NextPage = () => {
       <Container maxWidth="md">
         <SearchFeedsTabBar top="70px" type={type as SEARCH_TABS | undefined} />
       </Container>
-      <FeedLayout top="1rem" single={type === SEARCH_TABS.Communities || type === SEARCH_TABS.People}>
+      <FeedLayout loading={loading} top="1rem" single={type === SEARCH_TABS.Communities || type === SEARCH_TABS.People}>
         <Stack spacing={2}>
           {/* sortOptions={sortOptions}*/}
           <SearchFeeds

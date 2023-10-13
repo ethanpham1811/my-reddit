@@ -38,7 +38,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
 
   // weather if the post belongs to the public subreddit
   const verifyPost = (post: TPost): boolean => {
-    return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, subType)
+    return me ? validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, subType) : post.subreddit.subType === SUBREDDIT_TYPE.Public
   }
 
   /* postList mapping */
@@ -90,7 +90,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
           )
         })
       ) : (
-        <MessageBoard head="This Subreddit has no post" />
+        <MessageBoard head={subPageName ? 'This Subreddit has no post' : 'Something wrong with the server, please come back again'} />
       )}
     </>
   )

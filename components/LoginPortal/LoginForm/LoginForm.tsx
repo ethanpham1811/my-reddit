@@ -28,7 +28,9 @@ function LoginForm({ setIsLoginForm, newUsername }: TLoginFormProps) {
   } = useForm<TLoginForm>()
 
   useEffect(() => {
-    newUsername && setValue('username', newUsername)
+    // set username by registered username or offer test account for demonstration
+    setValue('username', newUsername ?? 'Ok_Captain5343')
+    !newUsername && setValue('password', '123')
   }, [newUsername, setValue])
 
   /* form submit handler */
@@ -40,7 +42,6 @@ function LoginForm({ setIsLoginForm, newUsername }: TLoginFormProps) {
       username,
       password
     })
-    console.log(result)
     result?.error
       ? setError(true) // Display an error message
       : toast.success('login succeeded')

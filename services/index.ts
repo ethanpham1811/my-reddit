@@ -157,7 +157,7 @@ export function isNotFound(data: TAutocompleteOptions): data is TQueryNotFound {
 
 /*--------------------------------------------- Misc -------------------------------------------- */
 export function generateAutoCompleteUrl(option: Exclude<TAutocompleteOptions, TQueryNotFound>): string {
-  if (isQueriedTrending(option)) return `/p/${option.id}`
+  if (isQueriedTrending(option)) return `/r/${option.subreddit.name}/post/${option.id}`
   if (isQueriedSub(option)) return `/r/${option.name}`
   return `/u/${option.username}`
 }

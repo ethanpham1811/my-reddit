@@ -17,7 +17,8 @@ function CardLogout({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> })
       })
       setLoading(false)
       toast.success('Logout Successfully')
-    }, 2000) // for loading demonstration purpose
+      setOpen(false)
+    }, 2000) // only for demonstration purpose
   }
 
   return (

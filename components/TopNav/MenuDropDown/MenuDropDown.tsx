@@ -6,6 +6,7 @@ import { HomeIcon } from '@/constants/icons'
 import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
 import useUserByUsername from '@/hooks/useUserByUsername'
 import { Box, List } from '@mui/material'
+import { useRouter } from 'next/router'
 import { ReactNode, useContext, useState } from 'react'
 import { renderSelectedOption } from './RenderedCbs'
 import FeedsMenuList from './components/FeedsMenuList'
@@ -14,8 +15,9 @@ import SubsMenuList from './components/SubsMenuList'
 
 function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdownProps) {
   const { userName } = useContext(AppContext)
-  const [filterTerm, setFilterTerm] = useState('')
   const [me, _, loading] = useUserByUsername(userName)
+  const { pathname } = useRouter()
+  const [filterTerm, setFilterTerm] = useState('')
   const joinedSubListNames: string[] | undefined = me?.member_of_ids
 
   const activePage: string = pathName === '/' ? 'Home' : (userPageName as string) ?? (subName as string)
@@ -49,13 +51,13 @@ function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdow
     return option.name.toLowerCase().includes(filterTerm.toLowerCase())
   }
   function handleRenderSelectedOption(value: string): ReactNode {
-    return renderSelectedOption(value, true, [...feedsOptions, ...communityOptions, ...peopleOptions], activePage, subName)
+    return renderSelectedOption(value, true, [...feedsOptions, ...communityOptions, ...peopleOptions], activePage, subName, pathname)
   }
 
   return (
     <RdDropdown
       renderSelectedOption={handleRenderSelectedOption}
-      value={activePage || ''}
+      value={me ? activePage || '' : 'home'}
       flex={1}
       width="20vw"
       maxWidth="250px"

@@ -8,6 +8,7 @@ function useSubredditByName(name: string | string[] | undefined): TUseSubredditB
   const { data, loading, error } = useQuery(GET_SUBREDDIT_BY_NAME, { skip: name === null || name === undefined, variables: { name } })
   const subreddit: TSubredditDetail = data?.subredditByName
   const subredditPosts: TPost[] = subreddit?.post
+  console.log(data)
 
   return [subreddit, subredditPosts, loading, error]
 }

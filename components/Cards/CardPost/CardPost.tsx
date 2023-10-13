@@ -7,7 +7,7 @@ import { useMutation } from '@apollo/client'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 import PostHeader from './components/PostHeader'
 
@@ -33,7 +33,8 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
   const goToPost = () => !postid && navigate(`/r/${subName}/post/${id}`)
 
   /* vote function */
-  const vote = async (upvote: boolean) => {
+  const vote = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, upvote: boolean) => {
+    e.stopPropagation()
     if (session) {
       setVoteCount(voteCount + (upvote ? 1 : -1)) // optimistic manual update
       const { errors } = await addVote({
@@ -58,11 +59,11 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
           {/* side column */}
           <Box width={40} m={-1} py={1} bgcolor="inputBgOutfocused.main">
             <Stack alignItems="center">
-              <IconButton onClick={() => vote(true)} disabled={!session}>
+              <IconButton onClick={(e) => vote(e, true)} disabled={!session}>
                 <ArrowUpwardOutlinedIcon />
               </IconButton>
               <Typography>{voteCount}</Typography>
-              <IconButton onClick={() => vote(false)} disabled={!session}>
+              <IconButton onClick={(e) => vote(e, false)} disabled={!session}>
                 <ArrowDownwardOutlinedIcon />
               </IconButton>
             </Stack>

@@ -139,6 +139,7 @@ export const GET_POST_LIST = gql`
       }
       subreddit {
         name
+        subType
       }
       vote {
         upvote
@@ -166,6 +167,7 @@ export const GET_POST_LIST_BY_SUB_ID = gql`
       }
       subreddit {
         name
+        subType
       }
       vote {
         upvote

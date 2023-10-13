@@ -8,7 +8,8 @@ export const renderSelectedOption = (
   mobileMode: boolean,
   options: TMenuItem[],
   activePage: string,
-  subOrUserName: string | string[] | undefined
+  subOrUserName: string | string[] | undefined,
+  pathname: string
 ): ReactNode => {
   const selectedMenu = options.find((option) => option.name == activePage)
   return (
@@ -35,7 +36,9 @@ export const renderSelectedOption = (
           </Box>
         </>
       ) : (
-        <div></div>
+        <Box sx={{ display: { xs: 'none', lg: 'block' } }} display="block">
+          {pathname === '/search' ? 'Search results' : '404'}
+        </Box>
       )}
     </>
   )

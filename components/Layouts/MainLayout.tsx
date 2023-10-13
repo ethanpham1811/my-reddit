@@ -20,7 +20,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
 
   return (
     <AppContext.Provider value={{ userName: data?.user?.name, userId: data?.user?.id?.toString() }}>
-      <Box pb={5}>
+      <Box>
         <TopNav session={{ data, status }} router={router} />
         <main>{children}</main>
         <Toaster position="bottom-right" />
