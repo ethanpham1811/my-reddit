@@ -1,6 +1,6 @@
 import { OnlineDotStyle } from '@/mui/styles'
 import { generateSeededHexColor, generateUserImage } from '@/services'
-import { Avatar, Box } from '@mui/material'
+import { Avatar, Box, CircularProgress, Skeleton } from '@mui/material'
 import { User } from 'next-auth'
 import { ReactNode } from 'react'
 
@@ -8,7 +8,7 @@ export const renderSelectedOption = (_: string, user: User | undefined, mobileMo
   return (
     <>
       {user ? (
-        <>
+        <Box display="flex" alignItems="center" gap={1}>
           <OnlineDotStyle
             overlap="circular"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -28,9 +28,11 @@ export const renderSelectedOption = (_: string, user: User | undefined, mobileMo
             />
           </OnlineDotStyle>
           <Box sx={{ display: { xs: 'none', lg: 'block' } }}>{user.name}</Box>
-        </>
+        </Box>
       ) : (
-        <div></div>
+        <Box display="flex" alignItems="center" gap={1} flex={1}>
+          <CircularProgress size={20} /> <Skeleton sx={{ flex: 1 }} />
+        </Box>
       )}
     </>
   )

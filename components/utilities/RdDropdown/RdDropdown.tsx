@@ -58,6 +58,7 @@ function RdDropdown({
           }
         }}
         MenuProps={{
+          disableScrollLock: true,
           PaperProps: {
             sx: {
               mt: offsetTop,

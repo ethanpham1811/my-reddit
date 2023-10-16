@@ -39,7 +39,7 @@ function TopNav({ session, router }: TTopNavProps) {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <IconBox />
             {/* Profile dropdown */}
-            {session.status === SESSION_STATUS.Authenticated && <ProfileDropdown navigate={navigate} />}
+            <ProfileDropdown navigate={navigate} />
             {session.status === SESSION_STATUS.Unauthenticated && <LoginButton />}
           </Stack>
         </Stack>
