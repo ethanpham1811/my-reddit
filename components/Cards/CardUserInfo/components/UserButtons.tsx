@@ -1,11 +1,9 @@
 import { AppContext } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
-import { UPDATE_USER } from '@/graphql/mutations'
-import { useMutation } from '@apollo/client'
+import useUpdateUser from '@/hooks/useUpdateUser'
 import { CardActions, Divider } from '@mui/material'
 import { useContext, useState } from 'react'
-import toast from 'react-hot-toast'
 import { RdButton } from '../../..'
 
 type TUserButtonsProps = {
@@ -17,24 +15,12 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
   const { session } = useContext(AppContext)
   const status = session?.user?.role
   const me = session?.userDetail
-  const [mutateFollowing] = useMutation(UPDATE_USER)
+  const { updateUser, loading } = useUpdateUser()
   const [showUnfollowBtn, setShowUnfollowBtn] = useState(false)
 
   /* onSubmit */
   async function handleFollowingAction(isUnfollow: boolean) {
-    if (!user || !me) return
-    let newValue: string[] = []
-
-    if (isUnfollow) newValue = me.following_ids ? me.following_ids?.filter((follower) => follower !== user.username) : []
-    else newValue = me.following_ids ? [...me.following_ids, user.username] : [user.username]
-
-    const { errors } = await mutateFollowing({
-      variables: {
-        id: me.id,
-        following_ids: newValue
-      }
-    })
-    if (errors) toast.error(errors[0].message)
+    if (user && me) updateUser('following_ids', user.username, !isUnfollow)
   }
 
   const onCreatePost = () => {}
@@ -48,6 +34,7 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
               <>
                 {user && me?.following_ids?.includes(user.username) ? (
                   <RdButton
+                    disabled={loading}
                     onClick={() => handleFollowingAction(true)}
                     filled={showUnfollowBtn}
                     text={showUnfollowBtn ? 'Unfollow' : 'Following'}
@@ -58,7 +45,14 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
                     sx={{ px: 3, py: 0.5, fontWeight: 700, fontSize: '0.8rem' }}
                   />
                 ) : (
-                  <RdButton onClick={() => handleFollowingAction(false)} text={'Follow'} filled color="blue" invertColor />
+                  <RdButton
+                    disabled={loading}
+                    onClick={() => handleFollowingAction(false)}
+                    text={'Follow'}
+                    filled={!loading}
+                    color="blue"
+                    invertColor
+                  />
                 )}
               </>
             ) : (

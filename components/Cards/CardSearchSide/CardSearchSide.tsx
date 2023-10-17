@@ -14,10 +14,11 @@ type TCardSearchSideProps<T extends TQueriedSub | TQueriedUser> = {
   q: string
   type: SEARCH_TABS
   loading: boolean
+  updateLoading: boolean
   list: T[]
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
 }
-function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, loading, list, updateUser }: TCardSearchSideProps<T>) {
+function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, updateLoading, loading, list, updateUser }: TCardSearchSideProps<T>) {
   const { session } = useContext(AppContext)
   const me = session?.userDetail
 
@@ -66,6 +67,7 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
                 btnText={btnText}
                 extraText={extraText}
                 link={link}
+                loading={updateLoading}
               />
             )
           })

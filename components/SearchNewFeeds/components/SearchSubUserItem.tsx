@@ -12,11 +12,12 @@ import { getFields } from '../utils'
 type TSearchSubUserItemProps = {
   item: TQueriedSub | TQueriedUser
   revertBtnText: string
+  loading: boolean
   type: Exclude<SEARCH_TABS, SEARCH_TABS.Post>
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
 }
 
-function SearchSubUserItem({ item, updateUser, revertBtnText, type }: TSearchSubUserItemProps) {
+function SearchSubUserItem({ loading, item, updateUser, revertBtnText, type }: TSearchSubUserItemProps) {
   const { session } = useContext(AppContext)
   const me = session?.userDetail
   const [hoverState, setHoverState] = useState(false)
@@ -53,6 +54,7 @@ function SearchSubUserItem({ item, updateUser, revertBtnText, type }: TSearchSub
         </Stack>
         {me && (
           <RdButton
+            // disabled={loading}
             text={hoverState ? revertBtnText : btnText}
             filled={hoverState && status ? status : !status}
             onMouseEnter={() => setHoverState(true)}

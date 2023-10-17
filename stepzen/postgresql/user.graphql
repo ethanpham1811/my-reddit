@@ -133,7 +133,7 @@ type Mutation {
         "username" = COALESCE($10, "username"),
         "member_of_ids" = COALESCE($11, "member_of_ids"),
         "following_ids" = COALESCE($12, "following_ids"),
-        "role" = COALESCE($14, "role")
+        "role" = COALESCE($13, "role")
       WHERE
         "id" = $1
       RETURNING *

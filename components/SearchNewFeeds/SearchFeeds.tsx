@@ -15,11 +15,12 @@ type TSearchFeedsProps = {
   searchList: TQueriedPost[] | TQueriedSub[] | TQueriedUser[]
   searchTerm: string
   loading: boolean
+  updateLoading: boolean
   setHasNoPost?: Dispatch<SetStateAction<boolean>>
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
 }
 
-function SearchFeeds({ searchList, loading, setHasNoPost, searchTerm, updateUser }: TSearchFeedsProps) {
+function SearchFeeds({ searchList, updateLoading, loading, setHasNoPost, searchTerm, updateUser }: TSearchFeedsProps) {
   const { session } = useContext(AppContext)
   const me = session?.userDetail
 
@@ -31,11 +32,27 @@ function SearchFeeds({ searchList, loading, setHasNoPost, searchTerm, updateUser
     if (isSearchQueriedPost(item)) return <SearchPostItem item={item} />
     if (isSearchQueriedSub(item)) {
       const status = me ? validateSubredditMember(me?.member_of_ids, item.name) : false
-      return <SearchSubUserItem item={item} updateUser={updateUser} revertBtnText={status ? 'Leave' : 'Join'} type={SEARCH_TABS.Communities} />
+      return (
+        <SearchSubUserItem
+          loading={updateLoading}
+          item={item}
+          updateUser={updateUser}
+          revertBtnText={status ? 'Leave' : 'Join'}
+          type={SEARCH_TABS.Communities}
+        />
+      )
     }
     if (isSearchQueriedUser(item)) {
       const status = me ? validatePostByFollowing(me?.following_ids, item.username) : false
-      return <SearchSubUserItem item={item} updateUser={updateUser} revertBtnText={status ? 'Unfollow' : 'Follow'} type={SEARCH_TABS.People} />
+      return (
+        <SearchSubUserItem
+          loading={updateLoading}
+          item={item}
+          updateUser={updateUser}
+          revertBtnText={status ? 'Unfollow' : 'Follow'}
+          type={SEARCH_TABS.People}
+        />
+      )
     }
     return <div></div>
   }

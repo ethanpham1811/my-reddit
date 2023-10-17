@@ -14,11 +14,12 @@ type TCardSearchItemProps = {
   extraText: string
   link: string
   guestMode?: boolean
+  loading: boolean
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
   type: Exclude<SEARCH_TABS, SEARCH_TABS.Post>
 }
 
-function CardSearchItem({ name, status, btnText, revertBtnText, extraText, link, guestMode, updateUser, type }: TCardSearchItemProps) {
+function CardSearchItem({ name, loading, status, btnText, revertBtnText, extraText, link, guestMode, updateUser, type }: TCardSearchItemProps) {
   const [hoverState, setHoverState] = useState(false)
 
   function onClick() {
@@ -52,6 +53,7 @@ function CardSearchItem({ name, status, btnText, revertBtnText, extraText, link,
         </Stack>
         {!guestMode && (
           <RdButton
+            // disabled={loading}
             text={hoverState ? revertBtnText : btnText}
             onMouseEnter={() => setHoverState(true)}
             onMouseLeave={() => setHoverState(false)}

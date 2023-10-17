@@ -9,12 +9,10 @@ import { SearchFeeds, SearchFeedsTabBar } from '@/components'
 import CardSearchSide from '@/components/Cards/CardSearchSide/CardSearchSide'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { AppContext } from '@/components/Layouts/MainLayout'
-import { UPDATE_USER } from '@/graphql/mutations'
 import useSearchQueriedList from '@/hooks/useSearchQueriedList'
-import { useMutation } from '@apollo/client'
+import useUpdateUser from '@/hooks/useUpdateUser'
 import { Container, Stack } from '@mui/material'
 import { useContext, useState } from 'react'
-import toast from 'react-hot-toast'
 const Search: NextPage = () => {
   const { session } = useContext(AppContext)
   const me = session?.userDetail
@@ -25,24 +23,16 @@ const Search: NextPage = () => {
   const searchTerm = q ?? ''
   const [queriedPosts, queriedSubs, queriedUsers, loading, error] = useSearchQueriedList(searchTerm)
   const [hasNoPost, setHasNoPost] = useState(false)
-  const [mutateUser] = useMutation(UPDATE_USER)
+  const { updateUser, loading: updateLoading } = useUpdateUser()
 
   let searchList: TQueriedPost[] | TQueriedSub[] | TQueriedUser[] = []
   if (type === SEARCH_TABS.Post || !type) searchList = queriedPosts
   if (type === SEARCH_TABS.Communities) searchList = queriedSubs
   if (type === SEARCH_TABS.People) searchList = queriedUsers
 
-  async function updateUser(field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, isAdding: boolean) {
+  async function handleUpdateUser(field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, isAdding: boolean) {
     if (me == null || me[field] == null) return
-    const updateObj = { [field]: isAdding ? [...(me[field] as []), name] : (me[field] as []).filter((item: string) => item !== name) }
-
-    const { data, errors } = await mutateUser({
-      variables: {
-        id: me.id,
-        ...updateObj
-      }
-    })
-    if (errors) errors.forEach((error) => toast.error(error.message))
+    updateUser(field, name, isAdding)
   }
 
   return (
@@ -57,25 +47,28 @@ const Search: NextPage = () => {
         <Stack spacing={2}>
           {/* sortOptions={sortOptions}*/}
           <SearchFeeds
-            updateUser={updateUser}
+            updateUser={handleUpdateUser}
             searchTerm={searchTerm as string}
             searchList={searchList}
             loading={loading}
+            updateLoading={updateLoading}
             setHasNoPost={setHasNoPost}
           />
         </Stack>
         <Stack spacing={2}>
           <CardSearchSide<TQueriedSub>
-            updateUser={updateUser}
+            updateUser={handleUpdateUser}
             loading={loading}
+            updateLoading={updateLoading}
             list={queriedSubs}
             title={'Communities'}
             q={searchTerm as string}
             type={SEARCH_TABS.Communities}
           />
           <CardSearchSide<TQueriedUser>
-            updateUser={updateUser}
+            updateUser={handleUpdateUser}
             loading={loading}
+            updateLoading={updateLoading}
             list={queriedUsers}
             title={'People'}
             q={searchTerm as string}

@@ -1,9 +1,7 @@
 import { AppContext } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { TCardUserInfoForm, TCardUserInfoProps } from '@/constants/types'
-import { UPDATE_USER } from '@/graphql/mutations'
-import { GET_USER_BY_EMAIL } from '@/graphql/queries'
-import { useMutation } from '@apollo/client'
+import useUpdateUser from '@/hooks/useUpdateUser'
 import { CardContent, Divider } from '@mui/material'
 import { useContext, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
@@ -19,6 +17,7 @@ import UserInfoMedia from './components/UserInfoMedia'
 function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   const { control, setValue, getValues, handleSubmit } = useForm<TCardUserInfoForm>()
   const { session } = useContext(AppContext)
+  const { updateUser } = useUpdateUser()
   const isMe = session?.userDetail?.username === user?.username
 
   /* custom default values */
@@ -38,11 +37,6 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
     }
   }, [user, setValue, defaultValues])
 
-  /* user mutations */
-  const [mutateUser] = useMutation(UPDATE_USER, {
-    refetchQueries: [{ query: GET_USER_BY_EMAIL, variables: { username: user?.username } }]
-  })
-
   /* onSubmit */
   async function onSubmitField(field: keyof TCardUserInfoForm) {
     const value = getValues(field)
@@ -50,19 +44,11 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
     if (user && value != null && value !== '' && user[field] !== value) {
       handleSubmit(
         async (formData) => {
-          toast.promise(
-            mutateUser({
-              variables: {
-                id: user.id,
-                [field]: value
-              }
-            }),
-            {
-              loading: <RdToast message="Updating your profile..." />,
-              success: <RdToast message="Profile saved!" />,
-              error: <RdToast message="Could not save." />
-            }
-          )
+          toast.promise(updateUser(field, value), {
+            loading: <RdToast message="Updating your profile..." />,
+            success: <RdToast message="Profile saved!" />,
+            error: <RdToast message="Could not save." />
+          })
         },
         (errors) => {
           // reset the field with initial value

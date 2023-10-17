@@ -155,6 +155,7 @@ export type TRdDrawerProps = {
 }
 export type TBottomNavigatorProps = {
   setOpen: Dispatch<SetStateAction<boolean>>
+  loading: boolean
 }
 export type TCommunityCreatorProps = {
   setOpen: Dispatch<SetStateAction<boolean>>

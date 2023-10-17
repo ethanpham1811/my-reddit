@@ -1,11 +1,9 @@
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
-import { UPDATE_USER } from '@/graphql/mutations'
-import { useMutation } from '@apollo/client'
+import useUpdateUser from '@/hooks/useUpdateUser'
 import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import { useContext, useState } from 'react'
-import toast from 'react-hot-toast'
 import { RdButton, RdChip } from '..'
 import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../services'
 import { AppContext } from '../Layouts/MainLayout'
@@ -26,13 +24,10 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
   const { session } = useContext(AppContext)
   const me = session?.userDetail
   const [showLeaveBtn, setShowLeaveBtn] = useState(false)
-  const [leaveSubreddit] = useMutation(UPDATE_USER)
+  const { updateUser, loading } = useUpdateUser()
 
-  const onLeaveSubreddit = async () => {
-    if (!me) return
-    const newValue = me?.member_of_ids?.filter((subName) => subName !== name)
-    const { errors } = await leaveSubreddit({ variables: { id: me.id, member_of_ids: newValue } })
-    if (errors) toast.error(errors[0].message)
+  async function onLeaveSubreddit() {
+    me && updateUser('member_of_ids', name, false)
   }
 
   return (

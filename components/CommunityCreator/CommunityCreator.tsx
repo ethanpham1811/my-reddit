@@ -2,6 +2,7 @@ import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { LockIcon, PersonIcon, RemoveRedEyeIcon } from '@/constants/icons'
 import { TCommunityCreatorForm, TCommunityCreatorProps, TCommunityTypeOPtions } from '@/constants/types'
 import { ADD_SUBREDDIT } from '@/graphql/mutations'
+import useUpdateUser from '@/hooks/useUpdateUser'
 import { ApolloError, useMutation } from '@apollo/client'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
@@ -67,17 +68,18 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
     },
     onError: (error: ApolloError) => toast.error(error.message)
   })
-
   const {
     handleSubmit,
     control,
     formState: { errors }
   } = useForm<TCommunityCreatorForm>({ defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false } })
 
+  const { updateUser, loading } = useUpdateUser()
+
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
     const { name, topic_ids, subType, isChildrenContent } = formData
-    await addSubreddit({
+    const { errors } = await addSubreddit({
       variables: {
         name,
         topic_ids,
@@ -85,6 +87,9 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
         isChildrenContent
       }
     })
+    if (errors) return toast.error('Something went wrong, please try again later')
+    // update user to join the new subreddit as first member
+    updateUser('member_of_ids', name)
   })
 
   return (
@@ -122,7 +127,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
           <IsChildrenGroupCheckbox<TCommunityCreatorForm> name="isChildrenContent" control={control} />
 
           {/* bottom button controller */}
-          <BottomNavigator setOpen={setOpen} />
+          <BottomNavigator loading={loading} setOpen={setOpen} />
         </Stack>
       </form>
     </Box>
