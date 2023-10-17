@@ -6,16 +6,16 @@ import { ReactNode, createContext } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { TopNav } from '..'
 
-export const AppContext = createContext<{ session: TAppSession }>({ session: null })
+export const AppContext = createContext<{ session: TAppSession; loading: boolean }>({ session: null, loading: false })
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const session: Session | null = useSession()
   const [userDetail, _, loading] = useUserByEmail(session?.user?.email)
-  const appSession: TAppSession = session ? { ...session, userDetail, loading } : null
+  const appSession: TAppSession = session ? { ...session, userDetail } : null
   console.log(appSession)
 
   return (
-    <AppContext.Provider value={{ session: appSession }}>
+    <AppContext.Provider value={{ session: appSession, loading }}>
       <Box>
         <TopNav />
         <main>{children}</main>

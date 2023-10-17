@@ -13,13 +13,11 @@ import PeopleMenuList from './components/PeopleMenuList'
 import SubsMenuList from './components/SubsMenuList'
 
 function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
-  const { session } = useContext(AppContext)
-  const me = session?.userDetail
-  const loading = session?.loading
   const { pathname } = useRouter()
   const [filterTerm, setFilterTerm] = useState('')
+  const { session, loading } = useContext(AppContext)
+  const me = session?.userDetail
   const joinedSubListNames: string[] | undefined = me?.member_of_ids
-
   const activePage: string = pathName === '/' ? 'Home' : (userPageName as string) ?? (subName as string)
 
   /* Mock data--------------------------------- */

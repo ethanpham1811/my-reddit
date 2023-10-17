@@ -346,6 +346,5 @@ export type SessionStatus = 'loading' | 'authenticated' | 'unauthenticated'
 export type TAppSession =
   | (Session & {
       userDetail: TUserDetail | null
-      loading: boolean
     })
   | null
