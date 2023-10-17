@@ -1,6 +1,5 @@
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
@@ -21,8 +20,8 @@ type TNewFeedsProps = {
 }
 
 function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subType, setHasNoPost }: TNewFeedsProps) {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
   const {
     query: { subreddit: subPageName }
   } = useRouter()

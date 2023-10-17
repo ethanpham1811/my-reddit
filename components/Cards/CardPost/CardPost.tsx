@@ -1,18 +1,18 @@
 import { CardCommentBox, RdCard, RdImageCarousel } from '@/components'
 import { ArrowDownwardOutlinedIcon, ArrowUpwardOutlinedIcon } from '@/constants/icons'
-import { TCardPostProps, TSession } from '@/constants/types'
+import { TCardPostProps } from '@/constants/types'
 import { ADD_VOTE } from '@/graphql/mutations'
 import { parseHtml } from '@/services'
 import { useMutation } from '@apollo/client'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
-import { useSession } from 'next-auth/react'
+import { User, useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import { MouseEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 import PostHeader from './components/PostHeader'
 
 function CardPost({ id, images, inGroup, body, title, username, createdAt, upvote, subName, comment: commentList }: TCardPostProps) {
-  const { data: session }: TSession = useSession()
+  const user: User | null = useUser()
   const {
     push: navigate,
     query: { postid }
@@ -25,8 +25,8 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
   /* mockup post images */
   const imgList: string[] = [
     process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL +
-      'post_images/Realtime%20Chat%20Application%20using%20PHP%20with%20MySQL%20&%20JavaScript%20Ajax.jpg',
-    process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + 'post_images/wallpaperflare.com_wallpaper.jpg'
+      'post_images/public/Realtime%20Chat%20Application%20using%20PHP%20with%20MySQL%20&%20JavaScript%20Ajax.jpg',
+    process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + 'post_images/public/wallpaperflare.com_wallpaper.jpg'
   ]
 
   /* navigate to post detail page */
@@ -35,12 +35,12 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
   /* vote function */
   const vote = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, upvote: boolean) => {
     e.stopPropagation()
-    if (session) {
+    if (user) {
       setVoteCount(voteCount + (upvote ? 1 : -1)) // optimistic manual update
       const { errors } = await addVote({
         variables: {
           post_id: id,
-          user_id: session?.user?.id,
+          user_id: user?.id,
           upvote
         }
       })
@@ -59,11 +59,11 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
           {/* side column */}
           <Box width={40} m={-1} py={1} bgcolor="inputBgOutfocused.main">
             <Stack alignItems="center">
-              <IconButton onClick={(e) => vote(e, true)} disabled={!session}>
+              <IconButton onClick={(e) => vote(e, true)} disabled={!user}>
                 <ArrowUpwardOutlinedIcon />
               </IconButton>
               <Typography>{voteCount}</Typography>
-              <IconButton onClick={(e) => vote(e, false)} disabled={!session}>
+              <IconButton onClick={(e) => vote(e, false)} disabled={!user}>
                 <ArrowDownwardOutlinedIcon />
               </IconButton>
             </Stack>
@@ -84,15 +84,7 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
           </Box>
         </Stack>
       </RdCard>
-      {postid != null && (
-        <CardCommentBox
-          subName={subName}
-          commentList={commentList}
-          post_id={id}
-          user_id={session?.user?.id}
-          username={session?.user?.name as string}
-        />
-      )}
+      {postid != null && <CardCommentBox subName={subName} commentList={commentList} post_id={id} user_id={123} username={user?.email as string} />}
     </>
   )
 }

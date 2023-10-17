@@ -35,7 +35,8 @@ import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import { BsReddit } from 'react-icons/bs'
+import { BsFacebook, BsReddit } from 'react-icons/bs'
+
 import { FcGoogle } from 'react-icons/fc'
 
 export {
@@ -46,6 +47,7 @@ export {
   ArrowForwardIosIcon,
   ArrowUpwardOutlinedIcon,
   Brightness5OutlinedIcon,
+  BsFacebook,
   BsReddit,
   CakeOutlinedIcon,
   CampaignOutlinedIcon,

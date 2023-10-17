@@ -13,7 +13,7 @@ import {
   Theme
 } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
-import { Session } from 'next-auth'
+import { Session } from '@supabase/supabase-js'
 import { NextRouter } from 'next/router'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
@@ -26,6 +26,7 @@ export type TUser = {
   username: string
   fullName: string
   followers: number
+  role?: string
 }
 export type TUserDetail = TUser & {
   created_at: Date
@@ -103,7 +104,6 @@ export type TIconBox = {
   notification?: TNotiData
 }
 export type TMenuDropdownProps = {
-  session: Session | null
   subName: string | string[] | undefined
   userPageName: string | string[] | undefined
   pathName: string
@@ -124,6 +124,10 @@ export type TRadioOption = {
 export type TSortOptions = {
   method: SORT_METHOD
   ordering: ORDERING
+}
+export type ServerResponseData = {
+  message?: string
+  error?: string
 }
 
 /* ------------------------------------------Props Types------------------------------------------ */
@@ -337,5 +341,11 @@ export type TAutocompleteOptions = TQueriedTrending | TQueriedSub | TQueriedUser
 export type TSearchOptions = TQueriedPost | TQueriedSub | TQueriedUser
 
 /* ------------------------------------------- Next auth Types-------------------------------------------- */
-export type TSession = { data: Session | null; status?: SessionStatus }
 export type SessionStatus = 'loading' | 'authenticated' | 'unauthenticated'
+
+export type TAppSession =
+  | (Session & {
+      userDetail: TUserDetail | null
+      loading: boolean
+    })
+  | null

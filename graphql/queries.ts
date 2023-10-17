@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client'
 
 /* ------------------------------ USER--------------------------------- */
-export const GET_USER_BY_USERNAME = gql`
-  query User_by_username($username: String!) {
-    userByUsername(username: $username) {
+export const GET_USER_BY_EMAIL = gql`
+  query User_by_email($email: String!) {
+    userByEmail(email: $email) {
       id
+      role
       username
       fullName
       followers
@@ -14,7 +15,50 @@ export const GET_USER_BY_USERNAME = gql`
       created_at
       karma
       socialLinks
-      password
+      member_of_ids
+      following_ids
+      post {
+        id
+        title
+        body
+        images
+        created_at
+        user {
+          username
+        }
+        comment {
+          created_at
+          user {
+            username
+          }
+          text
+        }
+        subreddit {
+          name
+          id
+          subType
+        }
+        vote {
+          upvote
+        }
+      }
+    }
+  }
+`
+export const GET_USER_BY_USERNAME = gql`
+  query User_by_username($username: String!) {
+    userByUsername(username: $username) {
+      id
+      role
+      username
+      fullName
+      followers
+      coverUrl
+      email
+      dob
+      created_at
+      karma
+      socialLinks
       member_of_ids
       following_ids
       post {

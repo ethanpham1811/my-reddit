@@ -3,20 +3,18 @@ import { TAutocompleteOptions } from '@/constants/types'
 import useTopSearchQueriedList from '@/hooks/useTopSearchQueriedList'
 import { generateAutoCompleteUrl, isNotFound } from '@/services'
 import { AutocompleteRenderInputParams, Box } from '@mui/material'
-import { Session } from 'next-auth'
 import { NextRouter } from 'next/router'
 import { SyntheticEvent, useState } from 'react'
 import { renderGroup, renderOption } from './renderedCbs'
 import SearchBarInput from './renderedCbs/SearchBarInput'
 
 type TSearchBarProps = {
-  session: Session | null
   subOrUserName: string | string[] | undefined
   pathName: string
   navigate: NextRouter['push']
 }
 
-function SearchBar({ session, subOrUserName, pathName, navigate }: TSearchBarProps) {
+function SearchBar({ subOrUserName, pathName, navigate }: TSearchBarProps) {
   const { queriedDataList, loading, error, searchTerm, setSearchTerm } = useTopSearchQueriedList()
   const [chip, setChip] = useState(true)
 

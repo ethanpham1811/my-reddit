@@ -1,8 +1,7 @@
 import { AppContext } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
-import { SessionStatus, TUserDetail } from '@/constants/types'
+import { TUserDetail } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { useMutation } from '@apollo/client'
 import { CardActions, Divider } from '@mui/material'
 import { useContext, useState } from 'react'
@@ -12,12 +11,12 @@ import { RdButton } from '../../..'
 type TUserButtonsProps = {
   user: TUserDetail | null
   isMe: boolean
-  status: SessionStatus | undefined
 }
 
-function UserButtons({ user, isMe, status }: TUserButtonsProps) {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+function UserButtons({ user, isMe }: TUserButtonsProps) {
+  const { session } = useContext(AppContext)
+  const status = session?.user?.role
+  const me = session?.userDetail
   const [mutateFollowing] = useMutation(UPDATE_USER)
   const [showUnfollowBtn, setShowUnfollowBtn] = useState(false)
 

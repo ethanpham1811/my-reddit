@@ -1,10 +1,5 @@
-import { client } from '@/apollo-client'
-import { ADD_USER } from '@/graphql/mutations'
-import { findUser } from '@/services'
-import bcrypt from 'bcrypt'
 import NextAuth from 'next-auth'
-import Credentials from 'next-auth/providers/credentials'
-import RedditProvider from 'next-auth/providers/reddit'
+
 // import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions = {
@@ -14,72 +9,72 @@ export const authOptions = {
     // maxAge: 30 * 24 * 60 * 60, // 30 days
     // updateAge: 24 * 60 * 60 // 24 hours
   },
-  providers: [
-    // GoogleProvider({
-    //   clientId: process.env.REDDIT_CLIENT_ID,
-    //   clientSecret: process.env.REDDIT_CLIENT_SECRET
-    // })
-    RedditProvider({
-      clientId: process.env.REDDIT_CLIENT_ID,
-      clientSecret: process.env.REDDIT_CLIENT_SECRET
-    }),
-    Credentials({
-      // The name to display on the sign-in form (e.g., "Sign in with...")
-      name: 'Credentials',
-      credentials: {
-        username: { label: 'Username', type: 'text' },
-        password: { label: 'Password', type: 'password' }
-      },
-      authorize: async (credentials) => {
-        const { username, password } = credentials
+  // providers: [
+  //   // GoogleProvider({
+  //   //   clientId: process.env.REDDIT_CLIENT_ID,
+  //   //   clientSecret: process.env.REDDIT_CLIENT_SECRET
+  //   // })
+  //   RedditProvider({
+  //     clientId: process.env.REDDIT_CLIENT_ID,
+  //     clientSecret: process.env.REDDIT_CLIENT_SECRET
+  //   }),
+  //   Credentials({
+  //     // The name to display on the sign-in form (e.g., "Sign in with...")
+  //     name: 'Credentials',
+  //     credentials: {
+  //       username: { label: 'Username', type: 'text' },
+  //       password: { label: 'Password', type: 'password' }
+  //     },
+  //     authorize: async (credentials) => {
+  //       const { username, password } = credentials
 
-        // check if username has already existed
-        const existedUser = await findUser(username, password)
-        console.log(existedUser)
+  //       // check if username has already existed
+  //       const existedUser = await findUser(username, password)
+  //       console.log(existedUser)
 
-        if (!existedUser || !existedUser.password) throw new Error('User not found')
+  //       if (!existedUser || !existedUser.password) throw new Error('User not found')
 
-        // Validate the password (you should hash and compare)
-        const passCheckRes = await bcrypt.compare(password, existedUser.password)
-        if (!passCheckRes) throw new Error('Invalid password')
-        console.log(existedUser)
-        return existedUser
-      }
-    })
-  ],
+  //       // Validate the password (you should hash and compare)
+  //       const passCheckRes = await bcrypt.compare(password, existedUser.password)
+  //       if (!passCheckRes) throw new Error('Invalid password')
+  //       console.log(existedUser)
+  //       return existedUser
+  //     }
+  //   })
+  // ],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      console.log(user, account, profile)
-      if (user) {
-        /* ------------signin with credentials --------------*/
-        if (account.provider === 'credentials') return Promise.resolve(true)
+    //   async signIn({ user, account, profile }) {
+    //     console.log(user, account, profile)
+    //     if (user) {
+    //       /* ------------signin with credentials --------------*/
+    //       if (account.provider === 'credentials') return Promise.resolve(true)
 
-        /* ----------signin with Reddit account ------------*/
-        if (account.provider === 'reddit') {
-          const { email, name: username } = user
-          const coverUrl = profile?.subreddit?.banner_img
+    //       /* ----------signin with Reddit account ------------*/
+    // if (account.provider === 'reddit') {
+    //   const { email, name: username } = user
+    //   const coverUrl = profile?.subreddit?.banner_img
 
-          // check if username has already existed
-          const existedUser = await findUser()
-          // Return existed user
-          if (existedUser) return true
+    //   // check if username has already existed
+    //   const existedUser = await findUser()
+    //   // Return existed user
+    //   if (existedUser) return true
 
-          // If username does not exist, insert the new user
-          const { data: newUser } = await client.mutate({
-            variables: {
-              email,
-              username,
-              coverUrl
-            },
-            mutation: ADD_USER
-          })
+    //   // If username does not exist, insert the new user
+    //   const { data: newUser } = await client.mutate({
+    //     variables: {
+    //       email,
+    //       username,
+    //       coverUrl
+    //     },
+    //     mutation: ADD_USER
+    //   })
 
-          return newUser?.insertUser ? true : false // reject if db insertion fails
-        }
-      }
-      // reject if no user found
-      return Promise.resolve(false)
-    },
+    //   return newUser?.insertUser ? true : false // reject if db insertion fails
+    // }
+    //     }
+    //     // reject if no user found
+    //     return Promise.resolve(false)
+    //   },
     // async redirect({ url, baseUrl }) {
     //   return baseUrl
     // },

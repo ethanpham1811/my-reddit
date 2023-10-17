@@ -1,7 +1,7 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "no-replace-with-optional-chaining": "off",
-    "no-unused-vars": ["error", { "varsIgnorePattern": "[iI]gnored" }]
+    "no-replace-with-optional-chaining": "off"
+    // "no-unused-vars": ["error", { "varsIgnorePattern": "[iI]gnored" }]
   }
 }

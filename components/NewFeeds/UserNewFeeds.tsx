@@ -1,5 +1,4 @@
 import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
@@ -19,8 +18,8 @@ type TUserNewFeedsProps = {
 }
 
 function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, setHasNoPost }: TUserNewFeedsProps) {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
   const {
     query: { username: userPageName }
   } = useRouter()
@@ -66,9 +65,9 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
     <>
       {loading || !mappedPostList ? (
         [0, 1].map((el) => <RdSkeletonListItem key={el.toString()} />)
-      ) : !userName ? ( // if this is USER PAGE and user is not logged in
+      ) : !me?.username ? ( // if user is not logged in
         <MessageBoard head="You need to login to view their content" />
-      ) : !verifyFollower() ? ( // if this is USER PAGE and user is not logged in
+      ) : !verifyFollower() ? ( // if user is not following the user page
         <MessageBoard head="You need to follow " highlight={userPageName as string} tail=" to view their posts" />
       ) : mappedPostList.length > 0 ? (
         mappedPostList.map(({ id, title, body, images, comment, createdAt, username, subName, upvote }) => {

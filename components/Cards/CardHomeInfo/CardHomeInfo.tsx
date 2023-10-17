@@ -1,14 +1,11 @@
-import { TSession } from '@/constants/types'
 import homeBannerUrl from '@/public/home_banner.png'
 import redditRobotUrl from '@/public/reddit_robot.png'
 import { CardActions, CardContent, CardHeader, CardMedia, Divider, Typography } from '@mui/material'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useState } from 'react'
 import { CommunityCreator, RdButton, RdCard, RdDrawer } from '../..'
 
 function CardHomeInfo() {
-  const { data, status }: TSession = useSession()
   const [isDrawerOpened, setIsDrawerOpened] = useState(false)
 
   return (

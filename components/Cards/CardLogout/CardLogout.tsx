@@ -1,20 +1,18 @@
-import { client } from '@/apollo-client'
 import { RdButton, RdCard } from '@/components'
 import { LogoutIcon } from '@/constants/icons'
 import { CircularProgress, Divider, Stack, Typography } from '@mui/material'
-import { signOut } from 'next-auth/react'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Dispatch, SetStateAction, useState } from 'react'
 import toast from 'react-hot-toast'
 
 function CardLogout({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) {
   const [loading, setLoading] = useState(false)
+  const supabase = useSupabaseClient()
 
   function onClick() {
     setLoading(true)
     setTimeout(async () => {
-      signOut({ redirect: false }).then(() => {
-        client.clearStore() // reset apollo cache
-      })
+      supabase.auth.signOut()
       setLoading(false)
       toast.success('Logout Successfully')
       setOpen(false)

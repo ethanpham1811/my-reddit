@@ -1,6 +1,6 @@
 import { RdButton, RdInput } from '@/components'
+import { emailValidation } from '@/services'
 import { CircularProgress, Link, Stack, Typography } from '@mui/material'
-import { signIn } from 'next-auth/react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -8,53 +8,52 @@ import PasswordEye from '../PasswordEye'
 
 type TLoginFormProps = {
   setIsLoginForm: Dispatch<SetStateAction<boolean>>
-  newUsername: string | null
+  newUserEmail: string | null
 }
 type TLoginForm = {
-  username: string
+  email: string
   password: string
 }
-function LoginForm({ setIsLoginForm, newUsername }: TLoginFormProps) {
+function LoginForm({ setIsLoginForm, newUserEmail }: TLoginFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
   /* form controllers */
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors }
-  } = useForm<TLoginForm>()
+  const { handleSubmit, control, setValue } = useForm<TLoginForm>()
 
   useEffect(() => {
-    // set username by registered username or offer test account for demonstration
-    setValue('username', newUsername ?? 'Ok_Captain5343')
-    !newUsername && setValue('password', '123')
-  }, [newUsername, setValue])
+    // set email by registered email or offer test account for demonstration
+    setValue('email', newUserEmail ?? 'guest_account@gmail.com')
+    !newUserEmail && setValue('password', '123123')
+  }, [newUserEmail, setValue])
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
     setLoading(true)
-    const { username, password } = formData
-    const result = await signIn('credentials', {
-      redirect: false,
-      username,
-      password
+    const { email, password } = formData
+    const res = await fetch(`/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        password
+      })
     })
-    result?.error
-      ? setError(true) // Display an error message
-      : toast.success('login succeeded')
+    const { error } = await res.json()
+    error
+      ? setError(error) // Display an error message
+      : toast.success('Login successfully')
     setLoading(false)
   })
 
   return (
     <form onSubmit={onSubmit}>
       <Stack spacing={2} sx={{ width: { xs: '400px', sm: '250px' } }}>
-        {newUsername && (
+        {newUserEmail && (
           <Stack alignItems="center">
             <Typography sx={{ color: 'hintText.main' }}>
-              Welcome <Typography sx={{ color: 'orange.main' }}>{newUsername}</Typography>!
+              Welcome <Typography sx={{ color: 'orange.main' }}>{newUserEmail}</Typography>!
             </Typography>
             <Typography fontSize="0.8rem">Please login with your account</Typography>
           </Stack>
@@ -62,19 +61,17 @@ function LoginForm({ setIsLoginForm, newUsername }: TLoginFormProps) {
         {error && (
           <Stack alignItems="center">
             <Typography fontSize="0.8rem" sx={{ color: 'orange.main' }}>
-              Invalid username or password
+              Invalid email or password
             </Typography>
           </Stack>
         )}
         <RdInput<TLoginForm>
-          registerOptions={{
-            required: 'Username is required'
-          }}
+          registerOptions={{ validate: (val): string | boolean => emailValidation(val) }}
           bgcolor="white"
           flex={1}
           control={control}
-          name="username"
-          placeholder="Username"
+          name="email"
+          placeholder="Email"
         />
         <RdInput<TLoginForm>
           registerOptions={{
@@ -87,7 +84,7 @@ function LoginForm({ setIsLoginForm, newUsername }: TLoginFormProps) {
           control={control}
           name="password"
           placeholder="Password"
-          focused={!!newUsername}
+          focused={!!newUserEmail}
         />
         <RdButton disabled={loading} text="Login" type="submit" endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />} />
         <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>

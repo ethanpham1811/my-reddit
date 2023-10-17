@@ -2,7 +2,7 @@ import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 import { formatNumber, validatePostByFollowing, validateSubredditMember } from '@/services'
 
 export const getFields = (
-  me: TUserDetail | null,
+  me: TUserDetail | null | undefined,
   item: TQueriedSub | TQueriedUser
 ): {
   name: string

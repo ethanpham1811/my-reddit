@@ -1,7 +1,6 @@
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
 import { UPDATE_USER } from '@/graphql/mutations'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { useMutation } from '@apollo/client'
 import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
@@ -24,8 +23,8 @@ type TSubredditTopNavProps = {
 }
 
 function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
   const [showLeaveBtn, setShowLeaveBtn] = useState(false)
   const [leaveSubreddit] = useMutation(UPDATE_USER)
 

@@ -1,11 +1,11 @@
+import { AppContext } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
-import { TCardUserInfoForm, TCardUserInfoProps, TSession } from '@/constants/types'
+import { TCardUserInfoForm, TCardUserInfoProps } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
-import { GET_USER_BY_USERNAME } from '@/graphql/queries'
+import { GET_USER_BY_EMAIL } from '@/graphql/queries'
 import { useMutation } from '@apollo/client'
 import { CardContent, Divider } from '@mui/material'
-import { useSession } from 'next-auth/react'
-import { useEffect, useMemo } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { RdCard, RdToast } from '../..'
@@ -18,8 +18,8 @@ import UserInfoMedia from './components/UserInfoMedia'
 
 function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   const { control, setValue, getValues, handleSubmit } = useForm<TCardUserInfoForm>()
-  const { data, status }: TSession = useSession()
-  const isMe = data?.user?.name === user?.username
+  const { session } = useContext(AppContext)
+  const isMe = session?.userDetail?.username === user?.username
 
   /* custom default values */
   const { fullName, email, username } = user || {}
@@ -40,7 +40,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
 
   /* user mutations */
   const [mutateUser] = useMutation(UPDATE_USER, {
-    refetchQueries: [{ query: GET_USER_BY_USERNAME, variables: { username: user?.username } }]
+    refetchQueries: [{ query: GET_USER_BY_EMAIL, variables: { username: user?.username } }]
   })
 
   /* onSubmit */
@@ -96,7 +96,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
             </CardContent>
 
             {/* Action buttons */}
-            <UserButtons user={user} isMe={isMe} status={status} />
+            <UserButtons user={user} isMe={isMe} />
           </form>
         </>
       ) : (

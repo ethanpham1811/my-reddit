@@ -1,5 +1,5 @@
 import { RdButton, RdInput } from '@/components'
-import { passwordValidation, rePasswordValidation, usernameValidation } from '@/services'
+import { emailValidation, passwordValidation, rePasswordValidation } from '@/services'
 import { CircularProgress, Link, Stack, Typography } from '@mui/material'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -7,51 +7,44 @@ import PasswordEye from '../PasswordEye'
 
 type TRegisterFormProps = {
   setIsLoginForm: Dispatch<SetStateAction<boolean>>
-  setNewUsername: Dispatch<SetStateAction<string | null>>
+  setNewUserEmail: Dispatch<SetStateAction<string | null>>
 }
 type TRegisterForm = {
-  username: string
+  email: string
   password: string
   repassword: string
 }
-function RegisterForm({ setIsLoginForm, setNewUsername }: TRegisterFormProps) {
+function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [showRePassword, setShowRePassword] = useState(false)
 
   /* form controllers */
-  const {
-    handleSubmit,
-    getValues,
-    control,
-    formState: { errors }
-  } = useForm<TRegisterForm>()
+  const { handleSubmit, getValues, control } = useForm<TRegisterForm>()
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
     setLoading(true)
-    const { username, password, repassword } = formData
+    const { email, password, repassword } = formData
     if (password !== repassword) return
 
-    const result: Response = await fetch(`/api/auth/register`, {
+    const res = await fetch(`/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username,
+        email,
         password
       })
     })
-    result?.status !== 200
-      ? setError(true) // Display an error message
-      : (setNewUsername(username), setIsLoginForm(true))
+    const { error } = await res.json()
+    error
+      ? setError(error) // Display an error message
+      : (setNewUserEmail(email), setIsLoginForm(true))
     setLoading(false)
   })
 
   /* register options */
-  const usernameOptions = {
-    validate: (val: string) => usernameValidation(val)
-  }
   const passwordOptions = {
     validate: (val: string) => passwordValidation(val)
   }
@@ -65,18 +58,18 @@ function RegisterForm({ setIsLoginForm, setNewUsername }: TRegisterFormProps) {
         {error && (
           <Stack alignItems="center">
             <Typography fontSize="0.8rem" sx={{ color: 'orange.main' }}>
-              There&apos;s something wrong with the server, please try again shortly
+              {error}
             </Typography>
           </Stack>
         )}
         <RdInput<TRegisterForm>
           autoComplete="off"
-          registerOptions={usernameOptions}
+          registerOptions={{ validate: (val): string | boolean => emailValidation(val) }}
           bgcolor="white"
           flex={1}
           control={control}
-          name="username"
-          placeholder="Username"
+          name="email"
+          placeholder="Email"
         />
         <RdInput<TRegisterForm>
           autoComplete="off"

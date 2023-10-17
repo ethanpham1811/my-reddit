@@ -1,20 +1,21 @@
+import { AppContext } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { TMenuItem } from '@/constants/types'
 import { List, ListItemText, MenuItem } from '@mui/material'
-import { Session } from 'next-auth'
+import { useContext } from 'react'
 import { v4 as rid } from 'uuid'
 import GroupHeader from './MenuGroupHeader'
 import SubAndPeopleMenuItem from './SubAndPeopleMenuItem'
 
 type TPeopleMenuListProps = {
-  session: Session | null
   loading: boolean
   options: TMenuItem[]
   filterByTerm: (option: TMenuItem) => boolean
 }
 
-function PeopleMenuList({ session, loading, options, filterByTerm }: TPeopleMenuListProps) {
+function PeopleMenuList({ loading, options, filterByTerm }: TPeopleMenuListProps) {
+  const { session } = useContext(AppContext)
   return (
     <List>
       <GroupHeader label={MAIN_MENU_GROUP.CurrentPage} />

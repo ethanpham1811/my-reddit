@@ -3,7 +3,6 @@ import FeedLayout from '@/components/Layouts/FeedLayout'
 import { AppContext } from '@/components/Layouts/MainLayout'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import useSubPostByNameAndPostId from '@/hooks/useSubPostByNameAndPostId'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { getTotalUpvote, validateSubredditMember } from '@/services'
 import { Stack } from '@mui/material'
 
@@ -13,8 +12,8 @@ import { useRouter } from 'next/router'
 import { useContext } from 'react'
 
 const Post: NextPage = () => {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
   const {
     query: { subreddit: subName, postid },
     push: navigate

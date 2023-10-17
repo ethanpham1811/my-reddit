@@ -2,7 +2,6 @@ import { AppContext } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { SEARCH_TABS } from '@/constants/enums'
 import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { formatNumber, validatePostByFollowing, validateSubredditMember } from '@/services'
 import { CardActions, CardContent, CardHeader, Typography } from '@mui/material'
 import Link from 'next/link'
@@ -19,8 +18,9 @@ type TCardSearchSideProps<T extends TQueriedSub | TQueriedUser> = {
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
 }
 function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, loading, list, updateUser }: TCardSearchSideProps<T>) {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
+
   return (
     <RdCard sx={{ gap: 1, py: 2, px: 0, display: 'flex', flexDirection: 'column' }}>
       <CardHeader sx={{ py: 0, px: 2 }} titleTypographyProps={{ sx: { fontWeight: 600, fontSize: '0.9rem' } }} title={title} />

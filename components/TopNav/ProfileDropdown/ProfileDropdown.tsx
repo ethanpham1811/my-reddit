@@ -1,14 +1,14 @@
 import { CardLogout, RdDialog, RdDropdown } from '@/components'
 import CardUserAgreement from '@/components/Cards/CardUserAgreement/CardUserAgreement'
+import { AppContext } from '@/components/Layouts/MainLayout'
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { AccountCircleOutlinedIcon, InfoOutlinedIcon, LogoutIcon, PreviewOutlinedIcon } from '@/constants/icons'
-import { TProfileDropdownProps, TSession } from '@/constants/types'
+import { TProfileDropdownProps } from '@/constants/types'
 import { createGroupedList } from '@/services'
 import { Box, Divider, List, MenuItem, Stack, SvgIconTypeMap, Switch, Typography } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { createElement, useState } from 'react'
+import { createElement, useContext, useState } from 'react'
 import { v4 as rid } from 'uuid'
 import { renderSelectedOption } from './RenderedCbs'
 import ProfileGroupHeader from './components/ProfileGroupHeader'
@@ -26,16 +26,17 @@ type TProfileDropDownList = {
 
 function ProfileDropdownProp({ navigate }: TProfileDropdownProps) {
   // const [page, setPage] = useState('home')
-  const { data: session }: TSession = useSession()
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
+
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const [dialogType, setDialogType] = useState(PROFILE_DIALOG_TYPE.Logout)
-  const user = session?.user
 
   const menuList: TProfileDropDownList[] = [
     {
       name: 'Profile',
       value: 'profile',
-      url: `/u/${user?.name}`,
+      url: `/u/${me?.username}`,
       groupBy: 'My Space',
       groupIcon: AccountCircleOutlinedIcon
     },
@@ -73,9 +74,9 @@ function ProfileDropdownProp({ navigate }: TProfileDropdownProps) {
         offsetTop="10px"
         minWidth="200px"
         borderColor="inputBorder"
-        renderSelectedOption={(_) => renderSelectedOption(_, user)}
+        renderSelectedOption={(_) => renderSelectedOption(_, me)}
       >
-        {session && groupedMenuList.length > 0 ? (
+        {me && groupedMenuList.length > 0 ? (
           groupedMenuList.map(({ items, group, groupIcon }) => {
             return (
               <List key={`profile_menu_${rid()}`}>

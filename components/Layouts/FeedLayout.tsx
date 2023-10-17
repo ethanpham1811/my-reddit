@@ -1,6 +1,5 @@
 import { CardCreatePost } from '@/components'
 
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { Box, Container, Grid, Stack } from '@mui/material'
 import { useRouter } from 'next/router'
 import { Children, ReactNode, useContext } from 'react'
@@ -15,8 +14,8 @@ type TFeedLayoutProps = {
 }
 
 function FeedLayout({ loading, children, top, subredditId, single = false }: TFeedLayoutProps) {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
   const {
     query: { subreddit, username, postid },
     pathname

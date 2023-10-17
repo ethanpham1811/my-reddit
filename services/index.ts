@@ -10,8 +10,7 @@ import {
   TSearchOptions,
   TVote
 } from '@/constants/types'
-import { GET_USER_BY_USERNAME } from '@/graphql/queries'
-import { supabase } from '@/pages/_app'
+import { GET_USER_BY_EMAIL } from '@/graphql/queries'
 import { ApolloError } from '@apollo/client'
 import { SvgIconTypeMap } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
@@ -20,6 +19,7 @@ import groupBy from 'lodash/groupBy'
 import { JSXElementConstructor, ReactElement } from 'react'
 import toast from 'react-hot-toast'
 import ReactHtmlParser from 'react-html-parser'
+import { NumberDictionary, animals, colors, uniqueNamesGenerator } from 'unique-names-generator'
 
 /*------------------------------------------ General utilities ----------------------------------------- */
 export const notificationHandler = () => {
@@ -32,19 +32,6 @@ export const notificationsLabel = (count: number) => {
   if (count === 0) return 'no notifications'
   if (count > 99) return 'more than 99 notifications'
   return `${count} notifications`
-}
-
-export const uploadFiles = async (files: FileList): Promise<string[]> => {
-  const filePaths: string[] = []
-  for (const file of files) {
-    const { data, error } = await supabase.storage.from('post_images').upload(file.name, file, {
-      cacheControl: '3600',
-      upsert: false
-    })
-    data && filePaths.push(data.path)
-    // error && toast this
-  }
-  return filePaths
 }
 
 // weather if the post belongs to the subreddit I have joined, or to the subreddit that is public
@@ -112,6 +99,11 @@ export const generateSeededHexColor = (seed: string | null | undefined): string 
   while (colorString.length < 6) colorString = '0' + colorString
 
   return '#' + colorString
+}
+
+export const generateUserName = (): string => {
+  const numberDictionary = NumberDictionary.generate({ min: 10, max: 99 })
+  return uniqueNamesGenerator({ dictionaries: [['Ok', 'Uk', 'Ik', 'Ek', 'Ak'], colors, animals, numberDictionary] }) // Ok_red_donkey_89
 }
 
 /*------------------------------------------- Formats ------------------------------------------- */
@@ -206,13 +198,13 @@ export const postTitleValidation = (value: string): boolean | string => {
 
 /*------------------------------------- Server side utils --------------------------------------- */
 // A separate function to check if a user exists and validate credentials
-export const findUser = async (username: string) => {
+export const findUser = async (email: string) => {
   const {
-    data: { userByUsername: existedUser },
+    data: { userByEmail: existedUser },
     error
   } = await client.query({
-    variables: { username, fetchPolicy: 'no-cache' },
-    query: GET_USER_BY_USERNAME
+    variables: { email, fetchPolicy: 'no-cache' },
+    query: GET_USER_BY_EMAIL
   })
 
   if (error) throw new Error(error.message)

@@ -1,30 +1,31 @@
+import { TAppSession } from '@/constants/types'
+import useUserByEmail from '@/hooks/useUserByEmail'
 import { Box } from '@mui/material'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
+import { Session, useSession } from '@supabase/auth-helpers-react'
 import { ReactNode, createContext } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { TopNav } from '..'
 
-const defaultContext: { userName: string | null | undefined; userId: string | undefined } = { userName: undefined, userId: undefined }
-
-export const AppContext = createContext(defaultContext)
+export const AppContext = createContext<{ session: TAppSession }>({ session: null })
 
 export default function MainLayout({ children }: { children: ReactNode }) {
-  const { data, status } = useSession()
-  const router = useRouter()
-
-  // const childrenWithProps = Children.map(children, (child) => {
-  //   if (!isValidElement<{ router: any }>(child)) return child
-  //   return cloneElement(child, { router })
-  // })
+  const session: Session | null = useSession()
+  const [userDetail, _, loading] = useUserByEmail(session?.user?.email)
+  const appSession: TAppSession = session ? { ...session, userDetail, loading } : null
+  console.log(appSession)
 
   return (
-    <AppContext.Provider value={{ userName: data?.user?.name, userId: data?.user?.id?.toString() }}>
+    <AppContext.Provider value={{ session: appSession }}>
       <Box>
-        <TopNav session={{ data, status }} router={router} />
+        <TopNav />
         <main>{children}</main>
         <Toaster position="bottom-right" />
       </Box>
     </AppContext.Provider>
   )
 }
+
+// const childrenWithProps = Children.map(children, (child) => {
+//   if (!isValidElement<{ router: any }>(child)) return child
+//   return cloneElement(child, { router })
+// })

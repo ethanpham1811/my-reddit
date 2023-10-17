@@ -1,22 +1,20 @@
 import { client } from '@/apollo-client'
 import { AppContext } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
-import { TSession, TSubredditDetail } from '@/constants/types'
+import { TSubredditDetail } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
-import { GET_USER_BY_USERNAME } from '@/graphql/queries'
-import useUserByUsername from '@/hooks/useUserByUsername'
+import { GET_USER_BY_EMAIL } from '@/graphql/queries'
 import { useMutation } from '@apollo/client'
 import { CardActions, Divider } from '@mui/material'
-import { useSession } from 'next-auth/react'
 import { useContext } from 'react'
 import toast from 'react-hot-toast'
 import { RdButton } from '../../..'
 
 function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null }) {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
+  const status = session?.user?.role
   const [mutateMemberOf] = useMutation(UPDATE_USER)
-  const { status }: TSession = useSession()
 
   /* onSubmit */
   async function onJoinCommunity() {
@@ -30,20 +28,20 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
     if (errors) toast.error(errors[0].message)
 
     // get cached data
-    const cachedData = client.readQuery({ query: GET_USER_BY_USERNAME, variables: { username: userName } })
+    const cachedData = client.readQuery({ query: GET_USER_BY_EMAIL, variables: { username: me?.username } })
     if (!cachedData) return
     const userData = cachedData.userByUsername
 
     // updating subreddit page cache
     client.writeQuery({
-      query: GET_USER_BY_USERNAME,
+      query: GET_USER_BY_EMAIL,
       data: {
         userByUsername: {
           ...userData,
           member_of_ids: userData.member_of_ids ? [...userData.member_of_ids, subreddit.name] : [subreddit.name]
         }
       },
-      variables: { username: userName }
+      variables: { username: me?.username }
     })
   }
 

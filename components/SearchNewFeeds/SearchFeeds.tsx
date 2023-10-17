@@ -1,6 +1,5 @@
 import { SEARCH_TABS } from '@/constants/enums'
 import { TQueriedPost, TQueriedSub, TQueriedUser, TSearchOptions, TUserDetail } from '@/constants/types'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { isSearchQueriedPost, isSearchQueriedSub, isSearchQueriedUser, validatePostByFollowing, validateSubredditMember } from '@/services'
 import { Box } from '@mui/material'
 import { Jelly } from '@uiball/loaders'
@@ -21,8 +20,8 @@ type TSearchFeedsProps = {
 }
 
 function SearchFeeds({ searchList, loading, setHasNoPost, searchTerm, updateUser }: TSearchFeedsProps) {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
 
   useEffect(() => {
     setHasNoPost && searchList && setHasNoPost(!loading && searchList.length === 0)

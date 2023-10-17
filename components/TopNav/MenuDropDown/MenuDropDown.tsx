@@ -4,7 +4,6 @@ import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
 import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { HomeIcon } from '@/constants/icons'
 import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { Box, List } from '@mui/material'
 import { useRouter } from 'next/router'
 import { ReactNode, useContext, useState } from 'react'
@@ -13,9 +12,10 @@ import FeedsMenuList from './components/FeedsMenuList'
 import PeopleMenuList from './components/PeopleMenuList'
 import SubsMenuList from './components/SubsMenuList'
 
-function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdownProps) {
-  const { userName } = useContext(AppContext)
-  const [me, _, loading] = useUserByUsername(userName)
+function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
+  const loading = session?.loading
   const { pathname } = useRouter()
   const [filterTerm, setFilterTerm] = useState('')
   const joinedSubListNames: string[] | undefined = me?.member_of_ids
@@ -77,9 +77,9 @@ function MenuDropDown({ session, subName, userPageName, pathName }: TMenuDropdow
       {me && (
         <Box>
           {/* Subreddit list */}
-          <SubsMenuList session={session} loading={loading} options={communityOptions} filterByTerm={filterByTerm} />
+          <SubsMenuList loading={loading} options={communityOptions} filterByTerm={filterByTerm} />
           {/* Hidden user list - A little hack for displaying unlisted Item (for profile pages) */}
-          <PeopleMenuList session={session} loading={loading} options={peopleOptions} filterByTerm={filterByTerm} />
+          <PeopleMenuList loading={loading} options={peopleOptions} filterByTerm={filterByTerm} />
         </Box>
       )}
     </RdDropdown>

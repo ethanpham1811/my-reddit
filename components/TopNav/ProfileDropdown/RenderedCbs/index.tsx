@@ -1,10 +1,11 @@
+import { TUserDetail } from '@/constants/types'
 import { OnlineDotStyle } from '@/mui/styles'
 import { generateSeededHexColor, generateUserImage } from '@/services'
 import { Avatar, Box, CircularProgress, Skeleton } from '@mui/material'
-import { User } from 'next-auth'
+
 import { ReactNode } from 'react'
 
-export const renderSelectedOption = (_: string, user: User | undefined, mobileMode: boolean = false): ReactNode => {
+export const renderSelectedOption = (_: string, user: TUserDetail | null | undefined, mobileMode: boolean = false): ReactNode => {
   return (
     <>
       {user ? (
@@ -20,14 +21,14 @@ export const renderSelectedOption = (_: string, user: User | undefined, mobileMo
               sx={{
                 width: 20,
                 height: 20,
-                backgroundColor: generateSeededHexColor(user.name),
+                backgroundColor: generateSeededHexColor(user.username),
                 border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
               }}
-              alt={`${user.name} avatar`}
-              src={generateUserImage(user.name)}
+              alt={`${user.username} avatar`}
+              src={generateUserImage(user.username)}
             />
           </OnlineDotStyle>
-          <Box sx={{ display: { xs: 'none', lg: 'block' } }}>{user.name}</Box>
+          <Box sx={{ display: { xs: 'none', lg: 'block' } }}>{user.username}</Box>
         </Box>
       ) : (
         <Box display="flex" alignItems="center" gap={1} flex={1}>

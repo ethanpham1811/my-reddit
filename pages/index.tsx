@@ -5,30 +5,9 @@ import { TSortOptions } from '@/constants/types'
 import usePostList from '@/hooks/usePostList'
 import { Stack } from '@mui/material'
 
-import { GetServerSidePropsContext, NextPage } from 'next'
-import { getSession } from 'next-auth/react'
+import { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getSession(context)
-  console.log(session)
-
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login', // Redirect to the login page if the user is not authenticated
-  //       permanent: false
-  //     }
-  //   }
-  // }
-
-  return {
-    props: {
-      user: {} // Pass the user object to your component
-    }
-  }
-}
 
 const Home: NextPage = () => {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })

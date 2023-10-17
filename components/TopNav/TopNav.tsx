@@ -1,8 +1,8 @@
-import { SESSION_STATUS } from '@/constants/enums'
-import { TSession } from '@/constants/types'
 import { AppBar, Box, Stack, styled } from '@mui/material'
-import { NextRouter } from 'next/router'
+import { useRouter } from 'next/router'
+import { useContext } from 'react'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
+import { AppContext } from '../Layouts/MainLayout'
 import LoginButton from './LoginButton/LoginButton'
 
 const NavBar = styled(AppBar)(({ theme }) => {
@@ -13,12 +13,9 @@ const NavBar = styled(AppBar)(({ theme }) => {
   }
 })
 
-type TTopNavProps = {
-  session: TSession
-  router: NextRouter
-}
-
-function TopNav({ session, router }: TTopNavProps) {
+function TopNav() {
+  const { session } = useContext(AppContext)
+  const router = useRouter()
   const {
     query: { subreddit: subName, username },
     pathname: pathName,
@@ -31,16 +28,16 @@ function TopNav({ session, router }: TTopNavProps) {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <Logo />
             {/* dropdown */}
-            <MenuDropDown session={session.data} subName={subName} userPageName={username} pathName={pathName} />
+            <MenuDropDown subName={subName} userPageName={username} pathName={pathName} />
           </Stack>
           {/* search */}
-          <SearchBar session={session.data} subOrUserName={subName ?? username} pathName={pathName} navigate={navigate} />
+          <SearchBar subOrUserName={subName ?? username} pathName={pathName} navigate={navigate} />
           {/* Icons */}
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <IconBox />
             {/* Profile dropdown */}
             <ProfileDropdown navigate={navigate} />
-            {session.status === SESSION_STATUS.Unauthenticated && <LoginButton />}
+            {!session && <LoginButton />}
           </Stack>
         </Stack>
       </NavBar>

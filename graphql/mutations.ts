@@ -2,9 +2,10 @@ import { gql } from '@apollo/client'
 
 /* ------------------------------ USER--------------------------------- */
 export const ADD_USER = gql`
-  mutation AddUser($email: String, $fullName: String, $coverUrl: String, $username: String!, $dob: Date, $password: String) {
-    insertUser(email: $email, fullName: $fullName, coverUrl: $coverUrl, username: $username, dob: $dob, password: $password) {
+  mutation AddUser($email: String, $role: String, $fullName: String, $coverUrl: String, $username: String!, $dob: Date) {
+    insertUser(email: $email, role: $role, fullName: $fullName, coverUrl: $coverUrl, username: $username, dob: $dob) {
       id
+      role
       username
       fullName
       email
@@ -25,9 +26,9 @@ export const UPDATE_USER = gql`
     $karma: ID
     $photoUrl: String
     $username: String
-    $password: String
     $member_of_ids: [String]
     $following_ids: [String]
+    $role: String
   ) {
     updateUser(
       id: $id
@@ -40,12 +41,13 @@ export const UPDATE_USER = gql`
       karma: $karma
       photoUrl: $photoUrl
       username: $username
-      password: $password
       member_of_ids: $member_of_ids
       following_ids: $following_ids
+      role: $role
     ) {
       id
       dob
+      role
       email
       followers
       fullName
@@ -112,8 +114,8 @@ export const ADD_COMMENT = gql`
 
 /* ------------------------------ AUTHEN --------------------------------- */
 export const LOGIN_MUTATION = gql`
-  mutation Login($username: String!, $password: String!) {
-    userSession(username: $username, password: $password) {
+  mutation Login($username: String!) {
+    userSession(username: $username) {
       token
       user {
         id
@@ -127,8 +129,8 @@ export const LOGIN_MUTATION = gql`
   }
 `
 export const REGISTER_MUTATION = gql`
-  mutation Register($username: String!, $password: String!) {
-    userRegisterSession(username: $username, password: $password) {
+  mutation Register($username: String!) {
+    userRegisterSession(username: $username) {
       id
       username
       fullName

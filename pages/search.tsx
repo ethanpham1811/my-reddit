@@ -11,14 +11,13 @@ import FeedLayout from '@/components/Layouts/FeedLayout'
 import { AppContext } from '@/components/Layouts/MainLayout'
 import { UPDATE_USER } from '@/graphql/mutations'
 import useSearchQueriedList from '@/hooks/useSearchQueriedList'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { useMutation } from '@apollo/client'
 import { Container, Stack } from '@mui/material'
 import { useContext, useState } from 'react'
 import toast from 'react-hot-toast'
 const Search: NextPage = () => {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
   // const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { q, type }

@@ -1,24 +1,26 @@
-import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
-import { TCardCreatePostForm, TSession } from '@/constants/types'
+import { AppContext } from '@/components/Layouts/MainLayout'
+import { TCardCreatePostForm } from '@/constants/types'
 import { ADD_POST } from '@/graphql/mutations'
 import { GET_POST_LIST_BY_SUB_ID } from '@/graphql/queries'
 import { OnlineDotStyle } from '@/mui/styles'
 import { useMutation } from '@apollo/client'
 import { Avatar, Stack } from '@mui/material'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import toast from 'react-hot-toast'
 import { RdCard, RdInput, RdToast } from '../..'
-import { generateUserImage, postTitleValidation, uploadFiles } from '../../../services'
+import { generateUserImage, postTitleValidation } from '../../../services'
 import MainForm from './components/MainForm'
 import Tools from './components/Tools'
 
 function CardCreatePost({ subId }: { subId?: number | undefined }) {
-  const { data: session }: TSession = useSession()
+  const supabase = useSupabaseClient()
+  const { session } = useContext(AppContext)
   const [showLinkInput, setShowLinkInput] = useState(false)
-  const userName: string | undefined | null = session?.user?.name
+  const userName: string | undefined | null = session?.userDetail?.username
 
   /* mutations */
   const [addPost] = useMutation(ADD_POST, {
@@ -38,6 +40,19 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
   const imagesValue = watch('images')
   // titleValue === '' && reset()
 
+  const uploadFiles = async (files: FileList): Promise<string[]> => {
+    const filePaths: string[] = []
+    for (const file of files) {
+      const { data, error: uploadErr } = await supabase.storage.from('post_images').upload(file.name, file, {
+        cacheControl: '3600',
+        upsert: false
+      })
+      data && filePaths.push(data.path)
+      // uploadErr && toast this
+    }
+    return filePaths
+  }
+
   /* form submit handler */
   const onSubmit = handleSubmit(
     async (formData) => {
@@ -45,10 +60,11 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
       let images: string[] | null = null
 
       // if there is any uploaded images
+      console.log(formData.images)
       if (formData.images && formData.images.length > 0) {
         images = await uploadFiles(formData.images)
       }
-
+      return
       toast.promise(
         addPost({
           variables: {
@@ -74,7 +90,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
       <form onSubmit={onSubmit}>
         <Stack direction="row" useFlexGap spacing={1}>
           <OnlineDotStyle overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
-            <Link href={`/u/${session?.user?.name}`}>
+            <Link href={`/u/${userName}`}>
               <Avatar
                 sx={{
                   width: 38,

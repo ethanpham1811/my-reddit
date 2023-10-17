@@ -2,7 +2,6 @@ import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 
 import { AppContext } from '@/components/Layouts/MainLayout'
 import { SEARCH_TABS } from '@/constants/enums'
-import useUserByUsername from '@/hooks/useUserByUsername'
 import { generateSeededHexColor, generateUserImage } from '@/services'
 import { Avatar, Divider, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
@@ -18,8 +17,8 @@ type TSearchSubUserItemProps = {
 }
 
 function SearchSubUserItem({ item, updateUser, revertBtnText, type }: TSearchSubUserItemProps) {
-  const { userName } = useContext(AppContext)
-  const [me] = useUserByUsername(userName)
+  const { session } = useContext(AppContext)
+  const me = session?.userDetail
   const [hoverState, setHoverState] = useState(false)
   const { name, status, btnText, extraText, link } = getFields(me, item)
 
