@@ -11,7 +11,7 @@ import { MouseEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 import PostHeader from './components/PostHeader'
 
-function CardPost({ id, images, inGroup, body, title, username, createdAt, upvote, subName, comment: commentList }: TCardPostProps) {
+function CardPost({ id, images, inGroup, body, title, username, createdAt, upvote, subName, comment: commentList, link }: TCardPostProps) {
   const user: User | null = useUser()
   const {
     push: navigate,
@@ -78,6 +78,8 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
               <Typography variant="body1" fontWeight={400} fontSize="1rem">
                 {parseHtml(body)}
               </Typography>
+              {link && <Box>{link}</Box>}
+              {/* {link && <LinkPreview url={link} width="400px" />} */}
             </Box>
             {/* image carousel */}
             {images && <RdImageCarousel width="100%" height="300px" imgList={imgList} />}

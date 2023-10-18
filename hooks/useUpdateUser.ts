@@ -42,10 +42,13 @@ function useUpdateUser() {
 
     // get cached data
     const cachedData = client.readQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email } })
-    if (!cachedData) return
-    const userData = cachedData.userByEmail
+    if (!cachedData) {
+      setLoading(false)
+      return
+    }
 
     // updating cache
+    const userData = cachedData.userByEmail
     client.writeQuery({
       query: GET_USER_BY_EMAIL,
       data: {

@@ -6,32 +6,30 @@ import { Control, FieldValues, Path } from 'react-hook-form'
 
 type TToolsProps<T extends FieldValues> = {
   control: Control<T>
-  titleValue: string
-  setShowLinkInput: Dispatch<SetStateAction<boolean>>
-  showLinkInput: boolean
+  isFormClosed: boolean
+  setIsLinkPost: Dispatch<SetStateAction<boolean>>
+  isLinkPost: boolean
 }
 
-function Tools<T extends FieldValues>({ control, titleValue, setShowLinkInput, showLinkInput }: TToolsProps<T>) {
+function Tools<T extends FieldValues>({ control, isFormClosed, setIsLinkPost, isLinkPost }: TToolsProps<T>) {
   return (
-    <Stack direction="row">
-      <Tooltip title="Create Media Post">
-        <Box>
-          <IconButton disabled={!titleValue}>
-            <RdImageUploader<T> control={control} name={'images' as Path<T>} />
-          </IconButton>
-        </Box>
-      </Tooltip>
+    <Stack spacing={1.5} alignItems="center">
       <Tooltip title="Create Link Post">
         <Box>
-          <IconButton
-            disabled={!titleValue}
-            sx={{ bgcolor: showLinkInput ? 'primary.main' : 'unset' }}
-            onClick={() => setShowLinkInput(!showLinkInput)}
-          >
+          <IconButton sx={{ bgcolor: isLinkPost ? 'primary.main' : 'unset', mr: '-0.7rem' }} onClick={() => setIsLinkPost(!isLinkPost)}>
             <LinkIcon sx={{ display: 'block' }} />
           </IconButton>
         </Box>
       </Tooltip>
+      {!isFormClosed && (
+        <Tooltip title="Create Media Post">
+          <Box>
+            <IconButton disabled={isFormClosed} sx={{ mr: '-0.7rem' }}>
+              <RdImageUploader<T> control={control} name={'images' as Path<T>} />
+            </IconButton>
+          </Box>
+        </Tooltip>
+      )}
     </Stack>
   )
 }

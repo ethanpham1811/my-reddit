@@ -2,6 +2,7 @@ import { TRdInputProps } from '@/constants/types'
 import { borderColorStyle } from '@/mui/styles'
 import { FormControl, FormHelperText, InputLabel, styled } from '@mui/material'
 import TextField from '@mui/material/TextField'
+import { ReactElement, Ref, forwardRef } from 'react'
 import { Controller, FieldValues } from 'react-hook-form'
 
 const RdInputBase = styled(TextField)(({ theme }) => {
@@ -16,20 +17,10 @@ const RdInputBase = styled(TextField)(({ theme }) => {
   }
 })
 
-const RdInput = <T extends FieldValues>({
-  registerOptions,
-  name,
-  control,
-  label,
-  flex,
-  width,
-  helper,
-  sx,
-  bgcolor,
-  indentedHelper,
-  endIcon,
-  ...rest
-}: TRdInputProps<T>) => {
+const RdInput = <T extends FieldValues>(
+  { registerOptions, name, control, label, flex, width, helper, sx, bgcolor, indentedHelper, endIcon, ...rest }: TRdInputProps<T>,
+  ref: Ref<HTMLInputElement>
+) => {
   return (
     <FormControl sx={{ flex, '.MuiFormControl-root': { bgcolor: 'transparent' }, ...borderColorStyle, width }}>
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
@@ -39,6 +30,7 @@ const RdInput = <T extends FieldValues>({
         rules={registerOptions}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <RdInputBase
+            inputRef={ref}
             helperText={error ? error.message : null}
             size="small"
             error={!!error}
@@ -69,4 +61,6 @@ const RdInput = <T extends FieldValues>({
     </FormControl>
   )
 }
-export default RdInput
+
+// Set generic type for forwardRef
+export default forwardRef(RdInput) as <T extends FieldValues>(p: TRdInputProps<T> & { ref?: Ref<HTMLInputElement> }) => ReactElement

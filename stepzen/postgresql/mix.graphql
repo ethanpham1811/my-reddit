@@ -1,18 +1,19 @@
 type QueriedTrending {
   id: ID!
   title: String!
-  body: String!
+  body: String
   groupBy: String
   totalUpvotes: Int
   subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
   subreddit_id: ID!
   created_at: Date
+  link: String
 }
 
 type QueriedPost {
   id: ID!
   title: String!
-  body: String!
+  body: String
   created_at: Date!
   images: [String]
   groupBy: String
@@ -22,6 +23,7 @@ type QueriedPost {
   subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
   subreddit_id: ID!
   comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
+  link: String
 }
 
 type QueriedSub {
@@ -53,6 +55,7 @@ type Query {
         p."body",
         p."created_at",
         p."subreddit_id",
+        p."link",
         "totalUpvotes",
         'Top trending' AS "groupBy"
       FROM "post" "p"
@@ -81,6 +84,7 @@ type Query {
         p."created_at",
         p."images",
         p."subreddit_id",
+        p."link",
         p."user_id",
         'Post' AS "groupBy",
         (SELECT array_agg(v) FROM "vote" v WHERE v."post_id" = p."id") AS "vote",

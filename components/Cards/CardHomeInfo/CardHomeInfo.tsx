@@ -1,5 +1,6 @@
 import homeBannerUrl from '@/public/home_banner.png'
 import redditRobotUrl from '@/public/reddit_robot.png'
+import { Events, eventEmitter } from '@/services/eventEmitter'
 import { CardActions, CardContent, CardHeader, CardMedia, Divider, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -7,6 +8,10 @@ import { CommunityCreator, RdButton, RdCard, RdDrawer } from '../..'
 
 function CardHomeInfo() {
   const [isDrawerOpened, setIsDrawerOpened] = useState(false)
+
+  function onCreatePost() {
+    eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
+  }
 
   return (
     <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
@@ -24,7 +29,7 @@ function CardHomeInfo() {
       </CardContent>
       <Divider sx={{ my: 0.5 }} />
       <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <RdButton text={'Create Post'} filled color="blue" invertColor />
+        <RdButton text={'Create Post'} filled color="blue" invertColor onClick={onCreatePost} />
         <RdButton text={'Create Community'} color="blue" onClick={() => setIsDrawerOpened(true)} />
         <RdDrawer open={isDrawerOpened} setOpen={setIsDrawerOpened}>
           <CommunityCreator setOpen={setIsDrawerOpened} />

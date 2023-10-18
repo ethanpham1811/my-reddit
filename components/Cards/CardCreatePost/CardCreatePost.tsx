@@ -2,119 +2,100 @@ import { useForm } from 'react-hook-form'
 
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TCardCreatePostForm } from '@/constants/types'
-import { ADD_POST } from '@/graphql/mutations'
-import { GET_POST_LIST_BY_SUB_ID } from '@/graphql/queries'
+import useAddPost from '@/hooks/useAddPos'
 import { OnlineDotStyle } from '@/mui/styles'
-import { useMutation } from '@apollo/client'
-import { Avatar, Stack } from '@mui/material'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { Events, eventEmitter } from '@/services/eventEmitter'
+import { Avatar, Box, Stack } from '@mui/material'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { RdCard, RdInput, RdToast } from '../..'
+import { RdCard, RdInput } from '../..'
 import { generateUserImage, postTitleValidation } from '../../../services'
 import MainForm from './components/MainForm'
 import Tools from './components/Tools'
 
 function CardCreatePost({ subId }: { subId?: number | undefined }) {
-  const supabase = useSupabaseClient()
   const { session } = useAppSession()
-  const [showLinkInput, setShowLinkInput] = useState(false)
+  const { createPost, loading } = useAddPost()
+  const ref = useRef<HTMLInputElement | null>(null)
+  const [isLinkPost, setIsLinkPost] = useState(false)
+  const [focused, setFocused] = useState(false)
   const userName: string | undefined | null = session?.userDetail?.username
-
-  /* mutations */
-  const [addPost] = useMutation(ADD_POST, {
-    refetchQueries: [{ query: GET_POST_LIST_BY_SUB_ID, variables: { id: subId } }]
-  })
-  // FIXME: adjust this to modify cache
 
   /* form controllers */
   const {
     reset,
     handleSubmit,
     watch,
+    setValue,
     control,
     formState: { errors }
   } = useForm<TCardCreatePostForm>()
   const titleValue = watch('title')
   const imagesValue = watch('images')
-  // titleValue === '' && reset()
 
-  const uploadFiles = async (files: FileList): Promise<string[]> => {
-    const filePaths: string[] = []
-    for (const file of files) {
-      const { data, error: uploadErr } = await supabase!.storage.from('post_images').upload(file.name, file, {
-        cacheControl: '3600',
-        upsert: false
-      })
-      data && filePaths.push(data.path)
-      // uploadErr && toast this
-    }
-    return filePaths
-  }
+  /* Event subscriber for opening the form from somewhere else */
+  useEffect(() => {
+    eventEmitter.subscribe(Events.OPEN_CREATE_POST_FORM, (state) => {
+      ref?.current?.focus()
+      setFocused(state)
+    })
+    return () => eventEmitter.unsubscribe(Events.OPEN_CREATE_POST_FORM)
+  }, [setValue])
 
   /* form submit handler */
   const onSubmit = handleSubmit(
-    async (formData) => {
-      const { body, subreddit_id, title } = formData
-      let images: string[] | null = null
-
-      // if there is any uploaded images
-      console.log(formData.images)
-      if (formData.images && formData.images.length > 0) {
-        images = await uploadFiles(formData.images)
-      }
-      return
-      toast.promise(
-        addPost({
-          variables: {
-            body,
-            subreddit_id: subId ?? subreddit_id,
-            title,
-            user_id: session?.user?.id,
-            images
-          }
-        }).then(() => reset()),
-        {
-          loading: <RdToast message="Post processing..." />,
-          success: <RdToast message="Successfully posted" />,
-          error: <RdToast message="Posting failed" />
-        }
-      )
-    },
+    async (formData) => createPost(formData, reset, isLinkPost, subId),
     (err) => toast.error('Post failed, please try again')
   )
 
   return (
-    <RdCard sx={{ p: 1.5 }}>
+    <RdCard sx={{ p: 1.5 }} onBlur={() => setFocused(false)}>
       <form onSubmit={onSubmit}>
-        <Stack direction="row" useFlexGap spacing={1}>
-          <OnlineDotStyle overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
-            <Link href={`/u/${userName}`}>
-              <Avatar
-                sx={{
-                  width: 38,
-                  height: 38,
-                  backgroundColor: 'inputBgOutfocused.main',
-                  border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
-                }}
-                alt={userName || ''}
-                src={generateUserImage(userName || 'seed')}
-              />
-            </Link>
-          </OnlineDotStyle>
-          <RdInput<TCardCreatePostForm>
-            bgcolor="white"
-            flex={1}
-            control={control}
-            name="title"
-            indentedHelper
-            placeholder="Create Post"
-            registerOptions={{ validate: (val) => postTitleValidation(val) }}
-          />
-          <Tools<TCardCreatePostForm> control={control} titleValue={titleValue} setShowLinkInput={setShowLinkInput} showLinkInput={showLinkInput} />
+        <Stack direction="row">
+          {/* left column */}
+          <Box width={50}>
+            <OnlineDotStyle overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
+              <Link href={`/u/${userName}`}>
+                <Avatar
+                  sx={{
+                    width: 38,
+                    height: 38,
+                    backgroundColor: 'inputBgOutfocused.main',
+                    border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+                  }}
+                  alt={userName || ''}
+                  src={generateUserImage(userName || 'seed')}
+                />
+              </Link>
+            </OnlineDotStyle>
+          </Box>
+
+          {/* main section */}
+          <Stack spacing={1.5} flex={1}>
+            <RdInput<TCardCreatePostForm>
+              ref={ref}
+              bgcolor="white"
+              flex={1}
+              control={control}
+              name="title"
+              indentedHelper
+              placeholder="Create Post"
+              registerOptions={{ validate: (val) => postTitleValidation(val) }}
+            />
+            {(!!titleValue || focused) && <MainForm isLinkPost={isLinkPost} control={control} imagesValue={imagesValue} subId={subId} />}
+          </Stack>
+
+          {/* right column */}
+          <Box width={40}>
+            <Tools<TCardCreatePostForm>
+              control={control}
+              isFormClosed={!titleValue && !focused}
+              setIsLinkPost={setIsLinkPost}
+              isLinkPost={isLinkPost}
+            />
+          </Box>
         </Stack>
-        {!!titleValue && <MainForm showLinkInput={showLinkInput} control={control} imagesValue={imagesValue} subId={subId} />}
       </form>
     </RdCard>
   )

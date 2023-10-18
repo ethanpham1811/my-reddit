@@ -62,17 +62,31 @@ export const UPDATE_USER = gql`
 
 /* ----------------------------- POST -------------------------------- */
 export const ADD_POST = gql`
-  mutation AddPost($body: String!, $images: String, $subreddit_id: ID!, $title: String!, $user_id: ID!) {
-    insertPost(body: $body, title: $title, user_id: $user_id, subreddit_id: $subreddit_id, images: $images) {
-      body
-      created_at
+  mutation AddPost($body: String, $images: String, $subreddit_id: ID!, $title: String!, $user_id: ID!, $link: String) {
+    insertPost(body: $body, title: $title, user_id: $user_id, subreddit_id: $subreddit_id, images: $images, link: $link) {
       id
       images
-      subreddit_id
+      body
+      created_at
       title
       user {
         username
       }
+      comment {
+        created_at
+        user {
+          username
+        }
+        text
+      }
+      subreddit {
+        name
+        subType
+      }
+      vote {
+        upvote
+      }
+      link
     }
   }
 `

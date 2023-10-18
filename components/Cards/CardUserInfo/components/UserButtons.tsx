@@ -2,6 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
 import useUpdateUser from '@/hooks/useUpdateUser'
+import { Events, eventEmitter } from '@/services/eventEmitter'
 import { CardActions, Divider } from '@mui/material'
 import { useState } from 'react'
 import { RdButton } from '../../..'
@@ -23,7 +24,10 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
     if (user && me) updateUser('following_ids', user.username, !isUnfollow)
   }
 
-  const onCreatePost = () => {}
+  function onCreatePost() {
+    eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
+  }
+
   return (
     <>
       {status === SESSION_STATUS.Authenticated && (

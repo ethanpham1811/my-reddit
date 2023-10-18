@@ -1,27 +1,46 @@
+import { urlValidation } from '@/services'
 import { Stack } from '@mui/material'
 import { Control, FieldValues, Path } from 'react-hook-form'
 import { RdButton, RdImageList, RdInput, RdSubredditSelect, RdTextEditor } from '../../..'
 
 type TMainFormProps<T extends FieldValues> = {
   control: Control<T>
-  showLinkInput: boolean
+  isLinkPost: boolean
   imagesValue: FileList
   subId: number | undefined
 }
 
-function MainForm<T extends FieldValues>({ showLinkInput, control, imagesValue, subId }: TMainFormProps<T>) {
+function MainForm<T extends FieldValues>({ isLinkPost, control, imagesValue, subId }: TMainFormProps<T>) {
   return (
-    <Stack spacing={1} sx={{ py: 1, px: '46px' }}>
-      {/* link input */}
-      {showLinkInput && <RdInput<T> bgcolor="white" flex={1} control={control} name={'link' as Path<T>} placeholder="Link URL" />}
-
-      {/* body text editor */}
-      <RdTextEditor<T>
-        registerOptions={{ required: 'Body is required' }}
-        control={control}
-        name={'body' as Path<T>}
-        placeholder="Start your essay.."
-      />
+    <Stack spacing={1}>
+      {/* link or textEditor */}
+      {isLinkPost ? (
+        <Stack spacing={1.5}>
+          <RdInput<T>
+            registerOptions={{ validate: (val) => urlValidation(val) }}
+            bgcolor="white"
+            flex={1}
+            control={control}
+            name={'link' as Path<T>}
+            placeholder="Link URL"
+          />
+          <RdInput<T>
+            registerOptions={{ required: 'Description is required' }}
+            bgcolor="white"
+            flex={1}
+            control={control}
+            name={'linkDescription' as Path<T>}
+            placeholder="Short description"
+          />
+        </Stack>
+      ) : (
+        <RdTextEditor<T>
+          registerOptions={{ required: 'Body is required' }}
+          control={control}
+          name={'body' as Path<T>}
+          placeholder="Start your essay.."
+        />
+      )}
 
       {/* uploaded images preview */}
       {imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} cols={5} />}

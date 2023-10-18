@@ -43,6 +43,7 @@ export type TPost = {
   id: number
   title: string
   body: string
+  link: string
   user: TUserDetail
   created_at: Date
   subreddit: Pick<TSubredditDetail, 'id' | 'name' | 'subType'>
@@ -130,7 +131,7 @@ export type ServerResponseData = {
 }
 
 /* ------------------------------------------Props Types------------------------------------------ */
-export type TCardPostProps = Pick<TPost, 'id' | 'title' | 'body' | 'comment'> & {
+export type TCardPostProps = Pick<TPost, 'id' | 'title' | 'body' | 'comment' | 'link'> & {
   createdAt: Date
   subName: string
   username: string
@@ -301,6 +302,7 @@ export type TCardCreatePostForm = Pick<TPost, 'title' | 'body'> & {
   subreddit_id: number
   images: FileList
   link: string
+  linkDescription: string
 }
 export type TCardUserInfoForm = {
   email: string

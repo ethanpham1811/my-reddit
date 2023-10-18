@@ -1,9 +1,8 @@
 import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { SUBREDDIT_TYPE } from '@/constants/enums'
 import useSubPostByNameAndPostId from '@/hooks/useSubPostByNameAndPostId'
-import { getTotalUpvote, validateSubredditMember } from '@/services'
+import { getTotalUpvote, validatePostBySubname } from '@/services'
 import { Stack } from '@mui/material'
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -21,9 +20,9 @@ const Post: NextPage = () => {
   // redirect to 404 if no data found
   post === null && !loading && !error && navigate('/404')
 
-  // weather if the post belongs to the public subreddit
-  const verifyIsMember = (): boolean => {
-    return me ? validateSubredditMember(me?.member_of_ids, subName) : post?.subreddit?.subType === SUBREDDIT_TYPE.Public
+  // if post in public subreddit OR user in subreddit => return true
+  const verifyPost = (): boolean => {
+    return validatePostBySubname(me?.member_of_ids, subName, post?.subreddit?.subType)
   }
 
   const cardPost = () => {
@@ -36,7 +35,8 @@ const Post: NextPage = () => {
       created_at,
       vote,
       user: { username },
-      comment
+      comment,
+      link
     } = post
     return (
       <CardPost
@@ -50,6 +50,7 @@ const Post: NextPage = () => {
         username={username}
         comment={comment}
         inGroup={!!subName}
+        link={link}
       />
     )
   }
@@ -61,7 +62,7 @@ const Post: NextPage = () => {
       </Head>
       <SubredditTopNav name={subreddit?.name} subType={subreddit?.subType} headline={subreddit?.headline} />
       <FeedLayout top="1rem" subredditId={subreddit?.id}>
-        {!verifyIsMember() ? (
+        {!verifyPost() ? (
           <MessageBoard head={'This post is private, please join '} highlight={subName as string} />
         ) : (
           <Stack spacing={2}>{post && cardPost()}</Stack>

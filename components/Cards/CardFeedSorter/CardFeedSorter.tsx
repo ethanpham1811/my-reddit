@@ -1,5 +1,5 @@
 import { RdCard } from '@/components'
-import { ORDERING, SORT_METHOD } from '@/constants/enums'
+import { BORDER_TYPES, ORDERING, SORT_METHOD } from '@/constants/enums'
 import { LocalFireDepartmentIcon, SwapVertOutlinedIcon, TrendingUpOutlinedIcon, WbSunnyIcon } from '@/constants/icons'
 import { TCardFeedSorterProps, TSorter } from '@/constants/types'
 import { IconButton, ToggleButton, ToggleButtonGroup, Typography, styled } from '@mui/material'
@@ -38,10 +38,10 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
       border: 0
     },
     '&:not(:first-of-type)': {
-      borderRadius: theme.shape.borderRadius
+      borderRadius: BORDER_TYPES.Circular
     },
     '&:first-of-type': {
-      borderRadius: theme.shape.borderRadius
+      borderRadius: BORDER_TYPES.Circular
     }
   }
 }))
@@ -77,7 +77,7 @@ function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSort
             </ToggleButton>
           ))}
         <IconButton
-          sx={{ ml: 'auto !important' }}
+          sx={{ ml: 'auto !important', width: '35px', height: '35px' }}
           onClick={(e) => setSortOptions({ ...sortOptions, ordering: sortOptions.ordering === ORDERING.Desc ? ORDERING.Asc : ORDERING.Desc })}
         >
           <SwapVertOutlinedIcon sx={{ display: 'block' }} />

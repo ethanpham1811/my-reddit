@@ -2,6 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { TSubredditDetail } from '@/constants/types'
 import useUpdateUser from '@/hooks/useUpdateUser'
+import { Events, eventEmitter } from '@/services/eventEmitter'
 import { CardActions, Divider } from '@mui/material'
 import { RdButton } from '../../..'
 
@@ -11,8 +12,9 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
   const status = session?.user?.role
   const { updateUser, loading } = useUpdateUser()
 
-  /* onSubmit */
-  const onCreatePost = () => {}
+  function onCreatePost() {
+    eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
+  }
 
   return (
     <>

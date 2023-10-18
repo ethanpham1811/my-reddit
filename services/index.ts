@@ -182,6 +182,12 @@ export const emailValidation = (value: string): boolean | string => {
   if (!emailRegex.test(value)) return 'Invalid email address'
   return true
 }
+export const urlValidation = (value: string): boolean | string => {
+  const urlRegex = /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i
+  if (value === '' || value === 'N/A') return true
+  if (!urlRegex.test(value)) return 'Invalid URL'
+  return true
+}
 export const fullNameValidation = (value: string): boolean | string => {
   const nameRegex = /^[A-Za-z]+( [A-Za-z]+)*$/
   if (value === '') return true

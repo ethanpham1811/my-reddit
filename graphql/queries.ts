@@ -41,6 +41,7 @@ export const GET_USER_BY_EMAIL = gql`
         vote {
           upvote
         }
+        link
       }
     }
   }
@@ -85,6 +86,7 @@ export const GET_USER_BY_USERNAME = gql`
         vote {
           upvote
         }
+        link
       }
     }
   }
@@ -137,6 +139,7 @@ export const GET_SUBREDDIT_BY_NAME = gql`
         vote {
           upvote
         }
+        link
       }
     }
   }
@@ -188,6 +191,7 @@ export const GET_POST_LIST = gql`
       vote {
         upvote
       }
+      link
     }
   }
 `
@@ -216,6 +220,7 @@ export const GET_POST_LIST_BY_SUB_ID = gql`
       vote {
         upvote
       }
+      link
     }
   }
 `
@@ -243,6 +248,7 @@ export const GET_POST_LIST_BY_USER_ID = gql`
       vote {
         upvote
       }
+      link
     }
   }
 `
@@ -285,6 +291,7 @@ export const GET_POST_AND_SUB_BY_POST_ID = gql`
       vote {
         upvote
       }
+      link
     }
   }
 `
@@ -311,6 +318,7 @@ export const GET_TOP_TRENDING_POSTS = gql`
         name
       }
       groupBy
+      link
     }
   }
 `

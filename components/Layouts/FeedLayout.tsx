@@ -23,15 +23,18 @@ function FeedLayout({ loading, children, top, subredditId, single = false }: TFe
   const sideContent = Children.toArray(children)[1]
 
   // check weather user has permission to create post
-  let allowCreatePost = true
-  if (subreddit && me) {
-    allowCreatePost = me.member_of_ids?.includes(subreddit as string) ?? false
-  }
-  if (username && me) {
-    allowCreatePost = username === me.username.toString() ?? false
-  }
-  if (postid || pathname === '/search') {
-    allowCreatePost = false
+  function validateUser() {
+    let allowCreatePost = true
+    if (subreddit && me) {
+      allowCreatePost = me.member_of_ids?.includes(subreddit as string) ?? false
+    }
+    if (username && me) {
+      allowCreatePost = username === me.username.toString() ?? false
+    }
+    if (postid || pathname === '/search') {
+      allowCreatePost = false
+    }
+    return allowCreatePost
   }
 
   return (
@@ -40,7 +43,7 @@ function FeedLayout({ loading, children, top, subredditId, single = false }: TFe
         <Grid container spacing={3}>
           <Grid xs={16} md={single || loading ? 16 : 8} item order={!single || loading ? { xs: 2, md: 1 } : {}}>
             <Stack spacing={2}>
-              {me && allowCreatePost && <CardCreatePost subId={subredditId} />}
+              {me && validateUser() && <CardCreatePost subId={subredditId} />}
               {mainContent}
             </Stack>
           </Grid>

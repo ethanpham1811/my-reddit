@@ -4,7 +4,7 @@ import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useEffect } from 'react'
+import { Dispatch, Fragment, SetStateAction, useEffect } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
 import { getTotalUpvote, validatePostBySubname, validateSubredditMember } from '../../services'
@@ -35,9 +35,9 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
     return validateSubredditMember(me?.member_of_ids, subPageName)
   }
 
-  // weather if the post belongs to the public subreddit
+  // if post in public subreddit OR user in subreddit => return true
   const verifyPost = (post: TPost): boolean => {
-    return me ? validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, subType) : post.subreddit.subType === SUBREDDIT_TYPE.Public
+    return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post.subreddit.subType)
   }
 
   /* postList mapping */
@@ -47,7 +47,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
       postList
         .filter((post): boolean => verifyPost(post))
         .map(
-          ({ id, title, body, images, comment, created_at, user: { username }, subreddit, vote }: TPost): TCardPostProps => ({
+          ({ id, title, body, images, comment, created_at, user: { username }, subreddit, vote, link }: TPost): TCardPostProps => ({
             id,
             title,
             body,
@@ -56,7 +56,8 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
             createdAt: new Date(created_at),
             subName: subreddit.name,
             images,
-            upvote: vote ? getTotalUpvote(vote) : 0
+            upvote: vote ? getTotalUpvote(vote) : 0,
+            link
           })
         ),
       method,
@@ -66,12 +67,16 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
   return (
     <>
       {loading || !cardPostList ? (
-        [0, 1].map((el) => <RdSkeletonListItem key={el.toString()} />)
+        [0, 1].map((el) => (
+          <Fragment key={`skeleton_${el}`}>
+            <RdSkeletonListItem index={el.toString()} />
+          </Fragment>
+        ))
       ) : // ON SUBREDDIT FEEDS: check weather if I haven't join this subreddit or this subreddit is not public
       subPageName && !verifyIsMember() && subType !== SUBREDDIT_TYPE.Public ? (
         <MessageBoard head="This community is private, please join " highlight={subPageName as string} />
       ) : cardPostList.length > 0 ? (
-        cardPostList.map(({ id, title, body, images, comment, createdAt, username, subName, upvote }) => {
+        cardPostList.map(({ id, title, body, images, comment, createdAt, username, subName, upvote, link }) => {
           return (
             <CardPost
               id={id}
@@ -84,6 +89,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
               subName={subName}
               username={username}
               comment={comment}
+              link={link}
               inGroup={!!subPageName}
             />
           )

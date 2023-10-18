@@ -3,7 +3,7 @@ import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useEffect } from 'react'
+import { Dispatch, Fragment, SetStateAction, useEffect } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
 import { getTotalUpvote, validatePostByFollowing, validatePostBySubname } from '../../services'
@@ -28,12 +28,12 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
     setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
   }, [postList, loading, setHasNoPost])
 
-  // weather if the post belongs to the subreddit that I've join
+  // if post in public subreddit OR user in subreddit => return true
   const verifyPost = (post: TPost): boolean => {
     return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post?.subreddit?.subType)
   }
 
-  // weather if the post belongs to user that I'm following
+  // if post belongs to my following OR this is my page => return true
   const verifyFollower = (): boolean => {
     return validatePostByFollowing(me?.following_ids, userPageName) || me?.username === userPageName
   }
@@ -44,7 +44,7 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
     orderBy(
       postList
         .filter((post): boolean => verifyPost(post))
-        .map(({ id, title, body, images, comment, created_at, user: { username }, subreddit, vote }: TPost): TCardPostProps => {
+        .map(({ id, title, body, images, comment, created_at, user: { username }, subreddit, vote, link }: TPost): TCardPostProps => {
           return {
             id,
             title,
@@ -54,7 +54,8 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
             createdAt: new Date(created_at),
             subName: subreddit.name,
             images,
-            upvote: vote ? getTotalUpvote(vote) : 0
+            upvote: vote ? getTotalUpvote(vote) : 0,
+            link
           }
         }),
       method,
@@ -64,13 +65,17 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
   return (
     <>
       {loading || !mappedPostList ? (
-        [0, 1].map((el) => <RdSkeletonListItem key={el.toString()} />)
+        [0, 1].map((el) => (
+          <Fragment key={`skeleton_${el}`}>
+            <RdSkeletonListItem index={el.toString()} />
+          </Fragment>
+        ))
       ) : !me?.username ? ( // if user is not logged in
         <MessageBoard head="You need to login to view their content" />
       ) : !verifyFollower() ? ( // if user is not following the user page
         <MessageBoard head="You need to follow " highlight={userPageName as string} tail=" to view their posts" />
       ) : mappedPostList.length > 0 ? (
-        mappedPostList.map(({ id, title, body, images, comment, createdAt, username, subName, upvote }) => {
+        mappedPostList.map(({ id, title, body, images, comment, createdAt, username, subName, upvote, link }) => {
           return (
             <CardPost
               id={id}
@@ -83,6 +88,7 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
               subName={subName}
               username={username}
               comment={comment}
+              link={link}
             />
           )
         })
