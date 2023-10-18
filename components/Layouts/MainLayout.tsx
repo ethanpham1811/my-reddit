@@ -38,7 +38,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       <Box>
         <TopNav />
         <main>{children}</main>
-        <Toaster position="bottom-right" />
+        <Toaster toastOptions={{ duration: 2000 }} position="bottom-right" />
       </Box>
     </AppContext.Provider>
   )

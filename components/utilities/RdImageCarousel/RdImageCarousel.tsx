@@ -24,18 +24,18 @@ function RdImageCarousel({ width, height, imgList }: TRdImageCarouselProps) {
       sx={{ width }}
       animation="slide"
       navButtonsAlwaysVisible
-      cycleNavigation={false}
       autoPlay={false}
     >
       {imgList.map((imgSrc, i) => (
         <Paper key={`image_${rid()}`} sx={{ boxShadow: 'none' }}>
           <Image
-            src={imgSrc}
+            src={process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + imgSrc}
             alt={'post image'}
             sizes="(min-width: 768px) 600px, 900px"
             style={{ width, height, objectFit: 'contain' }}
             width={300}
             height={200}
+            onClick={(e) => e.stopPropagation()}
           />
         </Paper>
       ))}

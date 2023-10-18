@@ -22,13 +22,6 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
   /* Mutations */
   const [addVote] = useMutation(ADD_VOTE)
 
-  /* mockup post images */
-  const imgList: string[] = [
-    process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL +
-      'post_images/public/Realtime%20Chat%20Application%20using%20PHP%20with%20MySQL%20&%20JavaScript%20Ajax.jpg',
-    process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + 'post_images/public/wallpaperflare.com_wallpaper.jpg'
-  ]
-
   /* navigate to post detail page */
   const goToPost = () => !postid && navigate(`/r/${subName}/post/${id}`)
 
@@ -82,7 +75,7 @@ function CardPost({ id, images, inGroup, body, title, username, createdAt, upvot
               {/* {link && <LinkPreview url={link} width="400px" />} */}
             </Box>
             {/* image carousel */}
-            {images && <RdImageCarousel width="100%" height="300px" imgList={imgList} />}
+            {images && <RdImageCarousel width="100%" height="300px" imgList={images} />}
           </Box>
         </Stack>
       </RdCard>

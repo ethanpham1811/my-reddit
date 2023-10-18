@@ -4,6 +4,7 @@ import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
 import useUpdateUser from '@/hooks/useUpdateUser'
 import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 import { RdButton, RdChip } from '..'
 import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../services'
@@ -43,25 +44,29 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
         />
         <Container maxWidth="md" sx={{ pt: 2 }}>
           <Stack direction="row" justifyContent="flex-start">
-            <Avatar
-              sx={{
-                width: 100,
-                height: 100,
-                backgroundColor: generateSeededHexColor(name),
-                border: (theme): string => `5px solid ${theme.palette.white.main}`,
-                position: 'relative',
-                top: '-2.5rem',
-                mr: 2
-              }}
-              alt={`subreddit ${name} avatar`}
-              src={generateUserImage(name)}
-            />
+            <Link href={`/r/${name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Avatar
+                sx={{
+                  width: 100,
+                  height: 100,
+                  backgroundColor: generateSeededHexColor(name),
+                  border: (theme): string => `5px solid ${theme.palette.white.main}`,
+                  position: 'relative',
+                  top: '-2.5rem',
+                  mr: 2
+                }}
+                alt={`subreddit ${name} avatar`}
+                src={generateUserImage(name)}
+              />
+            </Link>
             <Stack>
               <Typography fontWeight={700} variant="h4">
                 {headline ?? name}
               </Typography>
               <Typography fontWeight={700} variant="subtitle1" sx={{ color: 'hintText.main' }}>
-                r/{name}
+                <Link href={`/r/${name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  r/{name}
+                </Link>
               </Typography>
             </Stack>
             <Stack sx={{ alignSelf: 'flex-start', alignItems: 'center', ml: 'auto' }} direction="row">

@@ -2,6 +2,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import AddSharpIcon from '@mui/icons-material/AddSharp'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined'
 import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined'
@@ -44,6 +45,7 @@ export {
   AddSharpIcon,
   ArrowBackIosIcon,
   ArrowDownwardOutlinedIcon,
+  ArrowForwardIcon,
   ArrowForwardIosIcon,
   ArrowUpwardOutlinedIcon,
   Brightness5OutlinedIcon,

@@ -1,19 +1,26 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
+import { ArrowForwardIcon } from '@/constants/icons'
 import { TSubredditDetail } from '@/constants/types'
 import useUpdateUser from '@/hooks/useUpdateUser'
 import { Events, eventEmitter } from '@/services/eventEmitter'
 import { CardActions, Divider } from '@mui/material'
+import { useRouter } from 'next/router'
 import { RdButton } from '../../..'
 
 function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null }) {
   const { session } = useAppSession()
+  const {
+    query: { subreddit: subName, postid },
+    push: navigate
+  } = useRouter()
   const me = session?.userDetail
   const status = session?.user?.role
   const { updateUser, loading } = useUpdateUser()
 
-  function onCreatePost() {
-    eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
+  function onClick() {
+    subName && eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
+    postid && navigate(`/r/${subName}`)
   }
 
   return (
@@ -25,7 +32,14 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
             {status === SESSION_STATUS.Authenticated && (
               <>
                 {subreddit && me?.member_of_ids?.includes(subreddit.name) ? (
-                  <RdButton onClick={onCreatePost} text={'Create Post'} filled color="blue" invertColor />
+                  <RdButton
+                    endIcon={postid && <ArrowForwardIcon />}
+                    onClick={onClick}
+                    text={!postid ? 'Create Post' : (subName as string)}
+                    filled
+                    color="blue"
+                    invertColor
+                  />
                 ) : (
                   <RdButton
                     disabled={loading}

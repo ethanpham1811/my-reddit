@@ -105,7 +105,6 @@ export const generateUserName = (): string => {
   const numberDictionary = NumberDictionary.generate({ min: 10, max: 99 })
   return uniqueNamesGenerator({ dictionaries: [['Ok', 'Uk', 'Ik', 'Ek', 'Ak'], colors, animals, numberDictionary] }) // Ok_red_donkey_89
 }
-
 /*------------------------------------------- Formats ------------------------------------------- */
 export function formatNumber(number: number): string {
   // million format => '5.9M'

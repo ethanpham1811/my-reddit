@@ -21,6 +21,16 @@ function RdImageUploader<T extends FieldValues>({ name, control }: TRdImageUploa
                   accept="image/jpg, image/png, image/jpeg, image/webp, image/gif"
                   type="file"
                   onChange={(e) => onChange(e.target.files)}
+                  style={{
+                    width: '34px',
+                    height: '34px',
+                    position: 'absolute',
+                    top: '-7px',
+                    left: '-7px',
+                    display: 'block',
+                    border: '1px solid red',
+                    opacity: 0
+                  }}
                 />
               </label>
             )}

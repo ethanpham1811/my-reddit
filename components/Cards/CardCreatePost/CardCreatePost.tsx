@@ -83,7 +83,9 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
               placeholder="Create Post"
               registerOptions={{ validate: (val) => postTitleValidation(val) }}
             />
-            {(!!titleValue || focused) && <MainForm isLinkPost={isLinkPost} control={control} imagesValue={imagesValue} subId={subId} />}
+            {(!!titleValue || focused) && (
+              <MainForm loading={loading} isLinkPost={isLinkPost} control={control} imagesValue={imagesValue} subId={subId} />
+            )}
           </Stack>
 
           {/* right column */}
