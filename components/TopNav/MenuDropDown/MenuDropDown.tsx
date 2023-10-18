@@ -1,12 +1,12 @@
 import { RdDropdown } from '@/components'
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
 import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { HomeIcon } from '@/constants/icons'
 import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
 import { Box, List } from '@mui/material'
 import { useRouter } from 'next/router'
-import { ReactNode, useContext, useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { renderSelectedOption } from './RenderedCbs'
 import FeedsMenuList from './components/FeedsMenuList'
 import PeopleMenuList from './components/PeopleMenuList'
@@ -15,7 +15,7 @@ import SubsMenuList from './components/SubsMenuList'
 function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
   const { pathname } = useRouter()
   const [filterTerm, setFilterTerm] = useState('')
-  const { session, loading } = useContext(AppContext)
+  const { session, loading } = useAppSession()
   const me = session?.userDetail
   const joinedSubListNames: string[] | undefined = me?.member_of_ids
   const activePage: string = pathName === '/' ? 'Home' : (userPageName as string) ?? (subName as string)

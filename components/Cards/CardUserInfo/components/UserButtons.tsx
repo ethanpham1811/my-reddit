@@ -1,9 +1,9 @@
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
 import useUpdateUser from '@/hooks/useUpdateUser'
 import { CardActions, Divider } from '@mui/material'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { RdButton } from '../../..'
 
 type TUserButtonsProps = {
@@ -12,7 +12,7 @@ type TUserButtonsProps = {
 }
 
 function UserButtons({ user, isMe }: TUserButtonsProps) {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const status = session?.user?.role
   const me = session?.userDetail
   const { updateUser, loading } = useUpdateUser()

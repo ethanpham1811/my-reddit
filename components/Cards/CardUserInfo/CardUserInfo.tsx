@@ -1,9 +1,9 @@
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { TCardUserInfoForm, TCardUserInfoProps } from '@/constants/types'
 import useUpdateUser from '@/hooks/useUpdateUser'
 import { CardContent, Divider } from '@mui/material'
-import { useContext, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { RdCard, RdToast } from '../..'
@@ -16,7 +16,7 @@ import UserInfoMedia from './components/UserInfoMedia'
 
 function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   const { control, setValue, getValues, handleSubmit } = useForm<TCardUserInfoForm>()
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const { updateUser } = useUpdateUser()
   const isMe = session?.userDetail?.username === user?.username
 

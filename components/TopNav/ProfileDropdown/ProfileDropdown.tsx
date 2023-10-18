@@ -1,6 +1,6 @@
 import { CardLogout, RdDialog, RdDropdown } from '@/components'
 import CardUserAgreement from '@/components/Cards/CardUserAgreement/CardUserAgreement'
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { AccountCircleOutlinedIcon, InfoOutlinedIcon, LogoutIcon, PreviewOutlinedIcon } from '@/constants/icons'
 import { TProfileDropdownProps } from '@/constants/types'
@@ -8,7 +8,7 @@ import { createGroupedList } from '@/services'
 import { Box, Divider, List, MenuItem, Stack, SvgIconTypeMap, Switch, Typography } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import Link from 'next/link'
-import { createElement, useContext, useState } from 'react'
+import { createElement, useState } from 'react'
 import { v4 as rid } from 'uuid'
 import { renderSelectedOption } from './RenderedCbs'
 import ProfileGroupHeader from './components/ProfileGroupHeader'
@@ -24,9 +24,9 @@ type TProfileDropDownList = {
   groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }
 
-function ProfileDropdownProp({ navigate }: TProfileDropdownProps) {
+function ProfileDropdownProp({ loading }: TProfileDropdownProps) {
   // const [page, setPage] = useState('home')
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
 
   const [isOpenDialog, setIsOpenDialog] = useState(false)
@@ -69,12 +69,13 @@ function ProfileDropdownProp({ navigate }: TProfileDropdownProps) {
   return (
     <>
       <RdDropdown
+        disabled={loading}
         flex={1}
         mobileMode
         offsetTop="10px"
         minWidth="200px"
         borderColor="inputBorder"
-        renderSelectedOption={(_) => renderSelectedOption(_, me)}
+        renderSelectedOption={(_) => renderSelectedOption(_, me, loading)}
       >
         {me && groupedMenuList.length > 0 ? (
           groupedMenuList.map(({ items, group, groupIcon }) => {

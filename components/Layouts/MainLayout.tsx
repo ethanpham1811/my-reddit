@@ -1,21 +1,40 @@
+'use client'
 import { TAppSession } from '@/constants/types'
 import useUserByEmail from '@/hooks/useUserByEmail'
 import { Box } from '@mui/material'
-import { Session, useSession } from '@supabase/auth-helpers-react'
-import { ReactNode, createContext } from 'react'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { TopNav } from '..'
 
-export const AppContext = createContext<{ session: TAppSession; loading: boolean }>({ session: null, loading: false })
+export const AppContext = createContext<{ session: TAppSession; loading: boolean }>({
+  session: null,
+  loading: false
+})
 
 export default function MainLayout({ children }: { children: ReactNode }) {
-  const session: Session | null = useSession()
-  const [userDetail, _, loading] = useUserByEmail(session?.user?.email)
-  const appSession: TAppSession = session ? { ...session, userDetail } : null
-  console.log(appSession)
+  const supabase = useSupabaseClient()
+  const [appSession, setAppSession] = useState<TAppSession>(null)
+  const [userEmail, setUserEmail] = useState<string | null>(null)
+  const [userDetail, _, loading] = useUserByEmail(userEmail)
 
+  /* update session on authentication (login/logout) */
+  useEffect(() => {
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange(async (_, session) => {
+      // retrieve user email from supabase auth -> fetch data from this user by email
+      session?.user?.email && setUserEmail(session.user.email)
+
+      // append fetched userDetail to session
+      setAppSession(session ? { ...session, userDetail } : null)
+    })
+    return () => subscription.unsubscribe()
+  }, [supabase, userDetail])
+
+  const ctx = useMemo(() => ({ session: appSession, loading }), [appSession, loading])
   return (
-    <AppContext.Provider value={{ session: appSession, loading }}>
+    <AppContext.Provider value={ctx}>
       <Box>
         <TopNav />
         <main>{children}</main>
@@ -23,6 +42,13 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       </Box>
     </AppContext.Provider>
   )
+}
+
+/* retrieve ALL SESSION INFO with this hook */
+export const useAppSession = () => {
+  const context = useContext(AppContext)
+  if (context === undefined) throw new Error('Context must be used within an AppProvider')
+  return context
 }
 
 // const childrenWithProps = Children.map(children, (child) => {

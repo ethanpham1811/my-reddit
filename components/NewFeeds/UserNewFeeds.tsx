@@ -1,12 +1,12 @@
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
 import { getTotalUpvote, validatePostByFollowing, validatePostBySubname } from '../../services'
-import { AppContext } from '../Layouts/MainLayout'
 import { RdSkeletonListItem } from '../Skeletons'
 
 type TUserNewFeedsProps = {
@@ -18,7 +18,7 @@ type TUserNewFeedsProps = {
 }
 
 function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, setHasNoPost }: TUserNewFeedsProps) {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
   const {
     query: { username: userPageName }

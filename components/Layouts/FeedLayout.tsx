@@ -1,9 +1,8 @@
 import { CardCreatePost } from '@/components'
-
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { Box, Container, Grid, Stack } from '@mui/material'
 import { useRouter } from 'next/router'
-import { Children, ReactNode, useContext } from 'react'
-import { AppContext } from './MainLayout'
+import { Children, ReactNode } from 'react'
 
 type TFeedLayoutProps = {
   children: ReactNode
@@ -14,7 +13,7 @@ type TFeedLayoutProps = {
 }
 
 function FeedLayout({ loading, children, top, subredditId, single = false }: TFeedLayoutProps) {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
   const {
     query: { subreddit, username, postid },

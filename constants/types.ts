@@ -14,7 +14,6 @@ import {
 } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from '@supabase/supabase-js'
-import { NextRouter } from 'next/router'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
@@ -109,7 +108,7 @@ export type TMenuDropdownProps = {
   pathName: string
 }
 export type TProfileDropdownProps = {
-  navigate: NextRouter['push']
+  loading: boolean
 }
 export type TMenuItem = Omit<TSubreddit, 'id'> & {
   name: string
@@ -181,7 +180,7 @@ export type TRdButtonProps = ButtonOwnProps &
     flex?: number
     width?: string
   }
-export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'error'> & {
+export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'error' | 'disabled'> & {
   renderSelectedOption: (value: string, mobileMode?: boolean) => ReactNode
   onChange?: (event: SelectChangeEvent<string>, child: ReactNode) => void
   width?: string

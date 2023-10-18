@@ -1,16 +1,14 @@
-import { ApolloProvider } from '@apollo/client'
-import type { AppProps } from 'next/app'
-import { client } from '../apollo-client'
-
 import { MainLayout } from '@/components'
+import { ApolloProvider } from '@apollo/client'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
-import { SessionContextProvider as SupabaseSessionProvider } from '@supabase/auth-helpers-react'
-
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useState } from 'react'
+import { client } from '../apollo-client'
 import { createEmotionCache } from '../mui/createEmotionCache'
 import { theme } from '../mui/theme'
 import '../styles/global.css'
@@ -22,12 +20,8 @@ export interface TMyAppProps extends AppProps {
 }
 
 export default function App({ Component, emotionCache = clientSideEmotionCache, pageProps: { ...pageProps } }: TMyAppProps) {
-  const [supabaseClient] = useState(() =>
-    createPagesBrowserClient({
-      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_PROJECT_URL,
-      supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_CLIENT_ANON_KEY
-    })
-  )
+  // init supabase client on app first render
+  const [supabaseClient] = useState(() => createPagesBrowserClient())
 
   return (
     <CacheProvider value={emotionCache}>
@@ -37,11 +31,11 @@ export default function App({ Component, emotionCache = clientSideEmotionCache, 
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ApolloProvider client={client}>
-          <SupabaseSessionProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+          <SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
             <MainLayout>
               <Component {...pageProps} />
             </MainLayout>
-          </SupabaseSessionProvider>
+          </SessionContextProvider>
         </ApolloProvider>
       </ThemeProvider>
     </CacheProvider>

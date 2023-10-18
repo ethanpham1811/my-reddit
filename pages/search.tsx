@@ -1,20 +1,19 @@
-import { SEARCH_TABS } from '@/constants/enums'
-import { NextPage } from 'next'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-
-import { TQueriedPost, TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
-
 import { SearchFeeds, SearchFeedsTabBar } from '@/components'
 import CardSearchSide from '@/components/Cards/CardSearchSide/CardSearchSide'
 import FeedLayout from '@/components/Layouts/FeedLayout'
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
+import { SEARCH_TABS } from '@/constants/enums'
+import { TQueriedPost, TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 import useSearchQueriedList from '@/hooks/useSearchQueriedList'
 import useUpdateUser from '@/hooks/useUpdateUser'
 import { Container, Stack } from '@mui/material'
-import { useContext, useState } from 'react'
+import { NextPage } from 'next'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+
 const Search: NextPage = () => {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
   // const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {

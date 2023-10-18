@@ -1,12 +1,12 @@
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SEARCH_TABS } from '@/constants/enums'
 import { TQueriedPost, TQueriedSub, TQueriedUser, TSearchOptions, TUserDetail } from '@/constants/types'
 import { isSearchQueriedPost, isSearchQueriedSub, isSearchQueriedUser, validatePostByFollowing, validateSubredditMember } from '@/services'
 import { Box } from '@mui/material'
 import { Jelly } from '@uiball/loaders'
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { RdCard } from '..'
 import { NotFound } from '../Cards/CardNotFound/CardNotFound'
-import { AppContext } from '../Layouts/MainLayout'
 import SearchPostItem from './components/SearchPostItem'
 import SearchSubUserItem from './components/SearchSubUserItem'
 
@@ -21,7 +21,7 @@ type TSearchFeedsProps = {
 }
 
 function SearchFeeds({ searchList, updateLoading, loading, setHasNoPost, searchTerm, updateUser }: TSearchFeedsProps) {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
 
   useEffect(() => {

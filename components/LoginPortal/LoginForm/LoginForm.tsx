@@ -1,23 +1,25 @@
 import { RdButton, RdInput } from '@/components'
 import { emailValidation } from '@/services'
 import { CircularProgress, Link, Stack, Typography } from '@mui/material'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import PasswordEye from '../PasswordEye'
 
 type TLoginFormProps = {
   setIsLoginForm: Dispatch<SetStateAction<boolean>>
+  setOpen: Dispatch<SetStateAction<boolean>>
   newUserEmail: string | null
 }
 type TLoginForm = {
   email: string
   password: string
 }
-function LoginForm({ setIsLoginForm, newUserEmail }: TLoginFormProps) {
+function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
+  const supabase = useSupabaseClient()
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   /* form controllers */
   const { handleSubmit, control, setValue } = useForm<TLoginForm>()
@@ -30,20 +32,16 @@ function LoginForm({ setIsLoginForm, newUserEmail }: TLoginFormProps) {
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
+    if (!supabase) return
     setLoading(true)
     const { email, password } = formData
-    const res = await fetch(`/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        password
-      })
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
     })
-    const { error } = await res.json()
     error
-      ? setError(error) // Display an error message
-      : toast.success('Login successfully')
+      ? setError(error.message) // Display an error message
+      : setOpen(false)
     setLoading(false)
   })
 
@@ -61,7 +59,7 @@ function LoginForm({ setIsLoginForm, newUserEmail }: TLoginFormProps) {
         {error && (
           <Stack alignItems="center">
             <Typography fontSize="0.8rem" sx={{ color: 'orange.main' }}>
-              Invalid email or password
+              {error}
             </Typography>
           </Stack>
         )}

@@ -1,8 +1,7 @@
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { AppBar, Box, Stack, styled } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useContext } from 'react'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
-import { AppContext } from '../Layouts/MainLayout'
 import LoginButton from './LoginButton/LoginButton'
 
 const NavBar = styled(AppBar)(({ theme }) => {
@@ -14,7 +13,7 @@ const NavBar = styled(AppBar)(({ theme }) => {
 })
 
 function TopNav() {
-  const { session } = useContext(AppContext)
+  const { session, loading } = useAppSession()
   const router = useRouter()
   const {
     query: { subreddit: subName, username },
@@ -36,7 +35,7 @@ function TopNav() {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
             <IconBox />
             {/* Profile dropdown */}
-            <ProfileDropdown navigate={navigate} />
+            {session && <ProfileDropdown loading={loading} />}
             {!session && <LoginButton />}
           </Stack>
         </Stack>

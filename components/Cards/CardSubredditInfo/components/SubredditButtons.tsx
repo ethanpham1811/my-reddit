@@ -1,13 +1,12 @@
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { TSubredditDetail } from '@/constants/types'
 import useUpdateUser from '@/hooks/useUpdateUser'
 import { CardActions, Divider } from '@mui/material'
-import { useContext } from 'react'
 import { RdButton } from '../../..'
 
 function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null }) {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
   const status = session?.user?.role
   const { updateUser, loading } = useUpdateUser()

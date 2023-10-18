@@ -3,20 +3,20 @@ import { LogoutIcon } from '@/constants/icons'
 import { CircularProgress, Divider, Stack, Typography } from '@mui/material'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Dispatch, SetStateAction, useState } from 'react'
-import toast from 'react-hot-toast'
 
 function CardLogout({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) {
-  const [loading, setLoading] = useState(false)
   const supabase = useSupabaseClient()
+  const [loading, setLoading] = useState(false)
 
   function onClick() {
     setLoading(true)
+    supabase?.auth.signOut()
+
+    // with a delay only for loading demonstrating purpose
     setTimeout(async () => {
-      supabase.auth.signOut()
       setLoading(false)
-      toast.success('Logout Successfully')
       setOpen(false)
-    }, 2000) // only for demonstration purpose
+    }, 2500)
   }
 
   return (

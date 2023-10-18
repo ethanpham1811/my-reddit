@@ -1,13 +1,13 @@
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
 import { getTotalUpvote, validatePostBySubname, validateSubredditMember } from '../../services'
-import { AppContext } from '../Layouts/MainLayout'
 import { RdSkeletonListItem } from '../Skeletons'
 
 type TNewFeedsProps = {
@@ -20,7 +20,7 @@ type TNewFeedsProps = {
 }
 
 function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subType, setHasNoPost }: TNewFeedsProps) {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
   const {
     query: { subreddit: subPageName }

@@ -7,7 +7,7 @@ function LoginButton() {
     <>
       <RdButton onClick={() => setOpen(true)} text="Log In" filled invertColor />
       <RdDialog open={open} setOpen={setOpen}>
-        <LoginPortal />
+        <LoginPortal setOpen={setOpen} />
       </RdDialog>
     </>
   )

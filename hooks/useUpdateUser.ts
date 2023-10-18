@@ -1,15 +1,15 @@
 import { client } from '@/apollo-client'
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TUserDetail } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
 import { GET_USER_BY_EMAIL } from '@/graphql/queries'
 import { useMutation } from '@apollo/client'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 function useUpdateUser() {
   const [loading, setLoading] = useState(false)
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
   const [mutateMemberOf] = useMutation(UPDATE_USER)
 

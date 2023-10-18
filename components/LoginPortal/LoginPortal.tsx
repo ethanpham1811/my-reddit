@@ -2,26 +2,26 @@ import { BsFacebook, BsReddit } from '@/constants/icons'
 import { Divider, IconButton, Stack, Typography } from '@mui/material'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import toast from 'react-hot-toast'
 import { RdCard } from '..'
 import LoginForm from './LoginForm/LoginForm'
 import RegisterForm from './RegisterForm/RegisterForm'
 
-function LoginPortal() {
+function LoginPortal({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) {
+  const supabase = useSupabaseClient()
   const [isLoginForm, setIsLoginForm] = useState(true)
   const [newUserEmail, setNewUserEmail] = useState<string | null>(null)
-  const supabase = useSupabaseClient()
 
   const LoginWithProvider = async (provider: Provider) => {
-    const { error } = await supabase.auth.signInWithOAuth({ provider })
+    const { error } = await supabase!.auth.signInWithOAuth({ provider })
     error && toast.error(error.message)
   }
 
   return (
     <RdCard sx={{ p: 3 }}>
       {isLoginForm ? (
-        <LoginForm setIsLoginForm={setIsLoginForm} newUserEmail={newUserEmail} />
+        <LoginForm setOpen={setOpen} setIsLoginForm={setIsLoginForm} newUserEmail={newUserEmail} />
       ) : (
         <RegisterForm setNewUserEmail={setNewUserEmail} setIsLoginForm={setIsLoginForm} />
       )}

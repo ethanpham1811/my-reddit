@@ -1,3 +1,5 @@
+/* temporarily unused */
+
 import { ServerResponseData } from '@/constants/types'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import type { NextApiRequest, NextApiResponse } from 'next'

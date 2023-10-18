@@ -1,9 +1,8 @@
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { TMenuItem } from '@/constants/types'
 import { List, ListItemText, MenuItem } from '@mui/material'
-import { useContext } from 'react'
 import { v4 as rid } from 'uuid'
 import GroupHeader from './MenuGroupHeader'
 import SubAndPeopleMenuItem from './SubAndPeopleMenuItem'
@@ -15,7 +14,7 @@ type TSubsMenuListProps = {
 }
 
 function SubsMenuList({ loading, options, filterByTerm }: TSubsMenuListProps) {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   return (
     <List>
       <GroupHeader label={MAIN_MENU_GROUP.Communities} />

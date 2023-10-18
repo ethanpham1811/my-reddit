@@ -1,11 +1,10 @@
-import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
-
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SEARCH_TABS } from '@/constants/enums'
+import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 import { generateSeededHexColor, generateUserImage } from '@/services'
 import { Avatar, Divider, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { RdButton } from '../..'
 import { getFields } from '../utils'
 
@@ -18,7 +17,7 @@ type TSearchSubUserItemProps = {
 }
 
 function SearchSubUserItem({ loading, item, updateUser, revertBtnText, type }: TSearchSubUserItemProps) {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
   const [hoverState, setHoverState] = useState(false)
   const { name, status, btnText, extraText, link } = getFields(me, item)

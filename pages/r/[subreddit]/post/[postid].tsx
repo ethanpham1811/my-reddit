@@ -1,18 +1,16 @@
 import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import useSubPostByNameAndPostId from '@/hooks/useSubPostByNameAndPostId'
 import { getTotalUpvote, validateSubredditMember } from '@/services'
 import { Stack } from '@mui/material'
-
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useContext } from 'react'
 
 const Post: NextPage = () => {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
   const {
     query: { subreddit: subName, postid },

@@ -1,11 +1,10 @@
-import { AppContext } from '@/components/Layouts/MainLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { SEARCH_TABS } from '@/constants/enums'
 import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 import { formatNumber, validatePostByFollowing, validateSubredditMember } from '@/services'
 import { CardActions, CardContent, CardHeader, Typography } from '@mui/material'
 import Link from 'next/link'
-import { useContext } from 'react'
 import { MessageBoard, RdCard } from '../..'
 import CardSearchItem from './CardSearchItem'
 
@@ -19,7 +18,7 @@ type TCardSearchSideProps<T extends TQueriedSub | TQueriedUser> = {
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
 }
 function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, updateLoading, loading, list, updateUser }: TCardSearchSideProps<T>) {
-  const { session } = useContext(AppContext)
+  const { session } = useAppSession()
   const me = session?.userDetail
 
   return (
