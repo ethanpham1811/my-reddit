@@ -1,23 +1,45 @@
+import { client } from '@/apollo-client'
 import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
-import { TSortOptions } from '@/constants/types'
-import useSubredditByName from '@/hooks/useSubredditByName'
+import { TPost, TSortOptions, TSubredditDetail } from '@/constants/types'
+import { GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
+import { ApolloError } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { NextPage } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-const Subreddit: NextPage = () => {
+type TSubredditPageProps = {
+  subreddit: TSubredditDetail
+  subredditPosts: TPost[]
+  error: ApolloError | null
+}
+
+export const getServerSideProps = (async ({ query: { subreddit: subName } }) => {
+  const { data, error = null } = await client.query({ query: GET_SUBREDDIT_BY_NAME, variables: { name: subName } })
+  const subreddit: TSubredditDetail = data?.subredditByName
+  const subredditPosts: TPost[] = subreddit?.post
+
+  return {
+    props: {
+      subreddit,
+      subredditPosts,
+      error
+    }
+  }
+}) satisfies GetServerSideProps<TSubredditPageProps>
+
+export default function Subreddit({ subreddit, subredditPosts, error }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { subreddit: subName },
     push: navigate
   } = useRouter()
-  const [subreddit, subredditPosts, loading, error] = useSubredditByName(subName)
   const [hasNoPost, setHasNoPost] = useState(false)
+  const loading = false // FIXME: test loading
 
   // redirect to 404 if no data found
   subreddit === null && !loading && !error && navigate('/404')
@@ -45,5 +67,3 @@ const Subreddit: NextPage = () => {
     </div>
   )
 }
-
-export default Subreddit

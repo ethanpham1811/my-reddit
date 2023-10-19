@@ -1,21 +1,44 @@
+import { client } from '@/apollo-client'
 import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import useSubPostByNameAndPostId from '@/hooks/useSubPostByNameAndPostId'
+import { TPost, TSubredditDetail } from '@/constants/types'
+import { GET_POST_AND_SUB_BY_POST_ID } from '@/graphql/queries'
 import { getTotalUpvote, validatePostBySubname } from '@/services'
+import { ApolloError } from '@apollo/client'
 import { Stack } from '@mui/material'
-import { NextPage } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-const Post: NextPage = () => {
+type TPostPageProps = {
+  subreddit: TSubredditDetail
+  subredditPost: TPost
+  error: ApolloError | null
+}
+
+export const getServerSideProps = (async ({ query: { subreddit: subName, postid } }) => {
+  const { data, error = null } = await client.query({ query: GET_POST_AND_SUB_BY_POST_ID, variables: { id: postid, name: subName } })
+  const subreddit: TSubredditDetail = data?.subredditByName
+  const subredditPost: TPost = data?.post
+
+  return {
+    props: {
+      subreddit,
+      subredditPost,
+      error
+    }
+  }
+}) satisfies GetServerSideProps<TPostPageProps>
+
+export default function Post({ subreddit, subredditPost: post, error }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
-    query: { subreddit: subName, postid },
+    query: { subreddit: subName },
     push: navigate
   } = useRouter()
-  const [subreddit, post, loading, error] = useSubPostByNameAndPostId(subName, postid)
+  const loading = false // FIXME: test loading
 
   // redirect to 404 if no data found
   post === null && !loading && !error && navigate('/404')
@@ -72,5 +95,3 @@ const Post: NextPage = () => {
     </div>
   )
 }
-
-export default Post

@@ -13,7 +13,7 @@ type TUserNewFeedsProps = {
   sortOptions: TSortOptions
   postList: TPost[] | null
   loading: boolean
-  error: ApolloError | undefined
+  error: ApolloError | undefined | null
   setHasNoPost?: Dispatch<SetStateAction<boolean>>
 }
 

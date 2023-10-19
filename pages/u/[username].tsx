@@ -1,23 +1,45 @@
+import { client } from '@/apollo-client'
 import { CardFeedSorter, CardUserInfo, UserNewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
-import { TSortOptions } from '@/constants/types'
-import useUserByUsername from '@/hooks/useUserByUsername'
+import { TPost, TSortOptions, TUserDetail } from '@/constants/types'
+import { GET_USER_BY_USERNAME } from '@/graphql/queries'
+import { ApolloError } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { NextPage } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-const User: NextPage = () => {
+type TUserPageProps = {
+  user: TUserDetail
+  userPosts: TPost[]
+  error: ApolloError | null
+}
+
+export const getServerSideProps = (async ({ query: { username } }) => {
+  const { data, error = null } = await client.query({ query: GET_USER_BY_USERNAME, variables: { username } })
+  const user: TUserDetail = data?.userByUsername
+  const userPosts: TPost[] = user?.post
+
+  return {
+    props: {
+      user,
+      userPosts,
+      error
+    }
+  }
+}) satisfies GetServerSideProps<TUserPageProps>
+
+export default function User({ user, userPosts, error }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { username },
     push: navigate
   } = useRouter()
-  const [user, userPosts, loading, error] = useUserByUsername(username)
   const [hasNoPost, setHasNoPost] = useState(false)
+  const loading = false // FIXME: test loading
 
   // redirect to 404 if no data found
   user === null && !loading && !error && navigate('/404')
@@ -37,5 +59,3 @@ const User: NextPage = () => {
     </div>
   )
 }
-
-export default User

@@ -62,7 +62,7 @@ function SearchPostItem({ item }: { item: TQueriedPost }) {
               <Image
                 style={{ border: '1px solid black ', objectFit: 'cover' }}
                 alt={`post_ ${id}_preview_image`}
-                src={images[0]}
+                src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL}/${images[0]}`}
                 width={140}
                 height={100}
               />

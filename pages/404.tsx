@@ -19,6 +19,7 @@ const Page404 = () => {
     </div>
   )
 }
+export default Page404
 
 // export async function getServerSideProps({ res }) {
 //   res.writeHead(302, { Location: '/' })
@@ -29,4 +30,8 @@ const Page404 = () => {
 //   }
 // }
 
-export default Page404
+// if (!data) {
+//   return {
+//     notFound: true,
+//   }
+// }
