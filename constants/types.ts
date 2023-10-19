@@ -3,6 +3,7 @@ import {
   AutocompleteProps,
   ButtonOwnProps,
   ButtonProps,
+  IconButtonProps,
   ImageListOwnProps,
   PaletteOptions,
   SelectChangeEvent,
@@ -59,6 +60,7 @@ export type TTopic = {
 export type TSubreddit = {
   name: string
   id: number
+  subType: SUBREDDIT_TYPE
 }
 export type TSubredditDetail = TSubreddit & {
   topics: string[]
@@ -67,7 +69,6 @@ export type TSubredditDetail = TSubreddit & {
   description?: string
   member: number
   isChildrenContent: boolean
-  subType: SUBREDDIT_TYPE
   created_at: Date
   post: TPost[]
 }
@@ -112,8 +113,7 @@ export type TMenuDropdownProps = {
 export type TProfileDropdownProps = {
   loading: boolean
 }
-export type TMenuItem = Omit<TSubreddit, 'id'> & {
-  name: string
+export type TMenuItem = Omit<TSubreddit, 'id' | 'subType'> & {
   group: MAIN_MENU_GROUP
   icon?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }
@@ -129,6 +129,17 @@ export type TSortOptions = {
 export type ServerResponseData = {
   message?: string
   error?: string
+}
+
+export type TSelectOption = {
+  title: string
+  cb: () => void
+}
+
+export type TRdSelect = IconButtonProps & {
+  options: TSelectOption[]
+  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
+  position?: { top?: string; left?: string; right?: string; bottom?: string }
 }
 
 /* ------------------------------------------Props Types------------------------------------------ */

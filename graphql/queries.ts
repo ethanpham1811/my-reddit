@@ -157,6 +157,7 @@ export const GET_SUBREDDIT_LIST_SHORT = gql`
     subredditList {
       id
       name
+      subType
     }
   }
 `

@@ -21,6 +21,7 @@ import LinkIcon from '@mui/icons-material/Link'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import LockIcon from '@mui/icons-material/Lock'
 import LogoutIcon from '@mui/icons-material/Logout'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import OutboundOutlinedIcon from '@mui/icons-material/OutboundOutlined'
@@ -37,7 +38,6 @@ import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import { BsFacebook, BsReddit } from 'react-icons/bs'
-
 import { FcGoogle } from 'react-icons/fc'
 
 export {
@@ -67,6 +67,7 @@ export {
   LocalFireDepartmentIcon,
   LockIcon,
   LogoutIcon,
+  MoreHorizIcon,
   NotificationsIcon,
   NotificationsOutlinedIcon,
   OutboundOutlinedIcon,

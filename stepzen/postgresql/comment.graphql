@@ -43,6 +43,8 @@ Feel free to modify them or aggregate more.
 type Mutation {
   " Mutations for type 'Comment' "
   deleteComment(id: ID!): Comment @dbquery(type: "postgresql", schema: "public", table: "comment", dml: DELETE, configuration: "postgresql_config")
+  deleteCommentsOfPost(post_id: ID!): [Comment]
+    @dbquery(type: "postgresql", schema: "public", table: "comment", dml: DELETE, configuration: "postgresql_config")
   insertComment(user_id: ID!, post_id: ID!, text: String!): Comment
     @dbquery(type: "postgresql", schema: "public", table: "comment", dml: INSERT, configuration: "postgresql_config")
   updateComment(id: ID!, created_at: DateTime, post_id: ID!, text: String!, user_id: ID!): Comment

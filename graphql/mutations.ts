@@ -90,11 +90,25 @@ export const ADD_POST = gql`
     }
   }
 `
+export const DELETE_POST = gql`
+  mutation DeletePost($id: ID!) {
+    deletePost(id: $id) {
+      id
+    }
+  }
+`
 
 /* ----------------------------- VOTE -------------------------------- */
 export const ADD_VOTE = gql`
   mutation AddVote($post_id: ID!, $user_id: ID!, $upvote: Boolean!) {
     insertVote(post_id: $post_id, user_id: $user_id, upvote: $upvote) {
+      post_id
+    }
+  }
+`
+export const DELETE_VOTES_BY_POST_ID = gql`
+  mutation DeleteVoteSOfPost($post_id: ID!) {
+    deleteVotesOfPost(post_id: $post_id) {
       post_id
     }
   }
@@ -122,6 +136,13 @@ export const ADD_COMMENT = gql`
       text
       user_id
       created_at
+    }
+  }
+`
+export const DELETE_COMMENTS_BY_POST_ID = gql`
+  mutation DeleteCommentsSOfPost($post_id: ID!) {
+    deleteCommentsOfPost(post_id: $post_id) {
+      post_id
     }
   }
 `
