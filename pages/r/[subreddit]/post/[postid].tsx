@@ -3,11 +3,11 @@ import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/co
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TPost, TSubredditDetail } from '@/constants/types'
-import { GET_POST_AND_SUB_BY_POST_ID } from '@/graphql/queries'
+import { GET_POST_AND_SUB_BY_POST_ID, GET_POST_LIST } from '@/graphql/queries'
 import { getTotalUpvote, validatePostBySubname } from '@/services'
 import { ApolloError } from '@apollo/client'
 import { Stack } from '@mui/material'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
@@ -17,10 +17,19 @@ type TPostPageProps = {
   error: ApolloError | null
 }
 
-export const getServerSideProps = (async ({ query: { subreddit: subName, postid } }) => {
-  const { data, error = null } = await client.query({ query: GET_POST_AND_SUB_BY_POST_ID, variables: { id: postid, name: subName } })
+/* -----------------------------------ISG: UPDATE POST DETAIL - 5s REVALIDATE ---------------------------- */
+
+export const getStaticProps = (async ({ params }) => {
+  const { data, error = null } = await client.query({
+    query: GET_POST_AND_SUB_BY_POST_ID,
+    variables: { id: params?.postid, name: params?.subreddit }
+  })
   const subreddit: TSubredditDetail = data?.subredditByName
   const subredditPost: TPost = data?.post
+
+  if (error) {
+    throw new Error(`Failed to fetch posts, received status ${error.message}`)
+  }
 
   return {
     props: {
@@ -29,9 +38,24 @@ export const getServerSideProps = (async ({ query: { subreddit: subName, postid 
       error
     }
   }
-}) satisfies GetServerSideProps<TPostPageProps>
+}) satisfies GetStaticProps<TPostPageProps>
 
-export default function Post({ subreddit, subredditPost: post, error }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+/* ----------------------------------------------GENERATE STATIC PAGES ------------------------------------ */
+
+export async function getStaticPaths() {
+  const { data } = await client.query({ query: GET_POST_LIST, fetchPolicy: 'no-cache' })
+  const postList: TPost[] = data?.postList
+
+  const paths = postList.map((post) => ({
+    params: { subreddit: post?.subreddit?.name, postid: post.id }
+  }))
+
+  return { paths, fallback: 'blocking' }
+}
+
+/* -----------------------------------------------------PAGE------------------------------------------------ */
+
+export default function Post({ subreddit, subredditPost: post, error }: InferGetServerSidePropsType<typeof getStaticProps>) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const {

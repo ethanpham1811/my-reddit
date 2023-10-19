@@ -2,12 +2,12 @@ import { client } from '@/apollo-client'
 import { CardFeedSorter, CardUserInfo, UserNewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
-import { TPost, TSortOptions, TUserDetail } from '@/constants/types'
-import { GET_USER_BY_USERNAME } from '@/graphql/queries'
+import { TPost, TSortOptions, TUserCompact, TUserDetail } from '@/constants/types'
+import { GET_USER_BY_USERNAME, GET_USER_LIST_SHORT } from '@/graphql/queries'
 import { ApolloError } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -18,21 +18,47 @@ type TUserPageProps = {
   error: ApolloError | null
 }
 
-export const getServerSideProps = (async ({ query: { username } }) => {
-  const { data, error = null } = await client.query({ query: GET_USER_BY_USERNAME, variables: { username } })
+/* -----------------------------------ISG: UPDATE USER DETAIL - 5s REVALIDATE ---------------------------- */
+
+export const getStaticProps = (async ({ params }) => {
+  const { data, error = null } = await client.query({
+    query: GET_USER_BY_USERNAME,
+    variables: { username: params?.username },
+    fetchPolicy: 'no-cache'
+  })
   const user: TUserDetail = data?.userByUsername
   const userPosts: TPost[] = user?.post
+
+  if (error) {
+    throw new Error(`Failed to fetch posts, received status ${error.message}`)
+  }
 
   return {
     props: {
       user,
       userPosts,
       error
-    }
+    },
+    revalidate: 5
   }
-}) satisfies GetServerSideProps<TUserPageProps>
+}) satisfies GetStaticProps<TUserPageProps>
 
-export default function User({ user, userPosts, error }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+/* ----------------------------------------------GENERATE STATIC PAGES ------------------------------------ */
+
+export async function getStaticPaths() {
+  const { data } = await client.query({ query: GET_USER_LIST_SHORT })
+  const users: TUserCompact[] = data?.userList
+
+  const paths = users.map((user) => ({
+    params: { username: user.username }
+  }))
+
+  return { paths, fallback: 'blocking' }
+}
+
+/* -----------------------------------------------------PAGE------------------------------------------------ */
+
+export default function User({ user, userPosts, error }: InferGetServerSidePropsType<typeof getStaticProps>) {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { username },

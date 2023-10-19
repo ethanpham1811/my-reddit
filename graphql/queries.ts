@@ -91,6 +91,14 @@ export const GET_USER_BY_USERNAME = gql`
     }
   }
 `
+export const GET_USER_LIST_SHORT = gql`
+  query Users_short {
+    userList {
+      id
+      username
+    }
+  }
+`
 
 /* --------------------------- SUBREDDIT ------------------------------ */
 export const GET_SUBREDDIT_BY_TOPIC = gql`

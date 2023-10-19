@@ -2,12 +2,12 @@ import { client } from '@/apollo-client'
 import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
-import { TPost, TSortOptions, TSubredditDetail } from '@/constants/types'
-import { GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
+import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/constants/types'
+import { GET_SUBREDDIT_BY_NAME, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
 import { ApolloError } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -18,21 +18,43 @@ type TSubredditPageProps = {
   error: ApolloError | null
 }
 
-export const getServerSideProps = (async ({ query: { subreddit: subName } }) => {
-  const { data, error = null } = await client.query({ query: GET_SUBREDDIT_BY_NAME, variables: { name: subName } })
+/* ---------------------------------ISG: UPDATE SUBREDDIT DETAIL - 5s REVALIDATE -------------------------- */
+
+export const getStaticProps = (async ({ params }) => {
+  const { data, error = null } = await client.query({ query: GET_SUBREDDIT_BY_NAME, variables: { name: params?.subreddit }, fetchPolicy: 'no-cache' })
   const subreddit: TSubredditDetail = data?.subredditByName
   const subredditPosts: TPost[] = subreddit?.post
+
+  if (error) {
+    throw new Error(`Failed to fetch posts, received status ${error.message}`)
+  }
 
   return {
     props: {
       subreddit,
       subredditPosts,
       error
-    }
+    },
+    revalidate: 5
   }
-}) satisfies GetServerSideProps<TSubredditPageProps>
+}) satisfies GetStaticProps<TSubredditPageProps>
 
-export default function Subreddit({ subreddit, subredditPosts, error }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+/* ----------------------------------------------GENERATE STATIC PAGES ------------------------------------ */
+
+export async function getStaticPaths() {
+  const { data } = await client.query({ query: GET_SUBREDDIT_LIST_SHORT })
+  const subredditList: TSubreddit[] = data?.subredditList
+
+  const paths = subredditList.map((subreddit) => ({
+    params: { subreddit: subreddit.name }
+  }))
+
+  return { paths, fallback: 'blocking' }
+}
+
+/* -----------------------------------------------------PAGE------------------------------------------------ */
+
+export default function Subreddit({ subreddit, subredditPosts, error }: InferGetServerSidePropsType<typeof getStaticProps>) {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { subreddit: subName },

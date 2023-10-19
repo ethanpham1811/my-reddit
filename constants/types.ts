@@ -19,10 +19,11 @@ import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-for
 import { MAIN_MENU_GROUP, ORDERING, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
 
 /* ------------------------------------------Common Types------------------------------------------ */
-
-export type TUser = {
+export type TUserCompact = {
   id: number
   username: string
+}
+export type TUser = TUserCompact & {
   fullName: string
   followers: number
   role?: string

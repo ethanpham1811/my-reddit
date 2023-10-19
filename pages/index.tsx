@@ -7,7 +7,7 @@ import { GET_POST_LIST } from '@/graphql/queries'
 import { ApolloError } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 
@@ -16,19 +16,28 @@ type THomePageProps = {
   error: ApolloError | null
 }
 
-export const getServerSideProps = (async (ctx) => {
-  const { data, error = null } = await client.query({ query: GET_POST_LIST })
+/* -----------------------------------ISG: UPDATE POST LIST - 5s REVALIDATE ------------------------------ */
+
+export const getStaticProps = (async (ctx) => {
+  const { data, error = null } = await client.query({ query: GET_POST_LIST, fetchPolicy: 'no-cache' })
   const postList: TPost[] = data?.postList
+
+  if (error) {
+    throw new Error(`Failed to fetch posts, received status ${error.message}`)
+  }
 
   return {
     props: {
       postList,
-      error
+      error,
+      revalidate: 5
     }
   }
-}) satisfies GetServerSideProps<THomePageProps>
+}) satisfies GetStaticProps<THomePageProps>
 
-export default function Home({ postList, error }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+/* -----------------------------------------------------PAGE------------------------------------------------ */
+
+export default function Home({ postList, error }: InferGetServerSidePropsType<typeof getStaticProps>) {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const [hasNoPost, setHasNoPost] = useState(false)
 
