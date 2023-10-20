@@ -1,6 +1,7 @@
 import { client } from '@/apollo-client'
 import { CardFeedSorter, CardUserInfo, UserNewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
+import NewPageLoading from '@/components/utilities/NewPageLoading/NewPageLoading'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TUserCompact, TUserDetail } from '@/constants/types'
 import { GET_USER_BY_USERNAME, GET_USER_LIST_SHORT } from '@/graphql/queries'
@@ -62,13 +63,17 @@ export default function User({ user, userPosts, error }: InferGetServerSideProps
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { username },
-    push: navigate
+    push: navigate,
+    isFallback
   } = useRouter()
   const [hasNoPost, setHasNoPost] = useState(false)
   const loading = false // FIXME: test loading
 
   // redirect to 404 if no data found
   user === null && !loading && !error && navigate('/404')
+
+  // show loading page on new created dynamic page
+  if (isFallback) return <NewPageLoading />
 
   return (
     <div>

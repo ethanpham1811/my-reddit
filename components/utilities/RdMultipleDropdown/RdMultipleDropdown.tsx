@@ -62,9 +62,9 @@ function RdMultipleDropdown({
             fieldset: { borderColor: 'primary.main' }
           },
           '&.Mui-focused': {
-            fieldset: { borderWidth: '1px' },
+            fieldset: { borderWidth: '1px !important' },
             '[aria-expanded=true]': {
-              '~ fieldset': { borderBottom: 'none' }
+              '~ fieldset': { borderBottom: 'none', borderWidth: '1px' }
             }
           }
         }}

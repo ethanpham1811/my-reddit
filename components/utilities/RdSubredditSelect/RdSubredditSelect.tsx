@@ -5,7 +5,8 @@ import { RdSkeleton } from '@/components/Skeletons'
 import { SUBREDDIT_LIST_MODE } from '@/constants/enums'
 import { TRdSubredditSelectProps } from '@/constants/types'
 import useSubredditList from '@/hooks/useSubredditList'
-import { Avatar, Box, CircularProgress, FormControl, MenuItem, Stack, Typography } from '@mui/material'
+import { Avatar, Box, FormControl, MenuItem, Stack, Typography } from '@mui/material'
+import { Jelly } from '@uiball/loaders'
 import { v4 as rid } from 'uuid'
 import { RdDropdown } from '../..'
 import { generateSeededHexColor, generateUserImage, validateSubredditMember } from '../../../services'
@@ -41,7 +42,7 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
       </Stack>
     ) : (
       <Box display="flex" alignItems="center">
-        {loading && <CircularProgress size={15} sx={{ color: 'hintText.main', mx: '0.5rem' }} />}
+        {loading && <Jelly size={20} speed={0.7} color="#ff4500" />}
         <Typography sx={{ pl: '0.5rem' }}>Subreddit</Typography>
       </Box>
     )

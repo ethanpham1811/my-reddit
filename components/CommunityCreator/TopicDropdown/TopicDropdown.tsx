@@ -63,7 +63,9 @@ function TopicDropdown<T extends FieldValues>({ name, control }: TTopicDropdown<
             ))}
           </Box>
         ) : (
-          <Typography>Topics</Typography>
+          <Box pl={1}>
+            <Typography>Topics</Typography>
+          </Box>
         )}
       </>
     )

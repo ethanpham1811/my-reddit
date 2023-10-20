@@ -2,6 +2,7 @@ import { client } from '@/apollo-client'
 import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
+import NewPageLoading from '@/components/utilities/NewPageLoading/NewPageLoading'
 import { TPost, TSubredditDetail } from '@/constants/types'
 import { GET_POST_AND_SUB_BY_POST_ID, GET_POST_LIST } from '@/graphql/queries'
 import { validatePostBySubname } from '@/services'
@@ -60,7 +61,8 @@ export default function Post({ subreddit, subredditPost: post, error }: InferGet
   const me = session?.userDetail
   const {
     query: { subreddit: subName },
-    push: navigate
+    push: navigate,
+    isFallback
   } = useRouter()
   const loading = false // FIXME: test loading
 
@@ -76,6 +78,9 @@ export default function Post({ subreddit, subredditPost: post, error }: InferGet
     if (!post) return <MessageBoard head="This post does not exist" />
     return <CardPost post={post} inGroup={!!subName} />
   }
+
+  // show loading page on new created dynamic page
+  if (isFallback) return <NewPageLoading />
 
   return (
     <div>

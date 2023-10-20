@@ -71,7 +71,7 @@ function CardPost({
       </RdCard>
       {isMyPost && <ActionMenu postId={postId} />}
       {postid != null && (
-        <CardCommentBox subName={subName} commentList={commentList} post_id={postId} user_id={123} username={me?.username as string} />
+        <CardCommentBox subName={subName} commentList={commentList} post_id={postId} user_id={me?.id} username={me?.username as string} />
       )}
       <RdDialog
         open={zoomDialogOpen}

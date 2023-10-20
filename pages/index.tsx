@@ -46,6 +46,7 @@ export default function Home({ postList, error }: InferGetServerSidePropsType<ty
       <Head>
         <title>My Reddit</title>
       </Head>
+
       <FeedLayout top="70px">
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />

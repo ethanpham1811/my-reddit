@@ -1,8 +1,9 @@
 import { CardCreatePost } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { Box, Container, Grid, Stack } from '@mui/material'
+import { Box, Container, Grid, Skeleton, Stack } from '@mui/material'
 import { useRouter } from 'next/router'
-import { Children, ReactNode } from 'react'
+import { Children, Fragment, ReactNode } from 'react'
+import { RdSkeletonListItem, RdSkeletonSideColumn } from '../Skeletons'
 
 type TFeedLayoutProps = {
   children: ReactNode
@@ -13,7 +14,7 @@ type TFeedLayoutProps = {
 }
 
 function FeedLayout({ loading, children, top, subredditId, single = false }: TFeedLayoutProps) {
-  const { session } = useAppSession()
+  const { session, loading: sessionLoading } = useAppSession()
   const me = session?.userDetail
   const {
     query: { subreddit, username, postid },
@@ -42,14 +43,26 @@ function FeedLayout({ loading, children, top, subredditId, single = false }: TFe
       <Box>
         <Grid container spacing={3}>
           <Grid xs={16} md={single || loading ? 16 : 8} item order={!single || loading ? { xs: 2, md: 1 } : {}}>
-            <Stack spacing={2}>
-              {me && validateUser() && <CardCreatePost subId={subredditId} />}
-              {mainContent}
-            </Stack>
+            {sessionLoading ? (
+              <Stack spacing={2}>
+                <Skeleton variant="rectangular" width="100%" height="60px" />
+                <Skeleton variant="rectangular" width="100%" height="60px" />
+                {[0, 1].map((el) => (
+                  <Fragment key={`skeleton_${el}`}>
+                    <RdSkeletonListItem py={0} index={el.toString()} />
+                  </Fragment>
+                ))}
+              </Stack>
+            ) : (
+              <Stack spacing={2}>
+                {me && validateUser() && <CardCreatePost subId={subredditId} />}
+                {mainContent}
+              </Stack>
+            )}
           </Grid>
           {!single && !loading && (
             <Grid xs={16} md={4} item order={{ xs: 1, md: 2 }}>
-              {sideContent}
+              {sessionLoading ? <RdSkeletonSideColumn /> : sideContent}
             </Grid>
           )}
         </Grid>

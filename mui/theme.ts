@@ -73,7 +73,7 @@ export const theme: Theme = createTheme({
     }
   },
   typography: {
-    fontFamily: ibmPlexSans.style.fontFamily,
+    fontFamily: notoSans.style.fontFamily,
     fontSize: 12.25,
     fontWeightBold: 700,
     fontWeightMedium: 600,

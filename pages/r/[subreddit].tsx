@@ -1,6 +1,7 @@
 import { client } from '@/apollo-client'
 import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
+import NewPageLoading from '@/components/utilities/NewPageLoading/NewPageLoading'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/constants/types'
 import { GET_SUBREDDIT_BY_NAME, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
@@ -49,7 +50,7 @@ export async function getStaticPaths() {
     params: { subreddit: subreddit.name }
   }))
 
-  return { paths, fallback: 'blocking' }
+  return { paths, fallback: true }
 }
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
@@ -58,13 +59,17 @@ export default function Subreddit({ subreddit, subredditPosts, error }: InferGet
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { subreddit: subName },
-    push: navigate
+    push: navigate,
+    isFallback
   } = useRouter()
   const [hasNoPost, setHasNoPost] = useState(false)
   const loading = false // FIXME: test loading
 
   // redirect to 404 if no data found
   subreddit === null && !loading && !error && navigate('/404')
+
+  // show loading page on new created dynamic page
+  if (isFallback) return <NewPageLoading />
 
   return (
     <div>

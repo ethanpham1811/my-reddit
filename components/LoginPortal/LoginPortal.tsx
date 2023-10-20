@@ -1,7 +1,8 @@
 import { BsFacebook, BsReddit } from '@/constants/icons'
-import { Divider, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Divider, IconButton, Stack, Typography } from '@mui/material'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
+import { Jelly } from '@uiball/loaders'
 import { Dispatch, SetStateAction, useState } from 'react'
 import toast from 'react-hot-toast'
 import { RdCard } from '..'
@@ -11,6 +12,7 @@ import RegisterForm from './RegisterForm/RegisterForm'
 function LoginPortal({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) {
   const supabase = useSupabaseClient()
   const [isLoginForm, setIsLoginForm] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [newUserEmail, setNewUserEmail] = useState<string | null>(null)
 
   const LoginWithProvider = async (provider: Provider) => {
@@ -34,9 +36,21 @@ function LoginPortal({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
           <IconButton disabled sx={{ p: 0.4, color: 'unset', ml: '-0.4rem !important' }} onClick={() => LoginWithProvider('facebook')}>
             <BsFacebook size={25} />
           </IconButton>
-          <IconButton sx={{ p: 0.4, color: 'unset' }} onClick={() => LoginWithProvider('github')}>
-            <BsReddit size={25} />
-          </IconButton>
+          {loading ? (
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Jelly size={20} speed={0.7} color="#ff4500" />
+            </Box>
+          ) : (
+            <IconButton
+              sx={{ p: 0.4, color: 'unset' }}
+              onClick={() => {
+                setLoading(true)
+                LoginWithProvider('github')
+              }}
+            >
+              <BsReddit size={25} />
+            </IconButton>
+          )}
         </Stack>
       </Stack>
     </RdCard>

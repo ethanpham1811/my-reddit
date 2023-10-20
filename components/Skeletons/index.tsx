@@ -9,13 +9,22 @@ export function RdSkeleton({ height = '25px' }: { height?: string }) {
     </Stack>
   )
 }
-export function RdSkeletonListItem({ index }: { index: string }) {
+export function RdSkeletonListItem({ index, py = 2 }: { index: string; py?: number }) {
   return (
-    <Stack height={400} py={2} gap={1} key={`loading_ske_${index}`}>
+    <Stack height={400} py={py} gap={1} key={`loading_ske_${index}`}>
       <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="60%" height="25px" />
       <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="80%" height="12px" />
       <Skeleton sx={{ display: 'flex', flex: 1 }} variant="rectangular" width="100%" />
       <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="30%" height="12px" />
     </Stack>
+  )
+}
+
+export function RdSkeletonSideColumn() {
+  return (
+    <>
+      <Skeleton sx={{ display: 'flex', mb: 2 }} variant="rectangular" width="100%" height="100px" />
+      <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="100%" height="200px" />
+    </>
   )
 }
