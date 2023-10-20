@@ -40,6 +40,8 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import { BsFacebook, BsReddit } from 'react-icons/bs'
 import { FcGoogle } from 'react-icons/fc'
 
+import { ImArrowDown, ImArrowUp } from 'react-icons/im'
+
 export {
   AccountCircleOutlinedIcon,
   AddSharpIcon,
@@ -60,6 +62,8 @@ export {
   HighlightOffOutlinedIcon,
   HomeIcon,
   HttpsOutlinedIcon,
+  ImArrowDown,
+  ImArrowUp,
   ImageOutlinedIcon,
   InfoOutlinedIcon,
   KeyboardArrowDownIcon,

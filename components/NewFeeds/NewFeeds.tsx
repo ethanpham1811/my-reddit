@@ -1,13 +1,13 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
-import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
+import { TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { Dispatch, Fragment, SetStateAction, useEffect } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
-import { getTotalUpvote, validatePostBySubname, validateSubredditMember } from '../../services'
+import { validatePostBySubname, validateSubredditMember } from '../../services'
 import { RdSkeletonListItem } from '../Skeletons'
 
 type TNewFeedsProps = {
@@ -41,25 +41,10 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
   }
 
   /* postList mapping */
-  const cardPostList: TCardPostProps[] | null =
+  const cardPostList: TPost[] | null =
     postList &&
     orderBy(
-      postList
-        .filter((post): boolean => verifyPost(post))
-        .map(
-          ({ id, title, body, images, comment, created_at, user: { username }, subreddit, vote, link }: TPost): TCardPostProps => ({
-            id,
-            title,
-            body,
-            comment,
-            username,
-            createdAt: new Date(created_at),
-            subName: subreddit.name,
-            images,
-            upvote: vote ? getTotalUpvote(vote) : 0,
-            link
-          })
-        ),
+      postList.filter((post): boolean => verifyPost(post)),
       method,
       ordering
     )
@@ -76,23 +61,8 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
       subPageName && !verifyIsMember() && subType !== SUBREDDIT_TYPE.Public ? (
         <MessageBoard head="This community is private, please join " highlight={subPageName as string} />
       ) : cardPostList.length > 0 ? (
-        cardPostList.map(({ id, title, body, images, comment, createdAt, username, subName, upvote, link }) => {
-          return (
-            <CardPost
-              id={id}
-              key={`post_${rid()}`}
-              images={images}
-              title={title}
-              body={body}
-              createdAt={createdAt}
-              upvote={upvote}
-              subName={subName}
-              username={username}
-              comment={comment}
-              link={link}
-              inGroup={!!subPageName}
-            />
-          )
+        cardPostList.map((post) => {
+          return <CardPost post={post} key={`post_${rid()}`} inGroup={!!subPageName} />
         })
       ) : (
         <MessageBoard head={subPageName ? 'This Subreddit has no post' : 'Something wrong with the server, please come back again'} />

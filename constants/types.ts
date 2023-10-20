@@ -80,6 +80,8 @@ export type TComment = {
 }
 export type TVote = {
   upvote: boolean
+  user_id: number
+  id: number
 }
 export type TSearchTerm = {
   term: string
@@ -143,12 +145,8 @@ export type TRdSelect = IconButtonProps & {
 }
 
 /* ------------------------------------------Props Types------------------------------------------ */
-export type TCardPostProps = Pick<TPost, 'id' | 'title' | 'body' | 'comment' | 'link'> & {
-  createdAt: Date
-  subName: string
-  username: string
-  images: string[] | undefined
-  upvote: number
+export type TCardPostProps = {
+  post: TPost
   inGroup?: boolean
 }
 export type IsChildrenGroupCheckboxProps<T extends FieldValues> = {
@@ -220,6 +218,8 @@ export type TRdImageCarouselProps = {
   width: string
   height: string
   imgList: string[]
+  setZoomDialogOpen: Dispatch<SetStateAction<boolean>>
+  setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
 export type TRdImageListProps = Omit<ImageListOwnProps, 'children'> & {
   images: FileList

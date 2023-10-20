@@ -1,6 +1,11 @@
 html {
   overflow-y: scroll;
 }
+input[type=file], /* FF, IE7+, chrome (except button) */
+input[type=file]::-webkit-file-upload-button {
+  /* chromes and blink button */
+  cursor: pointer;
+}
 
 /* TinyMCE elements overridings */
 .parsed-html p {

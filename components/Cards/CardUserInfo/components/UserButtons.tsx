@@ -1,7 +1,7 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
-import useUpdateUser from '@/hooks/useUpdateUser'
+import useUserUpdate from '@/hooks/useUserUpdate'
 import { Events, eventEmitter } from '@/services/eventEmitter'
 import { CardActions, Divider } from '@mui/material'
 import { useState } from 'react'
@@ -16,7 +16,7 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
   const { session } = useAppSession()
   const status = session?.user?.role
   const me = session?.userDetail
-  const { updateUser, loading } = useUpdateUser()
+  const { updateUser, loading } = useUserUpdate()
   const [showUnfollowBtn, setShowUnfollowBtn] = useState(false)
 
   /* onSubmit */

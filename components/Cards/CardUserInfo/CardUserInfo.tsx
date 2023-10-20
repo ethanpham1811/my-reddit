@@ -1,7 +1,7 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { TCardUserInfoForm, TCardUserInfoProps } from '@/constants/types'
-import useUpdateUser from '@/hooks/useUpdateUser'
+import useUserUpdate from '@/hooks/useUserUpdate'
 import { CardContent, Divider } from '@mui/material'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,7 +17,7 @@ import UserInfoMedia from './components/UserInfoMedia'
 function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   const { control, setValue, getValues, handleSubmit } = useForm<TCardUserInfoForm>()
   const { session } = useAppSession()
-  const { updateUser } = useUpdateUser()
+  const { updateUser } = useUserUpdate()
   const isMe = session?.userDetail?.username === user?.username
 
   /* custom default values */

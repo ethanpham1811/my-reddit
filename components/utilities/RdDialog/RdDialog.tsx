@@ -1,23 +1,23 @@
 import Dialog, { DialogProps } from '@mui/material/Dialog'
-import { Dispatch, ReactNode, SetStateAction } from 'react'
+import { ReactNode } from 'react'
 import { RdTransition } from '../RdTransition/RdTransition'
 
 type TRdDialogProps = DialogProps & {
   open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
   children: ReactNode
+  transparent?: boolean
 }
 
-const RdDialog = ({ open, setOpen, children, sx }: TRdDialogProps) => {
+const RdDialog = ({ open, children, transparent, ...rest }: TRdDialogProps) => {
   return (
     <Dialog
-      sx={{ ...sx }}
       open={open}
       scroll="body"
       TransitionComponent={RdTransition}
       keepMounted
-      onClose={() => setOpen(false)}
+      PaperProps={{ sx: transparent ? { boxShadow: 'none', bgcolor: 'transparent' } : {} }}
       aria-describedby="alert-dialog-slide-description"
+      {...rest}
     >
       {open && children}
     </Dialog>

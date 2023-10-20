@@ -6,7 +6,7 @@ type TSearchPostItemHeaderProps = { subName: string; username: string; created_a
 
 export default function SearchPostItemHeader({ subName, username, created_at }: TSearchPostItemHeaderProps) {
   return (
-    <Stack flex={1} direction="row" alignItems="center">
+    <Stack flex={1} direction="row" alignItems="center" onClick={(e) => e.stopPropagation()}>
       <Link href={`u/${subName}`} style={{ color: 'inherit' }}>
         <Avatar
           variant="circular"
@@ -20,7 +20,7 @@ export default function SearchPostItemHeader({ subName, username, created_at }: 
           src={generateUserImage(subName)}
         />
       </Link>
-      <Typography fontSize="0.8rem" variant="h6" sx={{ flex: 'auto', overflow: 'hidden', textOverflow: 'ellipsis', width: '30px' }}>
+      <Typography fontSize="0.8rem" variant="h6" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
         <Link href={`/r/${subName}`} style={{ color: 'inherit' }}>
           {subName}
         </Link>

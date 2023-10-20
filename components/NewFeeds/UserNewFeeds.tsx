@@ -1,12 +1,12 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { TCardPostProps, TPost, TSortOptions } from '@/constants/types'
+import { TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { Dispatch, Fragment, SetStateAction, useEffect } from 'react'
 import { v4 as rid } from 'uuid'
 import { CardPost, MessageBoard } from '..'
-import { getTotalUpvote, validatePostByFollowing, validatePostBySubname } from '../../services'
+import { validatePostByFollowing, validatePostBySubname } from '../../services'
 import { RdSkeletonListItem } from '../Skeletons'
 
 type TUserNewFeedsProps = {
@@ -39,25 +39,10 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
   }
 
   /* postList mapping */
-  const mappedPostList: TCardPostProps[] | null =
+  const mappedPostList: TPost[] | null =
     postList &&
     orderBy(
-      postList
-        .filter((post): boolean => verifyPost(post))
-        .map(({ id, title, body, images, comment, created_at, user: { username }, subreddit, vote, link }: TPost): TCardPostProps => {
-          return {
-            id,
-            title,
-            body,
-            comment,
-            username,
-            createdAt: new Date(created_at),
-            subName: subreddit.name,
-            images,
-            upvote: vote ? getTotalUpvote(vote) : 0,
-            link
-          }
-        }),
+      postList.filter((post): boolean => verifyPost(post)),
       method,
       ordering
     )
@@ -75,23 +60,7 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
       ) : !verifyFollower() ? ( // if user is not following the user page
         <MessageBoard head="You need to follow " highlight={userPageName as string} tail=" to view their posts" />
       ) : mappedPostList.length > 0 ? (
-        mappedPostList.map(({ id, title, body, images, comment, createdAt, username, subName, upvote, link }) => {
-          return (
-            <CardPost
-              id={id}
-              key={`post_${rid()}`}
-              images={images}
-              title={title}
-              body={body}
-              createdAt={createdAt}
-              upvote={upvote}
-              subName={subName}
-              username={username}
-              comment={comment}
-              link={link}
-            />
-          )
-        })
+        mappedPostList.map((post) => <CardPost key={`post_${rid()}`} post={post} />)
       ) : (
         <MessageBoard head="This user has no post" />
       )}

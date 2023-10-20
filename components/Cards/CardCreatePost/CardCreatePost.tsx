@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TCardCreatePostForm } from '@/constants/types'
-import useAddPost from '@/hooks/useAddPos'
+import usePostAdd from '@/hooks/usePostAdd'
 import { OnlineDotStyle } from '@/mui/styles'
 import { Events, eventEmitter } from '@/services/eventEmitter'
 import { Avatar, Box, Stack } from '@mui/material'
@@ -16,7 +16,7 @@ import Tools from './components/Tools'
 
 function CardCreatePost({ subId }: { subId?: number | undefined }) {
   const { session } = useAppSession()
-  const { createPost, loading } = useAddPost()
+  const { createPost, loading } = usePostAdd()
   const ref = useRef<HTMLInputElement | null>(null)
   const [isLinkPost, setIsLinkPost] = useState(false)
   const [focused, setFocused] = useState(false)

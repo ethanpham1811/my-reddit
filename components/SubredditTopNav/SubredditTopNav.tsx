@@ -1,7 +1,7 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
-import useUpdateUser from '@/hooks/useUpdateUser'
+import useUserUpdate from '@/hooks/useUserUpdate'
 import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -25,7 +25,7 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const [showLeaveBtn, setShowLeaveBtn] = useState(false)
-  const { updateUser, loading } = useUpdateUser()
+  const { updateUser, loading } = useUserUpdate()
 
   async function onLeaveSubreddit() {
     me && updateUser('member_of_ids', name, false)

@@ -51,9 +51,9 @@ function RdDropdown({
             fieldset: { borderColor: 'primary.main' }
           },
           '&.Mui-focused': {
-            fieldset: { borderWidth: '1px' },
+            fieldset: { borderWidth: '1px !important' },
             '[aria-expanded=true]': {
-              '~ fieldset': { borderBottomColor: offsetTop ? 'primary.main' : 'none' }
+              '~ fieldset': { borderBottomColor: offsetTop ? 'primary.main' : 'none', borderWidth: '1px' }
             }
           }
         }}
@@ -65,11 +65,12 @@ function RdDropdown({
               mb: offsetBot,
               boxShadow: 2,
               '& .MuiMenuItem-root': {
-                pY: 0.6,
-                pX: 2,
                 gap: 1,
                 justifyContent: 'flex-start',
-                fontStyle: 'normal'
+                fontStyle: 'normal',
+                img: {
+                  mt: '-5px'
+                }
               }
             }
           }

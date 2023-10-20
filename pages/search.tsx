@@ -5,7 +5,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SEARCH_TABS } from '@/constants/enums'
 import { TQueriedPost, TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 import useSearchQueriedList from '@/hooks/useSearchQueriedList'
-import useUpdateUser from '@/hooks/useUpdateUser'
+import useUserUpdate from '@/hooks/useUserUpdate'
 import { Container, Stack } from '@mui/material'
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -22,7 +22,7 @@ const Search: NextPage = () => {
   const searchTerm = q ?? ''
   const [queriedPosts, queriedSubs, queriedUsers, loading, error] = useSearchQueriedList(searchTerm)
   const [hasNoPost, setHasNoPost] = useState(false)
-  const { updateUser, loading: updateLoading } = useUpdateUser()
+  const { updateUser, loading: updateLoading } = useUserUpdate()
 
   let searchList: TQueriedPost[] | TQueriedSub[] | TQueriedUser[] = []
   if (type === SEARCH_TABS.Post || !type) searchList = queriedPosts

@@ -6,7 +6,7 @@ function LoginButton() {
   return (
     <>
       <RdButton onClick={() => setOpen(true)} text="Log In" filled invertColor />
-      <RdDialog open={open} setOpen={setOpen}>
+      <RdDialog open={open} onClose={() => setOpen(false)}>
         <LoginPortal setOpen={setOpen} />
       </RdDialog>
     </>

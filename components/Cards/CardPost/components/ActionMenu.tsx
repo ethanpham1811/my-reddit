@@ -55,7 +55,7 @@ function ActionMenu({ postId }: { postId: number }) {
         // delete post
         toast.promise(deletePost({ variables: { id: postId } }), {
           loading: <RdToast message="Deleting post..." />,
-          success: <RdToast message="Successfully deleted posted" />,
+          success: <RdToast message="Successfully deleted post" />,
           error: <RdToast message="Deleting post failed" />
         })
       })

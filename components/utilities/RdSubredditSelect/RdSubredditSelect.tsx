@@ -1,19 +1,20 @@
 import { Controller, FieldValues } from 'react-hook-form'
 
 import { useAppSession } from '@/components/Layouts/MainLayout'
+import { RdSkeleton } from '@/components/Skeletons'
 import { SUBREDDIT_LIST_MODE } from '@/constants/enums'
 import { TRdSubredditSelectProps } from '@/constants/types'
 import useSubredditList from '@/hooks/useSubredditList'
-import { Box, FormControl, MenuItem, Typography } from '@mui/material'
+import { Avatar, Box, CircularProgress, FormControl, MenuItem, Typography } from '@mui/material'
 import Image from 'next/image'
 import { v4 as rid } from 'uuid'
 import { RdDropdown } from '../..'
-import { generateUserImage, validateSubredditMember } from '../../../services'
+import { generateSeededHexColor, generateUserImage, validateSubredditMember } from '../../../services'
 
 function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, control, width, flex, sx }: TRdSubredditSelectProps<T>) {
   const { session } = useAppSession()
   const me = session?.userDetail
-  const { subredditList, loading, error } = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
+  const { subredditList, loading } = useSubredditList(SUBREDDIT_LIST_MODE.Simple)
 
   // only show subreddit that user is member of
   const ownSubredditList = subredditList?.filter((sub) => validateSubredditMember(me?.member_of_ids, sub.name))
@@ -22,12 +23,21 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
     const selectedItem = subredditList && subredditList.find((item) => item.id == +selectedValue)
 
     return selectedItem ? (
-      <Box sx={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        <Image alt={`${selectedItem.name} image`} src={generateUserImage(selectedItem.name)} width={20} height={20} />
+      <Box minWidth={0} overflow="hidden" textOverflow="ellipsis">
+        <Image
+          style={{ marginRight: '0.5rem' }}
+          alt={`${selectedItem.name} image`}
+          src={generateUserImage(selectedItem.name)}
+          width={20}
+          height={20}
+        />
         {selectedItem.name}
       </Box>
     ) : (
-      <Typography>Subreddit</Typography>
+      <Box display="flex" alignItems="center">
+        {loading && <CircularProgress size={15} sx={{ color: 'hintText.main', mx: '0.5rem' }} />}
+        <Typography sx={{ pl: '0.5rem' }}>Subreddit</Typography>
+      </Box>
     )
   }
 
@@ -50,17 +60,37 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
             placeholder="Subreddit"
             borderColor="primary"
           >
-            {ownSubredditList && ownSubredditList.length > 0 ? (
+            {loading ? (
+              <Box px={1} py={0.5}>
+                <RdSkeleton height="20px" />
+              </Box>
+            ) : ownSubredditList && ownSubredditList.length > 0 ? (
               ownSubredditList.map(({ id, name }) => {
                 return (
-                  <MenuItem value={id} key={`menu_${rid()}`}>
-                    <Image alt={`${name} image`} src={generateUserImage(name)} width={20} height={20} />
-                    {name || 'unknown'}
+                  <MenuItem
+                    value={id}
+                    key={`menu_${rid()}`}
+                    sx={{ px: 1, bgcolor: 'inputBgOutfocused.main', '&:hover,&.Mui.focused': { bgcolor: 'primary.main' } }}
+                  >
+                    <Avatar
+                      variant="circular"
+                      sx={{
+                        width: 30,
+                        height: 30,
+                        backgroundColor: generateSeededHexColor(name || 'seed'),
+                        border: (theme): string => `4px solid ${theme.palette.white.main}`
+                      }}
+                      alt={`${name} avatar`}
+                      src={generateUserImage(name || 'seed')}
+                    />
+                    {`r/${name}` || 'unknown'}
                   </MenuItem>
                 )
               })
             ) : (
-              <div>No subreddit found</div>
+              <Box px={2}>
+                <Typography sx={{ color: 'hintText.main' }}>No subreddit found</Typography>
+              </Box>
             )}
           </RdDropdown>
         )}

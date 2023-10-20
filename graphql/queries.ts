@@ -39,7 +39,9 @@ export const GET_USER_BY_EMAIL = gql`
           subType
         }
         vote {
+          id
           upvote
+          user_id
         }
         link
       }
@@ -84,7 +86,9 @@ export const GET_USER_BY_USERNAME = gql`
           subType
         }
         vote {
+          id
           upvote
+          user_id
         }
         link
       }
@@ -145,7 +149,9 @@ export const GET_SUBREDDIT_BY_NAME = gql`
           subType
         }
         vote {
+          id
           upvote
+          user_id
         }
         link
       }
@@ -198,7 +204,9 @@ export const GET_POST_LIST = gql`
         subType
       }
       vote {
+        id
         upvote
+        user_id
       }
       link
     }
@@ -227,7 +235,9 @@ export const GET_POST_LIST_BY_SUB_ID = gql`
         subType
       }
       vote {
+        id
         upvote
+        user_id
       }
       link
     }
@@ -255,7 +265,9 @@ export const GET_POST_LIST_BY_USER_ID = gql`
         name
       }
       vote {
+        id
         upvote
+        user_id
       }
       link
     }
@@ -298,7 +310,9 @@ export const GET_POST_AND_SUB_BY_POST_ID = gql`
         subType
       }
       vote {
+        id
         upvote
+        user_id
       }
       link
     }
@@ -372,7 +386,9 @@ export const GET_SEARCHED_RESULTS = gql`
         name
       }
       vote {
+        id
         upvote
+        user_id
       }
       groupBy
     }

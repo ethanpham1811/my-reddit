@@ -4,7 +4,7 @@ import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TPost, TSubredditDetail } from '@/constants/types'
 import { GET_POST_AND_SUB_BY_POST_ID, GET_POST_LIST } from '@/graphql/queries'
-import { getTotalUpvote, validatePostBySubname } from '@/services'
+import { validatePostBySubname } from '@/services'
 import { ApolloError } from '@apollo/client'
 import { Stack } from '@mui/material'
 import { GetStaticProps, InferGetServerSidePropsType } from 'next'
@@ -74,32 +74,7 @@ export default function Post({ subreddit, subredditPost: post, error }: InferGet
 
   const cardPost = () => {
     if (!post) return <MessageBoard head="This post does not exist" />
-    const {
-      id,
-      images,
-      title,
-      body,
-      created_at,
-      vote,
-      user: { username },
-      comment,
-      link
-    } = post
-    return (
-      <CardPost
-        id={id}
-        images={images}
-        title={title}
-        body={body}
-        createdAt={created_at}
-        upvote={vote ? getTotalUpvote(vote) : 0}
-        subName={subName as string}
-        username={username}
-        comment={comment}
-        inGroup={!!subName}
-        link={link}
-      />
-    )
+    return <CardPost post={post} inGroup={!!subName} />
   }
 
   return (

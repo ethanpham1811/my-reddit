@@ -31,7 +31,7 @@ function PostHeader({ inGroup, subName, username, createdAt }: TPostHeader) {
 
       {!inGroup && (
         <Stack direction="row">
-          <Link href={`/r/${subName}`} onClick={(e) => e.stopPropagation()}>
+          <Link href={`/r/${subName}`} onClick={(e) => e.stopPropagation()} style={{ color: 'inherit', textDecoration: 'none' }}>
             <Typography fontWeight={600} color="black">
               r/{subName}{' '}
             </Typography>

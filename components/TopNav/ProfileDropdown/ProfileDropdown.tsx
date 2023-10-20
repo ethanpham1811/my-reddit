@@ -145,7 +145,7 @@ function ProfileDropdownProp({ loading }: TProfileDropdownProps) {
         </Box>
       </RdDropdown>
 
-      <RdDialog open={isOpenDialog} setOpen={setIsOpenDialog}>
+      <RdDialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
         {dialogType === PROFILE_DIALOG_TYPE.Logout && <CardLogout setOpen={setIsOpenDialog} />}
         {dialogType === PROFILE_DIALOG_TYPE.UserAgreement && <CardUserAgreement setOpen={setIsOpenDialog} />}
       </RdDialog>

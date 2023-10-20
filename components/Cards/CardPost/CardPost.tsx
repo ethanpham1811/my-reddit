@@ -1,16 +1,34 @@
-import { CardCommentBox, RdCard, RdImageCarousel } from '@/components'
+import { CardCommentBox, RdCard, RdDialog, RdImageCarousel } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TCardPostProps, TUserDetail } from '@/constants/types'
 import { parseHtml } from '@/services'
 import { Box, Stack, Typography } from '@mui/material'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import ActionMenu from './components/ActionMenu'
 import PostHeader from './components/PostHeader'
 import VoteColumn from './components/VoteColumn'
 
-function CardPost({ id: postId, images, inGroup, body, title, username, createdAt, upvote, subName, comment: commentList, link }: TCardPostProps) {
+function CardPost({
+  post: {
+    id: postId,
+    images,
+    body,
+    title,
+    user: { username },
+    created_at: createdAt,
+    vote,
+    subreddit: { name: subName },
+    comment: commentList,
+    link
+  },
+  inGroup
+}: TCardPostProps) {
   const { session } = useAppSession()
   const me: TUserDetail | undefined | null = session?.userDetail
+  const [zoomDialogOpen, setZoomDialogOpen] = useState(false)
+  const [zoomedImg, setZoomedImg] = useState<string | null>(null)
   const {
     push: navigate,
     query: { postid }
@@ -27,7 +45,7 @@ function CardPost({ id: postId, images, inGroup, body, title, username, createdA
       <RdCard onClick={goToPost} sx={{ '&:hover': !postid ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {} }}>
         <Stack direction="row">
           {/* side column */}
-          <VoteColumn upvote={upvote} me={me} postId={postId} />
+          <VoteColumn vote={vote} me={me} postId={postId} />
 
           {/* main section */}
           <Box flex={1} ml={1} pl={1}>
@@ -43,14 +61,41 @@ function CardPost({ id: postId, images, inGroup, body, title, username, createdA
               {/* {link && <LinkPreview url={link} width="400px" />} */}
             </Box>
             {/* image carousel */}
-            {images && <RdImageCarousel width="100%" height="300px" imgList={images} />}
+            {images && (
+              <RdImageCarousel setZoomDialogOpen={setZoomDialogOpen} setZoomedImg={setZoomedImg} width="100%" height="300px" imgList={images} />
+            )}
           </Box>
         </Stack>
 
         {/* 3 dot menu */}
       </RdCard>
       {isMyPost && <ActionMenu postId={postId} />}
-      {postid != null && <CardCommentBox subName={subName} commentList={commentList} post_id={postId} user_id={123} username={me?.email as string} />}
+      {postid != null && (
+        <CardCommentBox subName={subName} commentList={commentList} post_id={postId} user_id={123} username={me?.username as string} />
+      )}
+      <RdDialog
+        open={zoomDialogOpen}
+        maxWidth="xl"
+        transparent
+        onClose={() => {
+          setZoomDialogOpen(false)
+          setZoomedImg(null)
+        }}
+      >
+        {zoomedImg && (
+          <Image
+            src={process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + zoomedImg}
+            alt={'zoomed image'}
+            sizes="(min-width: 1024px) 900px, 1800px"
+            style={{
+              objectFit: 'contain',
+              width: '100%'
+            }}
+            width={1800}
+            height={500}
+          />
+        )}
+      </RdDialog>
     </Stack>
   )
 }

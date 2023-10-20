@@ -102,14 +102,36 @@ export const DELETE_POST = gql`
 export const ADD_VOTE = gql`
   mutation AddVote($post_id: ID!, $user_id: ID!, $upvote: Boolean!) {
     insertVote(post_id: $post_id, user_id: $user_id, upvote: $upvote) {
-      post_id
+      id
+      user_id
+      upvote
     }
   }
 `
 export const DELETE_VOTES_BY_POST_ID = gql`
-  mutation DeleteVoteSOfPost($post_id: ID!) {
+  mutation DeleteVotesOfPost($post_id: ID!) {
     deleteVotesOfPost(post_id: $post_id) {
-      post_id
+      id
+      user_id
+      upvote
+    }
+  }
+`
+export const DELETE_VOTE = gql`
+  mutation DeleteVote($id: ID!) {
+    deleteVote(id: $id) {
+      id
+      user_id
+      upvote
+    }
+  }
+`
+export const UPDATE_VOTE = gql`
+  mutation UpdateVote($id: ID!, $upvote: Boolean!) {
+    updateVote(id: $id, upvote: $upvote) {
+      id
+      user_id
+      upvote
     }
   }
 `

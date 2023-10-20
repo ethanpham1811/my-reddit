@@ -2,7 +2,7 @@ import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { LockIcon, PersonIcon, RemoveRedEyeIcon } from '@/constants/icons'
 import { TCommunityCreatorForm, TCommunityCreatorProps, TCommunityTypeOPtions } from '@/constants/types'
 import { ADD_SUBREDDIT } from '@/graphql/mutations'
-import useUpdateUser from '@/hooks/useUpdateUser'
+import useUserUpdate from '@/hooks/useUserUpdate'
 import { ApolloError, useMutation } from '@apollo/client'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
@@ -74,7 +74,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
     formState: { errors }
   } = useForm<TCommunityCreatorForm>({ defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false } })
 
-  const { updateUser, loading } = useUpdateUser()
+  const { updateUser, loading } = useUserUpdate()
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {

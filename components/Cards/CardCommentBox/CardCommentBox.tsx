@@ -62,8 +62,8 @@ function CardCommentBox({ subName, post_id, user_id, username, commentList }: TC
         <Box width={40} m={-1} py={1}></Box>
 
         {/* comment form section */}
-        <form onSubmit={onSubmit}>
-          <Stack sx={{ ml: 1, pl: 1 }}>
+        <form onSubmit={onSubmit} style={{ display: 'flex', flex: 1 }}>
+          <Stack sx={{ ml: 1, pl: 1, flex: 1 }}>
             <Typography variant="body2" sx={{ p: 1, color: 'hintText.main' }}>
               Comment as{' '}
               <Link href={`/u/${username}`}>

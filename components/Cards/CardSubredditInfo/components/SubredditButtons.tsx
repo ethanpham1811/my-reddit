@@ -2,7 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { ArrowForwardIcon } from '@/constants/icons'
 import { TSubredditDetail } from '@/constants/types'
-import useUpdateUser from '@/hooks/useUpdateUser'
+import useUserUpdate from '@/hooks/useUserUpdate'
 import { Events, eventEmitter } from '@/services/eventEmitter'
 import { CardActions, Divider } from '@mui/material'
 import { useRouter } from 'next/router'
@@ -16,7 +16,7 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
   } = useRouter()
   const me = session?.userDetail
   const status = session?.user?.role
-  const { updateUser, loading } = useUpdateUser()
+  const { updateUser, loading } = useUserUpdate()
 
   function onClick() {
     subName && eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)

@@ -9,17 +9,22 @@ function RdTextEditor<T extends FieldValues>({ height = 300, placeholder, contro
   const [loading, setLoading] = useState(true)
 
   return (
-    <FormControl sx={{ '.MuiFormControl-root': { bgcolor: 'transparent' } }}>
+    <FormControl sx={{ flex: 1, display: 'flex', '.MuiFormControl-root': { bgcolor: 'transparent' } }}>
       <Controller
         name={name}
         control={control}
         rules={registerOptions}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <Box height={height} display="flex" flexDirection="column">
+          <Box
+            height={height}
+            display="flex"
+            flexDirection="column"
+            sx={{ '.tox-tinymce': { borderWidth: '1px', borderColor: 'inputBorder.main', borderRadius: '4px' } }}
+          >
             {loading && (
               <Box position="absolute" width="100%" height={300}>
                 <Skeleton variant="text" width="100%" height="39px" sx={{ fontSize: '1rem' }} />
-                <Skeleton variant="rounded" width="100%" height="224px" />
+                <Skeleton variant="rounded" width="100%" height={height - 60 + 'px'} />
                 <Skeleton variant="text" width="100%" height="19px" sx={{ fontSize: '1rem' }} />
               </Box>
             )}

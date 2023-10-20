@@ -74,11 +74,13 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
           <MessageBoard head="Nothing found" />
         )}
       </CardContent>
-      <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <Typography sx={{ color: 'blue.main' }} variant="h6" fontSize="0.8rem">
-          <Link href={`/search?q=${q}&type=${type}`} style={{ color: 'inherit' }}>{`See more ${title}`}</Link>
-        </Typography>
-      </CardActions>
+      {!loading && list && list.length > 0 && (
+        <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Typography sx={{ color: 'blue.main' }} variant="h6" fontSize="0.8rem">
+            <Link href={`/search?q=${q}&type=${type}`} style={{ color: 'inherit' }}>{`See more ${title}`}</Link>
+          </Typography>
+        </CardActions>
+      )}
     </RdCard>
   )
 }

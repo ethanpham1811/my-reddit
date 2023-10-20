@@ -8,7 +8,7 @@ export enum ORDERING {
   Desc = 'desc'
 }
 export enum SORT_METHOD {
-  New = 'createdAt',
+  New = 'created_at',
   Hot = 'upvote',
   Rising = 'trending'
 }

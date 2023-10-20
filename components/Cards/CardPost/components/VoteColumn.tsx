@@ -1,55 +1,67 @@
-import { ArrowDownwardOutlinedIcon, ArrowUpwardOutlinedIcon } from '@/constants/icons'
-import { TUserDetail } from '@/constants/types'
-import { ADD_VOTE } from '@/graphql/mutations'
-import { useMutation } from '@apollo/client'
+import { ImArrowDown, ImArrowUp } from '@/constants/icons'
+import { TUserDetail, TVote } from '@/constants/types'
+import useVoteAdd from '@/hooks/useVoteAdd'
+import useVoteDelete from '@/hooks/useVoteDelete'
+import useVoteUpdate from '@/hooks/useVoteUpdate'
+import { getTotalUpvote } from '@/services'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { MouseEvent, useState } from 'react'
-import toast from 'react-hot-toast'
 
 type TVoteColumn = {
-  upvote: number
+  vote: TVote[] | undefined
   me: TUserDetail | undefined | null
   postId: number
 }
 
-function VoteColumn({ upvote, me, postId }: TVoteColumn) {
-  const [voteCount, setVoteCount] = useState(upvote)
-  const [loading, setLoading] = useState(false)
+function VoteColumn({ vote, me, postId }: TVoteColumn) {
+  const originVoteCount: number = vote ? getTotalUpvote(vote) : 0
+  const originVote: TVote | undefined = vote?.find((vote) => vote.user_id === me?.id)
 
-  /* vote function */
-  const vote = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, upvote: boolean) => {
-    e.stopPropagation()
-    if (loading) return
-    if (me) {
-      setLoading(true)
-      setVoteCount(voteCount + (upvote ? 1 : -1)) // optimistic manual update
-      const { errors } = await addVote({
-        variables: {
-          post_id: postId,
-          user_id: me?.id,
-          upvote
-        }
-      })
-      // TODO: update cache vote
-      if (errors) {
-        setVoteCount(voteCount - (upvote ? 1 : -1)) // revert if mutation fails
-        toast.error(errors[0].message)
-      }
-      setLoading(false)
-    }
-  }
+  const [voteCount, setVoteCount] = useState<number>(originVoteCount)
+  const [currentVote, setCurrentVote] = useState<TVote | undefined>(originVote)
+  const [loading, setLoading] = useState(false)
+  const currentUpvote: boolean | undefined = currentVote?.upvote
 
   /* Mutations */
-  const [addVote] = useMutation(ADD_VOTE)
+  const { addVote } = useVoteAdd()
+  const { updateVote } = useVoteUpdate()
+  const { deleteVote } = useVoteDelete()
+
+  /* vote function */
+  const handleVote = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, isUpvoteBtn: boolean) => {
+    e.stopPropagation()
+    if (loading || !me) return
+
+    setLoading(true)
+    /* if user hasn't voted this post */
+    if (currentVote == null) {
+      await addVote(voteCount, setVoteCount, setCurrentVote, isUpvoteBtn, me.id, postId)
+    } else {
+      /* if user already voted this post */
+      const isUpvoted = currentVote.upvote
+      const voteId = currentVote.id
+
+      /* if user click the same button twice, remove the vote  */
+      if (isUpvoted === isUpvoteBtn) {
+        await deleteVote(voteCount, setVoteCount, currentVote, setCurrentVote, isUpvoteBtn, voteId)
+      } else {
+        /* otherwise switch the vote status from true to false & vice versa */
+        await updateVote(voteCount, setVoteCount, currentVote, setCurrentVote, isUpvoteBtn, isUpvoted, voteId)
+      }
+    }
+    setLoading(false)
+  }
+
   return (
     <Box width={40} m={-1} py={1} bgcolor="inputBgOutfocused.main">
       <Stack alignItems="center">
-        <IconButton onClick={(e) => vote(e, true)} disabled={!me}>
-          <ArrowUpwardOutlinedIcon sx={{ color: `${voteCount > 0 ? 'orange' : 'hintText'}.main` }} />
+        <IconButton onClick={(e) => handleVote(e, true)} disabled={!me}>
+          <ImArrowUp style={{ color: `${currentUpvote != null && currentUpvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
         <Typography>{voteCount}</Typography>
-        <IconButton onClick={(e) => vote(e, false)} disabled={!me}>
-          <ArrowDownwardOutlinedIcon sx={{ color: `${voteCount < 0 ? 'orange' : 'hintText'}.main` }} />
+        <IconButton onClick={(e) => handleVote(e, false)} disabled={!me}>
+          {/* <ArrowDownwardOutlinedIcon sx={{ color: `${currentUpvote != null && !currentUpvote ? 'orange' : 'hintText'}.main` }} /> */}
+          <ImArrowDown style={{ color: `${currentUpvote != null && !currentUpvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
       </Stack>
     </Box>
