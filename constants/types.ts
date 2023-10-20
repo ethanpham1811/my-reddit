@@ -17,7 +17,7 @@ import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from '@supabase/supabase-js'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
-import { MAIN_MENU_GROUP, ORDERING, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
+import { MAIN_MENU_GROUP, ORDERING, PROFILE_DIALOG_TYPE, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
 
 /* ------------------------------------------Common Types------------------------------------------ */
 export type TUserCompact = {
@@ -292,6 +292,7 @@ export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
   width?: string
   flex?: number
   bgcolor?: string
+  borderColor?: string
 }
 export type TCardFeedSorterProps = {
   disabled: boolean
@@ -331,6 +332,16 @@ export type TCommunityTypeOPtions = {
   label: ReactNode
   value: string
   disabled: boolean
+}
+export type TProfileDropDownList = {
+  name?: string
+  value?: string
+  switcher?: boolean
+  url?: string
+  groupBy: string
+  disabled?: boolean
+  dialog?: PROFILE_DIALOG_TYPE
+  groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }
 
 /* --------------------------------------------- Query Types---------------------------------------------- */

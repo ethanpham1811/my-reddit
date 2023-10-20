@@ -3,26 +3,13 @@ import CardUserAgreement from '@/components/Cards/CardUserAgreement/CardUserAgre
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { AccountCircleOutlinedIcon, InfoOutlinedIcon, LogoutIcon, PreviewOutlinedIcon } from '@/constants/icons'
-import { TProfileDropdownProps } from '@/constants/types'
+import { TProfileDropDownList, TProfileDropdownProps } from '@/constants/types'
 import { createGroupedList } from '@/services'
-import { Box, Divider, List, MenuItem, Stack, SvgIconTypeMap, Switch, Typography } from '@mui/material'
-import { OverridableComponent } from '@mui/material/OverridableComponent'
-import Link from 'next/link'
-import { createElement, useState } from 'react'
+import { Box, MenuItem, Typography } from '@mui/material'
+import { useState } from 'react'
 import { v4 as rid } from 'uuid'
 import { renderSelectedOption } from './RenderedCbs'
-import ProfileGroupHeader from './components/ProfileGroupHeader'
-
-type TProfileDropDownList = {
-  name: string
-  value: string
-  switcher?: boolean
-  url?: string
-  groupBy: string
-  disabled?: boolean
-  dialog?: PROFILE_DIALOG_TYPE
-  groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
-}
+import ProfileMenu from './components/ProfileMenu'
 
 function ProfileDropdownProp({ loading }: TProfileDropdownProps) {
   // const [page, setPage] = useState('home')
@@ -80,46 +67,15 @@ function ProfileDropdownProp({ loading }: TProfileDropdownProps) {
         {me && groupedMenuList.length > 0 ? (
           groupedMenuList.map(({ items, group, groupIcon }) => {
             return (
-              <List key={`profile_menu_${rid()}`}>
-                <ProfileGroupHeader label={group} groupIcon={groupIcon} />
-                {items.map(({ name, switcher, url, disabled, dialog }) => (
-                  <MenuItem
-                    disabled={disabled}
-                    key={`profile_menu_item_${rid()}`}
-                    sx={{ '&:hover, &:focus': switcher ? { bgcolor: 'transparent' } : {}, ml: 'calc(1em + 1rem)', '&.MuiButtonBase-root': { p: 0 } }}
-                  >
-                    {url ? (
-                      <Link
-                        href={url}
-                        style={{
-                          padding: '6px 16px',
-                          display: 'flex',
-                          flex: '1',
-                          textDecoration: 'none',
-                          color: 'unset'
-                        }}
-                      >
-                        {name || 'unknown'}
-                      </Link>
-                    ) : (
-                      <Stack
-                        onClick={() => {
-                          if (!dialog) return
-                          setDialogType(PROFILE_DIALOG_TYPE.UserAgreement)
-                          setIsOpenDialog(true)
-                        }}
-                        direction="row"
-                        sx={{ alignItems: 'center', p: '6px 16px', display: 'flex', flex: '1' }}
-                      >
-                        {name || 'unknown'}
-                        {switcher &&
-                          createElement(Switch, { sx: { ml: 'auto', '.Mui-checked+.MuiSwitch-track': { opacity: 1, bgcolor: 'orange.main' } } })}
-                      </Stack>
-                    )}
-                  </MenuItem>
-                ))}
-                <Divider />
-              </List>
+              <ProfileMenu
+                value="profile"
+                setIsOpenDialog={setIsOpenDialog}
+                setDialogType={setDialogType}
+                menuItems={items}
+                group={group}
+                groupIcon={groupIcon}
+                key={`profile_menu_group_${rid()}`}
+              />
             )
           })
         ) : (

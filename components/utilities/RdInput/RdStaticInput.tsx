@@ -9,11 +9,16 @@ const RdInputBase = styled(TextField)(({ theme }) => ({
     color: theme.palette.inputText.main,
     '&.Mui-focused, &:hover': {
       backgroundColor: 'white'
+    },
+    fieldset: {
+      borderWidth: '1px !important'
     }
   }
 }))
 
-const RdStaticInput = <T extends FieldValues>({ placeholder, label, sx, bgcolor, ...rest }: TRdStaticInputProps<T>) => {
+const RdStaticInput = <T extends FieldValues>({ borderColor, placeholder, label, sx, bgcolor, ...rest }: TRdStaticInputProps<T>) => {
+  const borderStyle = borderColor ? { borderColor: borderColor } : {}
+
   return (
     <RdInputBase
       // helperText={error ? error.message : null}
@@ -27,7 +32,7 @@ const RdStaticInput = <T extends FieldValues>({ placeholder, label, sx, bgcolor,
       variant="outlined"
       // id={name}
       // aria-describedby={`helper_${name}`}
-      sx={{ '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main` }, ...sx }}
+      sx={{ '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main`, '&.Mui-focused': { fieldset: { ...borderStyle } } }, ...sx }}
       {...rest}
     />
   )

@@ -4,7 +4,7 @@ import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
 import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { HomeIcon } from '@/constants/icons'
 import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
-import { Box, List } from '@mui/material'
+import { Divider, List } from '@mui/material'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
 import { renderSelectedOption } from './RenderedCbs'
@@ -63,23 +63,22 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       mobileMode
     >
       {/* Filter input */}
-      <List>
-        <Box px={2}>
-          <RdStaticInput autoFocus onChange={handleFilter} placeholder="Filter" />
-        </Box>
-      </List>
+      <>
+        <List sx={{ p: 2, pt: 1 }}>
+          <RdStaticInput borderColor="black" autoFocus onChange={handleFilter} placeholder="Filter" />
+        </List>
+      </>
 
       {/* Feeds list */}
-      <FeedsMenuList feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
+      <FeedsMenuList value="home" feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
 
-      {me && (
-        <Box>
-          {/* Subreddit list */}
-          <SubsMenuList loading={loading} options={communityOptions} filterByTerm={filterByTerm} />
-          {/* Hidden user list - A little hack for displaying unlisted Item (for profile pages) */}
-          <PeopleMenuList loading={loading} options={peopleOptions} filterByTerm={filterByTerm} />
-        </Box>
-      )}
+      <Divider sx={{ my: 1 }} />
+      {/* Subreddit list */}
+      <SubsMenuList value="home" loading={!me} options={communityOptions} filterByTerm={filterByTerm} />
+
+      <Divider sx={{ my: 1 }} />
+      {/* Hidden user list - A little hack for displaying unlisted Item (for profile pages) */}
+      <PeopleMenuList value="active" loading={!me} options={peopleOptions} filterByTerm={filterByTerm} />
     </RdDropdown>
   )
 }

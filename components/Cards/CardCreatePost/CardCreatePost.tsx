@@ -28,6 +28,7 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
     handleSubmit,
     watch,
     setValue,
+    getValues,
     control,
     formState: { errors }
   } = useForm<TCardCreatePostForm>()
@@ -38,10 +39,15 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
   useEffect(() => {
     eventEmitter.subscribe(Events.OPEN_CREATE_POST_FORM, (state) => {
       ref?.current?.focus()
+      !getValues('title') && setValue('title', 'Your post title')
       setFocused(state)
+
+      setTimeout(() => {
+        ref?.current?.select()
+      }, 100)
     })
     return () => eventEmitter.unsubscribe(Events.OPEN_CREATE_POST_FORM)
-  }, [setValue])
+  }, [setValue, getValues])
 
   /* form submit handler */
   const onSubmit = handleSubmit(

@@ -44,7 +44,7 @@ function MainForm<T extends FieldValues>({ isLinkPost, control, imagesValue, sub
       )}
 
       {/* uploaded images preview */}
-      {imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} cols={5} />}
+      {!isLinkPost && imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} cols={5} />}
 
       {/* Subreddit select & Submit button */}
       <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">

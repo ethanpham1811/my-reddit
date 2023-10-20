@@ -5,8 +5,7 @@ import { RdSkeleton } from '@/components/Skeletons'
 import { SUBREDDIT_LIST_MODE } from '@/constants/enums'
 import { TRdSubredditSelectProps } from '@/constants/types'
 import useSubredditList from '@/hooks/useSubredditList'
-import { Avatar, Box, CircularProgress, FormControl, MenuItem, Typography } from '@mui/material'
-import Image from 'next/image'
+import { Avatar, Box, CircularProgress, FormControl, MenuItem, Stack, Typography } from '@mui/material'
 import { v4 as rid } from 'uuid'
 import { RdDropdown } from '../..'
 import { generateSeededHexColor, generateUserImage, validateSubredditMember } from '../../../services'
@@ -23,16 +22,23 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
     const selectedItem = subredditList && subredditList.find((item) => item.id == +selectedValue)
 
     return selectedItem ? (
-      <Box minWidth={0} overflow="hidden" textOverflow="ellipsis">
-        <Image
-          style={{ marginRight: '0.5rem' }}
-          alt={`${selectedItem.name} image`}
-          src={generateUserImage(selectedItem.name)}
-          width={20}
-          height={20}
+      <Stack minWidth={0} direction="row" alignItems="center">
+        <Avatar
+          variant="circular"
+          sx={{
+            mr: 0.5,
+            width: 20,
+            height: 20,
+            backgroundColor: generateSeededHexColor(selectedItem.name || 'seed'),
+            border: (theme): string => `4px solid ${theme.palette.white.main}`
+          }}
+          alt={`${selectedItem.name} avatar`}
+          src={generateUserImage(selectedItem.name || 'seed')}
         />
-        {selectedItem.name}
-      </Box>
+        <Box overflow="hidden" textOverflow="ellipsis">
+          r/{selectedItem.name}
+        </Box>
+      </Stack>
     ) : (
       <Box display="flex" alignItems="center">
         {loading && <CircularProgress size={15} sx={{ color: 'hintText.main', mx: '0.5rem' }} />}
@@ -70,7 +76,7 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
                   <MenuItem
                     value={id}
                     key={`menu_${rid()}`}
-                    sx={{ px: 1, bgcolor: 'inputBgOutfocused.main', '&:hover,&.Mui.focused': { bgcolor: 'primary.main' } }}
+                    sx={{ pl: 1, pr: 2, bgcolor: 'inputBgOutfocused.main', '&:hover,&.Mui.focused': { bgcolor: 'primary.main' } }}
                   >
                     <Avatar
                       variant="circular"
