@@ -44,6 +44,7 @@ export const GET_USER_BY_EMAIL = gql`
           user_id
         }
         link
+        linkDescription
       }
     }
   }
@@ -91,6 +92,7 @@ export const GET_USER_BY_USERNAME = gql`
           user_id
         }
         link
+        linkDescription
       }
     }
   }
@@ -154,6 +156,7 @@ export const GET_SUBREDDIT_BY_NAME = gql`
           user_id
         }
         link
+        linkDescription
       }
     }
   }
@@ -209,6 +212,7 @@ export const GET_POST_LIST = gql`
         user_id
       }
       link
+      linkDescription
     }
   }
 `
@@ -240,6 +244,7 @@ export const GET_POST_LIST_BY_SUB_ID = gql`
         user_id
       }
       link
+      linkDescription
     }
   }
 `
@@ -270,6 +275,7 @@ export const GET_POST_LIST_BY_USER_ID = gql`
         user_id
       }
       link
+      linkDescription
     }
   }
 `
@@ -315,6 +321,7 @@ export const GET_POST_AND_SUB_BY_POST_ID = gql`
         user_id
       }
       link
+      linkDescription
     }
   }
 `

@@ -1,20 +1,22 @@
 import { RdDialog } from '@/components'
-import usePostDeleteUpdate from '@/hooks/usePostDeleteUpdate'
+import usePostDelete from '@/hooks/usePostDelete'
 import { Box, Link, Stack, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import CardConfirm from '../../CardConfirm/CardConfirm'
 
-function BottomActionMenu({ postId }: { postId: string }) {
+function BottomActionMenu({ postId, subName }: { postId: string; subName: string }) {
   const [isOpenDialog, setIsOpenDialog] = useState(false)
-  const { deletePostData, editPostData } = usePostDeleteUpdate()
-
-  function handleEditPost() {
-    // const payload = {body: , images: , title: , link: }
-    // editPostData(payload)
-  }
+  const { push: navigate } = useRouter()
+  const { deletePostData } = usePostDelete()
 
   async function handleDeletePost() {
     setIsOpenDialog(true)
+  }
+
+  // navigate to edit post page
+  function handleEditPost() {
+    navigate(`/r/${subName}/post/${postId}?mode=edit`, undefined, { scroll: false })
   }
 
   return (

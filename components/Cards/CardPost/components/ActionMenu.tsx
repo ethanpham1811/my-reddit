@@ -1,13 +1,15 @@
 import { RdDialog, RdIconSelect } from '@/components'
 import { MoreHorizIcon } from '@/constants/icons'
 import { TSelectOption } from '@/constants/types'
-import usePostDeleteUpdate from '@/hooks/usePostDeleteUpdate'
+import usePostDelete from '@/hooks/usePostDelete'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import CardConfirm from '../../CardConfirm/CardConfirm'
 
-function ActionMenu({ postId }: { postId: string }) {
+function ActionMenu({ postId, subName }: { postId: string; subName: string }) {
   const [isOpenDialog, setIsOpenDialog] = useState(false)
-  const { deletePostData, editPostData, loading } = usePostDeleteUpdate()
+  const { deletePostData, loading } = usePostDelete()
+  const { push: navigate } = useRouter()
 
   /* action options */
   const postActionOptions: TSelectOption[] = [
@@ -21,13 +23,13 @@ function ActionMenu({ postId }: { postId: string }) {
     }
   ]
 
-  function handleEditPost() {
-    // const payload = {body: , images: , title: , link: }
-    // editPostData(payload)
-  }
-
   async function handleDeletePost() {
     setIsOpenDialog(true)
+  }
+
+  // navigate to edit post page
+  function handleEditPost() {
+    navigate(`/r/${subName}/post/${postId}?mode=edit`, undefined, { scroll: false })
   }
 
   return (

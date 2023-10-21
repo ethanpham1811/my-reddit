@@ -16,10 +16,10 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from '@supabase/supabase-js'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
-import { Control, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
+import { Control, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormSetValue } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, PROFILE_DIALOG_TYPE, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
 
-/* ------------------------------------------Common Types------------------------------------------ */
+/* --------------------------------------------Common Types-------------------------------------------- */
 export type TUserCompact = {
   id: number
   username: string
@@ -46,6 +46,7 @@ export type TPost = {
   title: string
   body: string
   link: string
+  linkDescription: string
   user: TUserDetail
   created_at: Date
   subreddit: Pick<TSubredditDetail, 'id' | 'name' | 'subType'>
@@ -144,7 +145,7 @@ export type TRdSelect = IconButtonProps & {
   position?: { top?: string; left?: string; right?: string; bottom?: string }
 }
 
-/* ------------------------------------------Props Types------------------------------------------ */
+/* ---------------------------------------------Props Types--------------------------------------------- */
 export type TCardPostProps = {
   post: TPost
   loadedInSubPage?: boolean
@@ -260,6 +261,7 @@ export type TRdTextEditorProps<T extends FieldValues> = {
   name: FieldPath<T>
   control: Control<T>
   height?: number
+  clearBodyOnFocus?: boolean
 }
 export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
   registerOptions?: RegisterOptions
@@ -305,7 +307,7 @@ export type TCardUserInfoProps = {
   loading: boolean
 }
 
-/* ------------------------------------------Form Types------------------------------------------ */
+/* ----------------------------------------------Form Types---------------------------------------------- */
 export type TCommunityCreatorForm = {
   name: string
   subType: SUBREDDIT_TYPE
@@ -313,8 +315,9 @@ export type TCommunityCreatorForm = {
   topic_ids: string[]
 }
 export type TCardCreatePostForm = Pick<TPost, 'title' | 'body'> & {
+  id?: number
   subreddit_id: number
-  images: FileList
+  images: FileList | undefined
   link: string
   linkDescription: string
 }
@@ -322,13 +325,26 @@ export type TCardUserInfoForm = {
   email: string
   fullName: string
 }
+export type TFormColumnProps<T extends FieldValues> = {
+  control: Control<T>
+  titleValue: string
+  getValues: UseFormGetValues<T>
+  setValue: UseFormSetValue<T>
+  setFocused: Dispatch<SetStateAction<boolean>>
+  focused: boolean
+  loading: boolean
+  isLinkPost: boolean
+  subId: number | undefined
+  imagesValue: FileList | undefined
+  editModePayload?: TEditModePayload
+}
 
 /* ------------------------------------------Hook response Types------------------------------------------ */
 export type TUsePostListResponse = [postList: TPost[] | null, loading: boolean, error: ApolloError | undefined]
 export type TUseTopicListResponse = { topicList: TTopic[] | null; loading: boolean; error: ApolloError | undefined }
 export type TUseSubredditListResponse = { subredditList: TSubreddit[] | null; loading: boolean; error: ApolloError | undefined }
 
-/* ------------------------------------------Data structure Types------------------------------------------ */
+/* ------------------------------------------Data structure Types----------------------------------------- */
 export type TCommunityTypeOPtions = {
   label: ReactNode
   value: string
@@ -343,6 +359,9 @@ export type TProfileDropDownList = {
   disabled?: boolean
   dialog?: PROFILE_DIALOG_TYPE
   groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
+}
+export type TEditModePayload = Pick<TCardCreatePostForm, 'title' | 'body' | 'link' | 'linkDescription'> & {
+  images: string[] | undefined
 }
 
 /* --------------------------------------------- Query Types---------------------------------------------- */

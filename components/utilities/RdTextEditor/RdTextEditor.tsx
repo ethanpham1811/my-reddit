@@ -4,7 +4,14 @@ import { Editor } from '@tinymce/tinymce-react'
 import { useState } from 'react'
 import { Controller, FieldValues } from 'react-hook-form'
 
-function RdTextEditor<T extends FieldValues>({ height = 300, placeholder, control, name, registerOptions }: TRdTextEditorProps<T>) {
+function RdTextEditor<T extends FieldValues>({
+  height = 300,
+  placeholder,
+  control,
+  name,
+  registerOptions,
+  clearBodyOnFocus = true
+}: TRdTextEditorProps<T>) {
   const [isFirstTimeFocused, setIsFirstTimeFocused] = useState(true)
   const [loading, setLoading] = useState(true)
 
@@ -36,7 +43,7 @@ function RdTextEditor<T extends FieldValues>({ height = 300, placeholder, contro
               id={name}
               onInit={() => setLoading(false)}
               onFocus={(): void => {
-                if (isFirstTimeFocused) {
+                if (isFirstTimeFocused && clearBodyOnFocus) {
                   setIsFirstTimeFocused(false)
                   onChange('')
                 }

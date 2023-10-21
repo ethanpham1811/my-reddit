@@ -20,6 +20,7 @@ import { JSXElementConstructor, ReactElement } from 'react'
 import toast from 'react-hot-toast'
 import ReactHtmlParser from 'react-html-parser'
 import { NumberDictionary, animals, colors, uniqueNamesGenerator } from 'unique-names-generator'
+import { v4 as rid } from 'uuid'
 
 /*------------------------------------------ General utilities ----------------------------------------- */
 export const notificationHandler = () => {
@@ -58,6 +59,32 @@ export const createGroupedList = (list: { groupBy: string; groupIcon: Overridabl
     groupIcon: groupedArray[group][0].groupIcon,
     items: groupedArray[group]
   }))
+}
+
+export async function urlsToFile(urls: string[] | undefined): Promise<FileList | null> {
+  if (!urls) return Promise.resolve(null)
+
+  const urlToFile = (url: string, filename: string, mimeType: string): Promise<File> => {
+    return fetch(url)
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) => {
+        return new File([arrayBuffer], filename, { type: mimeType })
+      })
+  }
+
+  const generateFile = urls.map((url): Promise<File> => {
+    const filename = `uploaded_image_${rid()}.jpg`
+    const mimeType = 'image/png'
+
+    return urlToFile(url, filename, mimeType)
+  })
+
+  return Promise.all(generateFile).then((files): FileList => {
+    const fileArray = Array.from(files)
+    const dataTransfer = new DataTransfer()
+    fileArray.forEach((file) => dataTransfer.items.add(file))
+    return dataTransfer.files
+  })
 }
 
 /* from fns-default "about x hours ago" => "x hr. ago" format */

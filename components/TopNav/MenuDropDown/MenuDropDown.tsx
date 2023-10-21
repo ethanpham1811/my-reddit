@@ -63,11 +63,9 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       mobileMode
     >
       {/* Filter input */}
-      <>
-        <List sx={{ p: 2, pt: 1 }}>
-          <RdStaticInput borderColor="black" autoFocus onChange={handleFilter} placeholder="Filter" />
-        </List>
-      </>
+      <List sx={{ p: 2, pt: 1 }}>
+        <RdStaticInput borderColor="black" autoFocus onChange={handleFilter} placeholder="Filter" />
+      </List>
 
       {/* Feeds list */}
       <FeedsMenuList value="home" feedsOptions={feedsOptions} filterByTerm={filterByTerm} />

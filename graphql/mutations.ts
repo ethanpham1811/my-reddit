@@ -62,8 +62,16 @@ export const UPDATE_USER = gql`
 
 /* ----------------------------- POST -------------------------------- */
 export const ADD_POST = gql`
-  mutation AddPost($body: String, $images: [String], $subreddit_id: ID!, $title: String!, $user_id: ID!, $link: String) {
-    insertPost(body: $body, title: $title, user_id: $user_id, subreddit_id: $subreddit_id, images: $images, link: $link) {
+  mutation AddPost($body: String, $images: [String], $subreddit_id: ID!, $title: String!, $user_id: ID!, $link: String, $linkDescription: String) {
+    insertPost(
+      user_id: $user_id
+      subreddit_id: $subreddit_id
+      body: $body
+      title: $title
+      images: $images
+      link: $link
+      linkDescription: $linkDescription
+    ) {
       id
       images
       body
@@ -87,6 +95,7 @@ export const ADD_POST = gql`
         upvote
       }
       link
+      linkDescription
     }
   }
 `
@@ -98,8 +107,8 @@ export const DELETE_POST = gql`
   }
 `
 export const UPDATE_POST = gql`
-  mutation UpdatePost($id: ID!, $body: String, $images: [String], $title: String, $link: String) {
-    updatePost(id: $id, body: $body, images: $images, title: $title, link: $link) {
+  mutation UpdatePost($id: ID!, $body: String, $images: [String], $title: String, $link: String, $linkDescription: String) {
+    updatePost(id: $id, body: $body, images: $images, title: $title, link: $link, linkDescription: $linkDescription) {
       id
       images
       body
@@ -123,6 +132,7 @@ export const UPDATE_POST = gql`
         upvote
       }
       link
+      linkDescription
     }
   }
 `

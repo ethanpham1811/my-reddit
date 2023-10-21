@@ -1,49 +1,40 @@
 import { client } from '@/apollo-client'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { BUCKET, BUCKET_SUBFOLDER } from '@/constants/enums'
+import { POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardCreatePostForm } from '@/constants/types'
-import { ADD_POST } from '@/graphql/mutations'
+import { ADD_POST, UPDATE_POST } from '@/graphql/mutations'
 import { GET_POST_LIST, GET_POST_LIST_BY_SUB_ID, GET_POST_LIST_BY_USER_ID } from '@/graphql/queries'
 import { useMutation } from '@apollo/client'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { v4 as rid } from 'uuid'
+import useSupabaseUpload from './useSupabaseUpload'
 
-function usePostAdd() {
-  const supabase = useSupabaseClient()
+function usePostCreateAndEdit() {
   const { session } = useAppSession()
   const me = session?.userDetail
   const [loading, setLoading] = useState(false)
+  const [uploadFiles] = useSupabaseUpload()
   const [addPost] = useMutation(ADD_POST)
+  const [updatePost] = useMutation(UPDATE_POST)
   const {
     query: { subreddit: subName, username }
   } = useRouter()
 
-  /* upload file */
-  const uploadFiles = async (files: FileList): Promise<string[] | null> => {
-    const filePaths: string[] = []
-    for (const file of files) {
-      const { data, error } = await supabase!.storage.from(BUCKET).upload(`${BUCKET_SUBFOLDER}/${rid()}.png`, file, {
-        cacheControl: '3600',
-        upsert: false
-      })
-      if (error) {
-        toast.error(error.message)
-        return null
-      }
-      data && filePaths.push(`${BUCKET}/` + data.path)
-    }
-    return filePaths
+  // map function for dynamically use
+  const functionList = {
+    addPost,
+    updatePost
   }
 
-  /* create post */
-  const createPost = async (formData: TCardCreatePostForm, cb: () => void, isLinkPost: boolean, subId?: number | undefined) => {
+  /* create or update post function */
+  const mutatePost = async (formData: TCardCreatePostForm, cb: () => void, isLinkPost: boolean, type: POST_MUTATION_MODE) => {
     if (!me) return
+
     setLoading(true)
 
-    const { body, subreddit_id, title, link, linkDescription } = formData
+    const isCreate = type !== POST_MUTATION_MODE.Edit
+    const { id, body, subreddit_id, title, link, linkDescription } = formData
     let images: string[] | null = null
 
     /* ---------------------------Upload image (OPTIONAL)--------------------------*/
@@ -53,14 +44,16 @@ function usePostAdd() {
     }
 
     /* ----------------------------------Mutate db---------------------------------*/
-    const { data, errors } = await addPost({
+    const { data, errors } = await functionList[isCreate ? 'addPost' : 'updatePost']({
       variables: {
-        body: !isLinkPost ? body : linkDescription,
-        subreddit_id: subId ?? subreddit_id,
-        title,
+        id,
         user_id: me?.id,
+        subreddit_id,
+        body,
+        title,
         images,
-        link
+        link,
+        linkDescription
       }
     })
     if (errors) {
@@ -76,8 +69,8 @@ function usePostAdd() {
     let gqlKey = 'postList'
 
     // subreddit page
-    if (subName && subId) {
-      variables = { variables: { id: subId } }
+    if (subName && subreddit_id) {
+      variables = { variables: { id: subreddit_id } }
       cachedQuery = GET_POST_LIST_BY_SUB_ID
       gqlKey = 'postUsingPost_subreddit_id_fkey'
     }
@@ -114,10 +107,10 @@ function usePostAdd() {
     setLoading(false)
   }
 
-  return { createPost, loading }
+  return { mutatePost, loading }
 }
 
-export default usePostAdd
+export default usePostCreateAndEdit
 
 // toast.promise(
 //   addPost({

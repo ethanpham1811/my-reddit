@@ -1,17 +1,27 @@
+import { POST_MUTATION_MODE } from '@/constants/enums'
 import { urlValidation } from '@/services'
 import { CircularProgress, Stack } from '@mui/material'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { Control, FieldValues, Path } from 'react-hook-form'
 import { RdButton, RdImageList, RdInput, RdSubredditSelect, RdTextEditor } from '../../..'
 
 type TMainFormProps<T extends FieldValues> = {
   control: Control<T>
   isLinkPost: boolean
-  imagesValue: FileList
+  imagesValue: FileList | undefined
   subId: number | undefined
   loading: boolean
 }
 
 function MainForm<T extends FieldValues>({ isLinkPost, control, imagesValue, subId, loading }: TMainFormProps<T>) {
+  const {
+    push: navigate,
+    query: { subreddit: subName, postid, mode }
+  } = useRouter()
+  const [backBtnHover, isBackBtnHover] = useState(false)
+  const isEditing = mode === POST_MUTATION_MODE.Edit
+
   return (
     <Stack spacing={1}>
       {/* link or textEditor */}
@@ -36,6 +46,7 @@ function MainForm<T extends FieldValues>({ isLinkPost, control, imagesValue, sub
         </Stack>
       ) : (
         <RdTextEditor<T>
+          clearBodyOnFocus={!isEditing}
           registerOptions={{ required: 'Body is required' }}
           control={control}
           name={'body' as Path<T>}
@@ -49,14 +60,24 @@ function MainForm<T extends FieldValues>({ isLinkPost, control, imagesValue, sub
       {/* Subreddit select & Submit button */}
       <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">
         {subId == null && <RdSubredditSelect registerOptions={{ required: true }} control={control} name={'subreddit_id' as Path<T>} width="180px" />}
+        {isEditing && (
+          <RdButton
+            onMouseEnter={() => isBackBtnHover(true)}
+            onMouseLeave={() => isBackBtnHover(false)}
+            onClick={() => navigate(`/r/${subName}/post/${postid}`, undefined, { scroll: false })}
+            filled={backBtnHover}
+            text={'Back to view'}
+            color="blue"
+            width="30%"
+          />
+        )}
         <RdButton
           endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}
           disabled={loading}
           type="submit"
-          text={'Post'}
-          filled={!loading}
+          text={isEditing ? 'Update' : 'Post'}
+          filled={!loading && !backBtnHover}
           color="blue"
-          invertColor
           width="30%"
         />
       </Stack>

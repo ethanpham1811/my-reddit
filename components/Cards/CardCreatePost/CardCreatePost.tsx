@@ -1,26 +1,29 @@
 import { useForm } from 'react-hook-form'
 
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { TCardCreatePostForm } from '@/constants/types'
-import usePostAdd from '@/hooks/usePostAdd'
-import { OnlineDotStyle } from '@/mui/styles'
-import { Events, eventEmitter } from '@/services/eventEmitter'
-import { Avatar, Box, Stack } from '@mui/material'
-import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { POST_MUTATION_MODE } from '@/constants/enums'
+import { TCardCreatePostForm, TEditModePayload } from '@/constants/types'
+import usePostCreateAndEdit from '@/hooks/usePostCreateAndEdit'
+import { Box, Stack } from '@mui/material'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { RdCard, RdInput } from '../..'
-import { generateUserImage, postTitleValidation } from '../../../services'
-import MainForm from './components/MainForm'
+import { RdCard } from '../..'
+import AvatarColumn from './components/AvatarColumn'
+import FormColumn from './components/FormColumn'
 import Tools from './components/Tools'
 
-function CardCreatePost({ subId }: { subId?: number | undefined }) {
+function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined; editModePayload?: TEditModePayload }) {
   const { session } = useAppSession()
-  const { createPost, loading } = usePostAdd()
-  const ref = useRef<HTMLInputElement | null>(null)
+  const { mutatePost, loading } = usePostCreateAndEdit()
   const [isLinkPost, setIsLinkPost] = useState(false)
   const [focused, setFocused] = useState(false)
   const userName: string | undefined | null = session?.userDetail?.username
+  const {
+    push: navigate,
+    query: { mode, subreddit: subName, postid }
+  } = useRouter()
+  const isEditing = mode === POST_MUTATION_MODE.Edit
 
   /* form controllers */
   const {
@@ -35,23 +38,23 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
   const titleValue = watch('title')
   const imagesValue = watch('images')
 
-  /* Event subscriber for opening the form from somewhere else */
   useEffect(() => {
-    eventEmitter.subscribe(Events.OPEN_CREATE_POST_FORM, (state) => {
-      ref?.current?.focus()
-      !getValues('title') && setValue('title', 'Your post title')
-      setFocused(state)
-
-      setTimeout(() => {
-        ref?.current?.select()
-      }, 100)
-    })
-    return () => eventEmitter.unsubscribe(Events.OPEN_CREATE_POST_FORM)
-  }, [setValue, getValues])
+    editModePayload?.link && setIsLinkPost(true)
+  }, [setIsLinkPost, editModePayload])
 
   /* form submit handler */
   const onSubmit = handleSubmit(
-    async (formData) => createPost(formData, reset, isLinkPost, subId),
+    async (formData) => {
+      // edit post
+      if (isEditing) {
+        await mutatePost(formData, reset, isLinkPost, POST_MUTATION_MODE.Edit)
+        navigate(`/r/${subName}/post/${postid}`)
+      }
+      //create post
+      else {
+        mutatePost(formData, reset, isLinkPost, POST_MUTATION_MODE.Create)
+      }
+    },
     (err) => toast.error('Post failed, please try again')
   )
 
@@ -60,43 +63,27 @@ function CardCreatePost({ subId }: { subId?: number | undefined }) {
       <form onSubmit={onSubmit}>
         <Stack direction="row">
           {/* left column */}
-          <Box width={50}>
-            <OnlineDotStyle overlap="circular" anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant="dot">
-              <Link href={`/u/${userName}`}>
-                <Avatar
-                  sx={{
-                    width: 38,
-                    height: 38,
-                    backgroundColor: 'inputBgOutfocused.main',
-                    border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
-                  }}
-                  alt={userName || ''}
-                  src={generateUserImage(userName || 'seed')}
-                />
-              </Link>
-            </OnlineDotStyle>
-          </Box>
+          <AvatarColumn userName={userName} />
 
           {/* main section */}
-          <Stack spacing={1.5} flex={1}>
-            <RdInput<TCardCreatePostForm>
-              ref={ref}
-              bgcolor="white"
-              flex={1}
-              control={control}
-              name="title"
-              indentedHelper
-              placeholder="Create Post"
-              registerOptions={{ validate: (val) => postTitleValidation(val) }}
-            />
-            {(!!titleValue || focused) && (
-              <MainForm loading={loading} isLinkPost={isLinkPost} control={control} imagesValue={imagesValue} subId={subId} />
-            )}
-          </Stack>
+          <FormColumn<TCardCreatePostForm>
+            editModePayload={editModePayload}
+            control={control}
+            titleValue={titleValue}
+            getValues={getValues}
+            setValue={setValue}
+            setFocused={setFocused}
+            focused={focused}
+            loading={loading}
+            isLinkPost={isLinkPost}
+            subId={subId}
+            imagesValue={imagesValue}
+          />
 
           {/* right column */}
           <Box width={40}>
             <Tools<TCardCreatePostForm>
+              isEditing={isEditing}
               control={control}
               isFormClosed={!titleValue && !focused}
               setIsLinkPost={setIsLinkPost}

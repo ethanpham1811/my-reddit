@@ -1,6 +1,7 @@
 import { TRdImageListProps } from '@/constants/types'
 import { ImageList, ImageListItem, Stack } from '@mui/material'
 import Image from 'next/image'
+import { memo } from 'react'
 import { v4 as rid } from 'uuid'
 
 function RdImageList({ images, ...rest }: TRdImageListProps) {
@@ -31,4 +32,4 @@ function RdImageList({ images, ...rest }: TRdImageListProps) {
   )
 }
 
-export default RdImageList
+export default memo(RdImageList, (prev, next) => prev.images == next.images)

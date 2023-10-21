@@ -11,6 +11,7 @@ type Post {
   user: User @materializer(query: "userUsingPost_user_id_fkey")
   user_id: ID!
   link: String
+  linkDescription: String
 }
 
 """
@@ -26,7 +27,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link" FROM "post" ORDER BY "id" LIMIT $1 OFFSET $2
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link", "linkDescription" FROM "post" ORDER BY "id" LIMIT $1 OFFSET $2
       """
       configuration: "postgresql_config"
     )
@@ -35,7 +36,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link" FROM "post" WHERE "id" = $1
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link", "linkDescription" FROM "post" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -44,7 +45,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link" FROM "post" WHERE "subreddit_id" = $1
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link", "linkDescription" FROM "post" WHERE "subreddit_id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -53,7 +54,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link" FROM "post" WHERE "id" = $1
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link", "linkDescription" FROM "post" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -66,21 +67,19 @@ Feel free to modify them or aggregate more.
 type Mutation {
   " Mutations for type 'Post' "
   deletePost(id: ID!): Post @dbquery(type: "postgresql", schema: "public", table: "post", dml: DELETE, configuration: "postgresql_config")
-  insertPost(body: String, user_id: ID!, subreddit_id: ID!, title: String!, images: [String], link: String): Post
+  insertPost(user_id: ID!, subreddit_id: ID!, body: String, title: String!, images: [String], link: String, linkDescription: String): Post
     @dbquery(type: "postgresql", schema: "public", table: "post", dml: INSERT, configuration: "postgresql_config")
-  updatePost(id: ID!, body: String, images: [String], subreddit_id: ID, title: String, user_id: ID, link: String): Post
+  updatePost(id: ID!, body: String, images: [String], title: String, link: String, linkDescription: String): Post
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
       UPDATE "post" SET
         "body" = COALESCE($2, "body"),
-        "created_at" = COALESCE($3, "created_at"),
-        "images" = COALESCE($4, "images"),
-        "subreddit_id" = COALESCE($5, "subreddit_id"),
-        "title" = COALESCE($6, "title"),
-        "user_id" = COALESCE($7, "user_id"),
-        "link" = COALESCE($8, "link")
+        "images" = COALESCE($3, "images"),
+        "title" = COALESCE($4, "title"),
+        "link" = COALESCE($5, "link")
+        "linkDescription" = COALESCE($6, "linkDescription")
       WHERE
         "id" = $1
       RETURNING *

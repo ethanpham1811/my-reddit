@@ -10,9 +10,10 @@ type TToolsProps<T extends FieldValues> = {
   isFormClosed: boolean
   setIsLinkPost: Dispatch<SetStateAction<boolean>>
   isLinkPost: boolean
+  isEditing: boolean
 }
 
-function Tools<T extends FieldValues>({ control, isFormClosed, setIsLinkPost, isLinkPost }: TToolsProps<T>) {
+function Tools<T extends FieldValues>({ isEditing, control, isFormClosed, setIsLinkPost, isLinkPost }: TToolsProps<T>) {
   function onCreateLinkPost() {
     eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
     setIsLinkPost(!isLinkPost)
@@ -20,15 +21,15 @@ function Tools<T extends FieldValues>({ control, isFormClosed, setIsLinkPost, is
 
   return (
     <Stack spacing={1.5} alignItems="center">
-      <Tooltip title="Create Link Post">
+      <Tooltip title={isEditing ? "You can't change mode" : 'Create Link Post'}>
         <Box>
-          <IconButton sx={{ bgcolor: isLinkPost ? 'primary.main' : 'unset', mr: '-0.7rem' }} onClick={onCreateLinkPost}>
+          <IconButton disabled={isEditing} sx={{ bgcolor: isLinkPost ? 'primary.main' : 'unset', mr: '-0.7rem' }} onClick={onCreateLinkPost}>
             <LinkIcon sx={{ display: 'block' }} />
           </IconButton>
         </Box>
       </Tooltip>
       {!isFormClosed && (
-        <Tooltip title="Create Media Post">
+        <Tooltip title={isLinkPost ? 'Please switch to text mode' : 'Create Media Post'}>
           <Box>
             <IconButton disabled={isFormClosed || isLinkPost} sx={{ mr: '-0.7rem' }}>
               <RdImageUploader<T> control={control} name={'images' as Path<T>} />
