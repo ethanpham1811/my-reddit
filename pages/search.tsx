@@ -44,7 +44,6 @@ const Search: NextPage = () => {
       </Container>
       <FeedLayout loading={loading} top="1rem" single={type === SEARCH_TABS.Communities || type === SEARCH_TABS.People}>
         <Stack spacing={2}>
-          {/* sortOptions={sortOptions}*/}
           <SearchFeeds
             updateUser={handleUpdateUser}
             searchTerm={searchTerm as string}

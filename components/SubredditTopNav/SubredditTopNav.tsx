@@ -61,7 +61,7 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
             </Link>
             <Stack>
               <Typography fontWeight={700} variant="h4">
-                {headline ?? name}
+                {headline || name}
               </Typography>
               <Typography fontWeight={700} variant="subtitle1" sx={{ color: 'hintText.main' }}>
                 <Link href={`/r/${name}`} style={{ textDecoration: 'none', color: 'inherit' }}>

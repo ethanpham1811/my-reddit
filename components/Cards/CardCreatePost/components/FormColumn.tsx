@@ -21,7 +21,8 @@ function FormColumn<T extends FieldValues>({
   isLinkPost,
   subId,
   imagesValue,
-  editModePayload
+  editModePayload,
+  isDirty
 }: TFormColumnProps<T>) {
   const ref = useRef<HTMLInputElement | null>(null)
   const [uploadedImgFiles] = useConvertUrlToImages(editModePayload?.images)
@@ -68,7 +69,9 @@ function FormColumn<T extends FieldValues>({
         placeholder="Create Post"
         registerOptions={{ validate: (val) => postTitleValidation(val) }}
       />
-      {(!!titleValue || focused) && <MainForm loading={loading} isLinkPost={isLinkPost} control={control} imagesValue={imagesValue} subId={subId} />}
+      {(!!titleValue || focused) && (
+        <MainForm isDirty={isDirty} loading={loading} isLinkPost={isLinkPost} control={control} imagesValue={imagesValue} subId={subId} />
+      )}
     </Stack>
   )
 }

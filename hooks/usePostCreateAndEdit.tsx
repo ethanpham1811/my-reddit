@@ -60,7 +60,7 @@ function usePostCreateAndEdit() {
       setLoading(false)
       toast.error(errors[0].message)
     }
-    const newPost = data?.insertPost
+    const newPost = data && data[isCreate ? 'insertPost' : 'updatePost']
 
     /* ----------- retrieve respective query by type of page (OPTIONAL) -----------*/
     // home page (default)

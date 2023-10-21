@@ -23,7 +23,8 @@ type TPostPageProps = {
 export const getStaticProps = (async ({ params }) => {
   const { data, error = null } = await client.query({
     query: GET_POST_AND_SUB_BY_POST_ID,
-    variables: { id: params?.postid, name: params?.subreddit }
+    variables: { id: params?.postid, name: params?.subreddit },
+    fetchPolicy: 'no-cache'
   })
   const subreddit: TSubredditDetail = data?.subredditByName
   const subredditPost: TPost = data?.post
@@ -67,7 +68,10 @@ export default function Post({ subreddit, subredditPost: post, error }: InferGet
   const loading = false // FIXME: test loading
 
   // redirect to 404 if no data found
-  post === null && !loading && !error && navigate('/404')
+  if (post === null && !loading && !error) {
+    navigate('/404')
+    return null
+  }
 
   // if post in public subreddit OR user is member of subreddit => return true
   const verifyPost = (): boolean => {
@@ -87,9 +91,7 @@ export default function Post({ subreddit, subredditPost: post, error }: InferGet
         {!verifyPost() ? (
           <MessageBoard head={'This post is private, please join '} highlight={subName as string} />
         ) : (
-          <Stack spacing={2}>
-            <CardPost post={post} loadedInSubPage={!!subName} loadedInPostPage={!!postid} />
-          </Stack>
+          <Stack spacing={2}>{post && <CardPost post={post} loadedInSubPage={!!subName} loadedInPostPage={!!postid} />}</Stack>
         )}
         <CardSubredditInfo subreddit={subreddit} loading={loading} />
       </FeedLayout>

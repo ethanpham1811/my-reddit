@@ -70,7 +70,10 @@ export default function User({ user, userPosts, error }: InferGetServerSideProps
   const loading = false // FIXME: test loading
 
   // redirect to 404 if no data found
-  user === null && !loading && !error && navigate('/404')
+  if (user === null && !loading && !error) {
+    navigate('/404')
+    return null
+  }
 
   // show loading page on new created dynamic page
   if (isFallback) return <NewPageLoading />

@@ -66,7 +66,10 @@ export default function Subreddit({ subreddit, subredditPosts, error }: InferGet
   const loading = false // FIXME: test loading
 
   // redirect to 404 if no data found
-  subreddit === null && !loading && !error && navigate('/404')
+  if (subreddit === null && !loading && !error) {
+    navigate('/404')
+    return null
+  }
 
   // show loading page on new created dynamic page
   if (isFallback) return <NewPageLoading />

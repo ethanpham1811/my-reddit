@@ -26,7 +26,7 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
 
   useEffect(() => {
     // set email by registered email or offer test account for demonstration
-    setValue('email', newUserEmail ?? 'guest_account@gmail.com')
+    setValue('email', newUserEmail || 'guest_account@gmail.com')
     !newUserEmail && setValue('password', '123123')
   }, [newUserEmail, setValue])
 

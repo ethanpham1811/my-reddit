@@ -19,8 +19,8 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
   const { updateUser, loading } = useUserUpdate()
 
   function onClick() {
+    if (postid) return navigate(`/r/${subName}`)
     subName && eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
-    postid && navigate(`/r/${subName}`)
   }
 
   return (

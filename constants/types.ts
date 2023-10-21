@@ -337,6 +337,7 @@ export type TFormColumnProps<T extends FieldValues> = {
   subId: number | undefined
   imagesValue: FileList | undefined
   editModePayload?: TEditModePayload
+  isDirty: boolean
 }
 
 /* ------------------------------------------Hook response Types------------------------------------------ */

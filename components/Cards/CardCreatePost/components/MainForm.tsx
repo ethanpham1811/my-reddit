@@ -12,9 +12,10 @@ type TMainFormProps<T extends FieldValues> = {
   imagesValue: FileList | undefined
   subId: number | undefined
   loading: boolean
+  isDirty: boolean
 }
 
-function MainForm<T extends FieldValues>({ isLinkPost, control, imagesValue, subId, loading }: TMainFormProps<T>) {
+function MainForm<T extends FieldValues>({ isDirty, isLinkPost, control, imagesValue, subId, loading }: TMainFormProps<T>) {
   const {
     push: navigate,
     query: { subreddit: subName, postid, mode }
@@ -73,10 +74,10 @@ function MainForm<T extends FieldValues>({ isLinkPost, control, imagesValue, sub
         )}
         <RdButton
           endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}
-          disabled={loading}
+          disabled={loading || !isDirty}
           type="submit"
           text={isEditing ? 'Update' : 'Post'}
-          filled={!loading && !backBtnHover}
+          filled={!loading && !backBtnHover && isDirty}
           color="blue"
           width="30%"
         />

@@ -78,7 +78,7 @@ type Mutation {
         "body" = COALESCE($2, "body"),
         "images" = COALESCE($3, "images"),
         "title" = COALESCE($4, "title"),
-        "link" = COALESCE($5, "link")
+        "link" = COALESCE($5, "link"),
         "linkDescription" = COALESCE($6, "linkDescription")
       WHERE
         "id" = $1

@@ -81,7 +81,7 @@ function CardPost({
               images={images}
             />
           </Stack>
-          {loadedInPostPage && <BottomActionMenu subName={subName} postId={postId.toString()} />}
+          {isMyPost && loadedInPostPage && <BottomActionMenu subName={subName} postId={postId.toString()} />}
         </RdCard>
       )}
 
