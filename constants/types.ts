@@ -16,7 +16,7 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from '@supabase/supabase-js'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
-import { Control, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormSetValue } from 'react-hook-form'
+import { Control, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, PROFILE_DIALOG_TYPE, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
 
 /* --------------------------------------------Common Types-------------------------------------------- */
@@ -330,14 +330,14 @@ export type TFormColumnProps<T extends FieldValues> = {
   titleValue: string
   getValues: UseFormGetValues<T>
   setValue: UseFormSetValue<T>
-  setFocused: Dispatch<SetStateAction<boolean>>
-  focused: boolean
   loading: boolean
   isLinkPost: boolean
   subId: number | undefined
   imagesValue: FileList | undefined
   editModePayload?: TEditModePayload
   isDirty: boolean
+  reset: UseFormReset<T>
+  setIsLinkPost: Dispatch<SetStateAction<boolean>>
 }
 
 /* ------------------------------------------Hook response Types------------------------------------------ */

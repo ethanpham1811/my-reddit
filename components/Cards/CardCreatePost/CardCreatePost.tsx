@@ -7,7 +7,6 @@ import usePostCreateAndEdit from '@/hooks/usePostCreateAndEdit'
 import { Box, Stack } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 import { RdCard } from '../..'
 import AvatarColumn from './components/AvatarColumn'
 import FormColumn from './components/FormColumn'
@@ -17,7 +16,6 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
   const { session } = useAppSession()
   const { mutatePost, loading } = usePostCreateAndEdit()
   const [isLinkPost, setIsLinkPost] = useState(false)
-  const [focused, setFocused] = useState(false)
   const userName: string | undefined | null = session?.userDetail?.username
   const {
     push: navigate,
@@ -33,7 +31,7 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
     setValue,
     getValues,
     control,
-    formState: { errors, isDirty }
+    formState: { errors, isDirty, isValid }
   } = useForm<TCardCreatePostForm>()
   const titleValue = watch('title')
   const imagesValue = watch('images')
@@ -43,23 +41,27 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
   }, [setIsLinkPost, editModePayload])
 
   /* form submit handler */
-  const onSubmit = handleSubmit(
-    async (formData) => {
-      // edit post
-      if (isEditing) {
-        await mutatePost(formData, reset, isLinkPost, POST_MUTATION_MODE.Edit)
-        navigate(`/r/${subName}/post/${postid}`)
-      }
-      //create post
-      else {
-        mutatePost(formData, reset, isLinkPost, POST_MUTATION_MODE.Create)
-      }
-    },
-    (err) => toast.error('Post failed, please try again')
-  )
+  const onSubmit = handleSubmit(async (formData) => {
+    // edit post
+    if (isEditing) {
+      await mutatePost(formData, mutationCb, isLinkPost, POST_MUTATION_MODE.Edit)
+      navigate(`/r/${subName}/post/${postid}`)
+    }
+    //create post
+    else {
+      mutatePost(formData, mutationCb, isLinkPost, POST_MUTATION_MODE.Create)
+    }
+  })
+
+  function mutationCb(error?: boolean) {
+    if (error) return
+    setTimeout(() => {
+      reset()
+    }, 100)
+  }
 
   return (
-    <RdCard sx={{ p: 1.5 }} onBlur={() => setFocused(false)}>
+    <RdCard sx={{ p: 1.5 }}>
       <form onSubmit={onSubmit}>
         <Stack direction="row">
           {/* left column */}
@@ -72,21 +74,22 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
             titleValue={titleValue}
             getValues={getValues}
             setValue={setValue}
-            setFocused={setFocused}
-            focused={focused}
             loading={loading}
             isLinkPost={isLinkPost}
             subId={subId}
             imagesValue={imagesValue}
             isDirty={isDirty}
+            reset={reset}
+            setIsLinkPost={setIsLinkPost}
           />
 
           {/* right column */}
-          <Box width={40}>
+          <Box width={40} display="flex">
             <Tools<TCardCreatePostForm>
+              imagesValue={imagesValue}
               isEditing={isEditing}
               control={control}
-              isFormClosed={!titleValue && !focused}
+              isFormClosed={!titleValue && !isDirty}
               setIsLinkPost={setIsLinkPost}
               isLinkPost={isLinkPost}
             />

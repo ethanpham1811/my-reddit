@@ -4,10 +4,10 @@ import FeedLayout from '@/components/Layouts/FeedLayout'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions } from '@/constants/types'
 import { GET_POST_LIST } from '@/graphql/queries'
-import { ApolloError } from '@apollo/client'
+import { ApolloError, useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { GetStaticProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 
@@ -37,9 +37,13 @@ export const getStaticProps = (async (ctx) => {
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
-export default function Home({ postList, error }: InferGetServerSidePropsType<typeof getStaticProps>) {
+export default function Home() {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const [hasNoPost, setHasNoPost] = useState(false)
+
+  // home page posts list query
+  const { data, error } = useQuery(GET_POST_LIST)
+  const postList: TPost[] = data?.postList
 
   return (
     <div>

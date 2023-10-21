@@ -15,14 +15,14 @@ function FormColumn<T extends FieldValues>({
   titleValue,
   getValues,
   setValue,
-  setFocused,
-  focused,
   loading,
   isLinkPost,
   subId,
   imagesValue,
   editModePayload,
-  isDirty
+  isDirty,
+  reset,
+  setIsLinkPost
 }: TFormColumnProps<T>) {
   const ref = useRef<HTMLInputElement | null>(null)
   const [uploadedImgFiles] = useConvertUrlToImages(editModePayload?.images)
@@ -45,17 +45,21 @@ function FormColumn<T extends FieldValues>({
     postid && setValue('id' as Path<T>, postid as any)
     subId && setValue('subreddit_id' as Path<T>, subId as any)
 
+    let sto: NodeJS.Timeout | null = null
+
     eventEmitter.subscribe(Events.OPEN_CREATE_POST_FORM, (state) => {
       ref?.current?.focus()
       !getValues('title' as Path<T>) && setValue('title' as Path<T>, 'Your post title' as any)
-      setFocused(state)
 
-      setTimeout(() => {
+      sto = setTimeout(() => {
         ref?.current?.select()
       }, 100)
     })
-    return () => eventEmitter.unsubscribe(Events.OPEN_CREATE_POST_FORM)
-  }, [setValue, getValues, setFocused, postid, subId])
+    return () => {
+      sto && clearTimeout(sto)
+      eventEmitter.unsubscribe(Events.OPEN_CREATE_POST_FORM)
+    }
+  }, [setValue, getValues, postid, subId])
 
   return (
     <Stack spacing={1.5} flex={1}>
@@ -69,8 +73,17 @@ function FormColumn<T extends FieldValues>({
         placeholder="Create Post"
         registerOptions={{ validate: (val) => postTitleValidation(val) }}
       />
-      {(!!titleValue || focused) && (
-        <MainForm isDirty={isDirty} loading={loading} isLinkPost={isLinkPost} control={control} imagesValue={imagesValue} subId={subId} />
+      {(!!titleValue || isDirty) && (
+        <MainForm<T>
+          reset={reset}
+          isDirty={isDirty}
+          loading={loading}
+          isLinkPost={isLinkPost}
+          control={control}
+          imagesValue={imagesValue}
+          subId={subId}
+          setIsLinkPost={setIsLinkPost}
+        />
       )}
     </Stack>
   )

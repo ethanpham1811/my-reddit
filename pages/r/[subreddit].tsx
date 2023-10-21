@@ -5,10 +5,10 @@ import NewPageLoading from '@/components/utilities/NewPageLoading/NewPageLoading
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/constants/types'
 import { GET_SUBREDDIT_BY_NAME, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
-import { ApolloError } from '@apollo/client'
+import { ApolloError, useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { GetStaticProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -55,7 +55,7 @@ export async function getStaticPaths() {
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
-export default function Subreddit({ subreddit, subredditPosts, error }: InferGetServerSidePropsType<typeof getStaticProps>) {
+export default function Subreddit() {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { subreddit: subName },
@@ -63,7 +63,11 @@ export default function Subreddit({ subreddit, subredditPosts, error }: InferGet
     isFallback
   } = useRouter()
   const [hasNoPost, setHasNoPost] = useState(false)
-  const loading = false // FIXME: test loading
+
+  // subreddit page info query
+  const { data, loading, error = null } = useQuery(GET_SUBREDDIT_BY_NAME, { variables: { name: subName } })
+  const subreddit: TSubredditDetail = data?.subredditByName
+  const subredditPosts: TPost[] = subreddit?.post
 
   // redirect to 404 if no data found
   if (subreddit === null && !loading && !error) {

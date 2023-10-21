@@ -27,11 +27,10 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
         <Avatar
           variant="circular"
           sx={{
-            mr: 0.5,
+            mr: 1,
             width: 20,
             height: 20,
-            backgroundColor: generateSeededHexColor(selectedItem.name || 'seed'),
-            border: (theme): string => `4px solid ${theme.palette.white.main}`
+            backgroundColor: generateSeededHexColor(selectedItem.name || 'seed')
           }}
           alt={`${selectedItem.name} avatar`}
           src={generateUserImage(selectedItem.name || 'seed')}

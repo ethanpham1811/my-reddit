@@ -40,6 +40,7 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import { BsFacebook, BsReddit } from 'react-icons/bs'
 import { FcGoogle } from 'react-icons/fc'
 
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import { ImArrowDown, ImArrowUp } from 'react-icons/im'
 
 export {
@@ -57,6 +58,7 @@ export {
   CampaignOutlinedIcon,
   CloseIcon,
   CreateOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
   EmailOutlinedIcon,
   FcGoogle,
   HighlightOffOutlinedIcon,

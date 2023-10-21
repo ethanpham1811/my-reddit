@@ -1,9 +1,10 @@
 import { POST_MUTATION_MODE } from '@/constants/enums'
+import { DeleteOutlineOutlinedIcon } from '@/constants/icons'
 import { urlValidation } from '@/services'
-import { CircularProgress, Stack } from '@mui/material'
+import { CircularProgress, IconButton, Stack, Tooltip } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { Control, FieldValues, Path } from 'react-hook-form'
+import { Dispatch, SetStateAction, useState } from 'react'
+import { Control, FieldValues, Path, UseFormReset } from 'react-hook-form'
 import { RdButton, RdImageList, RdInput, RdSubredditSelect, RdTextEditor } from '../../..'
 
 type TMainFormProps<T extends FieldValues> = {
@@ -13,9 +14,11 @@ type TMainFormProps<T extends FieldValues> = {
   subId: number | undefined
   loading: boolean
   isDirty: boolean
+  reset: UseFormReset<T>
+  setIsLinkPost: Dispatch<SetStateAction<boolean>>
 }
 
-function MainForm<T extends FieldValues>({ isDirty, isLinkPost, control, imagesValue, subId, loading }: TMainFormProps<T>) {
+function MainForm<T extends FieldValues>({ setIsLinkPost, reset, isDirty, isLinkPost, control, imagesValue, subId, loading }: TMainFormProps<T>) {
   const {
     push: navigate,
     query: { subreddit: subName, postid, mode }
@@ -81,6 +84,19 @@ function MainForm<T extends FieldValues>({ isDirty, isLinkPost, control, imagesV
           color="blue"
           width="30%"
         />
+
+        <Tooltip title="Clear and close">
+          <IconButton
+            disabled={isEditing}
+            sx={{ bgcolor: 'actionIcon.main', p: 0.5, color: 'white.main', '&:hover': { bgcolor: 'actionIcon.main', opacity: 0.8 } }}
+            onClick={() => {
+              setIsLinkPost(false)
+              reset()
+            }}
+          >
+            <DeleteOutlineOutlinedIcon sx={{ display: 'block', fontSize: '1.5rem' }} />
+          </IconButton>
+        </Tooltip>
       </Stack>
     </Stack>
     // {/* <ErrorMessage errors={errors} render={({ message }) => <p>{message}</p>} /> */}

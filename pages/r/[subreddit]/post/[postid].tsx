@@ -6,9 +6,9 @@ import NewPageLoading from '@/components/utilities/NewPageLoading/NewPageLoading
 import { TPost, TSubredditDetail } from '@/constants/types'
 import { GET_POST_AND_SUB_BY_POST_ID, GET_POST_LIST } from '@/graphql/queries'
 import { validatePostBySubname } from '@/services'
-import { ApolloError } from '@apollo/client'
+import { ApolloError, useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
-import { GetStaticProps, InferGetServerSidePropsType } from 'next'
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
@@ -57,7 +57,7 @@ export async function getStaticPaths() {
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
-export default function Post({ subreddit, subredditPost: post, error }: InferGetServerSidePropsType<typeof getStaticProps>) {
+export default function Post() {
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
@@ -65,7 +65,17 @@ export default function Post({ subreddit, subredditPost: post, error }: InferGet
     push: navigate,
     isFallback
   } = useRouter()
-  const loading = false // FIXME: test loading
+
+  // post detail query
+  const {
+    data,
+    loading,
+    error = null
+  } = useQuery(GET_POST_AND_SUB_BY_POST_ID, {
+    variables: { id: postid, name: subName }
+  })
+  const subreddit: TSubredditDetail = data?.subredditByName
+  const post: TPost = data?.post
 
   // redirect to 404 if no data found
   if (post === null && !loading && !error) {
