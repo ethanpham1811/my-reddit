@@ -53,7 +53,7 @@ function VoteColumn({ vote, me, postId }: TVoteColumn) {
   }
 
   return (
-    <Box width={40} m={-1} py={1} bgcolor="inputBgOutfocused.main">
+    <Box width={40} m={-1} mb={0} bgcolor="inputBgOutfocused.main">
       <Stack alignItems="center">
         <IconButton onClick={(e) => handleVote(e, true)} disabled={!me}>
           <ImArrowUp style={{ color: `${currentUpvote != null && currentUpvote ? '#ff4500' : '#DAE0E6'}` }} />

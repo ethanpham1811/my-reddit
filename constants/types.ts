@@ -147,7 +147,8 @@ export type TRdSelect = IconButtonProps & {
 /* ------------------------------------------Props Types------------------------------------------ */
 export type TCardPostProps = {
   post: TPost
-  inGroup?: boolean
+  loadedInSubPage?: boolean
+  loadedInPostPage?: boolean
 }
 export type IsChildrenGroupCheckboxProps<T extends FieldValues> = {
   name: FieldPath<T>

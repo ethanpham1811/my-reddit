@@ -4,16 +4,16 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import Link from 'next/link'
 
 type TPostHeader = {
-  inGroup: boolean | undefined
+  loadedInSubPage: boolean | undefined
   subName: string
   username: string
   createdAt: Date
 }
 
-function PostHeader({ inGroup, subName, username, createdAt }: TPostHeader) {
+function PostHeader({ loadedInSubPage, subName, username, createdAt }: TPostHeader) {
   return (
     <Stack direction="row" alignItems="center" sx={{ px: 1 }}>
-      {!inGroup && (
+      {!loadedInSubPage && (
         <Link href={`/r/${subName}`}>
           <Avatar
             sx={{
@@ -29,7 +29,7 @@ function PostHeader({ inGroup, subName, username, createdAt }: TPostHeader) {
         </Link>
       )}
 
-      {!inGroup && (
+      {!loadedInSubPage && (
         <Stack direction="row">
           <Link href={`/r/${subName}`} onClick={(e) => e.stopPropagation()} style={{ color: 'inherit', textDecoration: 'none' }}>
             <Typography fontWeight={600} color="black">

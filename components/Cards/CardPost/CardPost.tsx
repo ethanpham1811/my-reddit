@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import ActionMenu from './components/ActionMenu'
+import BottomActionMenu from './components/BottomActionMenu'
 import PostHeader from './components/PostHeader'
 import VoteColumn from './components/VoteColumn'
 
@@ -23,7 +24,8 @@ function CardPost({
     comment: commentList,
     link
   },
-  inGroup
+  loadedInSubPage,
+  loadedInPostPage
 }: TCardPostProps) {
   const { session } = useAppSession()
   const me: TUserDetail | undefined | null = session?.userDetail
@@ -38,7 +40,9 @@ function CardPost({
   const isMyPost = me?.username === username
 
   /* navigate to post detail page */
-  const goToPost = () => !postid && navigate(`/r/${subName}/post/${postId}`)
+  function goToPost() {
+    !postid && navigate(`/r/${subName}/post/${postId}`)
+  }
 
   return (
     <Stack position="relative" spacing={2}>
@@ -50,7 +54,7 @@ function CardPost({
           {/* main section */}
           <Box flex={1} ml={1} pl={1}>
             {/* post Header */}
-            <PostHeader inGroup={inGroup} subName={subName} username={username} createdAt={createdAt} />
+            <PostHeader loadedInSubPage={loadedInSubPage} subName={subName} username={username} createdAt={createdAt} />
             {/* post content */}
             <Box p={1}>
               <Typography variant="h6">{title}</Typography>
@@ -66,10 +70,10 @@ function CardPost({
             )}
           </Box>
         </Stack>
-
-        {/* 3 dot menu */}
+        {loadedInPostPage && <BottomActionMenu postId={postId.toString()} />}
       </RdCard>
-      {isMyPost && <ActionMenu postId={postId} />}
+      {/* 3 dot menu */}
+      {isMyPost && !loadedInPostPage && <ActionMenu postId={postId.toString()} />}
       {postid != null && (
         <CardCommentBox subName={subName} commentList={commentList} post_id={postId} user_id={me?.id} username={me?.username as string} />
       )}

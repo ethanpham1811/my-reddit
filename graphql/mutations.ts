@@ -97,6 +97,35 @@ export const DELETE_POST = gql`
     }
   }
 `
+export const UPDATE_POST = gql`
+  mutation UpdatePost($id: ID!, $body: String, $images: [String], $title: String, $link: String) {
+    updatePost(id: $id, body: $body, images: $images, title: $title, link: $link) {
+      id
+      images
+      body
+      created_at
+      title
+      user {
+        username
+      }
+      comment {
+        created_at
+        user {
+          username
+        }
+        text
+      }
+      subreddit {
+        name
+        subType
+      }
+      vote {
+        upvote
+      }
+      link
+    }
+  }
+`
 
 /* ----------------------------- VOTE -------------------------------- */
 export const ADD_VOTE = gql`

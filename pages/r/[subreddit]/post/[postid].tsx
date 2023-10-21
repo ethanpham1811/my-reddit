@@ -60,7 +60,7 @@ export default function Post({ subreddit, subredditPost: post, error }: InferGet
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
-    query: { subreddit: subName },
+    query: { subreddit: subName, postid },
     push: navigate,
     isFallback
   } = useRouter()
@@ -69,14 +69,9 @@ export default function Post({ subreddit, subredditPost: post, error }: InferGet
   // redirect to 404 if no data found
   post === null && !loading && !error && navigate('/404')
 
-  // if post in public subreddit OR user in subreddit => return true
+  // if post in public subreddit OR user is member of subreddit => return true
   const verifyPost = (): boolean => {
     return validatePostBySubname(me?.member_of_ids, subName, post?.subreddit?.subType)
-  }
-
-  const cardPost = () => {
-    if (!post) return <MessageBoard head="This post does not exist" />
-    return <CardPost post={post} inGroup={!!subName} />
   }
 
   // show loading page on new created dynamic page
@@ -92,7 +87,9 @@ export default function Post({ subreddit, subredditPost: post, error }: InferGet
         {!verifyPost() ? (
           <MessageBoard head={'This post is private, please join '} highlight={subName as string} />
         ) : (
-          <Stack spacing={2}>{post && cardPost()}</Stack>
+          <Stack spacing={2}>
+            <CardPost post={post} loadedInSubPage={!!subName} loadedInPostPage={!!postid} />
+          </Stack>
         )}
         <CardSubredditInfo subreddit={subreddit} loading={loading} />
       </FeedLayout>

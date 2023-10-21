@@ -62,7 +62,7 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
         <MessageBoard head="This community is private, please join " highlight={subPageName as string} />
       ) : cardPostList.length > 0 ? (
         cardPostList.map((post) => {
-          return <CardPost post={post} key={`post_${rid()}`} inGroup={!!subPageName} />
+          return <CardPost post={post} key={`post_${rid()}`} loadedInSubPage={!!subPageName} />
         })
       ) : (
         <MessageBoard head={subPageName ? 'This Subreddit has no post' : 'Something wrong with the server, please come back again'} />
