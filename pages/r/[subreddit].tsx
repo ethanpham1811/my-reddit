@@ -36,7 +36,7 @@ export const getStaticProps = (async ({ params }) => {
       subredditPosts,
       error
     },
-    revalidate: 5
+    revalidate: 1
   }
 }) satisfies GetStaticProps<TSubredditPageProps>
 

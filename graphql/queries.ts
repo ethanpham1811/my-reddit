@@ -107,15 +107,6 @@ export const GET_USER_LIST_SHORT = gql`
 `
 
 /* --------------------------- SUBREDDIT ------------------------------ */
-export const GET_SUBREDDIT_BY_TOPIC = gql`
-  query Sub_by_topic($topic: String!) {
-    subredditListByTopic(topic: $topic) {
-      id
-      topic_ids
-      created_at
-    }
-  }
-`
 export const GET_SUBREDDIT_BY_NAME = gql`
   query Sub_by_name($name: String!) {
     subredditByName(name: $name) {
@@ -205,69 +196,6 @@ export const GET_POST_LIST = gql`
       subreddit {
         name
         subType
-      }
-      vote {
-        id
-        upvote
-        user_id
-      }
-      link
-      linkDescription
-    }
-  }
-`
-export const GET_POST_LIST_BY_SUB_ID = gql`
-  query Posts_by_subId($id: ID!) {
-    postUsingPost_subreddit_id_fkey(id: $id) {
-      id
-      images
-      body
-      created_at
-      title
-      user {
-        username
-      }
-      comment {
-        created_at
-        user {
-          username
-        }
-        text
-      }
-      subreddit {
-        name
-        subType
-      }
-      vote {
-        id
-        upvote
-        user_id
-      }
-      link
-      linkDescription
-    }
-  }
-`
-export const GET_POST_LIST_BY_USER_ID = gql`
-  query Posts_by_userId($id: ID!) {
-    postUsingPost_user_id_fkey(id: $id) {
-      id
-      images
-      body
-      created_at
-      title
-      user {
-        username
-      }
-      comment {
-        created_at
-        user {
-          username
-        }
-        text
-      }
-      subreddit {
-        name
       }
       vote {
         id

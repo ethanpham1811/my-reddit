@@ -40,7 +40,7 @@ export const getStaticProps = (async ({ params }) => {
       userPosts,
       error
     },
-    revalidate: 5
+    revalidate: 1
   }
 }) satisfies GetStaticProps<TUserPageProps>
 
@@ -70,9 +70,6 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
 
   // user detail query
   const { data, loading, error = null } = useQuery(GET_USER_BY_USERNAME, { variables: { username } })
-
-  console.log('home server', svUserPosts)
-  console.log('home client', data?.userByUsername?.post)
   const user: TUserDetail = data?.userByUsername || svUser
   const userPosts: TPost[] = user?.post || svUserPosts
   const pageLoading: boolean = loading && !user

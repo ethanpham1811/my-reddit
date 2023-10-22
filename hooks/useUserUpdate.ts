@@ -2,7 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TUserDetail } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
 import { GET_USER_BY_EMAIL } from '@/graphql/queries'
-import { useMutation } from '@apollo/client'
+import { ApolloCache, useMutation } from '@apollo/client'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -36,38 +36,21 @@ function useUserUpdate() {
         id: me?.id,
         ...buildUpdateParams(me, key, newVal, isAdding)
       },
-      update: (proxy, { data: { userByEmail } }) => {
-        const data: unknown = proxy.readQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email } })
-        const cachedData = data as { userByEmail: TUserDetail }
-        cachedData.userByEmail = userByEmail
+      update: (cache: ApolloCache<any>, { data: { userByEmail } }) => {
+        cache.updateQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email } }, (data) => {
+          if (!data) return // abort cache update
 
-        proxy.writeQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email }, data })
+          return {
+            userByEmail
+          }
+        })
       }
     })
     if (errors) toast.error(errors[0].message)
 
-    // // get cached data
-    // const { userByEmail: userData } = client.readQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email } })
-    // if (!userData) {
-    //   setLoading(false)
-    //   return
-    // }
-
-    // // updating cache
-    // client.writeQuery({
-    //   query: GET_USER_BY_EMAIL,
-    //   data: {
-    //     userByEmail: {
-    //       ...userData,
-    //       ...buildUpdateParams(userData, key, newVal, isAdding)
-    //     }
-    //   },
-    //   variables: { email: me?.email }
-    // })
-
     setLoading(false)
+    return { error: errors }
   }
-
   return { updateUser, loading }
 }
 

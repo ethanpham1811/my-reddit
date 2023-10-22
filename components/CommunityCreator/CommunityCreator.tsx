@@ -1,9 +1,7 @@
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { LockIcon, PersonIcon, RemoveRedEyeIcon } from '@/constants/icons'
 import { TCommunityCreatorForm, TCommunityCreatorProps, TCommunityTypeOPtions } from '@/constants/types'
-import { ADD_SUBREDDIT } from '@/graphql/mutations'
-import useUserUpdate from '@/hooks/useUserUpdate'
-import { ApolloError, useMutation } from '@apollo/client'
+import useSubredditCreate from '@/hooks/useSubredditCreate'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -61,35 +59,23 @@ export const groupTypeOptions: TCommunityTypeOPtions[] = [
 ]
 
 function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
-  const [addSubreddit] = useMutation(ADD_SUBREDDIT, {
-    onCompleted: () => {
-      toast.success('Your Subreddit sucessfully added!')
-      setOpen(false)
-    },
-    onError: (error: ApolloError) => toast.error(error.message)
-  })
+  const { createSubreddit, loading } = useSubredditCreate()
   const {
     handleSubmit,
     control,
-    formState: { errors }
+    formState: { isValid }
   } = useForm<TCommunityCreatorForm>({ defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false } })
-
-  const { updateUser, loading } = useUserUpdate()
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
-    const { name, topic_ids, subType, isChildrenContent } = formData
-    const { errors } = await addSubreddit({
-      variables: {
-        name,
-        topic_ids,
-        subType,
-        isChildrenContent
-      }
-    })
-    if (errors) return toast.error('Something went wrong, please try again later')
-    // update user to join the new subreddit as first member
-    updateUser('member_of_ids', name)
+    const res = await createSubreddit(formData)
+
+    // error
+    if (res?.error) return toast.error('Create subreddit failed, please try again')
+
+    // success
+    toast.success('Your Subreddit sucessfully added!')
+    setOpen(false)
   })
 
   return (
@@ -107,8 +93,15 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
             Community names including capitalization cannot be changed.
           </Typography>
           <Stack direction="row" gap={1} sx={{ mt: 2 }}>
-            <RdInput control={control} name="name" helper="21 Characters remaining" width="60%" bgcolor="white" />
-            <TopicDropdown control={control} name="topic_ids" />
+            <RdInput<TCommunityCreatorForm>
+              registerOptions={{ required: 'Please name your community' }}
+              control={control}
+              name="name"
+              helper="21 Characters remaining"
+              width="60%"
+              bgcolor="white"
+            />
+            <TopicDropdown<TCommunityCreatorForm> registerOptions={{ required: 'Please choose a topic' }} control={control} name="topic_ids" />
           </Stack>
 
           {/* Community types  */}

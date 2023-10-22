@@ -5,15 +5,16 @@ import { TTopic } from '@/constants/types'
 import useTopicList from '@/hooks/useTopicList'
 import { Box, Chip, FormControl, MenuItem, Typography } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
-import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
+import { Control, Controller, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 import { v4 as rid } from 'uuid'
 
 type TTopicDropdown<T extends FieldValues> = {
   name: FieldPath<T>
   control: Control<T>
+  registerOptions?: RegisterOptions
 }
 
-function TopicDropdown<T extends FieldValues>({ name, control }: TTopicDropdown<T>) {
+function TopicDropdown<T extends FieldValues>({ name, control, registerOptions }: TTopicDropdown<T>) {
   const { topicList, loading, error } = useTopicList()
   /* set local list for data manipulating */
   // const [localList, setLocalList] = useState<TTopic[] | null>(null)
@@ -74,10 +75,12 @@ function TopicDropdown<T extends FieldValues>({ name, control }: TTopicDropdown<
   return (
     <FormControl>
       <Controller
+        rules={registerOptions}
         control={control}
         name={name}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange }, fieldState: { error } }) => (
           <RdMultipleDropdown
+            error={error}
             max={MAX_TOPIC_CHOSEN}
             renderSelectedOption={renderSelectedOption}
             onChange={onChange}

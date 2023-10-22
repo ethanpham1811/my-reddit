@@ -31,7 +31,7 @@ export const getStaticProps = (async (ctx) => {
       postList,
       error
     },
-    revalidate: 5
+    revalidate: 1
   }
 }) satisfies GetStaticProps<THomePageProps>
 
@@ -43,8 +43,6 @@ export default function Home({ postList: svPostList }: InferGetStaticPropsType<t
 
   // home page posts list query
   const { data, loading, error } = useQuery(GET_POST_LIST)
-  console.log('home server', svPostList)
-  console.log('home client', data?.postList)
   const postList: TPost[] = data?.postList || svPostList
   const pageLoading: boolean = loading && !postList
 

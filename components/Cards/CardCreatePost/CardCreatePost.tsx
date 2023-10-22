@@ -31,7 +31,7 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
     setValue,
     getValues,
     control,
-    formState: { errors, isDirty, isValid }
+    formState: { isDirty }
   } = useForm<TCardCreatePostForm>()
   const titleValue = watch('title')
   const imagesValue = watch('images')

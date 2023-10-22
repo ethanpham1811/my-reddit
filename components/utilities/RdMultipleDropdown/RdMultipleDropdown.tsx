@@ -1,7 +1,8 @@
 import { KeyboardArrowDownIcon } from '@/constants/icons'
 import { TRdMultipleDropdownProps } from '@/constants/types'
-import { Box, Select } from '@mui/material'
+import { Box, FormHelperText, Select } from '@mui/material'
 import { ReactNode, useState } from 'react'
+import { v4 as rid } from 'uuid'
 
 function RdMultipleDropdown({
   flex,
@@ -13,6 +14,7 @@ function RdMultipleDropdown({
   loading,
   renderSelectedOption,
   onChange,
+  error,
   ...rest
 }: TRdMultipleDropdownProps) {
   const [selectedArray, setSelectedArray] = useState<string[]>([])
@@ -86,6 +88,11 @@ function RdMultipleDropdown({
       >
         {children}
       </Select>
+      {error && (
+        <FormHelperText id={`helper_${rid()}`} sx={{ color: 'orange.main' }}>
+          {error.message}
+        </FormHelperText>
+      )}
     </Box>
   )
 }

@@ -3,8 +3,8 @@ import { DeleteOutlineOutlinedIcon } from '@/constants/icons'
 import { urlValidation } from '@/services'
 import { CircularProgress, IconButton, Stack, Tooltip } from '@mui/material'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useState } from 'react'
-import { Control, FieldValues, Path, UseFormReset } from 'react-hook-form'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Control, FieldValues, Path, UseFormReset, UseFormSetValue } from 'react-hook-form'
 import { RdButton, RdImageList, RdInput, RdSubredditSelect, RdTextEditor } from '../../..'
 
 type TMainFormProps<T extends FieldValues> = {
@@ -15,16 +15,33 @@ type TMainFormProps<T extends FieldValues> = {
   loading: boolean
   isDirty: boolean
   reset: UseFormReset<T>
+  setValue: UseFormSetValue<T>
   setIsLinkPost: Dispatch<SetStateAction<boolean>>
 }
 
-function MainForm<T extends FieldValues>({ setIsLinkPost, reset, isDirty, isLinkPost, control, imagesValue, subId, loading }: TMainFormProps<T>) {
+function MainForm<T extends FieldValues>({
+  setIsLinkPost,
+  reset,
+  setValue,
+  isDirty,
+  isLinkPost,
+  control,
+  imagesValue,
+  subId,
+  loading
+}: TMainFormProps<T>) {
   const {
     push: navigate,
     query: { subreddit: subName, postid, mode }
   } = useRouter()
   const [backBtnHover, isBackBtnHover] = useState(false)
   const isEditing = mode === POST_MUTATION_MODE.Edit
+
+  useEffect(() => {
+    // set subId & post id if available
+    postid && setValue('id' as Path<T>, postid as any)
+    subId && setValue('subreddit_id' as Path<T>, subId as any)
+  }, [setValue])
 
   return (
     <Stack spacing={1}>
@@ -85,18 +102,20 @@ function MainForm<T extends FieldValues>({ setIsLinkPost, reset, isDirty, isLink
           width="30%"
         />
 
-        <Tooltip title="Clear and close">
-          <IconButton
-            disabled={isEditing}
-            sx={{ bgcolor: 'actionIcon.main', p: 0.5, color: 'white.main', '&:hover': { bgcolor: 'actionIcon.main', opacity: 0.8 } }}
-            onClick={() => {
-              setIsLinkPost(false)
-              reset()
-            }}
-          >
-            <DeleteOutlineOutlinedIcon sx={{ display: 'block', fontSize: '1.5rem' }} />
-          </IconButton>
-        </Tooltip>
+        {!isEditing && (
+          <Tooltip title="Clear and close">
+            <IconButton
+              disabled={isEditing}
+              sx={{ bgcolor: 'actionIcon.main', p: 0.5, color: 'white.main', '&:hover': { bgcolor: 'actionIcon.main', opacity: 0.8 } }}
+              onClick={() => {
+                setIsLinkPost(false)
+                reset()
+              }}
+            >
+              <DeleteOutlineOutlinedIcon sx={{ display: 'block', fontSize: '1.5rem' }} />
+            </IconButton>
+          </Tooltip>
+        )}
       </Stack>
     </Stack>
     // {/* <ErrorMessage errors={errors} render={({ message }) => <p>{message}</p>} /> */}

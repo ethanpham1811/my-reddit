@@ -38,7 +38,8 @@ export const getStaticProps = (async ({ params }) => {
       subreddit,
       subredditPost,
       error
-    }
+    },
+    revalidate: 1
   }
 }) satisfies GetStaticProps<TPostPageProps>
 
@@ -57,7 +58,7 @@ export async function getStaticPaths() {
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
-export default function Post({ subreddit: svSubreddit, subredditPost: svSubredditPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Post({ subreddit: svSubreddit, subredditPost: svSubredditPost }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
@@ -75,7 +76,7 @@ export default function Post({ subreddit: svSubreddit, subredditPost: svSubreddi
     variables: { id: postid, name: subName }
   })
   const subreddit: TSubredditDetail = data?.subredditByName || svSubreddit
-  const post: TPost = data?.post || svSubredditPosts
+  const post: TPost = data?.post || svSubredditPost
   const pageLoading: boolean = loading && !subreddit
 
   // redirect to 404 if no data found

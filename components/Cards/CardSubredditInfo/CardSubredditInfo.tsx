@@ -49,7 +49,7 @@ function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
             <Box display="flex" justifyContent="center" py={1} alignItems="center">
               <Typography sx={{ fontSize: '0.8rem', mr: '5px', color: 'hintText.main' }}>Started since</Typography>
               <Typography variant="body1" color="initial" fontWeight={400}>
-                {format(new Date(subreddit.created_at), 'MMM yyyy')}
+                {subreddit.created_at && format(new Date(subreddit.created_at), 'MMM yyyy')}
               </Typography>
             </Box>
           </CardContent>

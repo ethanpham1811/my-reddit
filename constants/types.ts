@@ -16,7 +16,7 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from '@supabase/supabase-js'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
-import { Control, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
+import { Control, FieldError, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, PROFILE_DIALOG_TYPE, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
 
 /* --------------------------------------------Common Types-------------------------------------------- */
@@ -215,6 +215,7 @@ export type TRdMultipleDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 
   flex?: number
   loading?: boolean
   borderColor?: string
+  error?: FieldError
 }
 export type TRdImageCarouselProps = {
   width: string
@@ -240,6 +241,7 @@ export type TRdRadioGroupProps<T extends FieldValues> = {
   control: Control<T>
   options: TRadioOption[]
   label: string | ReactNode
+  registerOptions?: RegisterOptions
 }
 export type TRdSubredditAutoCompleteProps<T extends FieldValues> = {
   name: FieldPath<T>
@@ -338,6 +340,9 @@ export type TFormColumnProps<T extends FieldValues> = {
   isDirty: boolean
   reset: UseFormReset<T>
   setIsLinkPost: Dispatch<SetStateAction<boolean>>
+}
+export type TPostCommentForm = {
+  comment: string
 }
 
 /* ------------------------------------------Hook response Types------------------------------------------ */

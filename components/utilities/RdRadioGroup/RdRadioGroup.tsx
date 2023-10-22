@@ -7,7 +7,7 @@ import RadioGroup from '@mui/material/RadioGroup'
 import { Controller, FieldValues } from 'react-hook-form'
 import { v4 as rid } from 'uuid'
 
-const RdRadioGroup = <T extends FieldValues>({ options, name, control, label }: TRdRadioGroupProps<T>) => {
+const RdRadioGroup = <T extends FieldValues>({ options, name, control, label, registerOptions }: TRdRadioGroupProps<T>) => {
   return (
     <FormControl>
       <FormLabel id={`${name}-radio-group`} sx={{ '&.Mui-focused': { color: 'black' }, color: 'black' }}>
@@ -15,6 +15,7 @@ const RdRadioGroup = <T extends FieldValues>({ options, name, control, label }: 
       </FormLabel>
       <Controller
         name={name}
+        rules={registerOptions}
         control={control}
         render={({ field: { onChange, value } }) => (
           <RadioGroup onChange={onChange} value={value} aria-labelledby={`${name} radio group`} name={`${name}-radio-group`}>

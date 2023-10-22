@@ -1,9 +1,10 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { POST_MUTATION_MODE } from '@/constants/enums'
-import { TCardCreatePostForm, TPost } from '@/constants/types'
+import { TCardCreatePostForm, TPost, TSubreddit } from '@/constants/types'
 import { ADD_POST, UPDATE_POST } from '@/graphql/mutations'
-import { GET_POST_LIST, GET_POST_LIST_BY_SUB_ID, GET_USER_BY_USERNAME } from '@/graphql/queries'
-import { ApolloCache, DocumentNode, useMutation } from '@apollo/client'
+import { GET_POST_LIST, GET_SUBREDDIT_BY_NAME, GET_SUBREDDIT_LIST_SHORT, GET_USER_BY_USERNAME } from '@/graphql/queries'
+import { ApolloCache, DocumentNode, useMutation, useQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import useSupabaseUpload from './useSupabaseUpload'
@@ -13,8 +14,12 @@ function usePostCreateAndEdit() {
   const me = session?.userDetail
   const [loading, setLoading] = useState(false)
   const [uploadFiles] = useSupabaseUpload()
+  const { data: subList } = useQuery(GET_SUBREDDIT_LIST_SHORT)
   const [insertPost] = useMutation(ADD_POST)
   const [updatePost] = useMutation(UPDATE_POST)
+  const {
+    query: { subreddit: subName, username }
+  } = useRouter()
 
   // map function for dynamically use
   const functionList = {
@@ -50,10 +55,50 @@ function usePostCreateAndEdit() {
         link,
         linkDescription
       },
-      update: (proxy, { data: { insertPost, updatePost } }) => {
-        updateCache(insertPost || updatePost, proxy, isCreate, GET_POST_LIST, 'postList')
-        updateCache(insertPost || updatePost, proxy, isCreate, GET_POST_LIST_BY_SUB_ID, 'postUsingPost_subreddit_id_fkey', { id: subreddit_id })
-        updateCache(insertPost || updatePost, proxy, isCreate, GET_USER_BY_USERNAME, ['userByUsername', 'post'], { username: me.username })
+      update: (cache: ApolloCache<any>, { data: { insertPost, updatePost } }) => {
+        const newPost = insertPost || updatePost
+
+        // default: home page
+        let query: DocumentNode = GET_POST_LIST
+        let variables: {} = {}
+        let dataKey: string = 'postList'
+        let childKey: string | null = null
+
+        // subreddit page
+        if (subName) {
+          // retrieve subreddit name by id from subreddit list
+          const sub_name = (subList as { subredditList: TSubreddit[] })?.subredditList?.find((sub) => sub.id === subreddit_id)?.name
+          if (!sub_name) return // abort cache update
+
+          variables = { name: sub_name }
+          query = GET_SUBREDDIT_BY_NAME
+          dataKey = 'subredditByName'
+          childKey = 'post'
+        }
+        // user profile page
+        if (username && me) {
+          variables = { username: me.username }
+          query = GET_USER_BY_USERNAME
+          dataKey = 'userByUsername'
+          childKey = 'post'
+        }
+
+        cache.updateQuery({ query, variables }, (data) => {
+          if (!data) return // abort cache update
+          const cachedPostList: TPost[] = childKey ? data[dataKey][childKey] : data[dataKey]
+          let newPostList: TPost[] = cachedPostList
+
+          if (isCreate) {
+            newPostList = [...newPostList, newPost]
+          } else {
+            const updatedPostIndex = newPostList.findIndex((post: TPost) => post.id === newPost.id)
+            newPostList[updatedPostIndex] = newPost
+          }
+
+          return {
+            [dataKey]: newPostList
+          }
+        })
       }
     })
     if (errors) {
@@ -65,51 +110,7 @@ function usePostCreateAndEdit() {
     setLoading(false)
   }
 
-  function updateCache(newPost: TPost, proxy: ApolloCache<any>, isCreate: boolean, query: DocumentNode, queryKey: string | string[], variables?: {}) {
-    const data: unknown = proxy.readQuery({ query, variables })
-    console.log(data)
-    if (!data) return
-    let cachedData
-    let key
-
-    if (Array.isArray(queryKey)) {
-      const rootKey = queryKey[0]
-      key = queryKey[1]
-      cachedData = (data as { [rootKey: string]: { [key: string]: TPost[] } })[rootKey as string]
-    } else {
-      key = queryKey
-      cachedData = data as { [queryKey: string]: TPost[] }
-    }
-
-    console.log(cachedData)
-
-    if (isCreate) {
-      cachedData[key].push(newPost)
-      console.log('here')
-    } else {
-      const listByUserIndex = cachedData[key].findIndex((post) => post.id === newPost.id)
-      cachedData[key][listByUserIndex] = newPost
-    }
-    console.log(cachedData)
-    proxy.writeQuery({ query, variables, data: data })
-  }
-
   return { mutatePost, loading }
 }
 
 export default usePostCreateAndEdit
-
-// const data: unknown = proxy.readQuery({ query, variables })
-// if (!data) return
-// const cachedData = data as { [queryKey: string]: TPost[] }
-
-// console.log(data)
-
-// if (isCreate) {
-//   cachedData[queryKey].push(newPost)
-// } else {
-//   const listByUserIndex = cachedData[queryKey].findIndex((post) => post.id === newPost.id)
-//   cachedData[queryKey][listByUserIndex] = newPost
-// }
-// console.log(data)
-// proxy.writeQuery({ query, variables, data: data })

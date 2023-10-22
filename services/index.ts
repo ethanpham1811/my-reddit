@@ -92,7 +92,7 @@ export const customFormatDistance = (targetDate: Date) => {
   const distance = formatDistanceToNow(targetDate, { addSuffix: true })
   const matches = [...distance.matchAll(/(\d+)\s+(\w+)\s+ago/g)]
 
-  if (matches.length == 0) return 'Unknown'
+  if (matches.length == 0) return 'now'
 
   const unitsMap: { [key: string]: string } = {
     second: 'sec',

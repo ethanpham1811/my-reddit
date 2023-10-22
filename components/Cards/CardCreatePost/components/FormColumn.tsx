@@ -41,10 +41,6 @@ function FormColumn<T extends FieldValues>({
 
   /* Event subscriber for opening the form from somewhere else */
   useEffect(() => {
-    // set subId if available
-    postid && setValue('id' as Path<T>, postid as any)
-    subId && setValue('subreddit_id' as Path<T>, subId as any)
-
     let sto: NodeJS.Timeout | null = null
 
     eventEmitter.subscribe(Events.OPEN_CREATE_POST_FORM, (state) => {
@@ -76,6 +72,7 @@ function FormColumn<T extends FieldValues>({
       {(!!titleValue || isDirty) && (
         <MainForm<T>
           reset={reset}
+          setValue={setValue}
           isDirty={isDirty}
           loading={loading}
           isLinkPost={isLinkPost}
