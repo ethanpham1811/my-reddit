@@ -8,7 +8,7 @@ import { GET_USER_BY_USERNAME, GET_USER_LIST_SHORT } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { GetStaticProps } from 'next'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -59,7 +59,7 @@ export async function getStaticPaths() {
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
-export default function User() {
+export default function User({ user: svUser, userPosts: svUserPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { username },
@@ -70,11 +70,15 @@ export default function User() {
 
   // user detail query
   const { data, loading, error = null } = useQuery(GET_USER_BY_USERNAME, { variables: { username } })
-  const user: TUserDetail = data?.userByUsername
-  const userPosts: TPost[] = user?.post
+
+  console.log('home server', svUserPosts)
+  console.log('home client', data?.userByUsername?.post)
+  const user: TUserDetail = data?.userByUsername || svUser
+  const userPosts: TPost[] = user?.post || svUserPosts
+  const pageLoading: boolean = loading && !user
 
   // redirect to 404 if no data found
-  if (user === null && !loading && !error) {
+  if (user === null && !pageLoading && !error) {
     navigate('/404')
     return null
   }
@@ -90,9 +94,9 @@ export default function User() {
       <FeedLayout top="70px">
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
-          <UserNewFeeds postList={userPosts} loading={loading} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
+          <UserNewFeeds postList={userPosts} loading={pageLoading} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
         </Stack>
-        <CardUserInfo user={user} loading={loading} />
+        <CardUserInfo user={user} loading={pageLoading} />
       </FeedLayout>
     </div>
   )

@@ -8,7 +8,7 @@ import { GET_POST_AND_SUB_BY_POST_ID, GET_POST_LIST } from '@/graphql/queries'
 import { validatePostBySubname } from '@/services'
 import { ApolloError, useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
-import { GetStaticProps } from 'next'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
@@ -57,7 +57,7 @@ export async function getStaticPaths() {
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
-export default function Post() {
+export default function Post({ subreddit: svSubreddit, subredditPost: svSubredditPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
@@ -74,11 +74,12 @@ export default function Post() {
   } = useQuery(GET_POST_AND_SUB_BY_POST_ID, {
     variables: { id: postid, name: subName }
   })
-  const subreddit: TSubredditDetail = data?.subredditByName
-  const post: TPost = data?.post
+  const subreddit: TSubredditDetail = data?.subredditByName || svSubreddit
+  const post: TPost = data?.post || svSubredditPosts
+  const pageLoading: boolean = loading && !subreddit
 
   // redirect to 404 if no data found
-  if (post === null && !loading && !error) {
+  if (post === null && !pageLoading && !error) {
     navigate('/404')
     return null
   }
@@ -103,7 +104,7 @@ export default function Post() {
         ) : (
           <Stack spacing={2}>{post && <CardPost post={post} loadedInSubPage={!!subName} loadedInPostPage={!!postid} />}</Stack>
         )}
-        <CardSubredditInfo subreddit={subreddit} loading={loading} />
+        <CardSubredditInfo subreddit={subreddit} loading={pageLoading} />
       </FeedLayout>
     </div>
   )

@@ -1,6 +1,5 @@
-import { client } from '@/apollo-client'
 import { RdButton, RdCard, RdTextEditor } from '@/components'
-import { TComment } from '@/constants/types'
+import { TComment, TPost } from '@/constants/types'
 import { ADD_COMMENT } from '@/graphql/mutations'
 import { GET_POST_AND_SUB_BY_POST_ID } from '@/graphql/queries'
 import { useMutation } from '@apollo/client'
@@ -35,24 +34,30 @@ function CardCommentBox({ subName, post_id, user_id, username, commentList }: TC
       created_at: new Date().toISOString()
     }
     const { errors } = await addComment({
-      variables: newPost
+      variables: newPost,
+      update: (proxy, { data: { post } }) => {
+        const data: unknown = proxy.readQuery({ query: GET_POST_AND_SUB_BY_POST_ID, variables: { id: post_id, name: subName } })
+        const cachedData = data as { post: TPost[] }
+        cachedData.post.push(post)
+
+        proxy.writeQuery({ query: GET_POST_AND_SUB_BY_POST_ID, variables: { id: post_id, name: subName }, data })
+      }
     })
     if (errors) toast.error(errors[0].message)
 
     /* update cache */
-    const cachedPost = client.readQuery({ query: GET_POST_AND_SUB_BY_POST_ID, variables: { id: post_id, name: subName } })
-    if (!cachedPost) return
-    const postData = cachedPost.post
-    client.writeQuery({
-      query: GET_POST_AND_SUB_BY_POST_ID,
-      data: {
-        post: {
-          ...postData,
-          comment: postData.comment ? [...postData.comment, newPost] : [newPost]
-        }
-      },
-      variables: { id: post_id, name: subName }
-    })
+    // const { post: postData } = client.readQuery({ query: GET_POST_AND_SUB_BY_POST_ID, variables: { id: post_id, name: subName } })
+    // if (!postData) return
+    // client.writeQuery({
+    //   query: GET_POST_AND_SUB_BY_POST_ID,
+    //   data: {
+    //     post: {
+    //       ...postData,
+    //       comment: postData.comment ? [...postData.comment, newPost] : [newPost]
+    //     }
+    //   },
+    //   variables: { id: post_id, name: subName }
+    // })
   })
 
   return (

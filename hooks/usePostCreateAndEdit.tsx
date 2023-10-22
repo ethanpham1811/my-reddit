@@ -1,11 +1,9 @@
-import { client } from '@/apollo-client'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { POST_MUTATION_MODE } from '@/constants/enums'
-import { TCardCreatePostForm } from '@/constants/types'
+import { TCardCreatePostForm, TPost } from '@/constants/types'
 import { ADD_POST, UPDATE_POST } from '@/graphql/mutations'
-import { GET_POST_LIST, GET_POST_LIST_BY_SUB_ID, GET_POST_LIST_BY_USER_ID } from '@/graphql/queries'
-import { useMutation } from '@apollo/client'
-import { useRouter } from 'next/router'
+import { GET_POST_LIST, GET_POST_LIST_BY_SUB_ID, GET_USER_BY_USERNAME } from '@/graphql/queries'
+import { ApolloCache, DocumentNode, useMutation } from '@apollo/client'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import useSupabaseUpload from './useSupabaseUpload'
@@ -15,15 +13,12 @@ function usePostCreateAndEdit() {
   const me = session?.userDetail
   const [loading, setLoading] = useState(false)
   const [uploadFiles] = useSupabaseUpload()
-  const [addPost] = useMutation(ADD_POST)
+  const [insertPost] = useMutation(ADD_POST)
   const [updatePost] = useMutation(UPDATE_POST)
-  const {
-    query: { subreddit: subName, username }
-  } = useRouter()
 
   // map function for dynamically use
   const functionList = {
-    addPost,
+    insertPost,
     updatePost
   }
 
@@ -44,7 +39,7 @@ function usePostCreateAndEdit() {
     }
 
     /* ----------------------------------Mutate db---------------------------------*/
-    const { data, errors } = await functionList[isCreate ? 'addPost' : 'updatePost']({
+    const { errors } = await functionList[isCreate ? 'insertPost' : 'updatePost']({
       variables: {
         id,
         user_id: me?.id,
@@ -54,57 +49,49 @@ function usePostCreateAndEdit() {
         images,
         link,
         linkDescription
+      },
+      update: (proxy, { data: { insertPost, updatePost } }) => {
+        updateCache(insertPost || updatePost, proxy, isCreate, GET_POST_LIST, 'postList')
+        updateCache(insertPost || updatePost, proxy, isCreate, GET_POST_LIST_BY_SUB_ID, 'postUsingPost_subreddit_id_fkey', { id: subreddit_id })
+        updateCache(insertPost || updatePost, proxy, isCreate, GET_USER_BY_USERNAME, ['userByUsername', 'post'], { username: me.username })
       }
     })
     if (errors) {
       setLoading(false)
       toast.error(errors[0].message)
     }
-    const newPost = data && data[isCreate ? 'insertPost' : 'updatePost']
-
-    /* ----------- retrieve respective query by type of page (OPTIONAL) -----------*/
-    // home page (default)
-    let cachedQuery = GET_POST_LIST
-    let variables = {}
-    let gqlKey = 'postList'
-
-    // subreddit page
-    if (subName && subreddit_id) {
-      variables = { variables: { id: subreddit_id } }
-      cachedQuery = GET_POST_LIST_BY_SUB_ID
-      gqlKey = 'postUsingPost_subreddit_id_fkey'
-    }
-    // user profile page
-    if (username && me) {
-      variables = { variables: { id: me.id } }
-      cachedQuery = GET_POST_LIST_BY_USER_ID
-      gqlKey = 'postUsingPost_user_id_fkey'
-    }
-
-    /* -------------------------- Update cache (OPTIONAL) -------------------------*/
-    // get cached data
-    const cachedData = client.readQuery({ query: cachedQuery, ...variables })
-    if (!cachedData) {
-      cb()
-      toast.success('Your article has been successfully posted')
-      setLoading(false)
-      return
-    }
-
-    // updating cache
-    const userData = cachedData[gqlKey]
-    client.writeQuery({
-      query: cachedQuery,
-      data: {
-        [gqlKey]: [...userData, newPost]
-      },
-      ...variables
-    })
-
-    /* --------------------------------- Finishing up --------------------------------*/
     toast.success('Your article has been successfully posted')
     cb()
     setLoading(false)
+  }
+
+  function updateCache(newPost: TPost, proxy: ApolloCache<any>, isCreate: boolean, query: DocumentNode, queryKey: string | string[], variables?: {}) {
+    const data: unknown = proxy.readQuery({ query, variables })
+    console.log(data)
+    if (!data) return
+    let cachedData
+    let key
+
+    if (Array.isArray(queryKey)) {
+      const rootKey = queryKey[0]
+      key = queryKey[1]
+      cachedData = (data as { [rootKey: string]: { [key: string]: TPost[] } })[rootKey as string]
+    } else {
+      key = queryKey
+      cachedData = data as { [queryKey: string]: TPost[] }
+    }
+
+    console.log(cachedData)
+
+    if (isCreate) {
+      cachedData[key].push(newPost)
+      console.log('here')
+    } else {
+      const listByUserIndex = cachedData[key].findIndex((post) => post.id === newPost.id)
+      cachedData[key][listByUserIndex] = newPost
+    }
+    console.log(cachedData)
+    proxy.writeQuery({ query, variables, data: data })
   }
 
   return { mutatePost, loading }
@@ -112,23 +99,17 @@ function usePostCreateAndEdit() {
 
 export default usePostCreateAndEdit
 
-// toast.promise(
-//   addPost({
-//     variables: {
-//       body: !isLinkPost ? body : linkDescription,
-//       subreddit_id: subId ?? subreddit_id,
-//       title,
-//       user_id: me?.id,
-//       images,
-//       link
-//     }
-//   }).then((res) => {
-//     newPost = res?.data?.insertPost
-//     cb()
-//   }),
-//   {
-//     loading: <RdToast message="Post processing..." />,
-//     success: <RdToast message="Successfully posted" />,
-//     error: <RdToast message="Posting failed" />
-//   }
-// )
+// const data: unknown = proxy.readQuery({ query, variables })
+// if (!data) return
+// const cachedData = data as { [queryKey: string]: TPost[] }
+
+// console.log(data)
+
+// if (isCreate) {
+//   cachedData[queryKey].push(newPost)
+// } else {
+//   const listByUserIndex = cachedData[queryKey].findIndex((post) => post.id === newPost.id)
+//   cachedData[queryKey][listByUserIndex] = newPost
+// }
+// console.log(data)
+// proxy.writeQuery({ query, variables, data: data })

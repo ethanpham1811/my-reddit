@@ -1,4 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache, from } from '@apollo/client'
+// import { InMemoryCache } from 'apollo-cache-inmemory'
 // import { setContext } from 'apollo-link-context'
 
 // const authLink = setContext((_, { headers }) => {
@@ -18,6 +19,24 @@ const httpLink = new HttpLink({
   headers: {
     Authorization: `Apikey ${process.env.NEXT_PUBLIC_STEPZEN_API_KEY}`
   }
+})
+
+// export default function createApolloClient(initialState, ctx) {
+//   // The `ctx` (NextPageContext) will only be present on the server.
+//   // use it to extract auth headers (ctx.req) or similar.
+//   return new ApolloClient({
+//     ssrMode: Boolean(ctx),
+//     link: httpLink,
+//     cache: new InMemoryCache().restore(initialState)
+//   })
+// }
+
+export const client = new ApolloClient({
+  // ssrMode: true,
+  link: from([httpLink]),
+
+  // important to provide the initialState to transfer data from server to client
+  cache: new InMemoryCache()
 })
 
 // const authLink = setContext((_, { headers }) => {
@@ -48,8 +67,3 @@ const httpLink = new HttpLink({
 //     toast.dismiss()
 //   }
 // }
-
-export const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: from([httpLink])
-})

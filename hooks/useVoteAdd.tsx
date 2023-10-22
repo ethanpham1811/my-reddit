@@ -26,6 +26,17 @@ function useVoteAdd() {
         user_id: myId,
         upvote: isUpvoteBtn
       }
+      // optimisticResponse: {
+      //   id: -1, // -1 is a temporary id for the optimistic response.
+      //   text,
+      //   completed: false,
+      // },
+
+      // update: (proxy, { data: { createTodo } }) => {
+      //   const data = proxy.readQuery({ query: TodoAppQuery })
+      //   data.todos.push(createTodo)
+      //   proxy.writeQuery({ query: TodoAppQuery, data })
+      // }
     })
     if (errors) {
       toast.error(errors[0].message)

@@ -8,7 +8,7 @@ import { GET_SUBREDDIT_BY_NAME, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queri
 import { ApolloError, useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { GetStaticProps } from 'next'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -55,7 +55,7 @@ export async function getStaticPaths() {
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
-export default function Subreddit() {
+export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSubredditPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { subreddit: subName },
@@ -66,8 +66,9 @@ export default function Subreddit() {
 
   // subreddit page info query
   const { data, loading, error = null } = useQuery(GET_SUBREDDIT_BY_NAME, { variables: { name: subName } })
-  const subreddit: TSubredditDetail = data?.subredditByName
-  const subredditPosts: TPost[] = subreddit?.post
+  const subreddit: TSubredditDetail = data?.subredditByName || svSubreddit
+  const subredditPosts: TPost[] = subreddit?.post || svSubredditPosts
+  const pageLoading: boolean = loading && !subreddit
 
   // redirect to 404 if no data found
   if (subreddit === null && !loading && !error) {
@@ -90,13 +91,13 @@ export default function Subreddit() {
           <NewFeeds
             subType={subreddit?.subType}
             postList={subredditPosts}
-            loading={loading}
+            loading={pageLoading}
             error={error}
             sortOptions={sortOptions}
             setHasNoPost={setHasNoPost}
           />
         </Stack>
-        <CardSubredditInfo subreddit={subreddit} loading={loading} />
+        <CardSubredditInfo subreddit={subreddit} loading={pageLoading} />
       </FeedLayout>
     </div>
   )

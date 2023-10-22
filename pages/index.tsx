@@ -7,7 +7,7 @@ import { GET_POST_LIST } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
 
-import { GetStaticProps } from 'next'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 
@@ -37,13 +37,16 @@ export const getStaticProps = (async (ctx) => {
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
-export default function Home() {
+export default function Home({ postList: svPostList }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const [hasNoPost, setHasNoPost] = useState(false)
 
   // home page posts list query
-  const { data, error } = useQuery(GET_POST_LIST)
-  const postList: TPost[] = data?.postList
+  const { data, loading, error } = useQuery(GET_POST_LIST)
+  console.log('home server', svPostList)
+  console.log('home client', data?.postList)
+  const postList: TPost[] = data?.postList || svPostList
+  const pageLoading: boolean = loading && !postList
 
   return (
     <div>
@@ -54,7 +57,7 @@ export default function Home() {
       <FeedLayout top="70px">
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
-          <NewFeeds postList={postList} loading={false} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
+          <NewFeeds postList={postList} loading={pageLoading} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
         </Stack>
         <Stack spacing={2}>
           <CardAds />

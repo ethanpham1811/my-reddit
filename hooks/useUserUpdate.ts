@@ -1,4 +1,3 @@
-import { client } from '@/apollo-client'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TUserDetail } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
@@ -36,29 +35,35 @@ function useUserUpdate() {
       variables: {
         id: me?.id,
         ...buildUpdateParams(me, key, newVal, isAdding)
+      },
+      update: (proxy, { data: { userByEmail } }) => {
+        const data: unknown = proxy.readQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email } })
+        const cachedData = data as { userByEmail: TUserDetail }
+        cachedData.userByEmail = userByEmail
+
+        proxy.writeQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email }, data })
       }
     })
     if (errors) toast.error(errors[0].message)
 
-    // get cached data
-    const cachedData = client.readQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email } })
-    if (!cachedData) {
-      setLoading(false)
-      return
-    }
+    // // get cached data
+    // const { userByEmail: userData } = client.readQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email } })
+    // if (!userData) {
+    //   setLoading(false)
+    //   return
+    // }
 
-    // updating cache
-    const userData = cachedData.userByEmail
-    client.writeQuery({
-      query: GET_USER_BY_EMAIL,
-      data: {
-        userByEmail: {
-          ...userData,
-          ...buildUpdateParams(userData, key, newVal, isAdding)
-        }
-      },
-      variables: { email: me?.email }
-    })
+    // // updating cache
+    // client.writeQuery({
+    //   query: GET_USER_BY_EMAIL,
+    //   data: {
+    //     userByEmail: {
+    //       ...userData,
+    //       ...buildUpdateParams(userData, key, newVal, isAdding)
+    //     }
+    //   },
+    //   variables: { email: me?.email }
+    // })
 
     setLoading(false)
   }
