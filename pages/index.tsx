@@ -29,9 +29,9 @@ export const getStaticProps = (async (ctx) => {
   return {
     props: {
       postList,
-      error,
-      revalidate: 5
-    }
+      error
+    },
+    revalidate: 5
   }
 }) satisfies GetStaticProps<THomePageProps>
 
