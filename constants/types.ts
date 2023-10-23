@@ -107,11 +107,13 @@ export type TIconBox = {
   icon: ReactNode
   name: string
   notification?: TNotiData
+  hideOnMobile?: boolean
 }
 export type TMenuDropdownProps = {
   subName: string | string[] | undefined
   userPageName: string | string[] | undefined
   pathName: string
+  mobileMode?: boolean
 }
 export type TProfileDropdownProps = {
   loading: boolean
@@ -179,9 +181,12 @@ export type TRdAutoCompleteProps<
   DisableClearable extends boolean | undefined,
   FreeSolo extends boolean | undefined,
   ChipCom extends React.ElementType<any> = 'div'
-> = AutocompleteProps<OptionType, Multiple, DisableClearable, FreeSolo, ChipCom> & {
+> = Omit<AutocompleteProps<OptionType, Multiple, DisableClearable, FreeSolo, ChipCom>, 'sx'> & {
   width?: string
   flex?: number
+  isMobile?: boolean
+  sx: SxProps
+  focused: boolean
 }
 export type TRdButtonProps = ButtonOwnProps &
   Pick<ButtonProps, 'type' | 'onClick' | 'onMouseEnter' | 'onMouseLeave'> & {

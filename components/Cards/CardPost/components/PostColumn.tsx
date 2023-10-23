@@ -5,7 +5,6 @@ import { Dispatch, SetStateAction } from 'react'
 import PostHeader from '../components/PostHeader'
 
 type TPostColumnProps = {
-  loadedInPostPage: boolean | undefined
   loadedInSubPage: boolean | undefined
   subName: string
   username: string
@@ -20,7 +19,6 @@ type TPostColumnProps = {
 }
 
 function PostColumn({
-  loadedInPostPage,
   loadedInSubPage,
   subName,
   username,

@@ -28,7 +28,7 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
         '&.Mui-focused': { '.body::after': { background: 'linear-gradient(to top, #F6F7F8, transparent)' } }
       }}
     >
-      <Box pt={0.6}>
+      <Box pt={0.6} sx={{ display: { xs: 'none', md: 'block' } }}>
         <OutboundOutlinedIcon sx={{ color: 'blue.main', fontSize: '1.5rem' }} />
       </Box>
       <Stack

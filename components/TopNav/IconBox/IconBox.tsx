@@ -27,46 +27,40 @@ const notiData: TIconBox[] = [
   },
   {
     icon: <AddSharpIcon />,
-    name: 'Create'
+    name: 'Create',
+    hideOnMobile: true
   },
   {
     icon: <CampaignOutlinedIcon />,
-    name: 'Advertise'
+    name: 'Advertise',
+    hideOnMobile: true
   }
 ]
 
-function IconBox() {
+function IconBox({ isMobile }: { isMobile: boolean }) {
   return (
     <Stack direction="row">
       {notiData.length > 0 &&
-        notiData.map(({ name, notification, icon }) => (
-          <IconButton
-            key={`noti_bubble_${name}`}
-            size="large"
-            sx={{ color: 'icon.main', p: 1.25, fontSize: '2rem' }}
-            aria-label={notificationsLabel(100)}
-          >
-            {notification ? (
-              <RdNotiBubble content={notification.content} max={notification.max}>
-                {icon}
-              </RdNotiBubble>
-            ) : (
-              icon
+        notiData.map(({ name, notification, icon, hideOnMobile }) => (
+          <>
+            {isMobile && hideOnMobile ? null : (
+              <IconButton
+                key={`noti_bubble_${name}`}
+                size="large"
+                sx={{ color: 'icon.main', p: 1.25, fontSize: '2rem' }}
+                aria-label={notificationsLabel(100)}
+              >
+                {notification ? (
+                  <RdNotiBubble content={notification.content} max={notification.max}>
+                    {icon}
+                  </RdNotiBubble>
+                ) : (
+                  icon
+                )}
+              </IconButton>
             )}
-          </IconButton>
+          </>
         ))}
-
-      {/* <IconButton
-        size="large"
-        edge="end"
-        aria-label="account of current user"
-        // aria-controls={menuId}
-        aria-haspopup="true"
-        // onClick={handleProfileMenuOpen}
-        color="inherit"
-      >
-        <AccountCircle />
-      </IconButton> */}
     </Stack>
   )
 }

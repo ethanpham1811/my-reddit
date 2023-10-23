@@ -12,7 +12,7 @@ import FeedsMenuList from './components/FeedsMenuList'
 import PeopleMenuList from './components/PeopleMenuList'
 import SubsMenuList from './components/SubsMenuList'
 
-function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
+function MenuDropDown({ subName, mobileMode = false, userPageName, pathName }: TMenuDropdownProps) {
   const { pathname } = useRouter()
   const [filterTerm, setFilterTerm] = useState('')
   const { session, loading } = useAppSession()
@@ -49,7 +49,7 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
     return option.name.toLowerCase().includes(filterTerm.toLowerCase())
   }
   function handleRenderSelectedOption(value: string): ReactNode {
-    return renderSelectedOption(value, true, [...feedsOptions, ...communityOptions, ...peopleOptions], activePage, subName, pathname)
+    return renderSelectedOption(value, mobileMode, [...feedsOptions, ...communityOptions, ...peopleOptions], activePage, subName, pathname)
   }
 
   return (
@@ -60,7 +60,6 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       width="20vw"
       maxWidth="250px"
       minWidth="50px"
-      mobileMode
     >
       {/* Filter input */}
       <List sx={{ p: 2, pt: 1 }}>

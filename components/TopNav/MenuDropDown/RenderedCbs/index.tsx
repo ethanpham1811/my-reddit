@@ -31,14 +31,12 @@ export const renderSelectedOption = (
               src={generateUserImage(selectedMenu.name)}
             />
           )}
-          <Box sx={{ display: { xs: 'none', lg: 'block' } }} display="block" textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
+          <Box sx={{ display: mobileMode ? 'none' : 'block' }} textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
             {`${subOrUserName ? 'r/' : ''}${selectedMenu.name}` || 'unknown'}
           </Box>
         </>
       ) : (
-        <Box sx={{ display: { xs: 'none', lg: 'block' } }} display="block">
-          {pathname === '/search' ? 'Search results' : '404'}
-        </Box>
+        <Box sx={{ display: mobileMode ? 'none' : 'block' }}>{pathname === '/search' ? 'Search results' : '404'}</Box>
       )}
     </>
   )

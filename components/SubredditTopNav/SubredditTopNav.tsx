@@ -1,13 +1,8 @@
-import { useAppSession } from '@/components/Layouts/MainLayout'
-import { SUBREDDIT_TYPE } from '@/constants/enums'
-import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
-import useUserUpdate from '@/hooks/useUserUpdate'
 import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
-import { RdButton, RdChip } from '..'
 import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../services'
+import ActionButton from './components/ActionButton'
 
 const SubredditNavBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -22,15 +17,6 @@ type TSubredditTopNavProps = {
 }
 
 function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
-  const { session } = useAppSession()
-  const me = session?.userDetail
-  const [showLeaveBtn, setShowLeaveBtn] = useState(false)
-  const { updateUser, loading } = useUserUpdate()
-
-  async function onLeaveSubreddit() {
-    me && updateUser('member_of_ids', name, false)
-  }
-
   return (
     <Box flexGrow={1}>
       <SubredditNavBar sx={{ pb: 2 }}>
@@ -69,30 +55,9 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
                 </Link>
               </Typography>
             </Stack>
-            <Stack sx={{ alignSelf: 'flex-start', alignItems: 'center', ml: 'auto' }} direction="row">
-              {me?.member_of_ids?.includes(name as string) ? (
-                <RdButton
-                  onClick={onLeaveSubreddit}
-                  filled={showLeaveBtn}
-                  text={showLeaveBtn ? 'Leave' : 'Joined'}
-                  onMouseEnter={() => setShowLeaveBtn(true)}
-                  onMouseLeave={() => setShowLeaveBtn(false)}
-                  color="blue"
-                  width="6rem"
-                  sx={{ px: 3, py: 0.5, fontWeight: 700, fontSize: '0.8rem' }}
-                />
-              ) : (
-                <RdChip
-                  label={subType === SUBREDDIT_TYPE.Private ? 'Private' : 'Public'}
-                  sx={{ fontSize: '0.8rem', p: 2, fontWeight: 700, color: 'blue.main' }}
-                />
-              )}
-              {subType === SUBREDDIT_TYPE.Private ? (
-                <HttpsOutlinedIcon sx={{ ml: 1, display: 'block', color: 'orange.main' }} />
-              ) : (
-                <PublicOutlinedIcon sx={{ ml: 1, display: 'block', color: 'blue.main' }} />
-              )}
-            </Stack>
+
+            {/* member status and subreddit type indicator */}
+            <ActionButton name={name} subType={subType} />
           </Stack>
         </Container>
       </SubredditNavBar>

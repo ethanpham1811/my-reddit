@@ -67,7 +67,6 @@ function CardPost({
 
             {/* main section */}
             <PostColumn
-              loadedInPostPage={loadedInPostPage}
               loadedInSubPage={loadedInSubPage}
               subName={subName}
               username={username}

@@ -4,20 +4,24 @@ import { RdChip } from '@/components'
 import { HighlightOffOutlinedIcon } from '@/constants/icons'
 import { generateSeededHexColor, generateUserImage } from '@/services'
 import SearchIcon from '@mui/icons-material/Search'
+import { Dispatch, SetStateAction } from 'react'
 
 type TInputProps = {
   params: AutocompleteRenderInputParams
   chip: boolean
   name: string | string[] | undefined
   onDeleteChip: () => void
+  isMobile: boolean
+  focused: boolean
+  setFocused: Dispatch<SetStateAction<boolean>>
 }
 
 /* Autocomplete input display */
-function SearchBarInput({ params, chip, name, onDeleteChip }: TInputProps) {
+function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onDeleteChip }: TInputProps) {
   const startAdornment = () => (
-    <Stack direction="row" alignItems="center">
-      <SearchIcon />
-      {chip && name && (
+    <Stack direction="row" alignItems="center" className="search-icon">
+      <SearchIcon onClick={() => setFocused(true)} sx={{ cursor: 'pointer' }} />
+      {chip && name && !isMobile && (
         <RdChip
           avatar={
             <Avatar
@@ -50,7 +54,7 @@ function SearchBarInput({ params, chip, name, onDeleteChip }: TInputProps) {
         placeholder: 'Search Reddit'
       }}
       sx={{
-        '.MuiInputBase-root': {
+        '.MuiInputBase-root.MuiAutocomplete-inputRoot': {
           flexWrap: 'nowrap',
           borderRadius: '1.5rem',
           width: '100%',
@@ -67,7 +71,11 @@ function SearchBarInput({ params, chip, name, onDeleteChip }: TInputProps) {
           }
         },
         'input.MuiAutocomplete-input': {
-          p: '0 !important'
+          p: '0 !important',
+          display: isMobile && !focused ? 'none' : 'block'
+        },
+        '.MuiAutocomplete-endAdornment': {
+          display: isMobile && !focused ? 'none' : 'block'
         },
         '[aria-expanded=true]': {
           '~ fieldset': { borderBottom: 'none' }

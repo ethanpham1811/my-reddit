@@ -26,6 +26,7 @@ function RdImageCarousel({ width, height, imgList, setZoomDialogOpen, setZoomedI
             marginTop: 0
           }
         }}
+        height={300}
         indicators={imgList.length > 1}
         fullHeightHover={false}
         sx={{ width }}
@@ -42,6 +43,7 @@ function RdImageCarousel({ width, height, imgList, setZoomDialogOpen, setZoomedI
               style={{ width, height, objectFit: 'contain', cursor: 'zoom-in' }}
               width={300}
               height={200}
+              loading="lazy"
               onClick={(e) => zoomImage(e, imgSrc)}
             />
           </Paper>

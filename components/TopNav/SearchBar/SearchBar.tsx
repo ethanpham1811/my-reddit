@@ -2,7 +2,7 @@ import { RdAutoComplete } from '@/components'
 import { TAutocompleteOptions } from '@/constants/types'
 import useTopSearchQueriedList from '@/hooks/useTopSearchQueriedList'
 import { generateAutoCompleteUrl, isNotFound } from '@/services'
-import { AutocompleteRenderInputParams, Box } from '@mui/material'
+import { AutocompleteRenderInputParams } from '@mui/material'
 import { NextRouter } from 'next/router'
 import { SyntheticEvent, useState } from 'react'
 import { renderGroup, renderOption } from './components'
@@ -12,15 +12,25 @@ type TSearchBarProps = {
   subOrUserName: string | string[] | undefined
   pathName: string
   navigate: NextRouter['push']
+  lgMobile: boolean
+  mdMobile: boolean
 }
 
-function SearchBar({ subOrUserName, pathName, navigate }: TSearchBarProps) {
+function SearchBar({ subOrUserName, lgMobile, mdMobile, pathName, navigate }: TSearchBarProps) {
   const [focused, setFocused] = useState(false)
   const [chip, setChip] = useState(true)
   const { queriedDataList = [], loading, error, searchTerm, setSearchTerm } = useTopSearchQueriedList(focused)
 
   const renderInput = (params: AutocompleteRenderInputParams) => (
-    <SearchBarInput params={params} chip={chip} name={subOrUserName} onDeleteChip={onDeleteChip} />
+    <SearchBarInput
+      setFocused={setFocused}
+      focused={focused}
+      params={params}
+      chip={chip}
+      isMobile={mdMobile}
+      name={subOrUserName}
+      onDeleteChip={onDeleteChip}
+    />
   )
 
   /* Autocomplete listeners */
@@ -38,43 +48,44 @@ function SearchBar({ subOrUserName, pathName, navigate }: TSearchBarProps) {
   }
   const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
   const onDeleteChip = () => setChip(false)
-  const onBlur = () => setChip(true)
+  const onBlur = () => {
+    setFocused(false)
+    setChip(true)
+  }
 
   return (
-    <Box flex={1}>
-      <RdAutoComplete<TAutocompleteOptions, false, false, true, 'span'>
-        options={queriedDataList}
-        disablePortal
-        freeSolo
-        selectOnFocus
-        openOnFocus
-        handleHomeEndKeys
-        includeInputInList
-        loading={loading}
-        inputValue={searchTerm}
-        popupIcon={false}
-        groupBy={(option): string => option.groupBy}
-        // open={true}
-        // open={searchTerm !== '' && isFocused}
-        onFocus={() => {
-          setFocused(true)
-        }}
-        onBlur={onBlur}
-        onInputChange={onInputChange}
-        onChange={onChange}
-        // onFocus={() => setIsFocused(true)}
-        renderInput={renderInput}
-        renderGroup={renderGroup}
-        renderOption={renderOption}
-        // value={selectedOption}
-        // isOptionEqualToValue={undefined}
-        noOptionsText={<div>Nothing found</div>}
-        getOptionLabel={() => ''} // prevent displaying selected option value
-        filterOptions={() => queriedDataList} // filtering disabled
-        id="top-search-auto"
-        flex={1}
-      />
-    </Box>
+    <RdAutoComplete<TAutocompleteOptions, false, false, true, 'span'>
+      options={queriedDataList}
+      disablePortal
+      freeSolo
+      selectOnFocus
+      openOnFocus
+      handleHomeEndKeys
+      includeInputInList
+      loading={loading}
+      inputValue={searchTerm}
+      popupIcon={false}
+      isMobile={lgMobile}
+      focused={focused}
+      groupBy={(option): string => option.groupBy}
+      // open={true}
+      // open={searchTerm !== '' && isFocused}
+      onFocus={() => setFocused(true)}
+      onBlur={onBlur}
+      onInputChange={onInputChange}
+      onChange={onChange}
+      // onFocus={() => setIsFocused(true)}
+      renderInput={renderInput}
+      renderGroup={renderGroup}
+      renderOption={renderOption}
+      // value={selectedOption}
+      // isOptionEqualToValue={undefined}
+      noOptionsText={<div>Nothing found</div>}
+      getOptionLabel={() => ''} // prevent displaying selected option value
+      filterOptions={() => queriedDataList} // filtering disabled
+      id="top-search-auto"
+      sx={{ flex: mdMobile ? 0 : 1 }}
+    />
   )
 }
 
