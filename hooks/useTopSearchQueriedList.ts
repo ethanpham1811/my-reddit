@@ -1,3 +1,4 @@
+import { client } from '@/apollo-client'
 import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TQueryNotFound } from '@/constants/types'
 import { GET_QUERIED_SUBS_USERS, GET_TOP_TRENDING_POSTS } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
@@ -11,15 +12,13 @@ type TuseTopSearchQueriedListResponse = {
   setSearchTerm: Dispatch<SetStateAction<string>>
 }
 
-function useTopSearchQueriedList(): TuseTopSearchQueriedListResponse {
+function useTopSearchQueriedList(isFocused: boolean): TuseTopSearchQueriedListResponse {
   const [searchTerm, setSearchTerm] = useState('')
+  const [trendingLoading, setTrendingLoading] = useState(false)
+  const [trendingData, setTrendingData] = useState<TQueriedTrending[] | null>(null)
   const notFound: TQueryNotFound[] = [{ groupBy: 'Not Found', text: 'Nothing found.' }]
 
-  // Trending posts for default list
-  const { data: trendingData, loading: trendingLoading, error: trendingError } = useQuery(GET_TOP_TRENDING_POSTS, { variables: { quantity: 3 } })
-  const topTrendingData: TQueriedTrending[] = trendingData?.queriedTrending ?? []
-
-  // Subs and users for queried list
+  // query Subs and users list by search term
   const {
     data: queriedData,
     loading: queriedLoading,
@@ -29,13 +28,28 @@ function useTopSearchQueriedList(): TuseTopSearchQueriedListResponse {
   const queriedSubs: TQueriedSub[] = queriedData?.queriedSubs ?? []
   const queriedUsers: TQueriedUser[] = queriedData?.queriedUsers ?? []
 
-  // use Trending posts for default list if searchTerm is empty
-  const queriedDataList = searchTerm === '' ? topTrendingData : [...queriedSubs, ...queriedUsers]
+  // use Trending posts for default list if searchTerm is ''
+  const queriedDataList = searchTerm === '' ? trendingData || [] : [...queriedSubs, ...queriedUsers]
   const loading = trendingLoading || queriedLoading
 
+  // fetch quried user and subreddit list on user typing
   useEffect(() => {
     searchTerm !== '' && refetch()
   }, [searchTerm, refetch])
+
+  // fetch Top trending post on user first time focus search bar
+  useEffect(() => {
+    if (!isFocused || trendingData) return
+    setTrendingLoading(true)
+
+    const fetchTopTrending = async () => {
+      const { data, error } = await client.query({ query: GET_TOP_TRENDING_POSTS, variables: { quantity: 3 } })
+      setTrendingLoading(false)
+      if (error) return
+      setTrendingData(data?.queriedTrending)
+    }
+    fetchTopTrending()
+  }, [isFocused, setTrendingData, trendingData])
 
   return { queriedDataList: queriedDataList.length == 0 && !loading ? notFound : queriedDataList, loading, error, searchTerm, setSearchTerm }
 }

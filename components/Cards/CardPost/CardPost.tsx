@@ -63,7 +63,7 @@ function CardPost({
         <RdCard onClick={goToPost} sx={{ '&:hover': !postid ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {} }}>
           <Stack direction="row">
             {/* side column */}
-            <VoteColumn vote={vote} me={me} postId={postId} />
+            <VoteColumn vote={vote} me={me} postId={postId} isMyPost={isMyPost} loadedInPostPage={loadedInPostPage} />
 
             {/* main section */}
             <PostColumn

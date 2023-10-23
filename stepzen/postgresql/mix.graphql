@@ -8,6 +8,7 @@ type QueriedTrending {
   subreddit_id: ID!
   created_at: Date
   link: String
+  images: [String]
 }
 
 type QueriedPost {
@@ -56,6 +57,7 @@ type Query {
         p."created_at",
         p."subreddit_id",
         p."link",
+        p."images",
         "totalUpvotes",
         'Top trending' AS "groupBy"
       FROM "post" "p"

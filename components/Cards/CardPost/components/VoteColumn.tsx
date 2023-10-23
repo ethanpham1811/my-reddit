@@ -11,9 +11,11 @@ type TVoteColumn = {
   vote: TVote[] | undefined
   me: TUserDetail | undefined | null
   postId: number
+  isMyPost: boolean
+  loadedInPostPage: boolean | undefined
 }
 
-function VoteColumn({ vote, me, postId }: TVoteColumn) {
+function VoteColumn({ vote, me, postId, isMyPost, loadedInPostPage }: TVoteColumn) {
   const originVoteCount: number = vote ? getTotalUpvote(vote) : 0
   const originVote: TVote | undefined = vote?.find((vote) => vote.user_id === me?.id)
 
@@ -53,7 +55,7 @@ function VoteColumn({ vote, me, postId }: TVoteColumn) {
   }
 
   return (
-    <Box width={40} m={-1} mb={0} bgcolor="inputBgOutfocused.main">
+    <Box width={40} m={-1} mb={isMyPost && loadedInPostPage ? 0 : -1} bgcolor="inputBgOutfocused.main">
       <Stack alignItems="center">
         <IconButton onClick={(e) => handleVote(e, true)} disabled={!me}>
           <ImArrowUp style={{ color: `${currentUpvote != null && currentUpvote ? '#ff4500' : '#DAE0E6'}` }} />

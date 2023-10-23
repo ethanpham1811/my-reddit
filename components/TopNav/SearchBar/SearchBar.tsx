@@ -5,8 +5,8 @@ import { generateAutoCompleteUrl, isNotFound } from '@/services'
 import { AutocompleteRenderInputParams, Box } from '@mui/material'
 import { NextRouter } from 'next/router'
 import { SyntheticEvent, useState } from 'react'
-import { renderGroup, renderOption } from './renderedCbs'
-import SearchBarInput from './renderedCbs/SearchBarInput'
+import { renderGroup, renderOption } from './components'
+import SearchBarInput from './components/SearchBarInput'
 
 type TSearchBarProps = {
   subOrUserName: string | string[] | undefined
@@ -15,15 +15,15 @@ type TSearchBarProps = {
 }
 
 function SearchBar({ subOrUserName, pathName, navigate }: TSearchBarProps) {
-  const { queriedDataList, loading, error, searchTerm, setSearchTerm } = useTopSearchQueriedList()
+  const [focused, setFocused] = useState(false)
   const [chip, setChip] = useState(true)
+  const { queriedDataList = [], loading, error, searchTerm, setSearchTerm } = useTopSearchQueriedList(focused)
 
   const renderInput = (params: AutocompleteRenderInputParams) => (
     <SearchBarInput params={params} chip={chip} name={subOrUserName} onDeleteChip={onDeleteChip} />
   )
 
   /* Autocomplete listeners */
-  const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
   const onChange = (_: SyntheticEvent<Element, Event>, option: string | TAutocompleteOptions | null) => {
     if (!option) return
 
@@ -36,6 +36,7 @@ function SearchBar({ subOrUserName, pathName, navigate }: TSearchBarProps) {
       url && navigate(url)
     }
   }
+  const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
   const onDeleteChip = () => setChip(false)
   const onBlur = () => setChip(true)
 
@@ -55,6 +56,9 @@ function SearchBar({ subOrUserName, pathName, navigate }: TSearchBarProps) {
         groupBy={(option): string => option.groupBy}
         // open={true}
         // open={searchTerm !== '' && isFocused}
+        onFocus={() => {
+          setFocused(true)
+        }}
         onBlur={onBlur}
         onInputChange={onInputChange}
         onChange={onChange}
