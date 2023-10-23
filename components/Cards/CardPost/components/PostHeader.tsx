@@ -1,4 +1,4 @@
-import { generateUserImage } from '@/services'
+import { generateSeededHexColor, generateUserImage } from '@/services'
 import { Avatar, Box, Stack, Typography } from '@mui/material'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import Link from 'next/link'
@@ -20,7 +20,7 @@ function PostHeader({ loadedInSubPage, subName, username, createdAt }: TPostHead
               width: 20,
               height: 20,
               mr: 0.5,
-              backgroundColor: 'inputBgOutfocused.main'
+              backgroundColor: generateSeededHexColor(subName)
               // border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
             }}
             alt={subName}

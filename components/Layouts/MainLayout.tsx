@@ -1,10 +1,12 @@
 'use client'
+import { CheckCircleIcon } from '@/constants/icons'
 import { TAppSession } from '@/constants/types'
 import useUserByEmail from '@/hooks/useUserByEmail'
 import { Box } from '@mui/material'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { Jelly } from '@uiball/loaders'
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { Toaster } from 'react-hot-toast'
+import { ErrorIcon, Toaster } from 'react-hot-toast'
 import { TopNav } from '..'
 import SplashScreen from '../utilities/SplashScreen/SplashScreen'
 
@@ -49,7 +51,26 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <Box>
           <TopNav />
           <main>{children}</main>
-          <Toaster toastOptions={{ duration: 2000 }} position="bottom-right" />
+          <Toaster
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#fff',
+                color: '#1A1A1B',
+                fontSize: '0.8rem'
+              },
+              success: {
+                icon: <CheckCircleIcon style={{ color: '#337d19' }} />
+              },
+              error: {
+                icon: <ErrorIcon style={{ color: '#ff4500' }} />
+              },
+              loading: {
+                icon: <Jelly size={20} speed={0.7} color="#ff4500" />
+              }
+            }}
+            position="bottom-right"
+          />
         </Box>
       )}
     </AppContext.Provider>

@@ -8,9 +8,12 @@ import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined'
 import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined'
 import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined'
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CloseIcon from '@mui/icons-material/Close'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
+import ErrorIcon from '@mui/icons-material/Error'
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
 import HomeIcon from '@mui/icons-material/Home'
 import HttpsOutlinedIcon from '@mui/icons-material/HttpsOutlined'
@@ -39,8 +42,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import { BsFacebook, BsReddit } from 'react-icons/bs'
 import { FcGoogle } from 'react-icons/fc'
-
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import { ImArrowDown, ImArrowUp } from 'react-icons/im'
 
 export {
@@ -56,10 +57,12 @@ export {
   BsReddit,
   CakeOutlinedIcon,
   CampaignOutlinedIcon,
+  CheckCircleIcon,
   CloseIcon,
   CreateOutlinedIcon,
   DeleteOutlineOutlinedIcon,
   EmailOutlinedIcon,
+  ErrorIcon,
   FcGoogle,
   HighlightOffOutlinedIcon,
   HomeIcon,
