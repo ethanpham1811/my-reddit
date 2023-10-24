@@ -207,20 +207,8 @@ export const GET_POST_LIST = gql`
     }
   }
 `
-export const GET_POST_AND_SUB_BY_POST_ID = gql`
-  query Post_Sub_by_id($id: ID!, $name: String!) {
-    subredditByName(name: $name) {
-      coverUrl
-      created_at
-      description
-      headline
-      id
-      isChildrenContent
-      member
-      name
-      subType
-      topic_ids
-    }
+export const GET_POST_BY_ID = gql`
+  query Post_by_id($id: ID!) {
     post(id: $id) {
       id
       title
@@ -231,7 +219,6 @@ export const GET_POST_AND_SUB_BY_POST_ID = gql`
         username
       }
       comment {
-        id
         created_at
         user {
           username

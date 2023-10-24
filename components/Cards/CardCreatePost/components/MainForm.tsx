@@ -41,7 +41,7 @@ function MainForm<T extends FieldValues>({
     // set subId & post id if available
     postid && setValue('id' as Path<T>, postid as any)
     subId && setValue('subreddit_id' as Path<T>, subId as any)
-  }, [setValue])
+  }, [setValue, postid, subId])
 
   return (
     <Stack spacing={1}>

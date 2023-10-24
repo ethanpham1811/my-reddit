@@ -3,6 +3,7 @@ import { AddSharpIcon, CampaignOutlinedIcon, NotificationsOutlinedIcon, Outbound
 import { TIconBox } from '@/constants/types'
 import { notificationsLabel } from '@/services'
 import { IconButton, Stack } from '@mui/material'
+import { Fragment } from 'react'
 
 const notiData: TIconBox[] = [
   {
@@ -42,14 +43,9 @@ function IconBox({ isMobile }: { isMobile: boolean }) {
     <Stack direction="row">
       {notiData.length > 0 &&
         notiData.map(({ name, notification, icon, hideOnMobile }) => (
-          <>
+          <Fragment key={`noti_bubble_${name}`}>
             {isMobile && hideOnMobile ? null : (
-              <IconButton
-                key={`noti_bubble_${name}`}
-                size="large"
-                sx={{ color: 'icon.main', p: 1.25, fontSize: '2rem' }}
-                aria-label={notificationsLabel(100)}
-              >
+              <IconButton size="large" sx={{ color: 'icon.main', p: 1.25, fontSize: '2rem' }} aria-label={notificationsLabel(100)}>
                 {notification ? (
                   <RdNotiBubble content={notification.content} max={notification.max}>
                     {icon}
@@ -59,7 +55,7 @@ function IconBox({ isMobile }: { isMobile: boolean }) {
                 )}
               </IconButton>
             )}
-          </>
+          </Fragment>
         ))}
     </Stack>
   )

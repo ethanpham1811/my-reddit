@@ -1,8 +1,7 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TUserDetail } from '@/constants/types'
 import { UPDATE_USER } from '@/graphql/mutations'
-import { GET_USER_BY_EMAIL } from '@/graphql/queries'
-import { ApolloCache, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -12,7 +11,7 @@ function useUserUpdate() {
   const me = session?.userDetail
   const [mutateMemberOf] = useMutation(UPDATE_USER)
 
-  /* build dynamic update params according to TUserDetail keys */
+  /* build dynamic update params from dynamic key */
   const buildUpdateParams = (user: TUserDetail, key: keyof TUserDetail, newVal: string | null | undefined, isAdding: boolean = true) => {
     if (!newVal) return {}
     const ownVal = user[key]
@@ -26,24 +25,36 @@ function useUserUpdate() {
     return updateParams
   }
 
+  /**
+   * Update user by key:
+   * - created_at
+   * - email
+   * - dob
+   * - coverUrl
+   * - photoUrl
+   * - karma
+   * - socialLinks
+   * - member_of_ids
+   * - following_ids
+   * - post
+   */
   const updateUser = async (key: keyof TUserDetail, newVal: string | null | undefined, isAdding: boolean = true) => {
     if (!me) return
     setLoading(true)
 
-    // mutate db
+    const updatedField = buildUpdateParams(me, key, newVal, isAdding)
+
     const { errors } = await mutateMemberOf({
       variables: {
         id: me?.id,
-        ...buildUpdateParams(me, key, newVal, isAdding)
+        ...updatedField
       },
-      update: (cache: ApolloCache<any>, { data: { userByEmail } }) => {
-        cache.updateQuery({ query: GET_USER_BY_EMAIL, variables: { email: me?.email } }, (data) => {
-          if (!data) return // abort cache update
-
-          return {
-            userByEmail
-          }
-        })
+      optimisticResponse: {
+        updateUser: {
+          id: me?.id,
+          __typename: 'User',
+          ...updatedField
+        }
       }
     })
     if (errors) toast.error(errors[0].message)

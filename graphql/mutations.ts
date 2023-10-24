@@ -103,9 +103,6 @@ export const DELETE_POST = gql`
   mutation DeletePost($id: ID!) {
     deletePost(id: $id) {
       id
-      subreddit {
-        id
-      }
     }
   }
 `
@@ -139,6 +136,16 @@ export const UPDATE_POST = gql`
     }
   }
 `
+export const UPDATE_POST_WITH_VOTE_FRAG = gql`
+  fragment UpdatedPostWithVote on Post {
+    id
+    vote {
+      id
+      user_id
+      upvote
+    }
+  }
+`
 
 /* ----------------------------- VOTE -------------------------------- */
 export const ADD_VOTE = gql`
@@ -163,8 +170,6 @@ export const DELETE_VOTE = gql`
   mutation DeleteVote($id: ID!) {
     deleteVote(id: $id) {
       id
-      user_id
-      upvote
     }
   }
 `
@@ -196,9 +201,10 @@ export const ADD_SUBREDDIT = gql`
 export const ADD_COMMENT = gql`
   mutation AddComment($user_id: ID!, $post_id: ID!, $text: String!) {
     insertComment(user_id: $user_id, post_id: $post_id, text: $text) {
-      post_id
       text
-      user_id
+      user {
+        username
+      }
       created_at
     }
   }

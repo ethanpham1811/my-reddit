@@ -1,9 +1,12 @@
 import { MessageBoard } from '@/components'
 import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
+import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TComment } from '@/constants/types'
 import { generateSeededHexColor, generateUserImage } from '@/services'
 import { Avatar, Box, Link, Stack } from '@mui/material'
+import { orderBy } from 'lodash'
 import { useState } from 'react'
+import { v4 as rid } from 'uuid'
 import Comment from './Comment'
 
 function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
@@ -24,8 +27,8 @@ function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
         </Box>
       )}
       {commentList && commentList.length > 0 ? (
-        commentList.filter(filterByTerm).map(({ id, text, user: { username }, created_at }) => (
-          <Stack sx={{ pt: 5 }} direction="row" key={`comment_by_user_${username}_${id}`}>
+        orderBy(commentList.filter(filterByTerm), SORT_METHOD.New, ORDERING.Desc).map(({ text, user: { username }, created_at }) => (
+          <Stack sx={{ pt: 5 }} direction="row" key={`comment_by_user_${username}_${rid()}`}>
             {/* side column */}
             <Box width={40} mx={-1} mt={-1.25}>
               <Link href={`/u/${username}`}>

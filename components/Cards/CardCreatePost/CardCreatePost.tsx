@@ -14,7 +14,7 @@ import Tools from './components/Tools'
 
 function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined; editModePayload?: TEditModePayload }) {
   const { session } = useAppSession()
-  const { mutatePost, loading } = usePostCreateAndEdit()
+  const { createPost, updatePost, loading } = usePostCreateAndEdit()
   const [isLinkPost, setIsLinkPost] = useState(false)
   const userName: string | undefined | null = session?.userDetail?.username
   const {
@@ -44,12 +44,12 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
   const onSubmit = handleSubmit(async (formData) => {
     // edit post
     if (isEditing) {
-      await mutatePost(formData, mutationCb, isLinkPost, POST_MUTATION_MODE.Edit)
+      await updatePost(formData, mutationCb, isLinkPost)
       navigate(`/r/${subName}/post/${postid}`)
     }
     //create post
     else {
-      mutatePost(formData, mutationCb, isLinkPost, POST_MUTATION_MODE.Create)
+      createPost(formData, mutationCb, isLinkPost)
     }
   })
 

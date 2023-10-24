@@ -1,39 +1,27 @@
-import { TVote } from '@/constants/types'
 import { DELETE_VOTE } from '@/graphql/mutations'
-import { useMutation } from '@apollo/client'
-import { Dispatch, SetStateAction } from 'react'
+import { ApolloCache, useMutation } from '@apollo/client'
 import toast from 'react-hot-toast'
 
 function useVoteDelete() {
   const [mutateVote] = useMutation(DELETE_VOTE)
 
-  const deleteVote = async (
-    voteCount: number,
-    setVoteCount: Dispatch<SetStateAction<number>>,
-    currentVote: TVote,
-    setCurrentVote: Dispatch<SetStateAction<TVote | undefined>>,
-    isUpvoteBtn: boolean,
-    voteId: number
-  ) => {
-    // optimistic update
-    setVoteCount(voteCount + (isUpvoteBtn ? -1 : +1))
-    setCurrentVote(undefined)
-
-    // mutation
+  const deleteVote = async (voteId: number) => {
     const { errors } = await mutateVote({
       variables: {
         id: voteId
+      },
+      optimisticResponse: {
+        deleteVote: {
+          id: voteId,
+          __typename: 'Vote'
+        }
+      },
+      update: (cache: ApolloCache<any>, { data: { deleteVote } }) => {
+        const voteCacheId = cache.identify(deleteVote)
+        if (voteCacheId) cache.evict({ id: voteCacheId })
       }
     })
-    if (errors) {
-      toast.error(errors[0].message)
-
-      // revert optimistic value
-      setVoteCount(voteCount - (isUpvoteBtn ? -1 : +1))
-      setCurrentVote(currentVote)
-    }
-
-    setCurrentVote(undefined)
+    if (errors) toast.error(errors[0].message)
   }
 
   return { deleteVote }

@@ -1,53 +1,45 @@
-import { TVote } from '@/constants/types'
-import { ADD_VOTE } from '@/graphql/mutations'
-import { useMutation } from '@apollo/client'
-import { Dispatch, SetStateAction } from 'react'
+import { ADD_VOTE, UPDATE_POST_WITH_VOTE_FRAG } from '@/graphql/mutations'
+import { ApolloCache, useMutation } from '@apollo/client'
 import toast from 'react-hot-toast'
 
 function useVoteAdd() {
   const [mutateVote] = useMutation(ADD_VOTE)
 
-  const addVote = async (
-    voteCount: number,
-    setVoteCount: Dispatch<SetStateAction<number>>,
-    setCurrentVote: Dispatch<SetStateAction<TVote | undefined>>,
-    isUpvoteBtn: boolean,
-    myId: number,
-    postId: number
-  ) => {
-    // optimistic update
-    setVoteCount(voteCount + (isUpvoteBtn ? 1 : -1))
-    setCurrentVote({ id: +postId, user_id: +myId, upvote: isUpvoteBtn })
-
+  const addVote = async (isUpvoteBtn: boolean, myId: number, postId: number) => {
     // mutation
-    const { data, errors } = await mutateVote({
+    const { errors } = await mutateVote({
       variables: {
         post_id: postId,
         user_id: myId,
         upvote: isUpvoteBtn
+      },
+      optimisticResponse: {
+        insertVote: {
+          id: 'temp_id',
+          user_id: myId,
+          upvote: isUpvoteBtn,
+          __typename: 'Vote'
+        }
+      },
+      update: (cache: ApolloCache<any>, { data: { insertVote } }) => {
+        const postCacheId = `Post:${postId}`
+
+        cache.updateFragment(
+          {
+            id: postCacheId,
+            fragment: UPDATE_POST_WITH_VOTE_FRAG
+          },
+          (data) => {
+            return {
+              ...data,
+              vote: [...data.vote, insertVote]
+            }
+          }
+        )
       }
-      // optimisticResponse: {
-      //   id: -1, // -1 is a temporary id for the optimistic response.
-      //   text,
-      //   completed: false,
-      // },
-
-      // update: (proxy, { data: { createTodo } }) => {
-      //   const data = proxy.readQuery({ query: TodoAppQuery })
-      //   data.todos.push(createTodo)
-      //   proxy.writeQuery({ query: TodoAppQuery, data })
-      // }
     })
-    if (errors) {
-      toast.error(errors[0].message)
-
-      // revert optimistic value
-      setVoteCount(voteCount - (isUpvoteBtn ? 1 : -1))
-      setCurrentVote(undefined)
-    }
-    setCurrentVote(data.insertVote)
+    if (errors) toast.error(errors[0].message)
   }
-
   return { addVote }
 }
 

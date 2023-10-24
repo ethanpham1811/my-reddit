@@ -4,7 +4,7 @@ import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import NewPageLoading from '@/components/utilities/NewPageLoading/NewPageLoading'
 import { TPost, TSubredditDetail } from '@/constants/types'
-import { GET_POST_AND_SUB_BY_POST_ID, GET_POST_LIST } from '@/graphql/queries'
+import { GET_POST_BY_ID, GET_POST_LIST, GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
 import { validatePostBySubname } from '@/services'
 import { ApolloError, useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
@@ -14,30 +14,33 @@ import { useRouter } from 'next/router'
 
 type TPostPageProps = {
   subreddit: TSubredditDetail
-  subredditPost: TPost
+  post: TPost
   error: ApolloError | null
 }
 
 /* -----------------------------------ISG: UPDATE POST DETAIL - 5s REVALIDATE ---------------------------- */
 
 export const getStaticProps = (async ({ params }) => {
-  const { data, error = null } = await client.query({
-    query: GET_POST_AND_SUB_BY_POST_ID,
-    variables: { id: params?.postid, name: params?.subreddit },
+  const { data: subData, error: subError = null } = await client.query({
+    query: GET_SUBREDDIT_BY_NAME,
+    variables: { name: params?.subreddit },
     fetchPolicy: 'no-cache'
   })
-  const subreddit: TSubredditDetail = data?.subredditByName
-  const subredditPost: TPost = data?.post
+  const { data: postData, error: postError = null } = await client.query({
+    query: GET_POST_BY_ID,
+    variables: { id: params?.postid },
+    fetchPolicy: 'no-cache'
+  })
+  const subreddit: TSubredditDetail = subData?.subredditByName
+  const post: TPost = postData?.post
 
-  if (error) {
-    throw new Error(`Failed to fetch posts, received status ${error.message}`)
-  }
+  if (subError || postError) throw new Error(`Failed to fetch data`)
 
   return {
     props: {
       subreddit,
-      subredditPost,
-      error
+      post,
+      error: subError || postError
     },
     revalidate: 1
   }
@@ -58,7 +61,7 @@ export async function getStaticPaths() {
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
-export default function Post({ subreddit: svSubreddit, subredditPost: svSubredditPost }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
@@ -67,20 +70,32 @@ export default function Post({ subreddit: svSubreddit, subredditPost: svSubreddi
     isFallback
   } = useRouter()
 
-  // post detail query
+  /**
+   * TODO:
+   * This page temporarily using 2 queries as a workaround for a bug with cache update, fix this later
+   */
   const {
-    data,
-    loading,
-    error = null
-  } = useQuery(GET_POST_AND_SUB_BY_POST_ID, {
-    variables: { id: postid, name: subName }
+    data: subData,
+    loading: subLoading,
+    error: subError = null
+  } = useQuery(GET_SUBREDDIT_BY_NAME, {
+    variables: { name: subName }
   })
-  const subreddit: TSubredditDetail = data?.subredditByName || svSubreddit
-  const post: TPost = data?.post || svSubredditPost
-  const pageLoading: boolean = loading && !subreddit
+  const {
+    data: postData,
+    loading: postLoading,
+    error: postError = null
+  } = useQuery(GET_POST_BY_ID, {
+    variables: { id: postid }
+  })
+  /* ---------------------------------------------------------------------------------------------*/
+
+  const subreddit: TSubredditDetail = subData?.subredditByName || svSubreddit
+  const post: TPost = postData?.post || svPost
+  const pageLoading: boolean = (subLoading || postLoading) && !subreddit
 
   // redirect to 404 if no data found
-  if (post === null && !pageLoading && !error) {
+  if (post === null && !pageLoading && !subError && !postError) {
     navigate('/404')
     return null
   }
