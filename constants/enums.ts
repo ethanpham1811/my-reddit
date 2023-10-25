@@ -26,6 +26,11 @@ export enum MAIN_MENU_GROUP {
   People = 'People',
   CurrentPage = 'Active'
 }
+export enum SUB_PEOPLE_MENU_ITEM {
+  Communities = 'Communities',
+  People = 'People',
+  Disabled = 'Disabled'
+}
 export enum BORDER_TYPES {
   Rounded = '4px',
   Circular = '999px',

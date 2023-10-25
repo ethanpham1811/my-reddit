@@ -192,6 +192,15 @@ export const usernameValidation = (value: string): boolean | string => {
   if (value?.length < 5) return 'Username must be at least 5 characters long'
   return true
 }
+export const subnameValidation = (value: string): boolean | string => {
+  if (value === '' || value == null) return 'Name is required'
+  if (!/^[A-Z][A-Za-z0-9_]*$/.test(value)) {
+    return 'Start with an uppercase alphabet, no space, no special character allowed'
+  }
+  if (value?.length < 5) return 'Name must be at least 5 characters long'
+  if (value?.length > 20) return 'Name must be at most 20 characters long'
+  return true
+}
 export const passwordValidation = (value: string): boolean | string => {
   if (value == '') return 'Password is required'
   if (value?.length < 3) return 'Password must be at least 3 characters long'

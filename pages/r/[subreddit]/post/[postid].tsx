@@ -2,45 +2,49 @@ import { client } from '@/apollo-client'
 import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import NewPageLoading from '@/components/utilities/NewPageLoading/NewPageLoading'
+import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { TPost, TSubredditDetail } from '@/constants/types'
 import { GET_POST_BY_ID, GET_POST_LIST, GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
+import useWaitingForISG from '@/hooks/useWaitingForISG'
 import { validatePostBySubname } from '@/services'
-import { ApolloError, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 type TPostPageProps = {
-  subreddit: TSubredditDetail
-  post: TPost
-  error: ApolloError | null
+  subreddit: TSubredditDetail | null
+  post: TPost | null
 }
 
 /* -----------------------------------ISG: UPDATE POST DETAIL - 5s REVALIDATE ---------------------------- */
 
 export const getStaticProps = (async ({ params }) => {
-  const { data: subData, error: subError = null } = await client.query({
-    query: GET_SUBREDDIT_BY_NAME,
-    variables: { name: params?.subreddit },
-    fetchPolicy: 'no-cache'
-  })
-  const { data: postData, error: postError = null } = await client.query({
-    query: GET_POST_BY_ID,
-    variables: { id: params?.postid },
-    fetchPolicy: 'no-cache'
-  })
-  const subreddit: TSubredditDetail = subData?.subredditByName
-  const post: TPost = postData?.post
+  let resSub = null
+  let resPost = null
+  try {
+    resSub = await client.query({
+      query: GET_SUBREDDIT_BY_NAME,
+      variables: { name: params?.subreddit },
+      fetchPolicy: 'no-cache'
+    })
+    resPost = await client.query({
+      query: GET_POST_BY_ID,
+      variables: { id: params?.postid },
+      fetchPolicy: 'no-cache'
+    })
+  } catch (error) {
+    throw new Error(`Failed to fetch post data from server`)
+  }
 
-  if (subError || postError) throw new Error(`Failed to fetch data`)
+  const subreddit: TSubredditDetail | null = resSub?.data?.subredditByName
+  const post: TPost | null = resPost?.data?.post
 
   return {
     props: {
       subreddit,
-      post,
-      error: subError || postError
+      post
     },
     revalidate: 1
   }
@@ -56,18 +60,18 @@ export async function getStaticPaths() {
     params: { subreddit: post?.subreddit?.name, postid: post.id }
   }))
 
-  return { paths, fallback: 'blocking' }
+  return { paths, fallback: true }
 }
 
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
 export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [waitingForISG] = useWaitingForISG()
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
     query: { subreddit: subName, postid },
-    push: navigate,
-    isFallback
+    push: navigate
   } = useRouter()
 
   /**
@@ -88,14 +92,19 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
   } = useQuery(GET_POST_BY_ID, {
     variables: { id: postid }
   })
+
+  /* ---------------------show loading page on new created dynamic page--------------------------*/
+
+  if (waitingForISG) return <ISGFallBack />
+
   /* ---------------------------------------------------------------------------------------------*/
 
   const subreddit: TSubredditDetail = subData?.subredditByName || svSubreddit
   const post: TPost = postData?.post || svPost
-  const pageLoading: boolean = (subLoading || postLoading) && !subreddit
+  const pageLoading: boolean = (subLoading || postLoading) && !subreddit && !post
 
   // redirect to 404 if no data found
-  if (post === null && !pageLoading && !subError && !postError) {
+  if (!pageLoading && (post == null || subreddit == null || subError || postError)) {
     navigate('/404')
     return null
   }
@@ -105,16 +114,13 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
     return validatePostBySubname(me?.member_of_ids, subName, post?.subreddit?.subType)
   }
 
-  // show loading page on new created dynamic page
-  if (isFallback) return <NewPageLoading />
-
   return (
     <div>
       <Head>
         <title>r/{subName}</title>
       </Head>
       <SubredditTopNav name={subreddit?.name} subType={subreddit?.subType} headline={subreddit?.headline} />
-      <FeedLayout top="1rem" subredditId={subreddit?.id}>
+      <FeedLayout top="1rem" subredditId={subreddit?.id} loading={pageLoading}>
         {!verifyPost() ? (
           <MessageBoard head={'This post is private, please join '} highlight={subName as string} />
         ) : (

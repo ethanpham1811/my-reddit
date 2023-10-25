@@ -1,7 +1,7 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TUserDetail } from '@/constants/types'
-import { UPDATE_USER } from '@/graphql/mutations'
-import { useMutation } from '@apollo/client'
+import { UPDATE_USER, UPDATE_USER_FRAG } from '@/graphql/mutations'
+import { ApolloCache, useMutation } from '@apollo/client'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -55,6 +55,21 @@ function useUserUpdate() {
           __typename: 'User',
           ...updatedField
         }
+      },
+      update: (cache: ApolloCache<any>, { data: { updateUser } }) => {
+        const userCacheId = cache.identify({ id: me?.id, __typename: 'User' })
+
+        cache.updateFragment(
+          {
+            id: userCacheId,
+            fragment: UPDATE_USER_FRAG
+          },
+          (data) => {
+            return {
+              ...updateUser
+            }
+          }
+        )
       }
     })
     if (errors) toast.error(errors[0].message)

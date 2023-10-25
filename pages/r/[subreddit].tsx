@@ -1,11 +1,12 @@
 import { client } from '@/apollo-client'
 import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
-import NewPageLoading from '@/components/utilities/NewPageLoading/NewPageLoading'
+import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/constants/types'
 import { GET_SUBREDDIT_BY_NAME, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
-import { ApolloError, useQuery } from '@apollo/client'
+import useWaitingForISG from '@/hooks/useWaitingForISG'
+import { useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
@@ -14,27 +15,26 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 type TSubredditPageProps = {
-  subreddit: TSubredditDetail
-  subredditPosts: TPost[]
-  error: ApolloError | null
+  subreddit: TSubredditDetail | null
+  subredditPosts: TPost[] | null
 }
 
 /* ---------------------------------ISG: UPDATE SUBREDDIT DETAIL - 5s REVALIDATE -------------------------- */
 
 export const getStaticProps = (async ({ params }) => {
-  const { data, error = null } = await client.query({ query: GET_SUBREDDIT_BY_NAME, variables: { name: params?.subreddit }, fetchPolicy: 'no-cache' })
-  const subreddit: TSubredditDetail = data?.subredditByName
-  const subredditPosts: TPost[] = subreddit?.post
-
-  if (error) {
-    throw new Error(`Failed to fetch posts, received status ${error.message}`)
+  let res = null
+  try {
+    res = await client.query({ query: GET_SUBREDDIT_BY_NAME, variables: { name: params?.subreddit }, fetchPolicy: 'no-cache' })
+  } catch (error) {
+    throw new Error(`Failed to fetch subreddit detail from server`)
   }
+  const subreddit: TSubredditDetail | null = res?.data?.subredditByName
+  const subredditPosts: TPost[] | null = subreddit?.post || null
 
   return {
     props: {
       subreddit,
-      subredditPosts,
-      error
+      subredditPosts
     },
     revalidate: 1
   }
@@ -56,28 +56,32 @@ export async function getStaticPaths() {
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
 export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSubredditPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [waitingForISG] = useWaitingForISG()
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { subreddit: subName },
-    push: navigate,
-    isFallback
+    push: navigate
   } = useRouter()
   const [hasNoPost, setHasNoPost] = useState(false)
 
-  // subreddit page info query
+  /* ------------------------------subreddit page info query-------------------------------------*/
+
   const { data, loading, error = null } = useQuery(GET_SUBREDDIT_BY_NAME, { variables: { name: subName } })
   const subreddit: TSubredditDetail = data?.subredditByName || svSubreddit
   const subredditPosts: TPost[] = subreddit?.post || svSubredditPosts
   const pageLoading: boolean = loading && !subreddit
 
+  /* ---------------------show loading page on new created dynamic page--------------------------*/
+
+  if (waitingForISG) return <ISGFallBack />
+
+  /* ---------------------------------------------------------------------------------------------*/
+
   // redirect to 404 if no data found
-  if (subreddit === null && !loading && !error) {
+  if (!pageLoading && (subreddit == null || error)) {
     navigate('/404')
     return null
   }
-
-  // show loading page on new created dynamic page
-  if (isFallback) return <NewPageLoading />
 
   return (
     <div>

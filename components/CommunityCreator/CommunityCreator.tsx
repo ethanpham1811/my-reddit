@@ -2,7 +2,9 @@ import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { LockIcon, PersonIcon, RemoveRedEyeIcon } from '@/constants/icons'
 import { TCommunityCreatorForm, TCommunityCreatorProps, TCommunityTypeOPtions } from '@/constants/types'
 import useSubredditCreate from '@/hooks/useSubredditCreate'
+import { subnameValidation } from '@/services'
 import { Box, Divider, Stack, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { BottomNavigator, IsChildrenGroupCheckbox, RdInput, RdRadioGroup, TopicDropdown } from '..'
@@ -60,6 +62,7 @@ export const groupTypeOptions: TCommunityTypeOPtions[] = [
 
 function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   const { createSubreddit, loading } = useSubredditCreate()
+  const { push: redirect } = useRouter()
   const {
     handleSubmit,
     control,
@@ -75,6 +78,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
 
     // success
     toast.success('Your Subreddit sucessfully added!')
+    redirect(`/r/${formData.name}`)
     setOpen(false)
   })
 
@@ -94,7 +98,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
           </Typography>
           <Stack direction="row" gap={1} sx={{ mt: 2 }}>
             <RdInput<TCommunityCreatorForm>
-              registerOptions={{ required: 'Please name your community' }}
+              registerOptions={{ validate: (val): string | boolean => subnameValidation(val) }}
               control={control}
               name="name"
               helper="21 Characters remaining"

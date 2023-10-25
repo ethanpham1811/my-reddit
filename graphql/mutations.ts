@@ -46,17 +46,63 @@ export const UPDATE_USER = gql`
       role: $role
     ) {
       id
-      dob
       role
-      email
-      followers
-      fullName
-      karma
       username
+      fullName
+      followers
       coverUrl
+      email
+      dob
+      created_at
+      karma
+      socialLinks
       member_of_ids
       following_ids
+      post {
+        id
+        title
+        body
+        images
+        created_at
+        user {
+          username
+        }
+        comment {
+          created_at
+          user {
+            username
+          }
+          text
+        }
+        subreddit {
+          name
+          id
+          subType
+        }
+        vote {
+          id
+          upvote
+          user_id
+        }
+        link
+        linkDescription
+      }
     }
+  }
+`
+export const UPDATE_USER_FRAG = gql`
+  fragment UpdatedUserFrag on User {
+    id
+    created_at
+    email
+    dob
+    coverUrl
+    photoUrl
+    karma
+    socialLinks
+    member_of_ids
+    following_ids
+    post
   }
 `
 

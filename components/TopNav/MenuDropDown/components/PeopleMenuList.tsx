@@ -1,6 +1,6 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
-import { MAIN_MENU_GROUP } from '@/constants/enums'
+import { MAIN_MENU_GROUP, SUB_PEOPLE_MENU_ITEM } from '@/constants/enums'
 import { TMenuItem } from '@/constants/types'
 import { ListItemText, MenuItem } from '@mui/material'
 import { v4 as rid } from 'uuid'
@@ -18,10 +18,12 @@ function PeopleMenuList({ loading, options, filterByTerm, ...rest }: TPeopleMenu
   const { session } = useAppSession()
   return (
     <>
-      <GroupHeader label={MAIN_MENU_GROUP.CurrentPage} />
+      <GroupHeader label={MAIN_MENU_GROUP.People} />
       {session && !loading ? (
         options.length > 0 ? (
-          options.filter(filterByTerm).map(({ name }) => <SubAndPeopleMenuItem {...rest} name={name} key={`people_menu_${rid()}`} />)
+          options
+            .filter(filterByTerm)
+            .map(({ name }) => <SubAndPeopleMenuItem type={SUB_PEOPLE_MENU_ITEM.People} {...rest} name={name} key={`people_menu_${rid()}`} />)
         ) : (
           <MenuItem>
             <ListItemText primary="You don't follow anyone"></ListItemText>

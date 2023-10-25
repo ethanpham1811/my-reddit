@@ -36,7 +36,7 @@ function RdAutoComplete<
     <Autocomplete
       sx={{
         '&.Mui-expanded': {
-          '.MuiInputBase-root': {
+          '.MuiInputBase-root.MuiAutocomplete-inputRoot': {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0
           }

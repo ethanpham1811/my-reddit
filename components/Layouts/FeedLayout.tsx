@@ -13,6 +13,11 @@ type TFeedLayoutProps = {
   loading?: boolean
 }
 
+/**
+ * Layout to wrap: Post creator + Post list + right info cards
+ * @param  {boolean} single   single column layout (only for search page)
+ * @param  {string} top       custom top (for page with banners)
+ */
 function FeedLayout({ loading, children, top, subredditId, single = false }: TFeedLayoutProps) {
   const { session, loading: sessionLoading } = useAppSession()
   const me = session?.userDetail

@@ -1,6 +1,7 @@
 import { RdImageCarousel } from '@/components'
 import { parseHtml } from '@/services'
 import { Box, Typography } from '@mui/material'
+import Link from 'next/link'
 import { Dispatch, SetStateAction } from 'react'
 import PostHeader from '../components/PostHeader'
 
@@ -39,10 +40,16 @@ function PostColumn({
       <Box p={1}>
         <Typography variant="h6">{title}</Typography>
         <Typography variant="body1" fontWeight={400} fontSize="1rem">
-          {body ? parseHtml(body) : linkDescription}
+          {body ? parseHtml(body) : parseHtml(`<p>${linkDescription}</p>`)}
         </Typography>
-        {link && <Box>{link}</Box>}
-        {/* {link && <LinkPreview url={link} width="400px" />} */}
+        {/* TODO: link preview: {link && <LinkPreview url={link} width="400px" />} */}
+        {link && (
+          <Box py={1} px={2} bgcolor="inputBgOutfocused.main" borderRadius="4px">
+            <Link onClick={(e) => e.stopPropagation()} href={link} target="_blank" style={{ textDecoration: 'none' }}>
+              {link}
+            </Link>
+          </Box>
+        )}
       </Box>
       {/* image carousel */}
       {images && <RdImageCarousel setZoomDialogOpen={setZoomDialogOpen} setZoomedImg={setZoomedImg} width="100%" height="300px" imgList={images} />}
