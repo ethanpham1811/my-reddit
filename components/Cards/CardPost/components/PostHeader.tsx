@@ -12,34 +12,42 @@ type TPostHeader = {
 
 function PostHeader({ loadedInSubPage, subName, username, createdAt }: TPostHeader) {
   return (
-    <Stack direction="row" alignItems="center" sx={{ px: 1 }}>
-      {!loadedInSubPage && (
-        <Link href={`/r/${subName}`}>
-          <Avatar
-            sx={{
-              width: 20,
-              height: 20,
-              mr: 0.5,
-              backgroundColor: generateSeededHexColor(subName)
-              // border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
-            }}
-            alt={subName}
-            src={generateUserImage(subName)}
-          />
-        </Link>
-      )}
-
-      {!loadedInSubPage && (
-        <Stack direction="row">
-          <Link href={`/r/${subName}`} onClick={(e) => e.stopPropagation()} style={{ color: 'inherit', textDecoration: 'none' }}>
-            <Typography fontWeight={600} color="black">
-              r/{subName}{' '}
-            </Typography>
+    <Stack
+      alignItems={{ sx: 'flex-start', md: 'center' }}
+      justifyContent={{ md: 'flex-start', sx: 'center' }}
+      flexDirection={{ xs: 'column', md: 'row' }}
+      sx={{ px: 1 }}
+    >
+      <Stack direction="row" alignItems="center">
+        {!loadedInSubPage && (
+          <Link href={`/r/${subName}`}>
+            <Avatar
+              sx={{
+                width: 20,
+                height: 20,
+                mr: 0.5,
+                backgroundColor: generateSeededHexColor(subName)
+                // border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+              }}
+              alt={subName}
+              src={generateUserImage(subName)}
+            />
           </Link>
-          <Box mx={0.5}>•</Box>
-        </Stack>
-      )}
-      <Typography variant="caption">
+        )}
+        {!loadedInSubPage && (
+          <Stack direction="row">
+            <Link href={`/r/${subName}`} onClick={(e) => e.stopPropagation()} style={{ color: 'inherit', textDecoration: 'none' }}>
+              <Typography fontWeight={600} color="black">
+                r/{subName}{' '}
+              </Typography>
+            </Link>
+            <Box mx={0.5} display={{ xs: 'none', md: 'block' }} position="relative" top={0.5}>
+              •
+            </Box>
+          </Stack>
+        )}
+      </Stack>
+      <Typography variant="caption" sx={{ mt: 0.5 }}>
         Posted by{' '}
         <Link href={`/u/${username}`} onClick={(e) => e.stopPropagation()} style={{ color: 'inherit' }}>
           u/{username}

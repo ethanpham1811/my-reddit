@@ -16,7 +16,8 @@ const notiData: TIconBox[] = [
     notification: {
       content: 12,
       max: 99
-    }
+    },
+    hideOnMobile: true
   },
   {
     icon: <NotificationsOutlinedIcon />,

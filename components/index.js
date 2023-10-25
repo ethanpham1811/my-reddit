@@ -43,6 +43,7 @@ import RdInput from './utilities/RdInput/RdInput'
 import RdMultipleDropdown from './utilities/RdMultipleDropdown/RdMultipleDropdown'
 import RdNotiBubble from './utilities/RdNotiBubble/RdNotiBubble'
 import RdRadioGroup from './utilities/RdRadioGroup/RdRadioGroup'
+import RdStripeForm from './utilities/RdStripeForm/RdStripeForm'
 import RdSubredditSelect from './utilities/RdSubredditSelect/RdSubredditSelect'
 import RdTextEditor from './utilities/RdTextEditor/RdTextEditor'
 import RdToast from './utilities/RdToast/RdToast'
@@ -86,6 +87,7 @@ export {
   RdMultipleDropdown,
   RdNotiBubble,
   RdRadioGroup,
+  RdStripeForm,
   RdSubredditSelect,
   RdTextEditor,
   RdToast,

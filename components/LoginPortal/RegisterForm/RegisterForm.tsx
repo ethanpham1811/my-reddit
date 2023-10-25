@@ -54,7 +54,7 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
 
   return (
     <form onSubmit={onSubmit}>
-      <Stack spacing={2} sx={{ width: { xs: '400px', sm: '300px' } }}>
+      <Stack spacing={2} sx={{ width: { xs: '60vw', sm: '300px' } }}>
         {error && (
           <Stack alignItems="center">
             <Typography fontSize="0.8rem" sx={{ color: 'orange.main' }}>

@@ -19,7 +19,10 @@ function ActionButton({ name, subType }: TActionButton) {
   }
 
   return (
-    <Stack sx={{ alignSelf: 'flex-start', alignItems: 'center', ml: 'auto', mt: 0.5, pl: 1 }} direction="row">
+    <Stack
+      sx={{ alignSelf: 'flex-start', alignItems: 'center', mr: { xs: 'auto', sm: 'unset' }, ml: 'auto', mt: { xs: 1, sm: 0.5 }, pl: 1 }}
+      direction="row"
+    >
       {me?.member_of_ids?.includes(name as string) ? (
         <RdButton
           onClick={onLeaveSubreddit}

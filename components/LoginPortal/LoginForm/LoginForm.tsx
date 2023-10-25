@@ -47,7 +47,7 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
 
   return (
     <form onSubmit={onSubmit}>
-      <Stack spacing={2} sx={{ width: { xs: '400px', sm: '250px' } }}>
+      <Stack spacing={2} sx={{ width: { xs: '60vw', sm: '250px' } }}>
         {newUserEmail && (
           <Stack alignItems="center">
             <Typography sx={{ color: 'hintText.main' }}>

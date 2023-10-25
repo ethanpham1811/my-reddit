@@ -27,7 +27,7 @@ function SearchBar({ subOrUserName, lgMobile, mdMobile, pathName, navigate }: TS
       focused={focused}
       params={params}
       chip={chip}
-      isMobile={mdMobile}
+      isMobile={lgMobile}
       name={subOrUserName}
       onDeleteChip={onDeleteChip}
     />

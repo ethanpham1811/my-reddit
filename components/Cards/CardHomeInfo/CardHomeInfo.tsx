@@ -1,3 +1,4 @@
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import homeBannerUrl from '@/public/home_banner.png'
 import redditRobotUrl from '@/public/reddit_robot.png'
 import { Events, eventEmitter } from '@/services/eventEmitter'
@@ -7,6 +8,8 @@ import { useState } from 'react'
 import { CommunityCreator, RdButton, RdCard, RdDrawer } from '../..'
 
 function CardHomeInfo() {
+  const { session } = useAppSession()
+  const me = session?.userDetail
   const [isDrawerOpened, setIsDrawerOpened] = useState(false)
 
   function onCreatePost() {
@@ -27,14 +30,18 @@ function CardHomeInfo() {
           Your personal Reddit frontpage. Come here to check in with your favorite communities.
         </Typography>
       </CardContent>
-      <Divider sx={{ my: 0.5 }} />
-      <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <RdButton text={'Create Post'} filled color="blue" invertColor onClick={onCreatePost} />
-        <RdButton text={'Create Community'} color="blue" onClick={() => setIsDrawerOpened(true)} />
-        <RdDrawer open={isDrawerOpened} setOpen={setIsDrawerOpened}>
-          <CommunityCreator setOpen={setIsDrawerOpened} />
-        </RdDrawer>
-      </CardActions>
+      {me && (
+        <>
+          <Divider sx={{ my: 0.5 }} />
+          <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <RdButton text={'Create Post'} filled color="blue" invertColor onClick={onCreatePost} />
+            <RdButton text={'Create Community'} color="blue" onClick={() => setIsDrawerOpened(true)} />
+            <RdDrawer open={isDrawerOpened} setOpen={setIsDrawerOpened}>
+              <CommunityCreator setOpen={setIsDrawerOpened} />
+            </RdDrawer>
+          </CardActions>
+        </>
+      )}
     </RdCard>
   )
 }

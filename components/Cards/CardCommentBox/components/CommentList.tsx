@@ -20,7 +20,7 @@ function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
   }
 
   return (
-    <Box bgcolor="lightblue.main" mx={1} pb={3} mb={1}>
+    <Box bgcolor="lightblue.main" mx={1} pb={3} pt={1} mb={1}>
       {commentList && commentList.length > 0 && (
         <Box px={2}>
           <RdStaticInput sx={{ ml: 2.5 }} bgcolor="white" fullWidth={false} onChange={handleFilter} placeholder="Filter comments" />
@@ -50,7 +50,7 @@ function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
           </Stack>
         ))
       ) : (
-        <MessageBoard pt={2} head="No comment found" />
+        <MessageBoard pt={2} head="This post has no comment" />
       )}
     </Box>
   )

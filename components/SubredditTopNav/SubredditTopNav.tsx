@@ -28,25 +28,31 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
           alt="subreddit cover"
           aria-label="subreddit cover"
         />
-        <Container maxWidth="md" sx={{ pt: 2 }}>
-          <Stack direction="row" justifyContent="flex-start">
-            <Link href={`/r/${name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Avatar
-                sx={{
-                  width: 100,
-                  height: 100,
-                  backgroundColor: generateSeededHexColor(name),
-                  border: (theme): string => `5px solid ${theme.palette.white.main}`,
-                  position: 'relative',
-                  top: '-2.5rem',
-                  mr: 2
-                }}
-                alt={`subreddit ${name} avatar`}
-                src={generateUserImage(name)}
-              />
-            </Link>
-            <Stack>
-              <Typography fontWeight={700} variant="h4">
+        <Container maxWidth="md" sx={{ pt: { xs: 7, sm: 2 } }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }}>
+            <Box
+              position={{ xs: 'absolute', sm: 'relative' }}
+              sx={{ translate: { xs: '-50% calc(-50% - 3.5rem)', sm: 'none' } }}
+              left={{ xs: '50%', sm: 0 }}
+            >
+              <Link href={`/r/${name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Avatar
+                  sx={{
+                    width: 100,
+                    height: 100,
+                    backgroundColor: generateSeededHexColor(name),
+                    border: (theme): string => `5px solid ${theme.palette.white.main}`,
+                    position: 'relative',
+                    top: { xs: 0, sm: '-2.5rem' },
+                    mr: 2
+                  }}
+                  alt={`subreddit ${name} avatar`}
+                  src={generateUserImage(name)}
+                />
+              </Link>
+            </Box>
+            <Stack alignItems={{ xs: 'center', sm: 'flex-start' }}>
+              <Typography fontWeight={700} variant="h4" textAlign={{ xs: 'center', sm: 'left' }}>
                 {headline || name}
               </Typography>
               <Typography fontWeight={700} variant="subtitle1" sx={{ color: 'hintText.main' }}>

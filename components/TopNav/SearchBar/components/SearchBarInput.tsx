@@ -70,10 +70,10 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
             bgcolor: 'white.main'
           }
         },
-        'input.MuiAutocomplete-input': {
-          p: '0 !important',
-          display: isMobile && !focused ? 'none' : 'block'
-        },
+        // 'input.MuiAutocomplete-input': {
+        //   p: '0 !important',
+        //   display: isMobile && !focused ? 'none' : 'block'
+        // },
         '.MuiAutocomplete-endAdornment': {
           display: isMobile && !focused ? 'none' : 'block'
         },
