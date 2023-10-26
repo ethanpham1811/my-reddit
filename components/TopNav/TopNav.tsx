@@ -13,7 +13,7 @@ const NavBar = styled(AppBar)(({ theme }) => {
   }
 })
 
-function TopNav() {
+function TopNav({ sessionUsername }: { sessionUsername: string | undefined }) {
   const { session, loading } = useAppSession()
   const router = useRouter()
   const {
@@ -39,7 +39,7 @@ function TopNav() {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} pr={1}>
             <IconBox isMobile={mdMobile} />
             {/* Profile dropdown */}
-            {session && <ProfileDropdown loading={loading} />}
+            {session && <ProfileDropdown loading={loading} sessionUsername={sessionUsername} />}
             {!session && <LoginButton />}
           </Stack>
         </Stack>

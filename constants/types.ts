@@ -118,6 +118,7 @@ export type TMenuDropdownProps = {
 }
 export type TProfileDropdownProps = {
   loading: boolean
+  sessionUsername: string | undefined
 }
 export type TMenuItem = Omit<TSubreddit, 'id' | 'subType'> & {
   group: MAIN_MENU_GROUP

@@ -11,7 +11,7 @@ import { v4 as rid } from 'uuid'
 import { renderSelectedOption } from './RenderedCbs'
 import ProfileMenu from './components/ProfileMenu'
 
-function ProfileDropdownProp({ loading }: TProfileDropdownProps) {
+function ProfileDropdownProp({ loading, sessionUsername }: TProfileDropdownProps) {
   // const [page, setPage] = useState('home')
   const { session } = useAppSession()
   const me = session?.userDetail
@@ -62,7 +62,7 @@ function ProfileDropdownProp({ loading }: TProfileDropdownProps) {
         offsetTop="10px"
         minWidth="200px"
         borderColor="inputBorder"
-        renderSelectedOption={(_) => renderSelectedOption(_, me, loading)}
+        renderSelectedOption={(_) => renderSelectedOption(_, sessionUsername, !sessionUsername && loading)}
       >
         {me && groupedMenuList.length > 0 ? (
           groupedMenuList.map(({ items, group, groupIcon }) => {

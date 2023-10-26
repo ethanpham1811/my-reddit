@@ -21,6 +21,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [userDetail, _, loading] = useUserByEmail(userEmail)
   const [isAppLoading, setIsAppLoading] = useState(true)
+  const sessionUsername: string | undefined = appSession?.user?.user_metadata?.username
 
   /* update session on authentication (login/logout) */
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <SplashScreen /> // Display the splash screen while loading
       ) : (
         <Box>
-          <TopNav />
+          <TopNav sessionUsername={sessionUsername} />
           <main>{children}</main>
           <Toaster
             toastOptions={{

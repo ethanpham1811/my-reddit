@@ -1,11 +1,10 @@
-import { TUserDetail } from '@/constants/types'
 import { OnlineDotStyle } from '@/mui/styles'
 import { generateSeededHexColor, generateUserImage } from '@/services'
 import { Avatar, Box, CircularProgress, Skeleton } from '@mui/material'
 
 import { ReactNode } from 'react'
 
-export const renderSelectedOption = (_: string, user: TUserDetail | null | undefined, loading: boolean, mobileMode: boolean = false): ReactNode => {
+export const renderSelectedOption = (_: string, username: string | undefined, loading: boolean, mobileMode: boolean = false): ReactNode => {
   return (
     <>
       {loading ? (
@@ -13,7 +12,7 @@ export const renderSelectedOption = (_: string, user: TUserDetail | null | undef
           <CircularProgress size={20} /> <Skeleton sx={{ flex: 1 }} />
         </Box>
       ) : (
-        user && (
+        username && (
           <Box display="flex" alignItems="center" gap={1}>
             <OnlineDotStyle
               overlap="circular"
@@ -26,14 +25,14 @@ export const renderSelectedOption = (_: string, user: TUserDetail | null | undef
                 sx={{
                   width: 20,
                   height: 20,
-                  backgroundColor: generateSeededHexColor(user.username),
+                  backgroundColor: generateSeededHexColor(username),
                   border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
                 }}
-                alt={`${user.username} avatar`}
-                src={generateUserImage(user.username)}
+                alt={`${username} avatar`}
+                src={generateUserImage(username)}
               />
             </OnlineDotStyle>
-            <Box sx={{ display: { xs: 'none', lg: 'block' } }}>{user.username}</Box>
+            <Box sx={{ display: { xs: 'none', lg: 'block' } }}>{username}</Box>
           </Box>
         )
       )}
