@@ -73,7 +73,7 @@ function TopicDropdown<T extends FieldValues>({ name, control, registerOptions }
   }
 
   return (
-    <FormControl>
+    <FormControl sx={{ flex: 1 }}>
       <Controller
         rules={registerOptions}
         control={control}
@@ -84,8 +84,7 @@ function TopicDropdown<T extends FieldValues>({ name, control, registerOptions }
             max={MAX_TOPIC_CHOSEN}
             renderSelectedOption={renderSelectedOption}
             onChange={onChange}
-            flex={1}
-            sx={{ minWidth: '200px' }}
+            // sx={{ minWidth: '200px' }}
           >
             {topicList ? (
               topicList.map(({ id, name }: TTopic) => {

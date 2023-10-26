@@ -26,7 +26,7 @@ export default function App({ Component, emotionCache = clientSideEmotionCache, 
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1" />
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />

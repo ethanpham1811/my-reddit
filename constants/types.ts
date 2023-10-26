@@ -6,6 +6,7 @@ import {
   IconButtonProps,
   ImageListOwnProps,
   PaletteOptions,
+  RadioGroupProps,
   SelectChangeEvent,
   SelectProps,
   SvgIconTypeMap,
@@ -15,6 +16,7 @@ import {
 } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from '@supabase/supabase-js'
+import { Dayjs } from 'dayjs'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldError, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, PROFILE_DIALOG_TYPE, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
@@ -32,7 +34,7 @@ export type TUser = TUserCompact & {
 export type TUserDetail = TUser & {
   created_at: Date
   email?: string
-  dob?: Date
+  dob?: string
   coverUrl?: string
   photoUrl?: string
   karma?: number
@@ -113,7 +115,6 @@ export type TMenuDropdownProps = {
   subName: string | string[] | undefined
   userPageName: string | string[] | undefined
   pathName: string
-  mobileMode?: boolean
 }
 export type TProfileDropdownProps = {
   loading: boolean
@@ -124,8 +125,10 @@ export type TMenuItem = Omit<TSubreddit, 'id' | 'subType'> & {
 }
 export type TRadioOption = {
   value: string
-  label: string | ReactNode
+  label: string
+  description: string
   disabled: boolean
+  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }
 export type TSortOptions = {
   method: SORT_METHOD
@@ -241,7 +244,7 @@ export type TRdNotiBubbleProps = {
   max: number
   children: ReactNode
 }
-export type TRdRadioGroupProps<T extends FieldValues> = {
+export type TRdRadioGroupProps<T extends FieldValues> = RadioGroupProps & {
   name: FieldPath<T>
   control: Control<T>
   options: TRadioOption[]
@@ -295,7 +298,7 @@ export type TRdInlineInputProps<T extends FieldValues> = TextFieldProps & {
   loading?: boolean
   endIcon?: boolean
   fontSize?: string
-  onFieldSubmit: (field: FieldPath<T>) => void
+  onFieldSubmit: (field: FieldPath<T>, val: Dayjs | string | null) => void
 }
 export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
   helper?: string
@@ -329,12 +332,11 @@ export type TCardCreatePostForm = Pick<TPost, 'title' | 'body'> & {
   linkDescription: string
 }
 export type TCardUserInfoForm = {
-  email: string
   fullName: string
+  dob: string
 }
 export type TFormColumnProps<T extends FieldValues> = {
   control: Control<T>
-  titleValue: string
   getValues: UseFormGetValues<T>
   setValue: UseFormSetValue<T>
   loading: boolean
@@ -343,6 +345,7 @@ export type TFormColumnProps<T extends FieldValues> = {
   imagesValue: FileList | undefined
   editModePayload?: TEditModePayload
   isDirty: boolean
+  formOpened: boolean
   reset: UseFormReset<T>
   setIsLinkPost: Dispatch<SetStateAction<boolean>>
 }
@@ -357,9 +360,11 @@ export type TUseSubredditListResponse = { subredditList: TSubreddit[] | null; lo
 
 /* ------------------------------------------Data structure Types----------------------------------------- */
 export type TCommunityTypeOPtions = {
-  label: ReactNode
+  label: string
+  description: string
   value: string
   disabled: boolean
+  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }
 export type TProfileDropDownList = {
   name?: string

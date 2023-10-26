@@ -2,13 +2,14 @@ import { RdInlineInput } from '@/components'
 import { TUserDetail } from '@/constants/types'
 import { fullNameValidation } from '@/services'
 import { Typography } from '@mui/material'
+import { Dayjs } from 'dayjs'
 import { Control, FieldValues, Path, UseFormGetValues } from 'react-hook-form'
 
 type TUserInfoHeaderProps<T extends FieldValues> = {
   isMe: boolean
   getValues: UseFormGetValues<T>
   control: Control<T>
-  onSubmitField: (field: keyof T) => void
+  onSubmitField: (field: keyof T, val: Dayjs | string | null) => void
   user: TUserDetail | null
 }
 

@@ -4,7 +4,7 @@ import { CircularProgress, Paper } from '@mui/material'
 
 function BottomNavigator({ loading, setOpen }: TBottomNavigatorProps) {
   return (
-    <Paper sx={{ m: -5, mt: 'auto', display: 'flex', borderTop: '1px solid', borderColor: 'orange.main' }}>
+    <Paper sx={{ mx: { xs: -2, sm: -5 }, mb: { xs: -1, sm: -5 }, mt: 'auto', display: 'flex', borderTop: '1px solid', borderColor: 'orange.main' }}>
       <RdButton disabled={loading} text="Cancel" onClick={() => setOpen(false)} sx={{ borderRadius: 0, py: 1, fontSize: '1rem' }} />
       <RdButton
         endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}

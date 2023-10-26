@@ -31,6 +31,7 @@ import RdButton from './utilities/RdButton/RdButton'
 import RdCard from './utilities/RdCard/RdCard'
 import RdCheckbox from './utilities/RdCheckbox/RdCheckbox'
 import RdChip from './utilities/RdChip/RdChip'
+import RdDatePicker from './utilities/RdDatePicker/RdDatePicker'
 import RdDialog from './utilities/RdDialog/RdDialog'
 import RdDrawer from './utilities/RdDrawer/RdDrawer'
 import RdDropdown from './utilities/RdDropdown/RdDropdown'
@@ -75,6 +76,7 @@ export {
   RdCard,
   RdCheckbox,
   RdChip,
+  RdDatePicker,
   RdDialog,
   RdDrawer,
   RdDropdown,

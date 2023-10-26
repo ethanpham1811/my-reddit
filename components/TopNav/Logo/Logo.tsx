@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 function Logo() {
   return (
-    <Link href="/" style={{ display: 'flex', padding: '0 0.5rem' }}>
+    <Link href="/" style={{ display: 'flex', padding: '0 0.5rem', marginRight: 'auto' }}>
       <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
         <Image alt="logo" src={logoUrl} sizes="385px" style={{ width: '6rem', height: 'auto' }} />
       </Box>

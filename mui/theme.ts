@@ -92,6 +92,14 @@ export const theme: Theme = createTheme({
         }
       }
     },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          paddingLeft: '1rem !important',
+          paddingRight: '1rem !important'
+        }
+      }
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {

@@ -11,52 +11,25 @@ import { BottomNavigator, IsChildrenGroupCheckbox, RdInput, RdRadioGroup, TopicD
 
 export const groupTypeOptions: TCommunityTypeOPtions[] = [
   {
-    label: (
-      <Stack direction="row" alignItems="center">
-        <PersonIcon sx={{ mr: 1 }} />
-        <Typography variant="body1" fontWeight={600} component="span">
-          Public
-        </Typography>
-        <span style={{ padding: '0 0.5rem' }}>•</span>
-        <Typography variant="body1" sx={{ color: 'hintText.main' }}>
-          Anyone can view, post, and comment to this community
-        </Typography>
-      </Stack>
-    ),
+    label: 'Public',
+    description: 'Anyone can view, post, and comment to this community',
     value: 'public',
-    disabled: false
+    disabled: false,
+    icon: PersonIcon
   },
   {
-    label: (
-      <Stack direction="row" alignItems="center">
-        <LockIcon sx={{ mr: 1 }} />
-        <Typography variant="body1" fontWeight={600} component="span">
-          Private
-        </Typography>
-        <span style={{ padding: '0 0.5rem' }}>•</span>
-        <Typography variant="body1" sx={{ color: 'hintText.main' }}>
-          Only approved users can view and submit to this community
-        </Typography>
-      </Stack>
-    ),
+    label: 'Private',
+    description: 'Only approved users can view and submit to this community',
     value: 'private',
-    disabled: false
+    disabled: false,
+    icon: LockIcon
   },
   {
-    label: (
-      <Stack direction="row" alignItems="center">
-        <RemoveRedEyeIcon sx={{ mr: 1 }} />
-        <Typography variant="body1" fontWeight={600} component="span">
-          Restricted
-        </Typography>
-        <span style={{ padding: '0 0.5rem' }}>•</span>
-        <Typography variant="body1" sx={{ color: 'hintText.main' }}>
-          Anyone can view this community, but only approved users can post
-        </Typography>
-      </Stack>
-    ),
+    label: 'Restricted',
+    description: 'Anyone can view this community, but only approved users can post',
     value: 'restricted',
-    disabled: true
+    disabled: true,
+    icon: RemoveRedEyeIcon
   }
 ]
 
@@ -83,14 +56,16 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   })
 
   return (
-    <Box p={5} height="100vh" display="grid">
+    <Box px={{ xs: 2, sm: 5 }} py={{ xs: 1, sm: 5 }} height="100vh" display="grid">
       <form onSubmit={onSubmit} style={{ display: 'grid' }}>
         <Stack position="relative" display="flex">
-          <Typography variant="h5">Create a community</Typography>
-          <Divider sx={{ my: 2 }} />
+          <Typography variant="h5" fontWeight={{ xs: 700, sm: 500 }} color={{ xs: 'orange.main', sm: 'inherit' }} paddingY={{ xs: 1, sm: 0 }}>
+            Create a community
+          </Typography>
+          <Divider sx={{ my: { xs: 1, sm: 2 } }} />
 
           {/* Community name & Topic */}
-          <Typography variant="h5" sx={{ mt: 2 }}>
+          <Typography variant="h5" sx={{ mt: { xs: 0, sm: 2 } }}>
             Name
           </Typography>
           <Typography variant="body1" component="p" sx={{ color: 'hintText.main' }}>
@@ -113,6 +88,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
             options={groupTypeOptions}
             name="subType"
             control={control}
+            sx={{ mt: 1 }}
             label={
               <Typography variant="h5" sx={{ mt: 2 }}>
                 Community type

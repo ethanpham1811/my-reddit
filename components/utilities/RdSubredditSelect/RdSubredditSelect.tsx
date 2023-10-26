@@ -35,7 +35,7 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
           alt={`${selectedItem.name} avatar`}
           src={generateUserImage(selectedItem.name || 'seed')}
         />
-        <Box overflow="hidden" textOverflow="ellipsis">
+        <Box overflow="hidden" textOverflow="ellipsis" sx={{ display: { xs: 'none', sm: 'block' } }}>
           r/{selectedItem.name}
         </Box>
       </Stack>
@@ -63,6 +63,8 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
             width={width}
             sx={sx}
             flex={flex}
+            minWidth="200px"
+            mobileMode
             placeholder="Subreddit"
             borderColor="primary"
           >

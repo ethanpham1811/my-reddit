@@ -1,4 +1,5 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
+import { MOBILE_CUSTOM_BREAKPOINT } from '@/constants/enums'
 import { AppBar, Box, Stack, styled, useMediaQuery } from '@mui/material'
 import { useRouter } from 'next/router'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
@@ -20,8 +21,8 @@ function TopNav() {
     pathname: pathName,
     push: navigate
   } = router
-  const lgMobile = useMediaQuery('(max-width:1024px)')
-  const mdMobile = useMediaQuery('(max-width:700px)')
+  const lgMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Lg)
+  const mdMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Md)
 
   return (
     <Box flexGrow={1}>
@@ -35,7 +36,7 @@ function TopNav() {
           {/* search */}
           <SearchBar lgMobile={lgMobile} mdMobile={mdMobile} subOrUserName={subName ?? username} pathName={pathName} navigate={navigate} />
           {/* Icons */}
-          <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1}>
+          <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} pr={1}>
             <IconBox isMobile={mdMobile} />
             {/* Profile dropdown */}
             {session && <ProfileDropdown loading={loading} />}

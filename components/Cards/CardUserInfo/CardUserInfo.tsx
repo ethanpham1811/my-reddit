@@ -3,6 +3,7 @@ import { RdSkeleton } from '@/components/Skeletons'
 import { TCardUserInfoForm, TCardUserInfoProps } from '@/constants/types'
 import useUserUpdate from '@/hooks/useUserUpdate'
 import { CardContent, Divider } from '@mui/material'
+import { Dayjs } from 'dayjs'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -21,36 +22,36 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   const isMe = session?.userDetail?.username === user?.username
 
   /* custom default values */
-  const { fullName, email, username } = user || {}
+  const { fullName, dob, username } = user || {}
   const defaultValues = useMemo(
     () => ({
       fullName: fullName == null || fullName === '' ? username : fullName,
-      email: email == null || email === '' ? 'N/A' : email
+      dob
     }),
-    [fullName, email, username]
+    [fullName, dob, username]
   )
 
   useEffect(() => {
     if (user) {
       setValue('fullName', defaultValues.fullName as string)
-      setValue('email', defaultValues.email as string)
+      setValue('dob', defaultValues.dob as string)
     }
   }, [user, setValue, defaultValues])
 
   /* onSubmit */
-  async function onSubmitField(field: keyof TCardUserInfoForm) {
-    const value = getValues(field)
+  async function onSubmitField(field: keyof TCardUserInfoForm, submitVal: Dayjs | string | null) {
+    const value = submitVal || getValues(field)
 
     if (user && value != null && value !== '' && user[field] !== value) {
       handleSubmit(
-        async (formData) => {
+        async (_) => {
           toast.promise(updateUser(field, value), {
             loading: <RdToast message="Updating your profile..." />,
             success: <RdToast message="Profile saved!" />,
             error: <RdToast message="Could not save." />
           })
         },
-        (errors) => {
+        (_) => {
           // reset the field with initial value
           setValue(field, user?.[field] as any)
         }
@@ -70,11 +71,11 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
               <Divider sx={{ my: 1 }} />
 
               {/* User email */}
-              <UserInfoEmail<TCardUserInfoForm> isMe={isMe} getValues={getValues} control={control} onSubmitField={onSubmitField} />
+              <UserInfoEmail user={user} />
               <Divider sx={{ my: 1 }} />
 
               {/* User karma & cake day */}
-              <UserInfoExtra user={user} />
+              <UserInfoExtra<TCardUserInfoForm> isMe={isMe} user={user} control={control} onSubmitField={onSubmitField} />
               <Divider sx={{ my: 1 }} />
 
               {/* User follower */}

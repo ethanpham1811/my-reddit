@@ -2,6 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TUserDetail } from '@/constants/types'
 import { UPDATE_USER, UPDATE_USER_FRAG } from '@/graphql/mutations'
 import { ApolloCache, useMutation } from '@apollo/client'
+import { Dayjs } from 'dayjs'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -12,7 +13,12 @@ function useUserUpdate() {
   const [mutateMemberOf] = useMutation(UPDATE_USER)
 
   /* build dynamic update params from dynamic key */
-  const buildUpdateParams = (user: TUserDetail, key: keyof TUserDetail, newVal: string | null | undefined, isAdding: boolean = true) => {
+  const buildUpdateParams = (
+    user: TUserDetail,
+    key: keyof Omit<TUserDetail, 'email'>,
+    newVal: Dayjs | string | null | undefined,
+    isAdding: boolean = true
+  ) => {
     if (!newVal) return {}
     const ownVal = user[key]
 
@@ -38,7 +44,7 @@ function useUserUpdate() {
    * - following_ids
    * - post
    */
-  const updateUser = async (key: keyof TUserDetail, newVal: string | null | undefined, isAdding: boolean = true) => {
+  const updateUser = async (key: keyof Omit<TUserDetail, 'email'>, newVal: Dayjs | string | null | undefined, isAdding: boolean = true) => {
     if (!me) return
     setLoading(true)
 
@@ -64,7 +70,7 @@ function useUserUpdate() {
             id: userCacheId,
             fragment: UPDATE_USER_FRAG
           },
-          (data) => {
+          (_) => {
             return {
               ...updateUser
             }

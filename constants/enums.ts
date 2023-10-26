@@ -55,3 +55,7 @@ export enum PROFILE_DIALOG_TYPE {
   Logout = 'logout',
   UserAgreement = 'userAgreement'
 }
+export enum MOBILE_CUSTOM_BREAKPOINT {
+  Lg = '(max-width:1024px)',
+  Md = '(max-width:700px)'
+}

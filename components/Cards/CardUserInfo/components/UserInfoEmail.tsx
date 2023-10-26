@@ -1,30 +1,14 @@
-import { RdInlineInput } from '@/components'
-import { EmailOutlinedIcon } from '@/constants/icons'
-import { emailValidation } from '@/services'
-import { Box } from '@mui/material'
-import { Control, FieldValues, Path, UseFormGetValues } from 'react-hook-form'
+import { TUserDetail } from '@/constants/types'
+import { Box, Typography } from '@mui/material'
 
-type TUserInfoEmailProps<T extends FieldValues> = {
-  isMe: boolean
-  getValues: UseFormGetValues<T>
-  control: Control<T>
-  onSubmitField: (field: keyof T) => void
+type TUserInfoEmailProps = {
+  user: TUserDetail | null
 }
 
-function UserInfoEmail<T extends FieldValues>({ isMe, getValues, control, onSubmitField }: TUserInfoEmailProps<T>) {
+function UserInfoEmail({ user }: TUserInfoEmailProps) {
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
-      <EmailOutlinedIcon sx={{ fontSize: '0.8rem', mr: 1, color: 'blue.main' }} />
-      <RdInlineInput<T>
-        editable={isMe}
-        initialVal={getValues('email' as Path<T>)}
-        registerOptions={{ validate: (val) => emailValidation(val) }}
-        onFieldSubmit={onSubmitField}
-        control={control}
-        name={'email' as Path<T>}
-        center
-        endIcon
-      />
+    <Box display="flex" justifyContent="center" alignItems="center" py={1}>
+      <Typography variant="subtitle2">{user?.email}</Typography>
     </Box>
   )
 }

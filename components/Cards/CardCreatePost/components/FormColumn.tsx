@@ -12,7 +12,7 @@ import { FieldValues, Path } from 'react-hook-form'
 
 function FormColumn<T extends FieldValues>({
   control,
-  titleValue,
+  formOpened,
   getValues,
   setValue,
   loading,
@@ -69,7 +69,7 @@ function FormColumn<T extends FieldValues>({
         placeholder="Create Post"
         registerOptions={{ validate: (val) => postTitleValidation(val) }}
       />
-      {(!!titleValue || isDirty) && (
+      {formOpened && (
         <MainForm<T>
           reset={reset}
           setValue={setValue}

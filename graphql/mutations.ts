@@ -19,7 +19,7 @@ export const UPDATE_USER = gql`
     $id: ID!
     $coverUrl: String
     $created_at: Date
-    $dob: Date
+    $dob: String
     $email: String
     $followers: ID
     $fullName: String

@@ -4,7 +4,8 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardCreatePostForm, TEditModePayload } from '@/constants/types'
 import usePostCreateAndEdit from '@/hooks/usePostCreateAndEdit'
-import { Box, Stack } from '@mui/material'
+import { theme } from '@/mui/theme'
+import { Box, Divider, Stack, useMediaQuery } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { RdCard } from '../..'
@@ -15,6 +16,7 @@ import Tools from './components/Tools'
 function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined; editModePayload?: TEditModePayload }) {
   const { session } = useAppSession()
   const { createPost, updatePost, loading } = usePostCreateAndEdit()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [isLinkPost, setIsLinkPost] = useState(false)
   const userName: string | undefined | null = session?.userDetail?.username
   const {
@@ -35,6 +37,8 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
   } = useForm<TCardCreatePostForm>()
   const titleValue = watch('title')
   const imagesValue = watch('images')
+
+  const formOpened = !!titleValue || isDirty
 
   useEffect(() => {
     editModePayload?.link && setIsLinkPost(true)
@@ -61,17 +65,17 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
   }
 
   return (
-    <RdCard sx={{ p: 1.5 }}>
+    <RdCard sx={{ p: { xs: 2, sm: 1.5 } }}>
       <form onSubmit={onSubmit}>
-        <Stack direction="row">
+        <Stack direction={formOpened ? { xs: 'column', sm: 'row' } : 'row'} spacing={{ xs: 1, sm: '0' }}>
           {/* left column */}
-          <AvatarColumn userName={userName} />
+          {(!isMobile || !formOpened) && <AvatarColumn userName={userName} />}
 
           {/* main section */}
           <FormColumn<TCardCreatePostForm>
             editModePayload={editModePayload}
             control={control}
-            titleValue={titleValue}
+            formOpened={formOpened}
             getValues={getValues}
             setValue={setValue}
             loading={loading}
@@ -84,12 +88,20 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
           />
 
           {/* right column */}
-          <Box width={40} display="flex">
+          <Divider />
+          <Box
+            width={{ xs: 'auto', sm: 40 }}
+            display="flex"
+            flex={formOpened ? { xs: 1, sm: 'none' } : 0}
+            mx={{ xs: 'auto !important', sm: '0 !important' }}
+          >
             <Tools<TCardCreatePostForm>
+              isMobile={isMobile}
               imagesValue={imagesValue}
+              userName={userName}
               isEditing={isEditing}
               control={control}
-              isFormClosed={!titleValue && !isDirty}
+              formOpened={formOpened}
               setIsLinkPost={setIsLinkPost}
               isLinkPost={isLinkPost}
             />

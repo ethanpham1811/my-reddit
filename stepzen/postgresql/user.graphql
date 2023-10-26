@@ -3,7 +3,7 @@ type User {
   coverUrl: String
   role: String!
   created_at: DateTime!
-  dob: Date
+  dob: String
   email: String
   followers: ID
   fullName: String
@@ -100,13 +100,13 @@ Feel free to modify them or aggregate more.
 type Mutation {
   " Mutations for type 'User' "
   deleteUser(id: ID!): User @dbquery(type: "postgresql", schema: "public", table: "user", dml: DELETE, configuration: "postgresql_config")
-  insertUser(email: String, role: String, fullName: String, coverUrl: String, username: String!, dob: Date): User
+  insertUser(email: String, role: String, fullName: String, coverUrl: String, username: String!, dob: String): User
     @dbquery(type: "postgresql", schema: "public", table: "user", dml: INSERT, configuration: "postgresql_config")
   updateUser(
     id: ID!
     coverUrl: String
     created_at: Date
-    dob: Date
+    dob: String
     email: String
     followers: ID
     fullName: String

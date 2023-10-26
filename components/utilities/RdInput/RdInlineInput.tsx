@@ -3,7 +3,7 @@ import { TRdInlineInputProps } from '@/constants/types'
 import { borderColorStyle } from '@/mui/styles'
 import { Box, FormControl, FormHelperText, InputLabel } from '@mui/material'
 import TextField from '@mui/material/TextField'
-import { useEffect, useRef, useState } from 'react'
+import { FocusEvent, useEffect, useRef, useState } from 'react'
 import { Controller, FieldValues } from 'react-hook-form'
 
 const RdInlineInput = <T extends FieldValues>({
@@ -24,24 +24,26 @@ const RdInlineInput = <T extends FieldValues>({
   endIcon,
   ...rest
 }: TRdInlineInputProps<T>) => {
-  const [inputValue, setInputValue] = useState(initialVal != null ? initialVal.toString() : initialVal)
+  const [inputValue, setInputValue] = useState<string | null>(null) // toString() because this can be input number too
   const [inputWidth, setInputWidth] = useState('auto')
   const inputRef = useRef<HTMLDivElement | null>(null)
   const hiddenDivRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (hiddenDivRef.current == null || inputValue == null) return
+    if (hiddenDivRef.current == null || (inputValue == null && !initialVal)) return
 
     // Measure the width of the hidden div based on the input's value
     const hiddenDiv = hiddenDivRef.current
-    hiddenDiv.textContent = inputValue
+    hiddenDiv.textContent = inputValue || initialVal?.toString() || null
     const divWidth = hiddenDiv.offsetWidth
 
     // Set the input's width to match the div's width
     setInputWidth(divWidth + 'px')
-  }, [inputValue])
+  }, [inputValue, hiddenDivRef, initialVal])
 
-  const handleSubmit = () => editable && onFieldSubmit(name)
+  const handleSubmit = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+    editable && onFieldSubmit(name, e.target.value)
+  }
 
   return (
     <FormControl sx={{ flex, position: 'relative', '.MuiFormControl-root': { bgcolor: 'transparent' }, ...borderColorStyle, width }}>

@@ -11,7 +11,7 @@ import PeopleMenuList from './components/PeopleMenuList'
 import SubsMenuList from './components/SubsMenuList'
 import useMenuData from './hooks/useMenuData'
 
-function MenuDropDown({ subName, mobileMode = false, userPageName, pathName }: TMenuDropdownProps) {
+function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
   const { pathname } = useRouter()
   const { session, loading } = useAppSession()
   const me = session?.userDetail
@@ -29,7 +29,7 @@ function MenuDropDown({ subName, mobileMode = false, userPageName, pathName }: T
   function handleRenderSelectedOption(value: string): ReactNode {
     return renderSelectedOption(
       value,
-      mobileMode,
+      false,
       [...feedsOptions, ...communityOptions, ...followingOptions, ...activeOptions],
       activePage,
       subName,
@@ -43,7 +43,7 @@ function MenuDropDown({ subName, mobileMode = false, userPageName, pathName }: T
       value={me ? activePage || '' : 'home'}
       flex={1}
       width="20vw"
-      maxWidth="250px"
+      maxWidth="200px"
       minWidth="50px"
     >
       {/* Filter input */}
