@@ -37,7 +37,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id" FROM "post" WHERE "user_id" = $1
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link", "linkDescription" FROM "post" WHERE "user_id" = $1
       """
       configuration: "postgresql_config"
     )

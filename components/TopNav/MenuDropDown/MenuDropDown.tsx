@@ -2,7 +2,7 @@ import { RdDropdown } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
 import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
-import { Divider, List, MenuItem } from '@mui/material'
+import { List, MenuItem } from '@mui/material'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
 import { renderSelectedOption } from './RenderedCbs'
@@ -13,7 +13,7 @@ import useMenuData from './hooks/useMenuData'
 
 function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
   const { pathname } = useRouter()
-  const { session, loading } = useAppSession()
+  const { session } = useAppSession()
   const me = session?.userDetail
   const [filterTerm, setFilterTerm] = useState('')
   const isUserOrSubPage: boolean = !!userPageName || !!subName
@@ -54,13 +54,11 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       {/* Feeds list */}
       <FeedsMenuList value="home" feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
 
-      <Divider sx={{ my: 1 }} />
       {/* Subreddit list */}
-      <SubsMenuList value="home" loading={!me} options={communityOptions} filterByTerm={filterByTerm} />
+      <SubsMenuList value="home" options={communityOptions} filterByTerm={filterByTerm} />
 
-      <Divider sx={{ my: 1 }} />
       {/* Following list */}
-      <PeopleMenuList value="active" loading={!me} options={followingOptions} filterByTerm={filterByTerm} />
+      <PeopleMenuList value="active" options={followingOptions} filterByTerm={filterByTerm} />
 
       {/* Hidden option - A little hack for displaying unlisted Item (for profile pages) */}
       {isUserOrSubPage && <MenuItem sx={{ p: 0 }} disabled value={activePage}></MenuItem>}
