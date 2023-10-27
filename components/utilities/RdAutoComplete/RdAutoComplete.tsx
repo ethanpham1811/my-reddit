@@ -17,15 +17,14 @@ function RdAutoComplete<
           position: 'fixed',
           width: '100vw',
           left: -1,
-          pl: 2,
-          pr: 3,
+          px: 2,
           zIndex: 100
         }
       : {}
   const dropDownMobileStyle =
     isMobile && focused
       ? {
-          width: '100vw !important',
+          width: 'calc(100vw - 2rem) !important',
           '.MuiAutocomplete-listbox': {
             maxHeight: '80vh'
           }

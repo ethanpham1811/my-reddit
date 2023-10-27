@@ -3,23 +3,23 @@ import { TUserDetail } from '@/constants/types'
 import { fullNameValidation } from '@/services'
 import { Typography } from '@mui/material'
 import { Dayjs } from 'dayjs'
-import { Control, FieldValues, Path, UseFormGetValues } from 'react-hook-form'
+import { Control, FieldValues, Path } from 'react-hook-form'
 
 type TUserInfoHeaderProps<T extends FieldValues> = {
   isMe: boolean
-  getValues: UseFormGetValues<T>
+  initialUsername: string | undefined
   control: Control<T>
   onSubmitField: (field: keyof T, val: Dayjs | string | null) => void
   user: TUserDetail | null
 }
 
-function UserInfoHeader<T extends FieldValues>({ isMe, getValues, control, onSubmitField, user }: TUserInfoHeaderProps<T>) {
+function UserInfoHeader<T extends FieldValues>({ isMe, initialUsername, control, onSubmitField, user }: TUserInfoHeaderProps<T>) {
   return (
     <>
       <Typography variant="h6" color="initial" fontWeight={700}>
         <RdInlineInput<T>
           editable={isMe}
-          initialVal={getValues('fullName' as Path<T>)}
+          initialVal={initialUsername}
           registerOptions={{ validate: (val) => fullNameValidation(val) }}
           onFieldSubmit={onSubmitField}
           control={control}

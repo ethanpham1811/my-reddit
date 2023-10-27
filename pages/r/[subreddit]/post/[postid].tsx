@@ -1,8 +1,8 @@
 import { client } from '@/apollo-client'
 import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/components'
+import ZoomImgDialog from '@/components/Cards/CardPost/components/ZoomImgDialog'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { TPost, TSubredditDetail } from '@/constants/types'
 import { GET_POST_BY_ID, GET_POST_LIST, GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
 import useWaitingForISG from '@/hooks/useWaitingForISG'
@@ -12,6 +12,7 @@ import { Stack } from '@mui/material'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 type TPostPageProps = {
   subreddit: TSubredditDetail | null
@@ -95,13 +96,16 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
 
   /* ---------------------show loading page on new created dynamic page--------------------------*/
 
-  if (waitingForISG) return <ISGFallBack />
+  // if (waitingForISG) return <ISGFallBack />
 
   /* ---------------------------------------------------------------------------------------------*/
 
   const subreddit: TSubredditDetail = subData?.subredditByName || svSubreddit
   const post: TPost = postData?.post || svPost
   const pageLoading: boolean = (subLoading || postLoading) && !subreddit && !post
+
+  // zoom image dialog states
+  const [zoomedImg, setZoomedImg] = useState<string | null>(null)
 
   // redirect to 404 if no data found
   if (!pageLoading && (post == null || subreddit == null || subError || postError)) {
@@ -124,7 +128,16 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
         {!verifyPost() ? (
           <MessageBoard head={'This post is private, please join '} highlight={subName as string} />
         ) : (
-          <Stack spacing={2}>{post && <CardPost post={post} loadedInSubPage={!!subName} loadedInPostPage={!!postid} />}</Stack>
+          <Stack spacing={2}>
+            {post && (
+              <>
+                <CardPost post={post} loadedInSubPage={!!subName} loadedInPostPage={!!postid} setZoomedImg={setZoomedImg} />
+
+                {/* dialog show zoomed image */}
+                <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />
+              </>
+            )}
+          </Stack>
         )}
         <CardSubredditInfo subreddit={subreddit} loading={pageLoading} />
       </FeedLayout>

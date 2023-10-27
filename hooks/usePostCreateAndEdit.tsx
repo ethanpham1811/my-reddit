@@ -13,7 +13,7 @@ function usePostCreateAndEdit() {
   const { session } = useAppSession()
   const me = session?.userDetail
   const [loading, setLoading] = useState(false)
-  const [uploadFiles] = useSupabaseUpload()
+  const uploadFiles = useSupabaseUpload()
   const { data: subList } = useQuery(GET_SUBREDDIT_LIST_SHORT)
   const [insertPost] = useMutation(ADD_POST)
   const [editPost] = useMutation(UPDATE_POST)
@@ -26,7 +26,7 @@ function usePostCreateAndEdit() {
     if (!me) return
     setLoading(true)
 
-    const { body, subreddit_id, title, link, linkDescription, images } = formData
+    const { subreddit_id, images } = formData
     const uploadImgUrls = await handleUploadImages(isLinkPost, images, setLoading)
 
     // find the subreddit info by the subreddit_id (formData) to retrieve it's name & subType
@@ -89,14 +89,14 @@ function usePostCreateAndEdit() {
         ...formData,
         images: uploadImgUrls,
         user_id: me?.id
-      },
-      optimisticResponse: {
-        updatePost: {
-          ...formData,
-          images: uploadImgUrls,
-          __typename: 'Post'
-        }
       }
+      // optimisticResponse: {
+      //   updatePost: {
+      //     ...formData,
+      //     images: uploadImgUrls,
+      //     __typename: 'Post'
+      //   }
+      // }
     })
     handleResult(errors, 'Your post has been successfully updated', cb)
   }
@@ -112,7 +112,7 @@ function usePostCreateAndEdit() {
     if (!isLinkPost && images && images.length > 0) {
       uploadedUrls = await uploadFiles(images)
       if (!images) {
-        cb(false)
+        cb(true)
         return null
       }
     }

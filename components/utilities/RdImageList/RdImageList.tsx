@@ -14,14 +14,19 @@ function RdImageList({ images, ...rest }: TRdImageListProps) {
       width="100%"
       sx={{ p: 1, borderRadius: '4px', border: (theme) => `1px dashed ${theme.palette.blue.main}` }}
     >
-      <ImageList {...rest}>
+      <ImageList
+        {...rest}
+        sx={{
+          alignItems: 'center'
+        }}
+      >
         {imageList.map((item, i) => (
           <ImageListItem key={`uploaded_img_${rid()}`}>
             <Image
               src={URL.createObjectURL(item)}
               alt={`uploaded image ${i}`}
               aria-label={`uploaded_img_${rid()}`}
-              style={{ width: '100%', objectFit: 'cover' }}
+              style={{ width: '100%', height: 'auto', maxHeight: '150px', objectFit: 'contain' }}
               width={100}
               height={100}
             />

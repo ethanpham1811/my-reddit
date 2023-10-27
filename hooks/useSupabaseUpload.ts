@@ -22,7 +22,7 @@ function useSupabaseUpload() {
     return filePaths
   }
 
-  return [uploadFiles]
+  return uploadFiles
 }
 
 export default useSupabaseUpload

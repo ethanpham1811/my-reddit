@@ -20,7 +20,7 @@ function CardLogout({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> })
   }
 
   return (
-    <RdCard sx={{ px: 4, py: 3, width: { xs: '400px', sm: '250px' } }}>
+    <RdCard sx={{ px: 4, py: 3, width: { xs: '60vw', sm: '250px' } }}>
       <Stack spacing={2}>
         <Stack spacing={2} alignItems="center">
           <Typography>Leaving so soon?</Typography>

@@ -10,16 +10,14 @@ import SearchBarInput from './components/SearchBarInput'
 
 type TSearchBarProps = {
   subOrUserName: string | string[] | undefined
-  pathName: string
   navigate: NextRouter['push']
   lgMobile: boolean
-  mdMobile: boolean
 }
 
-function SearchBar({ subOrUserName, lgMobile, mdMobile, pathName, navigate }: TSearchBarProps) {
+function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
   const [focused, setFocused] = useState(false)
   const [chip, setChip] = useState(true)
-  const { queriedDataList = [], loading, error, searchTerm, setSearchTerm } = useTopSearchQueriedList(focused)
+  const { queriedDataList = [], loading, searchTerm, setSearchTerm } = useTopSearchQueriedList(focused)
 
   const renderInput = (params: AutocompleteRenderInputParams) => (
     <SearchBarInput
@@ -69,17 +67,13 @@ function SearchBar({ subOrUserName, lgMobile, mdMobile, pathName, navigate }: TS
       focused={focused}
       groupBy={(option): string => option.groupBy}
       // open={true}
-      // open={searchTerm !== '' && isFocused}
       onFocus={() => setFocused(true)}
       onBlur={onBlur}
       onInputChange={onInputChange}
       onChange={onChange}
-      // onFocus={() => setIsFocused(true)}
       renderInput={renderInput}
       renderGroup={renderGroup}
       renderOption={renderOption}
-      // value={selectedOption}
-      // isOptionEqualToValue={undefined}
       noOptionsText={<div>Nothing found</div>}
       getOptionLabel={() => ''} // prevent displaying selected option value
       filterOptions={() => queriedDataList} // filtering disabled

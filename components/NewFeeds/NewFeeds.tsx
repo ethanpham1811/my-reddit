@@ -4,10 +4,10 @@ import { TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
-import { Dispatch, Fragment, SetStateAction, useEffect } from 'react'
-import { v4 as rid } from 'uuid'
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react'
 import { CardPost, MessageBoard } from '..'
 import { validatePostBySubname, validateSubredditMember } from '../../services'
+import ZoomImgDialog from '../Cards/CardPost/components/ZoomImgDialog'
 import { RdSkeletonListItem } from '../Skeletons'
 
 type TNewFeedsProps = {
@@ -25,6 +25,9 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
   const {
     query: { subreddit: subPageName }
   } = useRouter()
+
+  // zoom image dialog states
+  const [zoomedImg, setZoomedImg] = useState<string | null>(null)
 
   useEffect(() => {
     setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
@@ -62,11 +65,14 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
         <MessageBoard head="This community is private, please join " highlight={subPageName as string} />
       ) : cardPostList.length > 0 ? (
         cardPostList.map((post) => {
-          return <CardPost post={post} key={`post_${rid()}`} loadedInSubPage={!!subPageName} />
+          return <CardPost post={post} key={`post_${post.id}`} setZoomedImg={setZoomedImg} />
         })
       ) : (
         <MessageBoard head={subPageName ? 'This Subreddit has no post' : 'Something wrong with the server, please come back again'} />
       )}
+
+      {/* dialog show zoomed image */}
+      <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />
     </>
   )
 }

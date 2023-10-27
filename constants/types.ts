@@ -156,6 +156,7 @@ export type TCardPostProps = {
   post: TPost
   loadedInSubPage?: boolean
   loadedInPostPage?: boolean
+  setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
 export type IsChildrenGroupCheckboxProps<T extends FieldValues> = {
   name: FieldPath<T>
@@ -230,7 +231,6 @@ export type TRdImageCarouselProps = {
   width: string
   height: string
   imgList: string[]
-  setZoomDialogOpen: Dispatch<SetStateAction<boolean>>
   setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
 export type TRdImageListProps = Omit<ImageListOwnProps, 'children'> & {

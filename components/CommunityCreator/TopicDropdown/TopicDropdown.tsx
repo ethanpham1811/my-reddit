@@ -6,7 +6,6 @@ import useTopicList from '@/hooks/useTopicList'
 import { Box, Chip, FormControl, MenuItem, Typography } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
 import { Control, Controller, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
-import { v4 as rid } from 'uuid'
 
 type TTopicDropdown<T extends FieldValues> = {
   name: FieldPath<T>
@@ -89,7 +88,7 @@ function TopicDropdown<T extends FieldValues>({ name, control, registerOptions }
             {topicList ? (
               topicList.map(({ id, name }: TTopic) => {
                 return (
-                  <MenuItem value={`${id}_${name}`} key={`menu_${rid()}`}>
+                  <MenuItem value={`${id}_${name}`} key={`topic_${id}`}>
                     {name || 'unknown'}
                   </MenuItem>
                 )

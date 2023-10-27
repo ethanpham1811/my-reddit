@@ -61,7 +61,7 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       <PeopleMenuList value="active" options={followingOptions} filterByTerm={filterByTerm} />
 
       {/* Hidden option - A little hack for displaying unlisted Item (for profile pages) */}
-      {isUserOrSubPage && <MenuItem sx={{ p: 0 }} disabled value={activePage}></MenuItem>}
+      {isUserOrSubPage && <MenuItem sx={{ minHeight: 'auto', p: 0 }} disabled value={activePage}></MenuItem>}
     </RdDropdown>
   )
 }

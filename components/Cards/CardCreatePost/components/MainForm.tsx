@@ -89,7 +89,7 @@ function MainForm<T extends FieldValues>({
             filled={backBtnHover}
             text={'Back to view'}
             color="blue"
-            width="30%"
+            sx={{ width: { xs: '50%', sm: '30%' }, py: 1 }}
           />
         )}
         <RdButton
@@ -99,7 +99,7 @@ function MainForm<T extends FieldValues>({
           text={isEditing ? 'Update' : 'Post'}
           filled={!loading && !backBtnHover && isDirty}
           color="blue"
-          width="30%"
+          sx={{ width: { xs: '50%', sm: '30%' }, py: 1 }}
         />
 
         {!isEditing && (

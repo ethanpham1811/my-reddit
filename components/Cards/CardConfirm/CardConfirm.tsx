@@ -14,7 +14,7 @@ type TCardConfirmProps = {
 
 function CardConfirm({ text, btnText, filled = false, invertColor = true, setOpen, onConfirm, solo }: TCardConfirmProps) {
   return (
-    <RdCard sx={{ px: 4, py: 5, width: { xs: '400px', sm: '250px' } }}>
+    <RdCard sx={{ px: 4, py: 5, width: { xs: '60vw', sm: '250px' } }}>
       <Stack spacing={2}>
         <Stack spacing={2} alignItems="center">
           <Typography>{text}</Typography>

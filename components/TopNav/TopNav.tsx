@@ -34,7 +34,7 @@ function TopNav({ sessionUsername }: { sessionUsername: string | undefined }) {
             <MenuDropDown subName={subName} userPageName={username} pathName={pathName} />
           </Stack>
           {/* search */}
-          <SearchBar lgMobile={lgMobile} mdMobile={mdMobile} subOrUserName={subName ?? username} pathName={pathName} navigate={navigate} />
+          <SearchBar lgMobile={lgMobile} subOrUserName={subName ?? username} navigate={navigate} />
           {/* Icons */}
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} pr={1}>
             <IconBox isMobile={mdMobile} />

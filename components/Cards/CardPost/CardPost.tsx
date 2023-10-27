@@ -4,11 +4,9 @@ import { POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardPostProps, TUserDetail } from '@/constants/types'
 import { Stack } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import ActionMenu from './components/ActionMenu'
 import BottomActionMenu from './components/BottomActionMenu'
 import PostColumn from './components/PostColumn'
-import PreviewImgDialog from './components/PreviewImgDialog'
 import VoteColumn from './components/VoteColumn'
 
 function CardPost({
@@ -26,12 +24,11 @@ function CardPost({
     linkDescription
   },
   loadedInSubPage,
-  loadedInPostPage
+  loadedInPostPage,
+  setZoomedImg
 }: TCardPostProps) {
   const { session } = useAppSession()
   const me: TUserDetail | undefined | null = session?.userDetail
-  const [zoomDialogOpen, setZoomDialogOpen] = useState(false)
-  const [zoomedImg, setZoomedImg] = useState<string | null>(null)
   const {
     push: navigate,
     query: { postid, mode }
@@ -75,7 +72,6 @@ function CardPost({
               body={body}
               link={link}
               linkDescription={linkDescription}
-              setZoomDialogOpen={setZoomDialogOpen}
               setZoomedImg={setZoomedImg}
               images={images}
             />
@@ -91,9 +87,6 @@ function CardPost({
       {postid != null && (
         <CardCommentBox subName={subName} commentList={commentList} post_id={postId} user_id={me?.id} username={me?.username as string} />
       )}
-
-      {/* dialog show zoomed image */}
-      <PreviewImgDialog zoomDialogOpen={zoomDialogOpen} setZoomDialogOpen={setZoomDialogOpen} setZoomedImg={setZoomedImg} zoomedImg={zoomedImg} />
     </Stack>
   )
 }

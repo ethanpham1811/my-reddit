@@ -1,7 +1,6 @@
 import { client } from '@/apollo-client'
 import { CardFeedSorter, CardUserInfo, UserNewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
-import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TUserCompact, TUserDetail } from '@/constants/types'
 import { GET_USER_BY_USERNAME, GET_USER_LIST_SHORT } from '@/graphql/queries'
@@ -77,11 +76,9 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
 
   /* ---------------------show loading page on new created dynamic page--------------------------*/
 
-  if (waitingForISG) return <ISGFallBack />
+  // if (waitingForISG) return <ISGFallBack />
 
   /* ---------------------------------------------------------------------------------------------*/
-
-  console.log(user, loading)
 
   // redirect to 404 if no data found
   if (!pageLoading && (user == null || error)) {

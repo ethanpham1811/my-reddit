@@ -3,10 +3,10 @@ import { TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
-import { Dispatch, Fragment, SetStateAction, useEffect } from 'react'
-import { v4 as rid } from 'uuid'
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react'
 import { CardPost, MessageBoard } from '..'
 import { validatePostByFollowing, validatePostBySubname } from '../../services'
+import ZoomImgDialog from '../Cards/CardPost/components/ZoomImgDialog'
 import { RdSkeletonListItem } from '../Skeletons'
 
 type TUserNewFeedsProps = {
@@ -23,6 +23,9 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
   const {
     query: { username: userPageName }
   } = useRouter()
+
+  // zoom image dialog states
+  const [zoomedImg, setZoomedImg] = useState<string | null>(null)
 
   useEffect(() => {
     setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
@@ -60,10 +63,13 @@ function UserNewFeeds({ sortOptions: { method, ordering }, postList, loading, se
       ) : !verifyFollower() ? ( // if user is not following the user page
         <MessageBoard head="You need to follow " highlight={userPageName as string} tail=" to view their posts" />
       ) : mappedPostList.length > 0 ? (
-        mappedPostList.map((post) => <CardPost key={`post_${rid()}`} post={post} />)
+        mappedPostList.map((post) => <CardPost key={`post_${post.id}`} post={post} setZoomedImg={setZoomedImg} />)
       ) : (
         <MessageBoard head="This user has no post" />
       )}
+
+      {/* dialog show zoomed image */}
+      <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />
     </>
   )
 }

@@ -2,13 +2,12 @@ import { ArrowBackIosIcon, ArrowForwardIosIcon } from '@/constants/icons'
 import { TRdImageCarouselProps } from '@/constants/types'
 import { Paper } from '@mui/material'
 import Image from 'next/image'
+import { memo } from 'react'
 import Carousel from 'react-material-ui-carousel'
-import { v4 as rid } from 'uuid'
 
-function RdImageCarousel({ width, height, imgList, setZoomDialogOpen, setZoomedImg }: TRdImageCarouselProps) {
+function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarouselProps) {
   function zoomImage(e: any, imgSrc: string) {
     e.stopPropagation()
-    setZoomDialogOpen(true)
     setZoomedImg(imgSrc)
   }
   return (
@@ -35,7 +34,7 @@ function RdImageCarousel({ width, height, imgList, setZoomDialogOpen, setZoomedI
         autoPlay={false}
       >
         {imgList.map((imgSrc, i) => (
-          <Paper key={`image_${rid()}`} sx={{ boxShadow: 'none' }}>
+          <Paper key={`image_${imgSrc}`} sx={{ boxShadow: 'none' }}>
             <Image
               src={process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + imgSrc}
               alt={'post image'}
@@ -53,4 +52,4 @@ function RdImageCarousel({ width, height, imgList, setZoomDialogOpen, setZoomedI
   )
 }
 
-export default RdImageCarousel
+export default memo(RdImageCarousel, (prev, next) => prev?.imgList?.length === next?.imgList?.length)

@@ -15,7 +15,9 @@ const RdDialog = ({ open, children, transparent, ...rest }: TRdDialogProps) => {
       scroll="body"
       TransitionComponent={RdTransition}
       keepMounted
-      PaperProps={{ sx: transparent ? { boxShadow: 'none', bgcolor: 'transparent' } : {} }}
+      PaperProps={{
+        sx: transparent ? { boxShadow: 'none', bgcolor: 'transparent' } : {}
+      }}
       aria-describedby="alert-dialog-slide-description"
       {...rest}
     >
