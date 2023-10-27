@@ -45,7 +45,7 @@ function SearchSubUserItem({ loading, item, updateUser, revertBtnText, type }: T
         </Link>
         <Stack flex={1}>
           <Link href={link} style={{ color: 'inherit' }}>
-            <Typography fontSize="0.8rem" variant="h6">{`r/${name}`}</Typography>
+            <Typography fontSize="0.8rem" variant="h6">{`${type === SEARCH_TABS.Communities ? 'r' : 'u'}/${name}`}</Typography>
           </Link>
           <Typography fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
             {extraText}

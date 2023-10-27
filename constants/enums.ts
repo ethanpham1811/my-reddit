@@ -3,6 +3,7 @@ export const MAX_TOPIC_CHOSEN = 2
 export const DEFAULT_BUTTON_COLOR = 'orange'
 export const BUCKET = 'post_images'
 export const BUCKET_SUBFOLDER = 'public'
+export const UPDATE_USER_ARRAY_KEY = ['member_of_ids', 'following_ids', 'socialLinks']
 export enum POST_MUTATION_MODE {
   Create = 'create',
   Edit = 'edit'

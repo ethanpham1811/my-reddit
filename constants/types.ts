@@ -156,8 +156,6 @@ export type TRdSelect = IconButtonProps & {
 /* ---------------------------------------------Props Types--------------------------------------------- */
 export type TCardPostProps = {
   post: TPost
-  loadedInSubPage?: boolean
-  loadedInPostPage?: boolean
   setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
 export type IsChildrenGroupCheckboxProps<T extends FieldValues> = {

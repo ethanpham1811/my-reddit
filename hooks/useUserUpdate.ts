@@ -1,4 +1,5 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
+import { UPDATE_USER_ARRAY_KEY } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
 import { UPDATE_USER, UPDATE_USER_FRAG } from '@/graphql/mutations'
 import { ApolloCache, useMutation } from '@apollo/client'
@@ -23,8 +24,8 @@ function useUserUpdate() {
     const ownVal = user[key]
 
     let updateParams = {}
-    if (Array.isArray(ownVal)) {
-      updateParams = { [key]: !ownVal ? [newVal] : isAdding ? [...ownVal, newVal] : ownVal.filter((val) => val !== newVal) }
+    if (UPDATE_USER_ARRAY_KEY.includes(key)) {
+      updateParams = { [key]: !ownVal ? [newVal] : isAdding ? [...(ownVal as []), newVal] : (ownVal as []).filter((val) => val !== newVal) }
     } else {
       updateParams = { [key]: newVal }
     }

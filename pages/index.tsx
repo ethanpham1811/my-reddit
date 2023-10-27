@@ -1,6 +1,7 @@
 import { client } from '@/apollo-client'
 import { CardAds, CardFeedSorter, CardHomeInfo, NewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
+import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions } from '@/constants/types'
 import { GET_POST_LIST } from '@/graphql/queries'
@@ -49,7 +50,7 @@ export default function Home({ postList: svPostList }: InferGetStaticPropsType<t
 
   /* ---------------------show loading page on new created dynamic page--------------------------*/
 
-  // if (waitingForISG) return <ISGFallBack />
+  if (waitingForISG) return <ISGFallBack />
 
   /* ---------------------------------------------------------------------------------------------*/
 

@@ -23,8 +23,6 @@ function CardPost({
     link,
     linkDescription
   },
-  loadedInSubPage,
-  loadedInPostPage,
   setZoomedImg
 }: TCardPostProps) {
   const { session } = useAppSession()
@@ -60,11 +58,10 @@ function CardPost({
         <RdCard onClick={goToPost} sx={{ '&:hover': !postid ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {} }}>
           <Stack direction="row">
             {/* side column */}
-            <VoteColumn vote={vote} me={me} postId={postId} isMyPost={isMyPost} loadedInPostPage={loadedInPostPage} />
+            <VoteColumn vote={vote} me={me} postId={postId} isMyPost={isMyPost} loadedInPostPage={!!postid} />
 
             {/* main section */}
             <PostColumn
-              loadedInSubPage={loadedInSubPage}
               subName={subName}
               username={username}
               createdAt={createdAt}
@@ -76,12 +73,12 @@ function CardPost({
               images={images}
             />
           </Stack>
-          {isMyPost && loadedInPostPage && <BottomActionMenu subName={subName} postId={postId.toString()} />}
+          {isMyPost && !!postid && <BottomActionMenu subName={subName} postId={postId.toString()} />}
         </RdCard>
       )}
 
       {/* 3 dot menu */}
-      {isMyPost && !loadedInPostPage && <ActionMenu subName={subName} postId={postId.toString()} />}
+      {isMyPost && !postid && <ActionMenu subName={subName} postId={postId.toString()} />}
 
       {/* comment box (post detail page) */}
       {postid != null && (

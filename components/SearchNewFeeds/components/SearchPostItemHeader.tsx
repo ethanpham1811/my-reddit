@@ -22,7 +22,7 @@ export default function SearchPostItemHeader({ subName, username, created_at }: 
       </Link>
       <Typography fontSize="0.8rem" variant="h6" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
         <Link href={`/r/${subName}`} style={{ color: 'inherit' }}>
-          {subName}
+          r/{subName}
         </Link>
       </Typography>
       <Box mx={0.5} color="hintText.main" fontSize="0.8rem">

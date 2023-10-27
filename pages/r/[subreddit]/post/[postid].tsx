@@ -3,6 +3,7 @@ import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/co
 import ZoomImgDialog from '@/components/Cards/CardPost/components/ZoomImgDialog'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
+import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { TPost, TSubredditDetail } from '@/constants/types'
 import { GET_POST_BY_ID, GET_POST_LIST, GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
 import useWaitingForISG from '@/hooks/useWaitingForISG'
@@ -94,18 +95,19 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
     variables: { id: postid }
   })
 
-  /* ---------------------show loading page on new created dynamic page--------------------------*/
-
-  // if (waitingForISG) return <ISGFallBack />
-
   /* ---------------------------------------------------------------------------------------------*/
 
   const subreddit: TSubredditDetail = subData?.subredditByName || svSubreddit
   const post: TPost = postData?.post || svPost
   const pageLoading: boolean = (subLoading || postLoading) && !subreddit && !post
-
   // zoom image dialog states
   const [zoomedImg, setZoomedImg] = useState<string | null>(null)
+
+  /* ---------------------show loading page on new created dynamic page--------------------------*/
+
+  if (waitingForISG) return <ISGFallBack />
+
+  /* ---------------------------------------------------------------------------------------------*/
 
   // redirect to 404 if no data found
   if (!pageLoading && (post == null || subreddit == null || subError || postError)) {
@@ -115,7 +117,7 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
 
   // if post in public subreddit OR user is member of subreddit => return true
   const verifyPost = (): boolean => {
-    return validatePostBySubname(me?.member_of_ids, subName, post?.subreddit?.subType)
+    return me?.id === post?.user?.id || validatePostBySubname(me?.member_of_ids, subName, post?.subreddit?.subType)
   }
 
   return (
@@ -131,7 +133,7 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
           <Stack spacing={2}>
             {post && (
               <>
-                <CardPost post={post} loadedInSubPage={!!subName} loadedInPostPage={!!postid} setZoomedImg={setZoomedImg} />
+                <CardPost post={post} setZoomedImg={setZoomedImg} />
 
                 {/* dialog show zoomed image */}
                 <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />

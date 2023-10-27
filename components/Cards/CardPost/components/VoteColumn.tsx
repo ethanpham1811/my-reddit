@@ -53,11 +53,11 @@ function VoteColumn({ vote: votes, me, postId, isMyPost, loadedInPostPage }: TVo
   return (
     <Box width={40} m={-1} mb={isMyPost && loadedInPostPage ? 0 : -1} bgcolor="inputBgOutfocused.main">
       <Stack alignItems="center">
-        <IconButton onClick={(e) => handleVote(e, true)} disabled={!me || loading}>
+        <IconButton onClick={(e) => handleVote(e, true)}>
           <ImArrowUp style={{ color: `${vote != null && vote.upvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
         <Typography>{voteCount}</Typography>
-        <IconButton onClick={(e) => handleVote(e, false)} disabled={!me || loading}>
+        <IconButton onClick={(e) => handleVote(e, false)}>
           <ImArrowDown style={{ color: `${vote != null && !vote.upvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
       </Stack>

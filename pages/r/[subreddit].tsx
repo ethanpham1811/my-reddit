@@ -1,6 +1,7 @@
 import { client } from '@/apollo-client'
 import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
+import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/constants/types'
 import { GET_SUBREDDIT_BY_NAME, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
@@ -72,7 +73,7 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
 
   /* ---------------------show loading page on new created dynamic page--------------------------*/
 
-  // if (waitingForISG) return <ISGFallBack />
+  if (waitingForISG) return <ISGFallBack />
 
   /* ---------------------------------------------------------------------------------------------*/
 

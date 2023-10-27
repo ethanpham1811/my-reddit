@@ -5,7 +5,7 @@ import { ApolloError, useQuery } from '@apollo/client'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 type TuseTopSearchQueriedListResponse = {
-  queriedDataList: TAutocompleteOptions[]
+  dataList: TAutocompleteOptions[]
   loading: boolean
   error: ApolloError | undefined
   searchTerm: string
@@ -29,8 +29,9 @@ function useTopSearchQueriedList(isFocused: boolean): TuseTopSearchQueriedListRe
   const queriedUsers: TQueriedUser[] = queriedData?.queriedUsers ?? []
 
   // use Trending posts for default list if searchTerm is ''
-  const queriedDataList = searchTerm === '' ? trendingData || [] : [...queriedSubs, ...queriedUsers]
   const loading = trendingLoading || queriedLoading
+  const queriedDataList = searchTerm === '' ? trendingData || [] : [...queriedSubs, ...queriedUsers]
+  const dataList = queriedDataList.length == 0 && !loading ? notFound : queriedDataList
 
   // fetch quried user and subreddit list on user typing
   useEffect(() => {
@@ -51,6 +52,6 @@ function useTopSearchQueriedList(isFocused: boolean): TuseTopSearchQueriedListRe
     fetchTopTrending()
   }, [isFocused, setTrendingData, trendingData])
 
-  return { queriedDataList: queriedDataList.length == 0 && !loading ? notFound : queriedDataList, loading, error, searchTerm, setSearchTerm }
+  return { dataList, loading, error, searchTerm, setSearchTerm }
 }
 export default useTopSearchQueriedList

@@ -17,7 +17,7 @@ type TSearchBarProps = {
 function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
   const [focused, setFocused] = useState(false)
   const [chip, setChip] = useState(true)
-  const { queriedDataList = [], loading, searchTerm, setSearchTerm } = useTopSearchQueriedList(focused)
+  const { dataList = [], loading, searchTerm, setSearchTerm } = useTopSearchQueriedList(focused)
 
   const renderInput = (params: AutocompleteRenderInputParams) => (
     <SearchBarInput
@@ -53,7 +53,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
 
   return (
     <RdAutoComplete<TAutocompleteOptions, false, false, true, 'span'>
-      options={queriedDataList}
+      options={dataList}
       disablePortal
       freeSolo
       selectOnFocus
@@ -76,7 +76,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
       renderOption={renderOption}
       noOptionsText={<div>Nothing found</div>}
       getOptionLabel={() => ''} // prevent displaying selected option value
-      filterOptions={() => queriedDataList} // filtering disabled
+      filterOptions={() => dataList} // filtering disabled
       id="top-search-auto"
       sx={{ flex: { xs: 1, xl: 0.6 }, mx: 'auto' }}
     />

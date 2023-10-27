@@ -45,7 +45,9 @@ function CardSearchItem({ name, loading, status, btnText, revertBtnText, extraTe
         </Link>
         <Stack flex="auto" width="20px">
           <Link href={link} style={{ color: 'inherit' }}>
-            <Typography fontSize="0.8rem" variant="h6" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{`r/${name}`}</Typography>
+            <Typography fontSize="0.8rem" variant="h6" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{`${
+              type === SEARCH_TABS.Communities ? 'r' : 'u'
+            }/${name}`}</Typography>
           </Link>
           <Typography fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
             {extraText}

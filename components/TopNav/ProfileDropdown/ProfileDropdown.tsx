@@ -61,7 +61,7 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
         offsetTop="10px"
         minWidth="200px"
         borderColor="inputBorder"
-        renderSelectedOption={(_) => renderSelectedOption(_, sessionUsername, !sessionUsername && loading)}
+        renderSelectedOption={(_) => renderSelectedOption(_, sessionUsername || me?.username, !sessionUsername && loading)}
       >
         {me && isMobile && (
           <>
