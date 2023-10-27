@@ -1,20 +1,28 @@
 import { ArrowBackIosIcon, ArrowForwardIosIcon } from '@/constants/icons'
 import { TRdImageCarouselProps } from '@/constants/types'
 import { Paper } from '@mui/material'
-import Image from 'next/image'
 import { memo } from 'react'
 import Carousel from 'react-material-ui-carousel'
+import DisplayImage from './components/DisplayImage'
 
 function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarouselProps) {
   function zoomImage(e: any, imgSrc: string) {
     e.stopPropagation()
     setZoomedImg(imgSrc)
   }
+
   return (
     <>
       <Carousel
         NextIcon={<ArrowForwardIosIcon sx={{ color: 'actionIcon.main' }} />}
         PrevIcon={<ArrowBackIosIcon sx={{ color: 'actionIcon.main' }} />}
+        height={300}
+        indicators={imgList.length > 1}
+        fullHeightHover={false}
+        sx={{ width }}
+        animation="slide"
+        navButtonsAlwaysVisible={imgList.length > 1}
+        autoPlay={false}
         navButtonsProps={{
           style: {
             backgroundColor: '#fff'
@@ -25,26 +33,10 @@ function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarou
             marginTop: 0
           }
         }}
-        height={300}
-        indicators={imgList.length > 1}
-        fullHeightHover={false}
-        sx={{ width }}
-        animation="slide"
-        navButtonsAlwaysVisible={imgList.length > 1}
-        autoPlay={false}
       >
-        {imgList.map((imgSrc, i) => (
+        {imgList.map((imgSrc) => (
           <Paper key={`image_${imgSrc}`} sx={{ boxShadow: 'none' }}>
-            <Image
-              src={process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + imgSrc}
-              alt={'post image'}
-              sizes="(min-width: 768px) 600px, 900px"
-              style={{ width, height, objectFit: 'contain', cursor: 'zoom-in' }}
-              width={300}
-              height={200}
-              loading="lazy"
-              onClick={(e) => zoomImage(e, imgSrc)}
-            />
+            <DisplayImage width={width} height={height} imgSrc={imgSrc} zoomImage={zoomImage} />
           </Paper>
         ))}
       </Carousel>

@@ -1,5 +1,6 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { MOBILE_CUSTOM_BREAKPOINT } from '@/constants/enums'
+import { theme } from '@/mui/theme'
 import { AppBar, Box, Stack, styled, useMediaQuery } from '@mui/material'
 import { useRouter } from 'next/router'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
@@ -21,6 +22,7 @@ function TopNav({ sessionUsername }: { sessionUsername: string | undefined }) {
     pathname: pathName,
     push: navigate
   } = router
+  const xlMobile = useMediaQuery(theme.breakpoints.down('lg'))
   const lgMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Lg)
   const mdMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Md)
 
@@ -39,7 +41,7 @@ function TopNav({ sessionUsername }: { sessionUsername: string | undefined }) {
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} pr={1}>
             <IconBox isMobile={mdMobile} />
             {/* Profile dropdown */}
-            {session && <ProfileDropdown loading={loading} sessionUsername={sessionUsername} />}
+            {session && <ProfileDropdown isMobile={xlMobile} loading={loading} sessionUsername={sessionUsername} />}
             {!session && <LoginButton />}
           </Stack>
         </Stack>

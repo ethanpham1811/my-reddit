@@ -108,6 +108,7 @@ export type TNotiData = {
 export type TIconBox = {
   icon: ReactNode
   name: string
+  tooltip: string
   notification?: TNotiData
   hideOnMobile?: boolean
 }
@@ -118,6 +119,7 @@ export type TMenuDropdownProps = {
 }
 export type TProfileDropdownProps = {
   loading: boolean
+  isMobile: boolean
   sessionUsername: string | undefined
 }
 export type TMenuItem = Omit<TSubreddit, 'id' | 'subType'> & {

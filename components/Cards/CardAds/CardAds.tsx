@@ -1,7 +1,8 @@
 import { SecurityOutlinedIcon } from '@/constants/icons'
 import { CardActions, CardHeader } from '@mui/material'
 import { useState } from 'react'
-import { RdButton, RdCard } from '../..'
+import { RdButton, RdCard, RdDialog } from '../..'
+import CardPayment from '../CardPayment/CardPayment'
 
 function CardAds() {
   const [isOpenDialog, setIsOpenDialog] = useState(false)
@@ -25,19 +26,11 @@ function CardAds() {
         subheader="The best Reddit experience"
       />
       <CardActions sx={{ p: 0, pt: 0.5 }}>
-        <RdButton
-          onClick={() => {
-            return
-            setIsOpenDialog(true)
-          }}
-          filled
-          text={'Try Now'}
-          invertColor
-        />
+        <RdButton onClick={() => setIsOpenDialog(true)} filled text={'Try Now'} invertColor />
       </CardActions>
-      {/* <RdDialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
+      <RdDialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
         <CardPayment />
-      </RdDialog> */}
+      </RdDialog>
     </RdCard>
   )
 }

@@ -2,7 +2,8 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
 import useUserUpdate from '@/hooks/useUserUpdate'
-import { Stack } from '@mui/material'
+import { theme } from '@/mui/theme'
+import { Stack, useMediaQuery } from '@mui/material'
 import { useState } from 'react'
 import { RdButton, RdChip } from '../..'
 
@@ -11,6 +12,7 @@ type TActionButton = { name: string | null | undefined; subType: string | null |
 function ActionButton({ name, subType }: TActionButton) {
   const { session } = useAppSession()
   const me = session?.userDetail
+  const isMobile = useMediaQuery(theme.breakpoints.down('xl'))
   const [showLeaveBtn, setShowLeaveBtn] = useState(false)
   const { updateUser, loading } = useUserUpdate()
 
@@ -26,8 +28,8 @@ function ActionButton({ name, subType }: TActionButton) {
       {me?.member_of_ids?.includes(name as string) ? (
         <RdButton
           onClick={onLeaveSubreddit}
-          filled={showLeaveBtn}
-          text={showLeaveBtn ? 'Leave' : 'Joined'}
+          filled={isMobile ? true : showLeaveBtn}
+          text={showLeaveBtn ? 'Leave' : isMobile ? 'Leave' : 'Joined'}
           onMouseEnter={() => setShowLeaveBtn(true)}
           onMouseLeave={() => setShowLeaveBtn(false)}
           color="blue"

@@ -1,5 +1,5 @@
 import { RdButton } from '@/components'
-import { Stack } from '@mui/material'
+import { Divider, Stack, Typography } from '@mui/material'
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { StripeError } from '@stripe/stripe-js'
 import { FormEvent, useState } from 'react'
@@ -55,9 +55,19 @@ const RdStripeForm = () => {
     <form onSubmit={handleSubmit}>
       <Stack spacing={2}>
         <PaymentElement />
-        <RdButton filled text={'Subscribe'} invertColor type="submit" disabled={!stripe || !elements} />
         {/* Show error message to your customers */}
-        {errorMessage && <div>{errorMessage}</div>}
+        {errorMessage && (
+          <Typography variant="body2" color="orange.main">
+            {errorMessage}
+          </Typography>
+        )}
+
+        <Divider />
+        {/* disabled={!stripe || !elements}  */}
+        <Typography display="block" textAlign="center" color="blue.main" fontSize="0.8rem">
+          Feature comming soon
+        </Typography>
+        <RdButton text={'Subscribe'} invertColor filled />
       </Stack>
     </form>
   )

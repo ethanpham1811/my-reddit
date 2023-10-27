@@ -5,17 +5,16 @@ import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { AccountCircleOutlinedIcon, InfoOutlinedIcon, LogoutIcon, PreviewOutlinedIcon } from '@/constants/icons'
 import { TProfileDropDownList, TProfileDropdownProps } from '@/constants/types'
 import { createGroupedList } from '@/services'
-import { Box, MenuItem, Typography } from '@mui/material'
+import { Box, Divider, MenuItem, Typography } from '@mui/material'
 import { useState } from 'react'
 import { v4 as rid } from 'uuid'
 import { renderSelectedOption } from './RenderedCbs'
 import ProfileMenu from './components/ProfileMenu'
 
-function ProfileDropdownProp({ loading, sessionUsername }: TProfileDropdownProps) {
+function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDropdownProps) {
   // const [page, setPage] = useState('home')
   const { session } = useAppSession()
   const me = session?.userDetail
-
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const [dialogType, setDialogType] = useState(PROFILE_DIALOG_TYPE.Logout)
 
@@ -64,6 +63,14 @@ function ProfileDropdownProp({ loading, sessionUsername }: TProfileDropdownProps
         borderColor="inputBorder"
         renderSelectedOption={(_) => renderSelectedOption(_, sessionUsername, !sessionUsername && loading)}
       >
+        {me && isMobile && (
+          <>
+            <Box px={2} pb={1} textAlign="right">
+              <Typography>{me.username}</Typography>
+            </Box>
+            <Divider />
+          </>
+        )}
         {me && groupedMenuList.length > 0 ? (
           groupedMenuList.map(({ items, group, groupIcon }) => {
             return (
