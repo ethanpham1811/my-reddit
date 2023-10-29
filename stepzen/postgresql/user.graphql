@@ -10,12 +10,16 @@ type User {
   id: ID!
   karma: ID
   photoUrl: String
-  post: [Post] @materializer(query: "postUsingPost_user_id_fkey")
   username: String!
   vote: [Vote] @materializer(query: "voteUsingVote_user_id_fkey")
   socialLinks: [String]
   member_of_ids: [String]
   following_ids: [String]
+  post(offset: Int, limit: Int): [Post]
+    @materializer(
+      query: "postUsingPost_user_id_fkey"
+      arguments: [{ name: "user_id", field: "id" }, { name: "offset", argument: "offset" }, { name: "limit", argument: "limit" }]
+    )
 }
 
 """
@@ -32,12 +36,12 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  postUsingPost_user_id_fkey(id: ID!): [Post]
+  postUsingPost_user_id_fkey(user_id: ID!, offset: Int, limit: Int): [Post]
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link", "linkDescription" FROM "post" WHERE "user_id" = $1
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link", "linkDescription" FROM "post" WHERE "user_id" = $1 ORDER BY "created_at" DESC LIMIT $3 OFFSET $2
       """
       configuration: "postgresql_config"
     )

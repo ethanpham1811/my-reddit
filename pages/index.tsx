@@ -2,11 +2,11 @@ import { client } from '@/apollo-client'
 import { CardAds, CardFeedSorter, CardHomeInfo, NewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
-import { ORDERING, SORT_METHOD } from '@/constants/enums'
+import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions } from '@/constants/types'
-import { GET_POST_LIST } from '@/graphql/queries'
+import { GET_PAGINATED_POST_LIST } from '@/graphql/queries'
+import usePostList from '@/hooks/usePostList'
 import useWaitingForISG from '@/hooks/useWaitingForISG'
-import { useQuery } from '@apollo/client'
 import { Stack } from '@mui/material'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
@@ -22,11 +22,18 @@ type THomePageProps = {
 export const getStaticProps = (async (ctx) => {
   let res
   try {
-    res = await client.query({ query: GET_POST_LIST, fetchPolicy: 'no-cache' })
+    res = await client.query({
+      query: GET_PAGINATED_POST_LIST,
+      variables: {
+        offset: 0,
+        limit: QUERY_LIMIT
+      },
+      fetchPolicy: 'no-cache'
+    })
   } catch (error) {
-    throw new Error(`Failed to fetch posts from server`)
+    throw new Error(`Failed to fetch posts from server${error}`)
   }
-  const postList: TPost[] | null = res?.data?.postList
+  const postList: TPost[] | null = res?.data?.postPaginatedList
 
   return {
     props: {
@@ -40,19 +47,22 @@ export const getStaticProps = (async (ctx) => {
 
 export default function Home({ postList: svPostList }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [waitingForISG] = useWaitingForISG()
+
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const [hasNoPost, setHasNoPost] = useState(false)
-
-  // home page posts list query
-  const { data, loading, error } = useQuery(GET_POST_LIST)
-  const postList: TPost[] = data?.postList || svPostList
-  const pageLoading = loading && !postList
+  const { postList, loading: pageLoading, error, fetchMore } = usePostList(svPostList)
 
   /* ---------------------show loading page on new created dynamic page--------------------------*/
 
   if (waitingForISG) return <ISGFallBack />
 
   /* ---------------------------------------------------------------------------------------------*/
+
+  function fetchMoreUpdateReturn(prev: { [key: string]: TPost[] }, fetchMoreResult: { [key: string]: TPost[] }) {
+    return {
+      postPaginatedList: [...prev?.postPaginatedList, ...fetchMoreResult?.postPaginatedList]
+    }
+  }
 
   return (
     <div>
@@ -63,7 +73,17 @@ export default function Home({ postList: svPostList }: InferGetStaticPropsType<t
       <FeedLayout top="70px">
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
-          <NewFeeds postList={postList} loading={pageLoading} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
+          <NewFeeds
+            fetchMore={fetchMore}
+            postList={postList}
+            loading={pageLoading}
+            error={error}
+            sortOptions={sortOptions}
+            noPostText="This page has no post"
+            fetchMoreUpdateReturn={fetchMoreUpdateReturn}
+            permissionFailedMsg={false}
+            setHasNoPost={setHasNoPost}
+          />
         </Stack>
         <Stack spacing={2}>
           <CardAds />

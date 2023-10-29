@@ -9,7 +9,11 @@ type Subreddit {
   description: String
   headline: String
   isChildrenContent: Boolean!
-  post: [Post] @materializer(query: "postUsingPost_subreddit_id_fkey")
+  post(offset: Int, limit: Int): [Post]
+    @materializer(
+      query: "postUsingPost_subreddit_id_fkey"
+      arguments: [{ name: "subreddit_id", field: "id" }, { name: "offset", argument: "offset" }, { name: "limit", argument: "limit" }]
+    )
 }
 
 """
@@ -17,9 +21,28 @@ The following queries are just a set of examples of how to access your schema.
 Feel free to modify them or aggregate more.
 """
 type Query {
+  postUsingPost_subreddit_id_fkey(subreddit_id: ID!, offset: Int, limit: Int): [Post]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link", "linkDescription" FROM "post" WHERE "subreddit_id" = $1 ORDER BY "created_at" DESC LIMIT $3 OFFSET $2
+      """
+      configuration: "postgresql_config"
+    )
   " Queries for type 'Subreddit' "
   subreddit(id: ID!): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
-  subredditByName(name: String!): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
+  subredditByNameWithPosts(name: String!): Subreddit
+    @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
+  subredditByName(name: String!): Subreddit
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "id", "name", "topic_ids", "subType", "member", "created_at", "coverUrl","description", "headline",  "isChildrenContent"  FROM "subreddit" WHERE "name" = $1
+      """
+      configuration: "postgresql_config"
+    )
   subredditList: [Subreddit] @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
   subredditPaginatedList(first: Int, after: Int): [Subreddit]
     @dbquery(

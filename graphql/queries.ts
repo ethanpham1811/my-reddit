@@ -17,40 +17,11 @@ export const GET_USER_BY_EMAIL = gql`
       socialLinks
       member_of_ids
       following_ids
-      post {
-        id
-        title
-        body
-        images
-        created_at
-        user {
-          username
-        }
-        comment {
-          created_at
-          user {
-            username
-          }
-          text
-        }
-        subreddit {
-          name
-          id
-          subType
-        }
-        vote {
-          id
-          upvote
-          user_id
-        }
-        link
-        linkDescription
-      }
     }
   }
 `
-export const GET_USER_BY_USERNAME = gql`
-  query User_by_username($username: String!) {
+export const GET_USER_BY_USERNAME_WITH_POSTS = gql`
+  query User_by_username($username: String!, $offset: Int, $limit: Int) {
     userByUsername(username: $username) {
       id
       role
@@ -65,7 +36,7 @@ export const GET_USER_BY_USERNAME = gql`
       socialLinks
       member_of_ids
       following_ids
-      post {
+      post(offset: $offset, limit: $limit) {
         id
         title
         body
@@ -120,7 +91,23 @@ export const GET_SUBREDDIT_BY_NAME = gql`
       name
       subType
       topic_ids
-      post {
+    }
+  }
+`
+export const GET_SUBREDDIT_BY_NAME_WITH_POSTS = gql`
+  query Sub_by_name($name: String!, $offset: Int, $limit: Int) {
+    subredditByNameWithPosts(name: $name) {
+      coverUrl
+      created_at
+      description
+      headline
+      id
+      isChildrenContent
+      member
+      name
+      subType
+      topic_ids
+      post(offset: $offset, limit: $limit) {
         id
         title
         body
@@ -137,8 +124,8 @@ export const GET_SUBREDDIT_BY_NAME = gql`
           text
         }
         subreddit {
-          name
           id
+          name
           subType
         }
         vote {
@@ -178,6 +165,38 @@ export const GET_SUBREDDIT_LIST_FULL = gql`
 export const GET_POST_LIST = gql`
   query Posts {
     postList {
+      id
+      title
+      body
+      images
+      created_at
+      user {
+        username
+      }
+      comment {
+        created_at
+        user {
+          username
+        }
+        text
+      }
+      subreddit {
+        name
+        subType
+      }
+      vote {
+        id
+        upvote
+        user_id
+      }
+      link
+      linkDescription
+    }
+  }
+`
+export const GET_PAGINATED_POST_LIST = gql`
+  query Posts($offset: Int, $limit: Int) {
+    postPaginatedList(offset: $offset, limit: $limit) {
       id
       title
       body

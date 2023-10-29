@@ -19,7 +19,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const supabase = useSupabaseClient()
   const [appSession, setAppSession] = useState<TAppSession>(null)
   const [userEmail, setUserEmail] = useState<string | null>(null)
-  const [userDetail, _, loading] = useUserByEmail(userEmail)
+  const [userDetail, loading] = useUserByEmail(userEmail)
   const [isAppLoading, setIsAppLoading] = useState(true)
   const sessionUsername: string | undefined = appSession?.user?.user_metadata?.username
 

@@ -1,18 +1,20 @@
 import { client } from '@/apollo-client'
-import { CardFeedSorter, CardUserInfo, UserNewFeeds } from '@/components'
+import { CardFeedSorter, CardUserInfo, MessageBoard, NewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
-import { ORDERING, SORT_METHOD } from '@/constants/enums'
+import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TUserCompact, TUserDetail } from '@/constants/types'
-import { GET_USER_BY_USERNAME, GET_USER_LIST_SHORT } from '@/graphql/queries'
+import { GET_USER_BY_USERNAME_WITH_POSTS, GET_USER_LIST_SHORT } from '@/graphql/queries'
+import useUserByUsername from '@/hooks/useUserByUsername'
 import useWaitingForISG from '@/hooks/useWaitingForISG'
-import { useQuery } from '@apollo/client'
+import { validatePostByFollowing } from '@/services'
 import { Stack } from '@mui/material'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 type TUserPageProps = {
   user: TUserDetail | null
@@ -25,8 +27,8 @@ export const getStaticProps = (async ({ params }) => {
   let res = null
   try {
     res = await client.query({
-      query: GET_USER_BY_USERNAME,
-      variables: { username: params?.username },
+      query: GET_USER_BY_USERNAME_WITH_POSTS,
+      variables: { username: params?.username, offset: 0, limit: QUERY_LIMIT },
       fetchPolicy: 'no-cache'
     })
   } catch (error) {
@@ -61,19 +63,19 @@ export async function getStaticPaths() {
 
 export default function User({ user: svUser, userPosts: svUserPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [waitingForISG] = useWaitingForISG()
-  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
+
+  const { session } = useAppSession()
+  const me = session?.userDetail
   const {
     query: { username },
     push: navigate
   } = useRouter()
+  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const [hasNoPost, setHasNoPost] = useState(false)
 
   /* -------------------------------------User detail query--------------------------------------*/
 
-  const { data, loading, error = null } = useQuery(GET_USER_BY_USERNAME, { variables: { username } })
-  const user: TUserDetail = data?.userByUsername || svUser
-  const userPosts: TPost[] = user?.post || svUserPosts
-  const pageLoading: boolean = loading && !user
+  const { user, userPosts, loading: pageLoading, error = null, fetchMore } = useUserByUsername(username, svUser, svUserPosts)
 
   /* ---------------------show loading page on new created dynamic page--------------------------*/
 
@@ -87,6 +89,30 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
     return null
   }
 
+  // if post belongs to my following OR this is my page => return true
+  function verifyFollower(): boolean {
+    return validatePostByFollowing(me?.following_ids, username) || me?.username === username
+  }
+
+  function permissionFailedMsg(): ReactNode | false {
+    return !me?.username ? ( // if user is not logged in
+      <MessageBoard head="You need to login to view their content" />
+    ) : !verifyFollower() ? ( // if user is not following the user page
+      <MessageBoard head="You need to follow " highlight={username as string} tail=" to view their posts" />
+    ) : (
+      false
+    )
+  }
+
+  function fetchMoreUpdateReturn(
+    prev: { [key: string]: { [key: string]: TPost[] } },
+    fetchMoreResult: { [key: string]: { [key: string]: TPost[] } }
+  ) {
+    return {
+      userByUsername: { ...prev?.userByUsername, post: [...prev?.userByUsername?.post, ...fetchMoreResult?.userByUsername?.post] }
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -95,7 +121,17 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
       <FeedLayout top="70px">
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
-          <UserNewFeeds postList={userPosts} loading={pageLoading} error={error} sortOptions={sortOptions} setHasNoPost={setHasNoPost} />
+          <NewFeeds
+            fetchMore={fetchMore}
+            postList={userPosts}
+            loading={pageLoading}
+            error={error}
+            sortOptions={sortOptions}
+            noPostText="This user has no post"
+            fetchMoreUpdateReturn={fetchMoreUpdateReturn}
+            permissionFailedMsg={permissionFailedMsg()}
+            setHasNoPost={setHasNoPost}
+          />
         </Stack>
         <CardUserInfo user={user} loading={pageLoading} />
       </FeedLayout>

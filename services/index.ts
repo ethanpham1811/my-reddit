@@ -225,7 +225,7 @@ export const urlValidation = (value: string): boolean | string => {
 }
 export const fullNameValidation = (value: string): boolean | string => {
   const nameRegex = /^[A-Za-z]+( [A-Za-z]+)*$/
-  if (value === '') return true
+  if (value === '') return 'Can not be empty'
   if (value?.length > 16) return 'Sorry, too long'
   if (!nameRegex.test(value)) return 'Invalid name'
   return true

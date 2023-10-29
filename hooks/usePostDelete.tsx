@@ -8,26 +8,28 @@ import toast from 'react-hot-toast'
 function usePostDelete() {
   const [loading, setLoading] = useState(false)
   const {
-    query: { postid, subreddit: subName, username },
+    query: { postid, subreddit: subName },
     push: navigate
   } = useRouter()
 
   /* mutations */
-  const [deleteVotes] = useMutation(DELETE_VOTES_BY_POST_ID)
   const [deleteComments] = useMutation(DELETE_COMMENTS_BY_POST_ID)
+  const [deleteVotes] = useMutation(DELETE_VOTES_BY_POST_ID)
   const [deletePost] = useMutation(DELETE_POST)
 
   async function deletePostData(post_id: string) {
     setLoading(true)
     toast.promise(
+      // delete post's comments
       deleteComments({
         variables: { post_id }
-      })
-        .then(() => {
-          // delete post's votes
-          deleteVotes({ variables: { post_id } })
-        })
-        .then(() => {
+      }).then(({ errors }) => {
+        if (errors) throw new Error(errors[0].message)
+
+        // delete post's votes
+        deleteVotes({ variables: { post_id } }).then(({ errors }) => {
+          if (errors) throw new Error(errors[0].message)
+
           // delete post
           deletePost({
             variables: { id: post_id },
@@ -42,7 +44,8 @@ function usePostDelete() {
               if (postCacheId) cache.evict({ id: postCacheId })
             }
           })
-        }),
+        })
+      }),
       {
         loading: <RdToast message="Deleting your post..." />,
         success: <RdToast message="Successfully deleted post" />,

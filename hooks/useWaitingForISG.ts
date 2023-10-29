@@ -25,7 +25,9 @@ function useWaitingForISG(): boolean[] {
       const staticPageExists = await checkIfStaticPageExists(url)
       !staticPageExists && setWaitingForISG(true)
     }
-    const handleRouteComplete = () => waitingForISG && setWaitingForISG(false)
+    const handleRouteComplete = () => {
+      waitingForISG && setWaitingForISG(false)
+    }
 
     events.on('routeChangeStart', handleRouteChange)
     events.on('routeChangeComplete', handleRouteComplete)

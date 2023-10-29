@@ -1,4 +1,5 @@
 import { ApolloError } from '@apollo/client'
+import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
 import {
   AutocompleteProps,
   ButtonOwnProps,
@@ -151,6 +152,10 @@ export type TRdSelect = IconButtonProps & {
   options: TSelectOption[]
   icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
   position?: { top?: string; left?: string; right?: string; bottom?: string }
+}
+export type TFetchMoreArgs = {
+  offset: number
+  limit?: number
 }
 
 /* ---------------------------------------------Props Types--------------------------------------------- */
@@ -355,9 +360,26 @@ export type TPostCommentForm = {
 }
 
 /* ------------------------------------------Hook response Types------------------------------------------ */
-export type TUsePostListResponse = [postList: TPost[] | null, loading: boolean, error: ApolloError | undefined]
-export type TUseTopicListResponse = { topicList: TTopic[] | null; loading: boolean; error: ApolloError | undefined }
+export type TUsePostListResponse = {
+  postList: TPost[] | null
+  loading: boolean
+  error: ApolloError | undefined
+  fetchMore: FetchMoreFunction<{ [key: string]: TPost[] }, TFetchMoreArgs>
+}
+
+export type TUseTopicListResponse = {
+  topicList: TTopic[] | null
+  loading: boolean
+  error: ApolloError | undefined
+}
 export type TUseSubredditListResponse = { subredditList: TSubreddit[] | null; loading: boolean; error: ApolloError | undefined }
+export type TUseSubByNameResponse = {
+  subreddit: TSubredditDetail | null
+  subredditPosts: TPost[] | null
+  loading: boolean
+  error: ApolloError | undefined
+  fetchMore: FetchMoreFunction<{ [key: string]: TPost[] }, TFetchMoreArgs>
+}
 
 /* ------------------------------------------Data structure Types----------------------------------------- */
 export type TCommunityTypeOPtions = {

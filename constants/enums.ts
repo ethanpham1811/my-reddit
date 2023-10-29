@@ -1,5 +1,6 @@
 export const MAX_UPLOADS = 5
 export const MAX_TOPIC_CHOSEN = 2
+export const QUERY_LIMIT = 5
 export const DEFAULT_BUTTON_COLOR = 'orange'
 export const BUCKET = 'post_images'
 export const BUCKET_SUBFOLDER = 'public'

@@ -1,18 +1,20 @@
 import { client } from '@/apollo-client'
-import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
+import { CardFeedSorter, CardSubredditInfo, MessageBoard, NewFeeds, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
-import { ORDERING, SORT_METHOD } from '@/constants/enums'
+import { ORDERING, QUERY_LIMIT, SORT_METHOD, SUBREDDIT_TYPE } from '@/constants/enums'
 import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/constants/types'
-import { GET_SUBREDDIT_BY_NAME, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
+import { GET_SUBREDDIT_BY_NAME_WITH_POSTS, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
+import useSubByNameWithPosts from '@/hooks/useSubByNameWithPosts'
 import useWaitingForISG from '@/hooks/useWaitingForISG'
-import { useQuery } from '@apollo/client'
+import { validateSubredditMember } from '@/services'
 import { Stack } from '@mui/material'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 type TSubredditPageProps = {
   subreddit: TSubredditDetail | null
@@ -24,11 +26,15 @@ type TSubredditPageProps = {
 export const getStaticProps = (async ({ params }) => {
   let res = null
   try {
-    res = await client.query({ query: GET_SUBREDDIT_BY_NAME, variables: { name: params?.subreddit }, fetchPolicy: 'no-cache' })
+    res = await client.query({
+      query: GET_SUBREDDIT_BY_NAME_WITH_POSTS,
+      variables: { name: params?.subreddit, offset: 0, limit: QUERY_LIMIT },
+      fetchPolicy: 'no-cache'
+    })
   } catch (error) {
     throw new Error(`Failed to fetch subreddit detail from server`)
   }
-  const subreddit: TSubredditDetail | null = res?.data?.subredditByName
+  const subreddit: TSubredditDetail | null = res?.data?.subredditByNameWithPosts || null
   const subredditPosts: TPost[] | null = subreddit?.post || null
 
   return {
@@ -57,19 +63,19 @@ export async function getStaticPaths() {
 
 export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSubredditPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [waitingForISG] = useWaitingForISG()
-  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
+
+  const { session } = useAppSession()
+  const me = session?.userDetail
   const {
     query: { subreddit: subName },
     push: navigate
   } = useRouter()
+  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const [hasNoPost, setHasNoPost] = useState(false)
 
   /* ------------------------------subreddit page info query-------------------------------------*/
 
-  const { data, loading, error = null } = useQuery(GET_SUBREDDIT_BY_NAME, { variables: { name: subName } })
-  const subreddit: TSubredditDetail = data?.subredditByName || svSubreddit
-  const subredditPosts: TPost[] = subreddit?.post || svSubredditPosts
-  const pageLoading: boolean = loading && !subreddit
+  const { subreddit, subredditPosts, loading: pageLoading, error = null, fetchMore } = useSubByNameWithPosts(subName, svSubreddit, svSubredditPosts)
 
   /* ---------------------show loading page on new created dynamic page--------------------------*/
 
@@ -83,6 +89,31 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
     return null
   }
 
+  // weather if the post belongs to the public subreddit
+  function verifyIsMember() {
+    return validateSubredditMember(me?.member_of_ids, subName)
+  }
+
+  function permissionFailedMsg(): ReactNode | false {
+    return subName && !verifyIsMember() && subreddit?.subType !== SUBREDDIT_TYPE.Public ? (
+      <MessageBoard head="This community is private, please join " highlight={subName as string} />
+    ) : (
+      false
+    )
+  }
+
+  function fetchMoreUpdateReturn(
+    prev: { [key: string]: { [key: string]: TPost[] } },
+    fetchMoreResult: { [key: string]: { [key: string]: TPost[] } }
+  ) {
+    return {
+      subredditByNameWithPosts: {
+        ...prev?.subredditByNameWithPosts,
+        post: [...prev?.subredditByNameWithPosts?.post, ...fetchMoreResult?.subredditByNameWithPosts?.post]
+      }
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -93,11 +124,14 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
           <NewFeeds
-            subType={subreddit?.subType}
+            fetchMore={fetchMore}
             postList={subredditPosts}
             loading={pageLoading}
             error={error}
             sortOptions={sortOptions}
+            noPostText="This subreddit has no post"
+            fetchMoreUpdateReturn={fetchMoreUpdateReturn}
+            permissionFailedMsg={permissionFailedMsg()}
             setHasNoPost={setHasNoPost}
           />
         </Stack>

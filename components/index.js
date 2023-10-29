@@ -16,7 +16,6 @@ import MainLayout from './Layouts/MainLayout'
 import LoginPortal from './LoginPortal/LoginPortal'
 import MessageBoard from './MessageBoard/MessageBoard'
 import NewFeeds from './NewFeeds/NewFeeds'
-import UserNewFeeds from './NewFeeds/UserNewFeeds'
 import SearchFeeds from './SearchNewFeeds/SearchFeeds'
 import SearchFeedsTabBar from './SearchNewFeeds/components/SearchFeedsTabBar'
 import SubredditTopNav from './SubredditTopNav/SubredditTopNav'
@@ -39,6 +38,7 @@ import RdIconSelect from './utilities/RdIconSelect/RdIconSelect'
 import RdImageCarousel from './utilities/RdImageCarousel/RdImageCarousel'
 import RdImageList from './utilities/RdImageList/RdImageList'
 import RdImageUploader from './utilities/RdImageUploader/RdImageUploader'
+import RdInfiniteScroll from './utilities/RdInfiniteScroll/RdInfiniteScroll'
 import RdInlineInput from './utilities/RdInput/RdInlineInput'
 import RdInput from './utilities/RdInput/RdInput'
 import RdMultipleDropdown from './utilities/RdMultipleDropdown/RdMultipleDropdown'
@@ -84,6 +84,7 @@ export {
   RdImageCarousel,
   RdImageList,
   RdImageUploader,
+  RdInfiniteScroll,
   RdInlineInput,
   RdInput,
   RdMultipleDropdown,
@@ -98,6 +99,5 @@ export {
   SearchFeedsTabBar,
   SubredditTopNav,
   TopNav,
-  TopicDropdown,
-  UserNewFeeds
+  TopicDropdown
 }

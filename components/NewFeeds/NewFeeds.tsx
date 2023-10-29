@@ -1,30 +1,44 @@
+import { TFetchMoreArgs, TSortOptions } from '@/constants/types'
+
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { SUBREDDIT_TYPE } from '@/constants/enums'
-import { TPost, TSortOptions } from '@/constants/types'
-import { ApolloError } from '@apollo/client'
+import { TPost } from '@/constants/types'
 import orderBy from 'lodash/orderBy'
-import { useRouter } from 'next/router'
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
+import { validatePostBySubname } from '../../services'
+
+import { RdInfiniteScroll } from '@/components'
+import { QUERY_LIMIT } from '@/constants/enums'
+import { ApolloError } from '@apollo/client'
+import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
+import { Fragment } from 'react'
 import { CardPost, MessageBoard } from '..'
-import { validatePostBySubname, validateSubredditMember } from '../../services'
 import ZoomImgDialog from '../Cards/CardPost/components/ZoomImgDialog'
 import { RdSkeletonListItem } from '../Skeletons'
 
-type TNewFeedsProps = {
-  subType?: SUBREDDIT_TYPE | undefined
+export type TNewFeedsProps = {
+  noPostText: string
   sortOptions: TSortOptions
   postList: TPost[] | null
   loading: boolean
   error: ApolloError | undefined | null
+  permissionFailedMsg: ReactNode | false
+  fetchMoreUpdateReturn: (prev: {}, fetchMoreResult: {}) => {}
+  fetchMore: FetchMoreFunction<{ [key: string]: TPost[] }, TFetchMoreArgs>
   setHasNoPost?: Dispatch<SetStateAction<boolean>>
 }
 
-function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subType, setHasNoPost }: TNewFeedsProps) {
+const NewFeeds = ({
+  permissionFailedMsg,
+  noPostText,
+  sortOptions: { method, ordering },
+  postList,
+  fetchMore,
+  loading,
+  setHasNoPost,
+  fetchMoreUpdateReturn
+}: TNewFeedsProps) => {
   const { session } = useAppSession()
   const me = session?.userDetail
-  const {
-    query: { subreddit: subPageName }
-  } = useRouter()
 
   // zoom image dialog states
   const [zoomedImg, setZoomedImg] = useState<string | null>(null)
@@ -33,43 +47,40 @@ function NewFeeds({ sortOptions: { method, ordering }, postList, loading, subTyp
     setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
   }, [postList, loading, setHasNoPost])
 
-  // weather if the post belongs to the public subreddit
-  const verifyIsMember = (): boolean => {
-    return validateSubredditMember(me?.member_of_ids, subPageName)
-  }
-
   // if post in public subreddit OR user in subreddit => return true
   const verifyPost = (post: TPost): boolean => {
-    return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post.subreddit.subType)
+    return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post?.subreddit?.subType)
   }
 
   /* postList mapping */
-  const cardPostList: TPost[] | null =
+  const mappedPostList: TPost[] | null =
     postList &&
     orderBy(
-      postList.filter((post): boolean => verifyPost(post)),
+      postList.filter((post: TPost): boolean => verifyPost(post)),
       method,
       ordering
     )
 
   return (
     <>
-      {loading || !cardPostList ? (
-        [0, 1].map((el) => (
-          <Fragment key={`skeleton_${el}`}>
-            <RdSkeletonListItem index={el.toString()} />
-          </Fragment>
-        ))
-      ) : // ON SUBREDDIT FEEDS: check weather if I haven't join this subreddit or this subreddit is not public
-      subPageName && !verifyIsMember() && subType !== SUBREDDIT_TYPE.Public ? (
-        <MessageBoard head="This community is private, please join " highlight={subPageName as string} />
-      ) : cardPostList.length > 0 ? (
-        cardPostList.map((post) => {
-          return <CardPost post={post} key={`post_${post.id}`} setZoomedImg={setZoomedImg} />
-        })
-      ) : (
-        <MessageBoard head={subPageName ? 'This Subreddit has no post' : 'Something wrong with the server, please come back again'} />
-      )}
+      {loading || !mappedPostList
+        ? [0, 1].map((el) => (
+            <Fragment key={`skeleton_${el}`}>
+              <RdSkeletonListItem index={el.toString()} />
+            </Fragment>
+          ))
+        : !permissionFailedMsg && (
+            <>
+              {mappedPostList.length > 0 ? (
+                mappedPostList.map((post) => <CardPost key={`post_${post.id}`} post={post} setZoomedImg={setZoomedImg} />)
+              ) : (
+                <MessageBoard head={noPostText} />
+              )}
+            </>
+          )}
+
+      {/* load more anchor */}
+      <RdInfiniteScroll<TPost> fetchMoreUpdateReturn={fetchMoreUpdateReturn} fetchMore={fetchMore} limit={QUERY_LIMIT} list={mappedPostList} />
 
       {/* dialog show zoomed image */}
       <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />

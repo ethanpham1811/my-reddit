@@ -1,7 +1,13 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
+import { QUERY_LIMIT } from '@/constants/enums'
 import { TCardCreatePostForm, TPost, TSubreddit } from '@/constants/types'
 import { ADD_POST, UPDATE_POST } from '@/graphql/mutations'
-import { GET_POST_LIST, GET_SUBREDDIT_BY_NAME, GET_SUBREDDIT_LIST_SHORT, GET_USER_BY_USERNAME } from '@/graphql/queries'
+import {
+  GET_PAGINATED_POST_LIST,
+  GET_SUBREDDIT_BY_NAME_WITH_POSTS,
+  GET_SUBREDDIT_LIST_SHORT,
+  GET_USER_BY_USERNAME_WITH_POSTS
+} from '@/graphql/queries'
 import { ApolloCache, DocumentNode, useMutation, useQuery } from '@apollo/client'
 import { GraphQLError } from 'graphql'
 import { useRouter } from 'next/router'
@@ -40,9 +46,9 @@ function usePostCreateAndEdit() {
       },
       update: (cache: ApolloCache<any>, { data: { insertPost } }) => {
         // default: home page
-        let query: DocumentNode = GET_POST_LIST
-        let variables: {} = {}
-        let dataKey: string = 'postList'
+        let query: DocumentNode = GET_PAGINATED_POST_LIST
+        let variables: { offset: number; limit: number; name?: string; username?: string } = { offset: 0, limit: QUERY_LIMIT }
+        let dataKey: string = 'postPaginatedList'
         let childKey: string | null = null
 
         // subreddit page
@@ -51,15 +57,15 @@ function usePostCreateAndEdit() {
           const sub_name = subreddit?.name
           if (!sub_name) return // abort cache update
 
-          variables = { name: sub_name }
-          query = GET_SUBREDDIT_BY_NAME
-          dataKey = 'subredditByName'
+          variables = { ...variables, name: sub_name }
+          query = GET_SUBREDDIT_BY_NAME_WITH_POSTS
+          dataKey = 'subredditByNameWithPosts'
           childKey = 'post'
         }
         // user profile page
         if (username && me) {
-          variables = { username: me.username }
-          query = GET_USER_BY_USERNAME
+          variables = { ...variables, username: me.username }
+          query = GET_USER_BY_USERNAME_WITH_POSTS
           dataKey = 'userByUsername'
           childKey = 'post'
         }
@@ -69,7 +75,7 @@ function usePostCreateAndEdit() {
           const cachedPostList: TPost[] = childKey ? data[dataKey][childKey] : data[dataKey]
 
           return {
-            [dataKey]: [...cachedPostList, insertPost]
+            [dataKey]: [insertPost, ...cachedPostList]
           }
         })
       }
