@@ -16,7 +16,7 @@ import UserInfoHeader from './components/UserInfoHeader'
 import UserInfoMedia from './components/UserInfoMedia'
 
 function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
-  const { control, setValue, getValues, handleSubmit } = useForm<TCardUserInfoForm>()
+  const { control, setValue, getValues, handleSubmit, clearErrors } = useForm<TCardUserInfoForm>()
   const { session } = useAppSession()
   const { updateUser } = useUserUpdate()
   const isMe = session?.userDetail?.username === user?.username
@@ -57,6 +57,8 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
         }
       )()
     } else user && setValue(field, user[field] as any) // reset the field with initial value
+
+    clearErrors()
   }
 
   return (
@@ -67,13 +69,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
           <form onSubmit={(e) => e.preventDefault()}>
             <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
               {/* Usser avatar & cover */}
-              <UserInfoHeader<TCardUserInfoForm>
-                isMe={isMe}
-                initialUsername={defaultValues.fullName}
-                control={control}
-                onSubmitField={onSubmitField}
-                user={user}
-              />
+              <UserInfoHeader<TCardUserInfoForm> control={control} onSubmitField={onSubmitField} user={user} />
               <Divider sx={{ my: 1 }} />
 
               {/* User email */}

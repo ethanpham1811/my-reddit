@@ -292,13 +292,10 @@ export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
 }
 export type TRdInlineInputProps<T extends FieldValues> = TextFieldProps & {
   registerOptions?: RegisterOptions
-  editable?: boolean
   name: FieldPath<T>
   control: Control<T>
-  initialVal: string | number | undefined
   helper?: string
   width?: string
-  flex?: number
   bgcolor?: string
   center?: boolean
   loading?: boolean
