@@ -63,27 +63,29 @@ const NewFeeds = ({
 
   return (
     <>
-      {loading || !mappedPostList
-        ? [0, 1].map((el) => (
-            <Fragment key={`skeleton_${el}`}>
-              <RdSkeletonListItem index={el.toString()} />
-            </Fragment>
-          ))
-        : !permissionFailedMsg && (
-            <>
-              {mappedPostList.length > 0 ? (
-                mappedPostList.map((post) => <CardPost key={`post_${post.id}`} post={post} setZoomedImg={setZoomedImg} />)
-              ) : (
-                <MessageBoard head={noPostText} />
-              )}
-            </>
+      {loading || !mappedPostList ? (
+        [0, 1].map((el) => (
+          <Fragment key={`skeleton_${el}`}>
+            <RdSkeletonListItem index={el.toString()} />
+          </Fragment>
+        ))
+      ) : permissionFailedMsg ? (
+        permissionFailedMsg
+      ) : (
+        <>
+          {mappedPostList.length > 0 ? (
+            mappedPostList.map((post) => <CardPost key={`post_${post.id}`} post={post} setZoomedImg={setZoomedImg} />)
+          ) : (
+            <MessageBoard head={noPostText} />
           )}
 
-      {/* load more anchor */}
-      <RdInfiniteScroll<TPost> fetchMoreUpdateReturn={fetchMoreUpdateReturn} fetchMore={fetchMore} limit={QUERY_LIMIT} list={mappedPostList} />
+          {/* load more anchor */}
+          <RdInfiniteScroll<TPost> fetchMoreUpdateReturn={fetchMoreUpdateReturn} fetchMore={fetchMore} limit={QUERY_LIMIT} list={postList} />
 
-      {/* dialog show zoomed image */}
-      <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />
+          {/* dialog show zoomed image */}
+          <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />
+        </>
+      )}
     </>
   )
 }

@@ -43,6 +43,7 @@ function RdAutoComplete<
         '+ .MuiAutocomplete-popper': {
           border: (theme) => `1px solid ${theme.palette.blue.main}`,
           borderTopColor: 'inputBorder.main',
+          '.MuiAutocomplete-listbox': { maxHeight: '60vh' },
           ...dropDownMobileStyle
         },
         ...inputMobileStyle,

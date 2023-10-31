@@ -75,7 +75,6 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
           groupedMenuList.map(({ items, group, groupIcon }) => {
             return (
               <ProfileMenu
-                value="profile"
                 setIsOpenDialog={setIsOpenDialog}
                 setDialogType={setDialogType}
                 menuItems={items}

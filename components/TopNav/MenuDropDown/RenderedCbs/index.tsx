@@ -36,7 +36,9 @@ export const renderSelectedOption = (
           </Box>
         </>
       ) : (
-        <Box sx={{ display: mobileMode ? 'none' : 'block' }}>{pathname === '/search' ? 'Search results' : '404'}</Box>
+        <Box sx={{ display: mobileMode ? 'none' : 'block' }} textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
+          {pathname === '/search' ? 'Search results' : '404'}
+        </Box>
       )}
     </>
   )

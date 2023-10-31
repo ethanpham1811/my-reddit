@@ -9,7 +9,6 @@ import ProfileGroupHeader from '../components/ProfileGroupHeader'
 
 type TProfileMenuProps = {
   group: string
-  value: string
   groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
   menuItems: TProfileDropDownList[]
   setDialogType: Dispatch<SetStateAction<PROFILE_DIALOG_TYPE>>

@@ -33,16 +33,16 @@ function PostColumn({ subName, username, createdAt, title, body, link, linkDescr
         <Typography variant="body1" fontWeight={400} fontSize="1rem" sx={{ ...bottomStyle }}>
           {body ? parseHtml(body) : parseHtml(`<p>${linkDescription}</p>`)}
         </Typography>
-
-        {/* TODO: link preview: {link && <LinkPreview url={link} width="400px" />} */}
-        {link && (
-          <Box py={1} px={2} bgcolor="inputBgOutfocused.main" borderRadius="4px">
-            <Link onClick={(e) => e.stopPropagation()} href={link} target="_blank" style={{ textDecoration: 'none' }}>
-              {link}
-            </Link>
-          </Box>
-        )}
       </Box>
+
+      {/* TODO: link preview: {link && <LinkPreview url={link} width="400px" />} */}
+      {link && (
+        <Box py={1} px={2} bgcolor="inputBgOutfocused.main" borderRadius="4px">
+          <Link onClick={(e) => e.stopPropagation()} href={link} target="_blank" style={{ textDecoration: 'none' }}>
+            {link}
+          </Link>
+        </Box>
+      )}
 
       {/* image carousel */}
       {images && <RdImageCarousel setZoomedImg={setZoomedImg} width="100%" height="300px" imgList={images} />}

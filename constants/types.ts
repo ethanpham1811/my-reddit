@@ -404,6 +404,7 @@ export type TEditModePayload = Pick<TCardCreatePostForm, 'title' | 'body' | 'lin
 export type TQueriedTrending = TPost & {
   groupBy: string
   totalUpvotes: number
+  totalComments: number
 }
 export type TQueriedPost = TPost & {
   groupBy: string

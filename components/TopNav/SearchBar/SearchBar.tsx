@@ -78,7 +78,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
       getOptionLabel={() => ''} // prevent displaying selected option value
       filterOptions={() => dataList} // filtering disabled
       id="top-search-auto"
-      sx={{ flex: { xs: 1, xl: 0.6 }, mx: 'auto' }}
+      sx={{ flex: { xs: 1, xl: 0.8 }, mx: 'auto' }}
     />
   )
 }

@@ -99,7 +99,7 @@ function MainForm<T extends FieldValues>({
           text={isEditing ? 'Update' : 'Post'}
           filled={!loading && !backBtnHover && isDirty}
           color="blue"
-          sx={{ width: { xs: '50%', sm: '30%' }, py: 1 }}
+          sx={{ width: { xs: '50%', sm: '30%' }, py: 0.75 }}
         />
 
         {!isEditing && (

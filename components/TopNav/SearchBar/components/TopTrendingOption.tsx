@@ -30,7 +30,7 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
           }
         }}
       >
-        {/* icon column */}
+        {/* left column: icon */}
         <Box pt={0.6} sx={{ display: { xs: 'none', md: 'block' }, mt: -0.5 }}>
           <OutboundOutlinedIcon sx={{ color: 'blue.main', fontSize: '1.5rem' }} />
         </Box>
@@ -45,9 +45,17 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
             overflow: 'hidden'
           }}
         >
+          {/* post subreddit */}
+          <Typography variant="body2" sx={{ color: 'blue.main' }}>
+            r/{option?.subreddit?.name}
+          </Typography>
+
+          {/* post title */}
           <Typography color="black" fontSize="1.1rem">
             {option?.title}
           </Typography>
+
+          {/* post body */}
           <Typography
             className="body"
             variant="subtitle1"
@@ -59,13 +67,21 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
           >
             {parseHtml(option?.body) || option?.link}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'blue.main', position: 'absolute', left: 0, bottom: 0, width: '100%' }}>
-            r/{option?.subreddit?.name}
-          </Typography>
+
+          {/* vote-comment counter */}
+          <Stack direction="row" alignItems="center" sx={{ position: 'absolute', left: 0, bottom: 0, width: '100%' }}>
+            <Typography fontWeight={400} fontSize="0.8rem" sx={{ color: 'blue.main' }}>
+              {option?.totalUpvotes} upvotes
+            </Typography>
+
+            <Typography fontWeight={400} fontSize="0.8rem" sx={{ color: 'blue.main', ml: 1 }}>
+              {option?.totalComments} comments
+            </Typography>
+          </Stack>
         </Stack>
 
         {/* image column */}
-        <Box display="flex" alignSelf="center">
+        <Box display="flex" alignSelf="center" flexDirection="column">
           {postFirsImgUrl && (
             <Box borderRadius="0.3rem">
               <Image alt="post image" src={postFirsImgUrl} style={{ objectFit: 'cover' }} width={100} height={70} />

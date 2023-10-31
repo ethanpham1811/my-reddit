@@ -1,3 +1,4 @@
+import { client } from '@/apollo-client'
 import { BsFacebook, BsReddit } from '@/constants/icons'
 import { Box, Divider, IconButton, Stack, Typography } from '@mui/material'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
@@ -18,6 +19,9 @@ function LoginPortal({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
   const LoginWithProvider = async (provider: Provider) => {
     const { error } = await supabase!.auth.signInWithOAuth({ provider })
     error && toast.error(error.message)
+
+    // reset cache upon login
+    client.resetStore()
   }
 
   return (

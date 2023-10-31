@@ -27,7 +27,8 @@ export const notificationHandler = () => {
   return { onCompleted: () => toast.success('sucessful!'), onError: (error: ApolloError) => toast.error(error.message) }
 }
 
-export const getTotalUpvote = (votes: TVote[]): number => votes.reduce((prev, cur): number => (cur.upvote ? prev + 1 : prev - 1), 0)
+export const getTotalUpvote = (votes: TVote[]): number =>
+  Array.isArray(votes) ? votes.reduce((prev, cur): number => (cur.upvote ? prev + 1 : prev - 1), 0) : 0
 
 export const notificationsLabel = (count: number) => {
   if (count === 0) return 'no notifications'

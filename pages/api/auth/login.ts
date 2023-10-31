@@ -1,5 +1,6 @@
 /* temporarily unused */
 
+import { client } from '@/apollo-client'
 import { ServerResponseData } from '@/constants/types'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -15,6 +16,10 @@ export default async function login(req: NextApiRequest, res: NextApiResponse<Se
         password
       })
       if (error) return res.status(400).json({ error: error.message })
+
+      // reset cache upon login
+      client.resetStore()
+
       res.status(200).json({ message: 'Login successfully' })
     } else {
       res.status(405).json({ message: 'Method Not Allowed!' })

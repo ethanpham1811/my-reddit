@@ -278,6 +278,7 @@ export const GET_TOP_TRENDING_POSTS = gql`
       body
       created_at
       totalUpvotes
+      totalComments
       images
       subreddit {
         name

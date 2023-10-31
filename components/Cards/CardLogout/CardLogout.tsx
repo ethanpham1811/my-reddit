@@ -1,3 +1,4 @@
+import { client } from '@/apollo-client'
 import { RdButton, RdCard } from '@/components'
 import { LogoutIcon } from '@/constants/icons'
 import { CircularProgress, Divider, Stack, Typography } from '@mui/material'
@@ -10,7 +11,10 @@ function CardLogout({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> })
 
   function onClick() {
     setLoading(true)
-    supabase?.auth.signOut()
+    supabase?.auth.signOut().then(() =>
+      // reset cache upon signout
+      client.resetStore()
+    )
 
     // with a delay only for loading demonstrating purpose
     setTimeout(async () => {
