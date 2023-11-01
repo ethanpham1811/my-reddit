@@ -1,4 +1,4 @@
-import { urlsToFile } from '@/services'
+import { urlsToFile } from '@/src/utils'
 import { useEffect, useState } from 'react'
 
 function useConvertUrlToImages(urls: string[] | undefined): [FileList | null] {

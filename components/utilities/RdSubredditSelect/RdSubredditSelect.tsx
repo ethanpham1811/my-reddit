@@ -9,7 +9,7 @@ import { Avatar, Box, FormControl, MenuItem, Stack, Typography } from '@mui/mate
 import { Jelly } from '@uiball/loaders'
 import { v4 as rid } from 'uuid'
 import { RdDropdown } from '../..'
-import { generateSeededHexColor, generateUserImage, validateSubredditMember } from '../../../services'
+import { generateSeededHexColor, generateUserImage, validateSubredditMember } from '../../../src/utils'
 
 function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, control, width, flex, sx }: TRdSubredditSelectProps<T>) {
   const { session } = useAppSession()

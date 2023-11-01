@@ -1,5 +1,5 @@
 import { TUserDetail } from '@/constants/types'
-import { generateSeededHexColor, generateUserCover, generateUserImage } from '@/services'
+import { generateSeededHexColor, generateUserCover, generateUserImage } from '@/src/utils'
 import { Avatar, CardHeader, CardMedia } from '@mui/material'
 
 function UserInfoMedia({ user }: { user: TUserDetail | null }) {

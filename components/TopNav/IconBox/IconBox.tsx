@@ -1,7 +1,7 @@
 import { RdNotiBubble } from '@/components'
 import { AddSharpIcon, CampaignOutlinedIcon, NotificationsOutlinedIcon, OutboundOutlinedIcon, SmsOutlinedIcon } from '@/constants/icons'
 import { TIconBox } from '@/constants/types'
-import { notificationsLabel } from '@/services'
+import { notificationsLabel } from '@/src/utils'
 import { IconButton, Stack, Tooltip } from '@mui/material'
 import { Fragment } from 'react'
 

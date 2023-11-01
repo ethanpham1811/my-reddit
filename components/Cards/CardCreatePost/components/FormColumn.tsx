@@ -1,6 +1,6 @@
 import RdInput from '@/components/utilities/RdInput/RdInput'
-import { postTitleValidation } from '@/services'
-import { Events, eventEmitter } from '@/services/eventEmitter'
+import { Events, eventEmitter } from '@/src/eventEmitter'
+import { postTitleValidation } from '@/src/formValidations'
 import { Stack } from '@mui/material'
 import { useEffect, useRef } from 'react'
 import MainForm from '../components/MainForm'

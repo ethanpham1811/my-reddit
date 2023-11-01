@@ -1,4 +1,4 @@
-import { generateSeededHexColor, generateUserImage } from '@/services'
+import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import { Avatar, Box, Stack, Typography } from '@mui/material'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import Link from 'next/link'

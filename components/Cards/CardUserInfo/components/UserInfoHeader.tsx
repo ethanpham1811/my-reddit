@@ -1,6 +1,6 @@
 import { RdInlineInput } from '@/components'
 import { TUserDetail } from '@/constants/types'
-import { fullNameValidation } from '@/services'
+import { fullNameValidation } from '@/src/formValidations'
 import { Typography } from '@mui/material'
 import { Dayjs } from 'dayjs'
 import { Control, FieldValues, Path } from 'react-hook-form'

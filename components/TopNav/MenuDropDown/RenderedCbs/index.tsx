@@ -1,5 +1,5 @@
 import { TMenuItem } from '@/constants/types'
-import { generateSeededHexColor, generateUserImage } from '@/services'
+import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import { Avatar, Box } from '@mui/material'
 import { ReactNode, createElement } from 'react'
 

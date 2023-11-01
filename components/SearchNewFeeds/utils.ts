@@ -1,5 +1,5 @@
 import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
-import { formatNumber, validatePostByFollowing, validateSubredditMember } from '@/services'
+import { formatNumber, validatePostByFollowing, validateSubredditMember } from '@/src/utils'
 
 export const getFields = (
   me: TUserDetail | null | undefined,

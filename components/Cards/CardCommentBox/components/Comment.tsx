@@ -1,4 +1,4 @@
-import { customFormatDistance, parseHtml } from '@/services'
+import { customFormatDistance, parseHtml } from '@/src/utils'
 import { Box, Link, Stack, Typography } from '@mui/material'
 
 function Comment({ username, created_at, text }: { username: string; created_at: Date; text: string }) {

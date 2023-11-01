@@ -2,7 +2,7 @@ import { AutocompleteRenderInputParams, Avatar, Stack, TextField } from '@mui/ma
 
 import { RdChip } from '@/components'
 import { HighlightOffOutlinedIcon } from '@/constants/icons'
-import { generateSeededHexColor, generateUserImage } from '@/services'
+import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import SearchIcon from '@mui/icons-material/Search'
 import { Dispatch, SetStateAction } from 'react'
 

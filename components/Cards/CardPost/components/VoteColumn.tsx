@@ -3,7 +3,7 @@ import { TUserDetail, TVote } from '@/constants/types'
 import useVoteAdd from '@/hooks/useVoteAdd'
 import useVoteDelete from '@/hooks/useVoteDelete'
 import useVoteUpdate from '@/hooks/useVoteUpdate'
-import { getTotalUpvote } from '@/services'
+import { getTotalUpvote } from '@/src/utils'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { MouseEvent, useState } from 'react'
 

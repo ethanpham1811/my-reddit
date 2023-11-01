@@ -8,10 +8,10 @@ type TRdInfiniteScrollProps<T> = {
   fetchMore: FetchMoreFunction<{ [key: string]: T[] }, TFetchMoreArgs>
   limit: number
   list: T[] | null
-  fetchMoreUpdateReturn: (prev: {}, fetchMoreResult: {}) => {}
+  appendPosts: (prev: {}, fetchMoreResult: {}) => {}
 }
 
-const RdInfiniteScroll = <T extends {}>({ fetchMore, limit, list, fetchMoreUpdateReturn }: TRdInfiniteScrollProps<T>) => {
+const RdInfiniteScroll = <T extends {}>({ fetchMore, limit, list, appendPosts }: TRdInfiniteScrollProps<T>) => {
   const [offset, setOffset] = useState<number>(limit)
   const [loading, setLoading] = useState(false)
   const curListLength = list?.length || 0
@@ -29,7 +29,7 @@ const RdInfiniteScroll = <T extends {}>({ fetchMore, limit, list, fetchMoreUpdat
           variables: { offset: offset || 0 },
           updateQuery: (prev, { fetchMoreResult }) => {
             if (!fetchMoreResult) return prev
-            return fetchMoreUpdateReturn(prev, fetchMoreResult)
+            return appendPosts(prev, fetchMoreResult)
           }
         }).then((_) => {
           setOffset(offset + limit)
@@ -43,7 +43,7 @@ const RdInfiniteScroll = <T extends {}>({ fetchMore, limit, list, fetchMoreUpdat
     return () => {
       observer.disconnect()
     }
-  }, [ref, fetchMore, offset, loading, limit, curListLength, fetchMoreUpdateReturn])
+  }, [ref, fetchMore, offset, loading, limit, curListLength, appendPosts])
 
   return (
     <Stack>

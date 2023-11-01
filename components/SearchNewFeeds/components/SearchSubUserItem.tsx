@@ -1,7 +1,7 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SEARCH_TABS } from '@/constants/enums'
 import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
-import { generateSeededHexColor, generateUserImage } from '@/services'
+import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import { Avatar, Divider, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 import { Fragment, useState } from 'react'

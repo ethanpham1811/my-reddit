@@ -1,5 +1,5 @@
 import { OnlineDotStyle } from '@/mui/styles'
-import { generateUserImage } from '@/services'
+import { generateUserImage } from '@/src/utils'
 import { Avatar, Box } from '@mui/material'
 import Link from 'next/link'
 

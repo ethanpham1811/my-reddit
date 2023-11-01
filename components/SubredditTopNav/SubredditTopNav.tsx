@@ -1,7 +1,7 @@
 import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
-import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../services'
+import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../src/utils'
 import ActionButton from './components/ActionButton'
 
 const SubredditNavBar = styled(AppBar)(({ theme }) => ({

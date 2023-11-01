@@ -1,6 +1,6 @@
 import { TComment, TVote } from '@/constants/types'
 
-import { getTotalUpvote } from '@/services'
+import { getTotalUpvote } from '@/src/utils'
 import { Stack, Typography } from '@mui/material'
 
 function SearchPostItemFooter({ vote, comment }: { vote: TVote[] | undefined; comment: TComment[] | undefined }) {

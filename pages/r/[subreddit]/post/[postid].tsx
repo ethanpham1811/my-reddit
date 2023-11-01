@@ -6,7 +6,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TPost, TSubredditDetail } from '@/constants/types'
 import { GET_POST_BY_ID, GET_POST_LIST, GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
 import useSubByNameAndPostById from '@/hooks/useSubByNameAndPostById'
-import { validatePostBySubname } from '@/services'
+import { validatePostBySubname } from '@/src/utils'
 import { Stack } from '@mui/material'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
@@ -75,12 +75,10 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
   const [zoomedImg, setZoomedImg] = useState<string | null>(null)
 
   /**
-   * TODO:
-   * This page temporarily using 2 queries as a workaround for a bug with cache update, fix this later
+   * Client side data fetching (to sync apollo cache between server & client)
+   * redirect to 404 if no data found
    */
   const { subreddit, postDetail, loading: pageLoading, error } = useSubByNameAndPostById(svSubreddit, svPost)
-
-  // redirect to 404 if no data found
   if (!pageLoading && (postDetail == null || subreddit == null || error)) {
     navigate('/404')
     return null

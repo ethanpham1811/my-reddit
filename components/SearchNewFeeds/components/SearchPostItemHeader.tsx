@@ -1,4 +1,4 @@
-import { customFormatDistance, generateSeededHexColor, generateUserImage } from '@/services'
+import { customFormatDistance, generateSeededHexColor, generateUserImage } from '@/src/utils'
 import { Avatar, Box, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 

@@ -1,4 +1,4 @@
-import { parseHtml } from '@/services'
+import { parseHtml } from '@/src/utils'
 import { Box, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 

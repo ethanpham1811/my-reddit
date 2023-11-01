@@ -1,5 +1,5 @@
 import { TUserDetail } from '@/constants/types'
-import { formatNumber } from '@/services'
+import { formatNumber } from '@/src/utils'
 import { Box, Typography } from '@mui/material'
 
 function UserInfoFollower({ user }: { user: TUserDetail | null }) {

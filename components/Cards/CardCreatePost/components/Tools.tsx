@@ -1,6 +1,6 @@
 import { RdImageUploader } from '@/components'
 import { LinkIcon } from '@/constants/icons'
-import { Events, eventEmitter } from '@/services/eventEmitter'
+import { Events, eventEmitter } from '@/src/eventEmitter'
 import { Box, IconButton, Stack, Tooltip } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
 import { Control, FieldValues, Path } from 'react-hook-form'

@@ -1,4 +1,4 @@
-import { Events, eventEmitter } from '@/services/eventEmitter'
+import { Events, eventEmitter } from '@/src/eventEmitter'
 import { Box, BoxProps, Typography } from '@mui/material'
 
 type TMessageBoardProps = BoxProps & {

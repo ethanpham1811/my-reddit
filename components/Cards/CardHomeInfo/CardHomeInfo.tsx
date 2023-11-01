@@ -1,7 +1,7 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import homeBannerUrl from '@/public/home_banner.png'
 import redditRobotUrl from '@/public/reddit_robot.png'
-import { Events, eventEmitter } from '@/services/eventEmitter'
+import { Events, eventEmitter } from '@/src/eventEmitter'
 import { CardActions, CardContent, CardHeader, CardMedia, Divider, Typography } from '@mui/material'
 import Image from 'next/image'
 import { RdButton, RdCard } from '../..'

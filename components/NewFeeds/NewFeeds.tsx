@@ -4,7 +4,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TPost } from '@/constants/types'
 import orderBy from 'lodash/orderBy'
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
-import { validatePostBySubname } from '../../services'
+import { validatePostBySubname } from '../../src/utils'
 
 import { RdInfiniteScroll } from '@/components'
 import { QUERY_LIMIT } from '@/constants/enums'
@@ -22,7 +22,7 @@ export type TNewFeedsProps = {
   loading: boolean
   error: ApolloError | undefined | null
   permissionFailedMsg: ReactNode | false
-  fetchMoreUpdateReturn: (prev: {}, fetchMoreResult: {}) => {}
+  appendPosts: (prev: {}, fetchMoreResult: {}) => {}
   fetchMore: FetchMoreFunction<{ [key: string]: TPost[] }, TFetchMoreArgs>
   setHasNoPost: Dispatch<SetStateAction<boolean>>
 }
@@ -35,7 +35,7 @@ const NewFeeds = ({
   fetchMore,
   loading,
   setHasNoPost,
-  fetchMoreUpdateReturn
+  appendPosts
 }: TNewFeedsProps) => {
   const { session } = useAppSession()
   const me = session?.userDetail
@@ -80,7 +80,7 @@ const NewFeeds = ({
                 <CardPost key={`post_${post.id}`} post={post} setZoomedImg={setZoomedImg} />
               ))}
               {/* load more anchor */}
-              <RdInfiniteScroll<TPost> fetchMoreUpdateReturn={fetchMoreUpdateReturn} fetchMore={fetchMore} limit={QUERY_LIMIT} list={postList} />
+              <RdInfiniteScroll<TPost> appendPosts={appendPosts} fetchMore={fetchMore} limit={QUERY_LIMIT} list={postList} />
 
               {/* dialog show zoomed image */}
               <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />

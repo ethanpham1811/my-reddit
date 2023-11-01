@@ -1,6 +1,6 @@
 import { POST_MUTATION_MODE } from '@/constants/enums'
 import { DeleteOutlineOutlinedIcon } from '@/constants/icons'
-import { urlValidation } from '@/services'
+import { urlValidation } from '@/src/formValidations'
 import { CircularProgress, IconButton, Stack, Tooltip } from '@mui/material'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'

@@ -1,5 +1,5 @@
 import { LoginPortal, RdButton, RdDialog } from '@/components'
-import { Events, eventEmitter } from '@/services/eventEmitter'
+import { Events, eventEmitter } from '@/src/eventEmitter'
 import { useEffect, useState } from 'react'
 
 function LoginButton() {

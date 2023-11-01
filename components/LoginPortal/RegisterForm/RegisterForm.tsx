@@ -1,5 +1,5 @@
 import { RdButton, RdInput } from '@/components'
-import { emailValidation, passwordValidation, rePasswordValidation } from '@/services'
+import { emailValidation, passwordValidation, rePasswordValidation } from '@/src/formValidations'
 import { CircularProgress, Link, Stack, Typography } from '@mui/material'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'

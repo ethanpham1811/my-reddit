@@ -1,6 +1,6 @@
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { TProfileDropDownList } from '@/constants/types'
-import { Events, eventEmitter } from '@/services/eventEmitter'
+import { Events, eventEmitter } from '@/src/eventEmitter'
 import { Divider, List, MenuItem, Stack, SvgIconTypeMap, Switch } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import Link from 'next/link'

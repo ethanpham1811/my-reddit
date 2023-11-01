@@ -5,6 +5,7 @@ import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions } from '@/constants/types'
 import { GET_PAGINATED_POST_LIST } from '@/graphql/queries'
 import usePostList from '@/hooks/usePostList'
+import { appendHomePagePosts } from '@/src/pageFunctions'
 import { Stack } from '@mui/material'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
@@ -48,14 +49,6 @@ export default function Home({ postList: svPostList }: InferGetStaticPropsType<t
   const [hasNoPost, setHasNoPost] = useState(false)
   const { postList, loading: pageLoading, error, fetchMore } = usePostList(svPostList)
 
-  function fetchMoreUpdateReturn(prev: { [key: string]: TPost[] }, fetchMoreResult: { [key: string]: TPost[] }) {
-    return !prev
-      ? fetchMoreResult
-      : {
-          postPaginatedList: [...prev?.postPaginatedList, ...fetchMoreResult?.postPaginatedList]
-        }
-  }
-
   return (
     <div>
       <Head>
@@ -66,15 +59,15 @@ export default function Home({ postList: svPostList }: InferGetStaticPropsType<t
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
           <NewFeeds
-            fetchMore={fetchMore}
+            error={error}
             postList={postList}
             loading={pageLoading}
-            error={error}
             sortOptions={sortOptions}
-            noPostText="This page has no post"
-            fetchMoreUpdateReturn={fetchMoreUpdateReturn}
             permissionFailedMsg={false}
+            noPostText="This page has no post"
+            fetchMore={fetchMore}
             setHasNoPost={setHasNoPost}
+            appendPosts={appendHomePagePosts}
           />
         </Stack>
         <Stack spacing={2}>

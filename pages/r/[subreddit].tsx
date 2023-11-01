@@ -1,18 +1,18 @@
 import { client } from '@/apollo-client'
-import { CardFeedSorter, CardSubredditInfo, MessageBoard, NewFeeds, SubredditTopNav } from '@/components'
+import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { ORDERING, QUERY_LIMIT, SORT_METHOD, SUBREDDIT_TYPE } from '@/constants/enums'
+import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/constants/types'
 import { GET_SUBREDDIT_BY_NAME_WITH_POSTS, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
 import useSubByNameWithPosts from '@/hooks/useSubByNameWithPosts'
-import { validateSubredditMember } from '@/services'
+import { appendPosts, noPermissionSubPageMsg } from '@/src/pageFunctions'
 import { Stack } from '@mui/material'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 
 type TSubredditPageProps = {
   subreddit: TSubredditDetail | null
@@ -69,41 +69,14 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const [hasNoPost, setHasNoPost] = useState(false)
 
-  /* ------------------------------subreddit page info query-------------------------------------*/
-
+  /**
+   * Client side data fetching (to sync apollo cache between server & client)
+   * redirect to 404 if no data found
+   */
   const { subreddit, subredditPosts, loading: pageLoading, error = null, fetchMore } = useSubByNameWithPosts(subName, svSubreddit, svSubredditPosts)
-
-  // redirect to 404 if no data found
   if (!pageLoading && (subreddit == null || error)) {
     navigate('/404')
     return null
-  }
-
-  // weather if the post belongs to the public subreddit
-  function verifyIsMember() {
-    return validateSubredditMember(me?.member_of_ids, subName)
-  }
-
-  function permissionFailedMsg(): ReactNode | false {
-    return subName && !verifyIsMember() && subreddit?.subType !== SUBREDDIT_TYPE.Public ? (
-      <MessageBoard head="This community is private, please join " highlight={subName as string} />
-    ) : (
-      false
-    )
-  }
-
-  function fetchMoreUpdateReturn(
-    prev: { [key: string]: { [key: string]: TPost[] } },
-    fetchMoreResult: { [key: string]: { [key: string]: TPost[] } }
-  ) {
-    return !prev
-      ? fetchMoreResult
-      : {
-          subredditByNameWithPosts: {
-            ...prev?.subredditByNameWithPosts,
-            post: [...prev?.subredditByNameWithPosts?.post, ...fetchMoreResult?.subredditByNameWithPosts?.post]
-          }
-        }
   }
 
   return (
@@ -122,8 +95,8 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
             error={error}
             sortOptions={sortOptions}
             noPostText="This subreddit has no post"
-            fetchMoreUpdateReturn={fetchMoreUpdateReturn}
-            permissionFailedMsg={permissionFailedMsg()}
+            appendPosts={appendPosts('subredditByNameWithPosts')}
+            permissionFailedMsg={noPermissionSubPageMsg(me?.member_of_ids, subreddit?.subType, subName)}
             setHasNoPost={setHasNoPost}
           />
         </Stack>

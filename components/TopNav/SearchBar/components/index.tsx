@@ -1,5 +1,6 @@
 import { TAutocompleteOptions } from '@/constants/types'
-import { generateAutoCompleteUrl, isNotFound, isQueriedSub, isQueriedTrending, isQueriedUser } from '@/services'
+import { isNotFound, isQueriedSub, isQueriedTrending, isQueriedUser } from '@/src/typeCheck'
+import { generateAutoCompleteUrl } from '@/src/utils'
 import { AutocompleteRenderGroupParams, ListSubheader, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 import { Fragment, HTMLAttributes, ReactNode } from 'react'

@@ -1,5 +1,5 @@
 import { SUB_PEOPLE_MENU_ITEM } from '@/constants/enums'
-import { generateSeededHexColor, generateUserImage } from '@/services'
+import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import { Avatar, ListItemText, MenuItem } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'

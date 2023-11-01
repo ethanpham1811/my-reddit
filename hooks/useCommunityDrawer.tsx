@@ -1,4 +1,4 @@
-import { Events, eventEmitter } from '@/services/eventEmitter'
+import { Events, eventEmitter } from '@/src/eventEmitter'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 type TUseCommunityDrawerResponse = [isDrawerOpened: boolean, setIsDrawerOpened: Dispatch<SetStateAction<boolean>>]

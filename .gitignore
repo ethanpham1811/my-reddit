@@ -37,3 +37,6 @@ stepzen/config.yaml
 
 # images
 /public/readme
+
+# misc
+/public/refer_next_auth.js

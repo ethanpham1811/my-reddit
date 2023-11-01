@@ -1,7 +1,7 @@
 import { RdImageCarousel } from '@/components'
 import { MAX_NEW_FEEDS_POST_HEIGHT } from '@/constants/enums'
 import { blurBottomStyle } from '@/mui/styles'
-import { parseHtml } from '@/services'
+import { parseHtml } from '@/src/utils'
 import { Box, Typography } from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/router'

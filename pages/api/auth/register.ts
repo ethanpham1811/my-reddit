@@ -1,5 +1,5 @@
 import { ServerResponseData } from '@/constants/types'
-import { generateUserName } from '@/services'
+import { generateUserName } from '@/src/utils'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import type { NextApiRequest, NextApiResponse } from 'next'
 

@@ -1,5 +1,6 @@
 import { TQueriedSub, TQueriedUser } from '@/constants/types'
-import { formatNumber, generateSeededHexColor, generateUserImage, isQueriedSub } from '@/services'
+import { isQueriedSub } from '@/src/typeCheck'
+import { formatNumber, generateSeededHexColor, generateUserImage } from '@/src/utils'
 import { Avatar, Box, ListItem, Stack, Typography } from '@mui/material'
 import { HTMLAttributes } from 'react'
 

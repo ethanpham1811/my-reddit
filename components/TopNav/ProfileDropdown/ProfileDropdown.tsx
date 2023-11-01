@@ -3,7 +3,7 @@ import CardUserAgreement from '@/components/Cards/CardUserAgreement/CardUserAgre
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { TProfileDropdownProps } from '@/constants/types'
-import { createGroupedList } from '@/services'
+import { createGroupedList } from '@/src/utils'
 import { Box, Divider, Typography } from '@mui/material'
 import { ReactNode, useState } from 'react'
 import { v4 as rid } from 'uuid'
