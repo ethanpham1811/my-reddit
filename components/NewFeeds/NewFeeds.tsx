@@ -79,13 +79,13 @@ const NewFeeds = ({
               ))}
               {/* load more anchor */}
               <RdInfiniteScroll<TPost> fetchMoreUpdateReturn={fetchMoreUpdateReturn} fetchMore={fetchMore} limit={QUERY_LIMIT} list={postList} />
+
+              {/* dialog show zoomed image */}
+              <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />
             </>
           ) : (
             <MessageBoard head={noPostText} />
           )}
-
-          {/* dialog show zoomed image */}
-          <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />
         </>
       )}
     </>

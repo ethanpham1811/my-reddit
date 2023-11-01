@@ -2,60 +2,30 @@ import { CardLogout, RdDialog, RdDropdown } from '@/components'
 import CardUserAgreement from '@/components/Cards/CardUserAgreement/CardUserAgreement'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
-import { AccountCircleOutlinedIcon, InfoOutlinedIcon, LogoutIcon, PreviewOutlinedIcon } from '@/constants/icons'
-import { TProfileDropDownList, TProfileDropdownProps } from '@/constants/types'
+import { TProfileDropdownProps } from '@/constants/types'
 import { createGroupedList } from '@/services'
-import { Box, Divider, MenuItem, Typography } from '@mui/material'
+import { Box, Divider, Typography } from '@mui/material'
 import { ReactNode, useState } from 'react'
 import { v4 as rid } from 'uuid'
 import { renderSelectedOption } from './RenderedCbs'
+import LogoutOption from './components/LogoutOption'
 import ProfileMenu from './components/ProfileMenu'
+import { buildMenuData } from './data'
 
 function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDropdownProps) {
-  // const [page, setPage] = useState('home')
   const { session } = useAppSession()
   const me = session?.userDetail
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const [dialogType, setDialogType] = useState(PROFILE_DIALOG_TYPE.Logout)
 
-  const menuList: TProfileDropDownList[] = [
-    {
-      name: 'Profile',
-      value: 'profile',
-      url: `/u/${me?.username}`,
-      groupBy: 'My Space',
-      groupIcon: AccountCircleOutlinedIcon
-    },
-    {
-      name: 'Online Status',
-      value: 'status',
-      switcher: true,
-      groupBy: 'My Space',
-      disabled: true,
-      groupIcon: AccountCircleOutlinedIcon
-    },
-    {
-      name: 'Dark Mode',
-      value: 'mode',
-      switcher: true,
-      groupBy: 'View Options',
-      disabled: true,
-      groupIcon: PreviewOutlinedIcon
-    },
-    {
-      name: 'User Agreement',
-      value: 'User Agreement',
-      groupBy: 'Terms & Policies',
-      dialog: PROFILE_DIALOG_TYPE.UserAgreement,
-      groupIcon: InfoOutlinedIcon
-    }
-  ]
+  // Build grouped menu data
+  const menuList = buildMenuData(me?.username)
+  const groupedMenuList = createGroupedList(menuList)
 
   function handleRenderSelectedOption(value: string): ReactNode {
     return renderSelectedOption(sessionUsername || me?.username, !sessionUsername && loading)
   }
 
-  const groupedMenuList = createGroupedList(menuList)
   return (
     <>
       <RdDropdown
@@ -67,6 +37,7 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
         borderColor="inputBorder"
         renderSelectedOption={handleRenderSelectedOption}
       >
+        {/* Display username (mobile only) */}
         {me && isMobile && (
           <>
             <Box px={2} pb={1} textAlign="right">
@@ -75,6 +46,8 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
             <Divider />
           </>
         )}
+
+        {/* Menu main options */}
         {me && groupedMenuList.length > 0 ? (
           groupedMenuList.map(({ items, group, groupIcon }) => {
             return (
@@ -91,19 +64,17 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
         ) : (
           <Box></Box>
         )}
-        <MenuItem
-          sx={{
-            '&.MuiButtonBase-root': { fontWeight: 600, justifyContent: 'flex-end', color: 'orange.main', '&:hover': { bgcolor: 'primary.main' } }
-          }}
-          onClick={(e) => {
+
+        {/* logout btn */}
+        <LogoutOption
+          value="logout"
+          onClick={() => {
             setIsOpenDialog(true)
             setDialogType(PROFILE_DIALOG_TYPE.Logout)
           }}
-        >
-          Logout
-          <LogoutIcon />
-        </MenuItem>
-        {/* <LogoutOption setIsOpenDialog={setIsOpenDialog} setDialogType={setDialogType} /> */}
+        />
+
+        {/* bottom copyrights */}
         <Box px={2}>
           <Typography variant="caption" sx={{ color: 'hintText.main', textWrap: 'nowrap' }}>
             Ethan Reddit, Inc. © 2023. All rights reserved.
@@ -111,6 +82,7 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
         </Box>
       </RdDropdown>
 
+      {/* Dialog: Logout + UserAgreement */}
       <RdDialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
         {dialogType === PROFILE_DIALOG_TYPE.Logout && <CardLogout setOpen={setIsOpenDialog} />}
         {dialogType === PROFILE_DIALOG_TYPE.UserAgreement && <CardUserAgreement setOpen={setIsOpenDialog} />}

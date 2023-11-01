@@ -392,6 +392,7 @@ export type TProfileDropDownList = {
   url?: string
   groupBy: string
   disabled?: boolean
+  onClick?: boolean
   dialog?: PROFILE_DIALOG_TYPE
   groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }

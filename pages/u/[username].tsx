@@ -86,7 +86,7 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
 
   function permissionFailedMsg(): ReactNode | false {
     return !me?.username ? ( // if user is not logged in
-      <MessageBoard head="You need to login to view their content" />
+      <MessageBoard head="You need to " highlight="login" tail=" to view their content" hasLogin />
     ) : !verifyFollower() ? ( // if user is not following the user page
       <MessageBoard head="You need to follow " highlight={username as string} tail=" to view their posts" />
     ) : (

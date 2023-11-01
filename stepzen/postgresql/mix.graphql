@@ -59,7 +59,7 @@ type Query {
         p."subreddit_id",
         p."link",
         p."images",
-        "totalUpvotes",
+        "subquery"."totalUpvotes",
         (SELECT COUNT(*) FROM "comment" WHERE "post_id" = p."id") AS "totalComments",
         'Top trending' AS "groupBy"
       FROM "post" "p"

@@ -12,6 +12,7 @@ type Post {
   user_id: ID!
   link: String
   linkDescription: String
+  totalUpvotes: Int
 }
 
 """
@@ -27,7 +28,28 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "body", "created_at", "id", "images", "subreddit_id", "title", "user_id", "link", "linkDescription" FROM "post" ORDER BY "created_at" DESC LIMIT $2 OFFSET $1
+      SELECT
+        p."body",
+        p."created_at",
+        p."id",
+        p."images",
+        p."subreddit_id",
+        p."title",
+        p."user_id",
+        p."link",
+        p."linkDescription",
+        COALESCE("subquery"."totalUpvotes", 0) AS "totalUpvotes"
+      FROM "post" "p"
+      LEFT JOIN (
+        SELECT
+          "post_id",
+          SUM(CASE WHEN "upvote" = true THEN 1 ELSE -1 END) AS "totalUpvotes"
+        FROM "vote"
+        GROUP BY "post_id"
+      ) AS "subquery"
+      ON "p"."id" = "subquery"."post_id"
+      ORDER BY "created_at" DESC
+      LIMIT $2 OFFSET $1;
       """
       configuration: "postgresql_config"
     )

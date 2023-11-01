@@ -1,5 +1,6 @@
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { TProfileDropDownList } from '@/constants/types'
+import { Events, eventEmitter } from '@/services/eventEmitter'
 import { Divider, List, MenuItem, Stack, SvgIconTypeMap, Switch } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import Link from 'next/link'
@@ -16,10 +17,14 @@ type TProfileMenuProps = {
 }
 
 function ProfileMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDialog, ...rest }: TProfileMenuProps) {
+  function onCreateCommunity() {
+    eventEmitter.dispatch(Events.OPEN_CREATE_COMMUNITY_DRAWER, true)
+  }
+
   return (
     <List key={`profile_menu_${rid()}`}>
       <ProfileGroupHeader label={group} groupIcon={groupIcon} />
-      {menuItems.map(({ name, switcher, url, disabled, dialog }) => (
+      {menuItems.map(({ name, value, switcher, url, disabled, dialog, onClick }) => (
         <MenuItem
           disabled={disabled}
           key={`profile_menu_item_${rid()}`}
@@ -42,9 +47,14 @@ function ProfileMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDial
           ) : (
             <Stack
               onClick={() => {
-                if (!dialog) return
-                setDialogType(PROFILE_DIALOG_TYPE.UserAgreement)
-                setIsOpenDialog(true)
+                if (onClick) {
+                  value === 'createCommunity' && onCreateCommunity()
+                }
+
+                if (dialog) {
+                  setDialogType(PROFILE_DIALOG_TYPE.UserAgreement)
+                  setIsOpenDialog(true)
+                }
               }}
               direction="row"
               sx={{ alignItems: 'center', p: '6px 16px', display: 'flex', flex: '1' }}

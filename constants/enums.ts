@@ -17,7 +17,7 @@ export enum ORDERING {
 }
 export enum SORT_METHOD {
   New = 'created_at',
-  Hot = 'upvote',
+  Hot = 'totalUpvotes',
   Rising = 'trending'
 }
 export enum SUBREDDIT_LIST_MODE {
