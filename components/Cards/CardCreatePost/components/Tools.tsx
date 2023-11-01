@@ -11,21 +11,10 @@ type TToolsProps<T extends FieldValues> = {
   setIsLinkPost: Dispatch<SetStateAction<boolean>>
   isLinkPost: boolean
   isEditing: boolean
-  isMobile: boolean
-  userName: string | undefined
   imagesValue: FileList | undefined
 }
 
-function Tools<T extends FieldValues>({
-  userName,
-  imagesValue,
-  isMobile,
-  isEditing,
-  control,
-  formOpened,
-  setIsLinkPost,
-  isLinkPost
-}: TToolsProps<T>) {
+function Tools<T extends FieldValues>({ imagesValue, isEditing, control, formOpened, setIsLinkPost, isLinkPost }: TToolsProps<T>) {
   function onCreateLinkPost() {
     eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
     setIsLinkPost(!isLinkPost)

@@ -44,6 +44,7 @@ function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
                 />
               </Link>
             </Box>
+
             {/* comment section */}
             <Comment username={username} created_at={created_at} text={text} />
           </Stack>

@@ -13,6 +13,9 @@ type TPeopleMenuListProps = {
   filterByTerm: (option: TMenuItem) => boolean
 }
 
+/**
+ * People group, list all user's following
+ */
 function PeopleMenuList({ options, filterByTerm, ...rest }: TPeopleMenuListProps) {
   const { session, loading } = useAppSession()
 

@@ -2,6 +2,10 @@ import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { HomeIcon } from '@/constants/icons'
 import { TMenuItem, TUserDetail } from '@/constants/types'
 
+/**
+ * This hook only for MenuDropdown, combine 4 menu list into 1:
+ * Feeds, Communities, Followings and hidden option (for displaying active option purpose)
+ */
 function useMenuData(me: TUserDetail | null | undefined, isUserOrSubPage: boolean, activePage: string): TMenuItem[][] {
   const followingSubList: string[] | undefined = me?.member_of_ids
   const followingUserList: string[] | undefined = me?.following_ids

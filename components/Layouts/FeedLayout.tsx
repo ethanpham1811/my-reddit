@@ -25,6 +25,8 @@ function FeedLayout({ loading, children, top, subredditId, single = false }: TFe
     query: { subreddit, username, postid },
     pathname
   } = useRouter()
+
+  // children addressing
   const mainContent = Children.toArray(children)[0]
   const sideContent = Children.toArray(children)[1]
 

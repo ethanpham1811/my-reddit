@@ -17,6 +17,10 @@ type TCardSearchSideProps<T extends TQueriedSub | TQueriedUser> = {
   list: T[]
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
 }
+
+/**
+ * Display Subreddit/User info dynamically mapped with mix data
+ */
 function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, updateLoading, loading, list, updateUser }: TCardSearchSideProps<T>) {
   const { session } = useAppSession()
   const me = session?.userDetail
@@ -66,7 +70,6 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
                 btnText={btnText}
                 extraText={extraText}
                 link={link}
-                loading={updateLoading}
               />
             )
           })
@@ -74,6 +77,8 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
           <MessageBoard head="Nothing found" />
         )}
       </CardContent>
+
+      {/* See more link */}
       {!loading && list && list.length > 0 && (
         <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
           <Typography sx={{ color: 'blue.main' }} variant="h6" fontSize="0.8rem">

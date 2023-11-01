@@ -7,14 +7,17 @@ import { Stack, useMediaQuery } from '@mui/material'
 import { useState } from 'react'
 import { RdButton, RdChip } from '../..'
 
-type TActionButton = { name: string | null | undefined; subType: string | null | undefined }
+type TActionButton = {
+  name: string | null | undefined
+  subType: string | null | undefined
+}
 
 function ActionButton({ name, subType }: TActionButton) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const isMobile = useMediaQuery(theme.breakpoints.down('xl'))
   const [showLeaveBtn, setShowLeaveBtn] = useState(false)
-  const { updateUser, loading } = useUserUpdate()
+  const { updateUser } = useUserUpdate()
 
   async function onLeaveSubreddit() {
     me && updateUser('member_of_ids', name, false)

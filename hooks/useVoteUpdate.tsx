@@ -2,6 +2,11 @@ import { UPDATE_VOTE } from '@/graphql/mutations'
 import { useMutation } from '@apollo/client'
 import toast from 'react-hot-toast'
 
+/**
+ * update vote:
+ * - with optimistic update
+ * - with cache update
+ */
 function useVoteUpdate() {
   const [mutateVote] = useMutation(UPDATE_VOTE)
 

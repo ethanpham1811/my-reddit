@@ -14,25 +14,8 @@ type TTopicDropdown<T extends FieldValues> = {
 }
 
 function TopicDropdown<T extends FieldValues>({ name, control, registerOptions }: TTopicDropdown<T>) {
-  const { topicList, loading, error } = useTopicList()
-  /* set local list for data manipulating */
-  // const [localList, setLocalList] = useState<TTopic[] | null>(null)
-
-  // useEffect(() => {
-  //   if (localList === null) {
-  //     setLocalList(topicList)
-  //   }
-  // }, [topicList, localList])
-
+  const { topicList } = useTopicList()
   const renderSelectedOption = (selectedArray: string[], setSelectedArray: Dispatch<SetStateAction<string[]>>) => {
-    /* remove selected items from dropdown list */
-    // localList &&
-    //   setLocalList(
-    //     localList?.filter((option: TTopic): boolean => {
-    //       return selectedArray.findIndex((item) => item.includes(option.id.toString())) === -1
-    //     })
-    //   )
-
     /* from string[] to TTopic[] mapping */
     const mappedArray =
       selectedArray && selectedArray.length > 0
@@ -78,13 +61,7 @@ function TopicDropdown<T extends FieldValues>({ name, control, registerOptions }
         control={control}
         name={name}
         render={({ field: { onChange }, fieldState: { error } }) => (
-          <RdMultipleDropdown
-            error={error}
-            max={MAX_TOPIC_CHOSEN}
-            renderSelectedOption={renderSelectedOption}
-            onChange={onChange}
-            // sx={{ minWidth: '200px' }}
-          >
+          <RdMultipleDropdown error={error} max={MAX_TOPIC_CHOSEN} renderSelectedOption={renderSelectedOption} onChange={onChange}>
             {topicList ? (
               topicList.map(({ id, name }: TTopic) => {
                 return (

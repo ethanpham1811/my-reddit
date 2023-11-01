@@ -1,8 +1,11 @@
-import { TRdImageListProps } from '@/constants/types'
-import { ImageList, ImageListItem, Stack } from '@mui/material'
+import { ImageList, ImageListItem, ImageListOwnProps, Stack } from '@mui/material'
 import Image from 'next/image'
 import { memo } from 'react'
 import { v4 as rid } from 'uuid'
+
+type TRdImageListProps = Omit<ImageListOwnProps, 'children'> & {
+  images: FileList
+}
 
 function RdImageList({ images, ...rest }: TRdImageListProps) {
   const imageList = Array.from(images)

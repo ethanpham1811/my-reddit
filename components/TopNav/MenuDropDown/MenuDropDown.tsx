@@ -1,7 +1,7 @@
 import { RdDropdown } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
-import { TMenuDropdownProps, TMenuItem } from '@/constants/types'
+import { TMenuItem } from '@/constants/types'
 import { List, MenuItem } from '@mui/material'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
@@ -11,6 +11,11 @@ import PeopleMenuList from './components/PeopleMenuList'
 import SubsMenuList from './components/SubsMenuList'
 import useMenuData from './hooks/useMenuData'
 
+type TMenuDropdownProps = {
+  subName: string | string[] | undefined
+  userPageName: string | string[] | undefined
+  pathName: string
+}
 function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
   const { pathname } = useRouter()
   const { session } = useAppSession()

@@ -3,6 +3,10 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import toast from 'react-hot-toast'
 import { v4 as rid } from 'uuid'
 
+/**
+ * Upload to Supabase bucket with registered policy
+ * only authenticated user be able to upload images
+ */
 function useSupabaseUpload() {
   const supabase = useSupabaseClient()
 

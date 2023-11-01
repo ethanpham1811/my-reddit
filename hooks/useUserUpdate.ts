@@ -7,6 +7,22 @@ import { Dayjs } from 'dayjs'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+/**
+ * Update user with dynamic key:
+ * - created_at
+ * - email
+ * - dob
+ * - coverUrl
+ * - photoUrl
+ * - karma
+ * - socialLinks
+ * - member_of_ids
+ * - following_ids
+ * - post
+ *
+ * With optimistic update
+ * With cache update
+ */
 function useUserUpdate() {
   const [loading, setLoading] = useState(false)
   const { session } = useAppSession()
@@ -32,19 +48,7 @@ function useUserUpdate() {
     return updateParams
   }
 
-  /**
-   * Update user by key:
-   * - created_at
-   * - email
-   * - dob
-   * - coverUrl
-   * - photoUrl
-   * - karma
-   * - socialLinks
-   * - member_of_ids
-   * - following_ids
-   * - post
-   */
+  /* update function to use in components */
   const updateUser = async (key: keyof Omit<TUserDetail, 'email'>, newVal: Dayjs | string | null | undefined, isAdding: boolean = true) => {
     if (!me) return
     setLoading(true)

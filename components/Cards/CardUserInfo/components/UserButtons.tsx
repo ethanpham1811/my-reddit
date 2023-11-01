@@ -19,11 +19,12 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
   const { updateUser, loading } = useUserUpdate()
   const [showUnfollowBtn, setShowUnfollowBtn] = useState(false)
 
-  /* onSubmit */
+  /* onSubmit: add/remove follower from user's following_ids */
   async function handleFollowingAction(isUnfollow: boolean) {
     if (user && me) updateUser('following_ids', user.username, !isUnfollow)
   }
 
+  /* fire event to open create post form */
   function onCreatePost() {
     eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
   }

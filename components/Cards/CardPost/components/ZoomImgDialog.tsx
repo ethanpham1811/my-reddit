@@ -31,6 +31,7 @@ function ZoomImgDialog({ zoomDialogOpen: zoomedImg, setZoomDialogOpen }: TPrevie
         </Box>
       )}
 
+      {/* TODO: using normal img tag due to layout issue with Next Image, will fix later */}
       {zoomedImg && (
         <img
           onLoad={() => setImgLoading(false)}

@@ -1,21 +1,17 @@
-import { TFetchMoreArgs, TSortOptions } from '@/constants/types'
-
-import { useAppSession } from '@/components/Layouts/MainLayout'
-import { TPost } from '@/constants/types'
-import orderBy from 'lodash/orderBy'
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
-import { validatePostBySubname } from '../../src/utils'
-
 import { RdInfiniteScroll } from '@/components'
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { QUERY_LIMIT } from '@/constants/enums'
+import { TFetchMoreArgs, TPost, TSortOptions } from '@/constants/types'
 import { ApolloError } from '@apollo/client'
 import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
-import { Fragment } from 'react'
+import orderBy from 'lodash/orderBy'
+import { Dispatch, Fragment, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import { CardPost, MessageBoard } from '..'
+import { validatePostBySubname } from '../../src/utils'
 import ZoomImgDialog from '../Cards/CardPost/components/ZoomImgDialog'
 import { RdSkeletonListItem } from '../Skeletons'
 
-export type TNewFeedsProps = {
+type TNewFeedsProps = {
   noPostText: string
   sortOptions: TSortOptions
   postList: TPost[] | null
@@ -32,8 +28,8 @@ const NewFeeds = ({
   noPostText,
   sortOptions: { method, ordering },
   postList,
-  fetchMore,
   loading,
+  fetchMore,
   setHasNoPost,
   appendPosts
 }: TNewFeedsProps) => {
@@ -43,7 +39,7 @@ const NewFeeds = ({
   // zoom image dialog states
   const [zoomedImg, setZoomedImg] = useState<string | null>(null)
 
-  // postList mapping
+  // postList ordering & filtered by user permission
   const mappedPostList: TPost[] | null =
     postList &&
     orderBy(

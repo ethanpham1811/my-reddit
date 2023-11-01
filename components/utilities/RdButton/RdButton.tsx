@@ -1,8 +1,18 @@
 import { DEFAULT_BUTTON_COLOR } from '@/constants/enums'
-import { TRdButtonProps } from '@/constants/types'
+import { TButtonColor } from '@/constants/types'
 import { notoSans } from '@/mui/theme'
-import { Button } from '@mui/material'
+import { Button, ButtonOwnProps, ButtonProps, SxProps, Theme } from '@mui/material'
 
+type TRdButtonProps = ButtonOwnProps &
+  Pick<ButtonProps, 'type' | 'onClick' | 'onMouseEnter' | 'onMouseLeave'> & {
+    text: string
+    filled?: boolean
+    color?: TButtonColor
+    invertColor?: boolean
+    sx?: SxProps<Theme>
+    flex?: number
+    width?: string
+  }
 function RdButton({ text, filled = false, flex, color = DEFAULT_BUTTON_COLOR, invertColor = false, sx, width, ...rest }: TRdButtonProps) {
   const hoverStyle = {
     '&:hover, &:focus': invertColor

@@ -17,6 +17,7 @@ type TProfileMenuProps = {
 }
 
 function ProfileMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDialog, ...rest }: TProfileMenuProps) {
+  /* fire event to open create community drawer (only for Create Community Option) */
   function onCreateCommunity() {
     eventEmitter.dispatch(Events.OPEN_CREATE_COMMUNITY_DRAWER, true)
   }

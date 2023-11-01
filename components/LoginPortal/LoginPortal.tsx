@@ -16,6 +16,7 @@ function LoginPortal({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
   const [loading, setLoading] = useState(false)
   const [newUserEmail, setNewUserEmail] = useState<string | null>(null)
 
+  /* Login with Github */
   const LoginWithProvider = async (provider: Provider) => {
     const { error } = await supabase!.auth.signInWithOAuth({ provider })
     error && toast.error(error.message)
@@ -26,16 +27,20 @@ function LoginPortal({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
 
   return (
     <RdCard sx={{ p: 3 }}>
+      {/* Login + Register forms */}
       {isLoginForm ? (
         <LoginForm setOpen={setOpen} setIsLoginForm={setIsLoginForm} newUserEmail={newUserEmail} />
       ) : (
         <RegisterForm setNewUserEmail={setNewUserEmail} setIsLoginForm={setIsLoginForm} />
       )}
+
       <Divider sx={{ my: 1 }} />
       <Stack justifyContent="center" spacing={1}>
         <Typography variant="body2" sx={{ color: 'hintText.main' }}>
           Or login via social links
         </Typography>
+
+        {/* Login with FB & Github providers button icons */}
         <Stack direction="row" justifyContent="flex-start" spacing={1}>
           <IconButton disabled sx={{ p: 0.4, color: 'unset', ml: '-0.4rem !important' }} onClick={() => LoginWithProvider('facebook')}>
             <BsFacebook size={25} />

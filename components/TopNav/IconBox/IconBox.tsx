@@ -1,48 +1,8 @@
 import { RdNotiBubble } from '@/components'
-import { AddSharpIcon, CampaignOutlinedIcon, NotificationsOutlinedIcon, OutboundOutlinedIcon, SmsOutlinedIcon } from '@/constants/icons'
-import { TIconBox } from '@/constants/types'
 import { notificationsLabel } from '@/src/utils'
 import { IconButton, Stack, Tooltip } from '@mui/material'
 import { Fragment } from 'react'
-
-const notiData: TIconBox[] = [
-  {
-    icon: <OutboundOutlinedIcon />,
-    name: 'Popular',
-    tooltip: 'Work in progress'
-  },
-  {
-    icon: <SmsOutlinedIcon />,
-    name: 'Chat',
-    notification: {
-      content: 12,
-      max: 99
-    },
-    hideOnMobile: true,
-    tooltip: 'Work in progress'
-  },
-  {
-    icon: <NotificationsOutlinedIcon />,
-    name: 'Notification',
-    notification: {
-      content: 999,
-      max: 99
-    },
-    tooltip: 'Work in progress'
-  },
-  {
-    icon: <AddSharpIcon />,
-    name: 'Create',
-    hideOnMobile: true,
-    tooltip: 'Work in progress'
-  },
-  {
-    icon: <CampaignOutlinedIcon />,
-    name: 'Advertise',
-    hideOnMobile: true,
-    tooltip: 'Work in progress'
-  }
-]
+import { notiData } from '../data'
 
 function IconBox({ isMobile }: { isMobile: boolean }) {
   return (

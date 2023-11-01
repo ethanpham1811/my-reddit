@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 function LoginButton() {
   const [open, setOpen] = useState(false)
 
+  /* fire event to open login modal  */
   useEffect(() => {
     eventEmitter.subscribe(Events.OPEN_LOGIN_MODAL, (value) => [setOpen(value)])
     return () => eventEmitter.unsubscribe(Events.OPEN_LOGIN_MODAL)

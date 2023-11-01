@@ -1,5 +1,10 @@
 import { Box, Paper } from '@mui/material'
 
+/**
+ * White fullscreen white fixed div with text in middle
+ * Only show if the destination route is not generated with ISG in server
+ * (currently not using this)
+ */
 const ISGFallBack = () => {
   return (
     <Paper
@@ -23,26 +28,3 @@ const ISGFallBack = () => {
 }
 
 export default ISGFallBack
-
-{
-  /* <Container maxWidth="md" sx={{ pt: '70px', pb: 5 }}>
-<Box>
-  <Grid container spacing={3}>
-    <Grid xs={16} md={8} item>
-      <Stack spacing={2}>
-        <Skeleton variant="rectangular" width="100%" height="60px" />
-        <Skeleton variant="rectangular" width="100%" height="60px" />
-        {[0, 1].map((el) => (
-          <Fragment key={`skeleton_${el}`}>
-            <RdSkeletonListItem py={0} index={el.toString()} />
-          </Fragment>
-        ))}
-      </Stack>
-    </Grid>
-    <Grid xs={16} md={4} item>
-      <RdSkeletonSideColumn />
-    </Grid>
-  </Grid>
-</Box>
-</Container> */
-}

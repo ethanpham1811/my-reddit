@@ -1,25 +1,21 @@
 import { SEARCH_TABS } from '@/constants/enums'
-import { TSearchTabBtn } from '@/constants/types'
 import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { v4 as rid } from 'uuid'
+import { tabList } from '../data'
 
-const tabList: TSearchTabBtn[] = [
-  {
-    value: SEARCH_TABS.Post,
-    title: 'Posts'
-  },
-  {
-    value: SEARCH_TABS.Communities,
-    title: 'Communities'
-  },
-  {
-    value: SEARCH_TABS.People,
-    title: 'People'
-  }
-]
+type TSearchFeedsTabBarProps = {
+  type: SEARCH_TABS | undefined
+  top: string
+}
 
-function SearchFeedsTabBar({ type = SEARCH_TABS.Post, top }: { type: SEARCH_TABS | undefined; top: string }) {
+/**
+ * Search Tab bar with 3 tabs:
+ * - Post
+ * - Community
+ * - People
+ */
+function SearchFeedsTabBar({ type = SEARCH_TABS.Post, top }: TSearchFeedsTabBarProps) {
   const {
     replace,
     pathname,

@@ -48,8 +48,12 @@ export function noPermissionSubPageMsg(
   )
 }
 
-export function noPermissionUserPageMsg(following_ids: string[] | undefined, username: string | string[] | undefined): ReactNode | false {
-  const verifyFollower = validatePostByFollowing(following_ids, username) || username === username
+export function noPermissionUserPageMsg(
+  following_ids: string[] | undefined,
+  myUsername: string | string[] | undefined,
+  username: string | string[] | undefined
+): ReactNode | false {
+  const verifyFollower = validatePostByFollowing(following_ids, username) || myUsername === username
 
   return !username ? ( // if user is not logged in
     <MessageBoard head="You need to " highlight="login" tail=" to view their content" hasLogin />

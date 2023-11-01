@@ -1,14 +1,22 @@
-import { TRadioOption, TRdRadioGroupProps } from '@/constants/types'
 import FormControl from '@mui/material/FormControl'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormLabel from '@mui/material/FormLabel'
 import Radio from '@mui/material/Radio'
-import RadioGroup from '@mui/material/RadioGroup'
-import { Controller, FieldValues } from 'react-hook-form'
+import RadioGroup, { RadioGroupProps } from '@mui/material/RadioGroup'
+import { Control, Controller, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 import { v4 as rid } from 'uuid'
 
+import { TRadioOption } from '@/constants/types'
 import { Box, Stack, Typography } from '@mui/material'
-import { createElement } from 'react'
+import { ReactNode, createElement } from 'react'
+
+type TRdRadioGroupProps<T extends FieldValues> = RadioGroupProps & {
+  name: FieldPath<T>
+  control: Control<T>
+  options: TRadioOption[]
+  label: string | ReactNode
+  registerOptions?: RegisterOptions
+}
 
 const RdRadioGroup = <T extends FieldValues>({ sx, options, name, control, label, registerOptions }: TRdRadioGroupProps<T>) => {
   return (

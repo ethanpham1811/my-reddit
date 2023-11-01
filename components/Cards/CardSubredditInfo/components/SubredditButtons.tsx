@@ -18,6 +18,7 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
   const status = session?.user?.role
   const { updateUser, loading } = useUserUpdate()
 
+  /* Fire event to open creaet post form */
   function onClick() {
     if (postid) return navigate(`/r/${subName}`)
     subName && eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)

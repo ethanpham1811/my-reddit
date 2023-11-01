@@ -4,7 +4,12 @@ import { formatNumber, generateSeededHexColor, generateUserImage } from '@/src/u
 import { Avatar, Box, ListItem, Stack, Typography } from '@mui/material'
 import { HTMLAttributes } from 'react'
 
-function QueriedSubUserOption({ option, props }: { option: TQueriedSub | TQueriedUser; props: HTMLAttributes<HTMLLIElement> }) {
+type TQueriedSubUserOptionProps = {
+  option: TQueriedSub | TQueriedUser
+  props: HTMLAttributes<HTMLLIElement>
+}
+
+function QueriedSubUserOption({ option, props }: TQueriedSubUserOptionProps) {
   const isSub = isQueriedSub(option)
 
   return (

@@ -11,7 +11,6 @@ type TSearchPostItemBodyProps = {
 }
 
 function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPostItemBodyProps) {
-  /* if an item > 200px => add blur bottom effect */
   return (
     <Stack direction="row" spacing={1}>
       <Stack flex={1}>

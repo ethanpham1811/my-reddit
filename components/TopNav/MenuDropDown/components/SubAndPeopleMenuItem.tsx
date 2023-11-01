@@ -4,6 +4,9 @@ import { Avatar, ListItemText, MenuItem } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
 
+/**
+ * Menu item for communities and people
+ */
 function SubAndPeopleMenuItem({ type, name, ...rest }: { type: SUB_PEOPLE_MENU_ITEM; name: string; value: string }) {
   let url = '/'
   if (type === SUB_PEOPLE_MENU_ITEM.Communities) url = `/r/${name}`

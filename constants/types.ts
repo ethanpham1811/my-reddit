@@ -1,20 +1,4 @@
-import { ApolloError } from '@apollo/client'
-import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
-import {
-  AutocompleteProps,
-  ButtonOwnProps,
-  ButtonProps,
-  IconButtonProps,
-  ImageListOwnProps,
-  PaletteOptions,
-  RadioGroupProps,
-  SelectChangeEvent,
-  SelectProps,
-  SvgIconTypeMap,
-  SxProps,
-  TextFieldProps,
-  Theme
-} from '@mui/material'
+import { AutocompleteProps, PaletteOptions, SelectChangeEvent, SelectProps, SvgIconTypeMap, SxProps, TextFieldProps } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from '@supabase/supabase-js'
 import { Dayjs } from 'dayjs'
@@ -114,16 +98,6 @@ export type TIconBox = {
   notification?: TNotiData
   hideOnMobile?: boolean
 }
-export type TMenuDropdownProps = {
-  subName: string | string[] | undefined
-  userPageName: string | string[] | undefined
-  pathName: string
-}
-export type TProfileDropdownProps = {
-  loading: boolean
-  isMobile: boolean
-  sessionUsername: string | undefined
-}
 export type TMenuItem = Omit<TSubreddit, 'id' | 'subType'> & {
   group: MAIN_MENU_GROUP
   icon?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
@@ -149,11 +123,6 @@ export type TSelectOption = {
   cb: () => void
 }
 
-export type TRdSelect = IconButtonProps & {
-  options: TSelectOption[]
-  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
-  position?: { top?: string; left?: string; right?: string; bottom?: string }
-}
 export type TFetchMoreArgs = {
   offset: number
   limit?: number
@@ -164,24 +133,7 @@ export type TCardPostProps = {
   post: TPost
   setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
-export type IsChildrenGroupCheckboxProps<T extends FieldValues> = {
-  name: FieldPath<T>
-  control: Control<T>
-}
-export type TRdCheckboxProps<T extends FieldValues> = {
-  name: FieldPath<T>
-  control: Control<T>
-  label: string | ReactNode
-}
-export type TRdDrawerProps = {
-  open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
-  children: ReactNode
-}
-export type TBottomNavigatorProps = {
-  setOpen: Dispatch<SetStateAction<boolean>>
-  loading: boolean
-}
+
 export type TCommunityCreatorProps = {
   setOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -199,16 +151,7 @@ export type TRdAutoCompleteProps<
   sx: SxProps
   focused: boolean
 }
-export type TRdButtonProps = ButtonOwnProps &
-  Pick<ButtonProps, 'type' | 'onClick' | 'onMouseEnter' | 'onMouseLeave'> & {
-    text: string
-    filled?: boolean
-    color?: TButtonColor
-    invertColor?: boolean
-    sx?: SxProps<Theme>
-    flex?: number
-    width?: string
-  }
+
 export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'error' | 'disabled'> & {
   renderSelectedOption: (value: string) => ReactNode
   onChange?: (event: SelectChangeEvent<string>, child: ReactNode) => void
@@ -233,52 +176,12 @@ export type TRdMultipleDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 
   borderColor?: string
   error?: FieldError
 }
-export type TRdImageCarouselProps = {
-  width: string
-  height: string
-  imgList: string[]
-  setZoomedImg: Dispatch<SetStateAction<string | null>>
-}
-export type TRdImageListProps = Omit<ImageListOwnProps, 'children'> & {
-  images: FileList
-}
-export type TRdImageUploaderProps<T extends FieldValues> = {
-  name: FieldPath<T>
-  control: Control<T>
-}
-export type TRdNotiBubbleProps = {
-  content: number | string
-  max: number
-  children: ReactNode
-}
-export type TRdRadioGroupProps<T extends FieldValues> = RadioGroupProps & {
-  name: FieldPath<T>
-  control: Control<T>
-  options: TRadioOption[]
-  label: string | ReactNode
-  registerOptions?: RegisterOptions
-}
+
 export type TRdSubredditAutoCompleteProps<T extends FieldValues> = {
   name: FieldPath<T>
   control: Control<T>
   width?: string
   flex?: number
-}
-export type TRdSubredditSelectProps<T extends FieldValues> = {
-  registerOptions?: RegisterOptions
-  name: FieldPath<T>
-  control: Control<T>
-  width?: string
-  flex?: number
-  sx?: SxProps<Theme>
-}
-export type TRdTextEditorProps<T extends FieldValues> = {
-  registerOptions?: RegisterOptions
-  placeholder: string
-  name: FieldPath<T>
-  control: Control<T>
-  height?: number
-  clearBodyOnFocus?: boolean
 }
 export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
   registerOptions?: RegisterOptions
@@ -311,11 +214,7 @@ export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
   bgcolor?: string
   borderColor?: string
 }
-export type TCardFeedSorterProps = {
-  disabled: boolean
-  sortOptions: TSortOptions
-  setSortOptions: Dispatch<SetStateAction<TSortOptions>>
-}
+
 export type TCardUserInfoProps = {
   user: TUserDetail | null
   loading: boolean
@@ -355,20 +254,6 @@ export type TFormColumnProps<T extends FieldValues> = {
 }
 export type TPostCommentForm = {
   comment: string
-}
-
-/* ------------------------------------------Hook response Types------------------------------------------ */
-export type TUsePostListResponse = {
-  postList: TPost[] | null
-  loading: boolean
-  error: ApolloError | undefined
-  fetchMore: FetchMoreFunction<{ [key: string]: TPost[] }, TFetchMoreArgs>
-}
-
-export type TUseTopicListResponse = {
-  topicList: TTopic[] | null
-  loading: boolean
-  error: ApolloError | undefined
 }
 
 /* ------------------------------------------Data structure Types----------------------------------------- */

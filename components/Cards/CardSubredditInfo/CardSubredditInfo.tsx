@@ -16,6 +16,7 @@ function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
     <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
       {!loading && subreddit ? (
         <>
+          {/* Sub avatar + title */}
           <CardHeader
             titleTypographyProps={{ sx: { fontWeight: 600, fontSize: '0.9rem', color: 'white.main' } }}
             title="About Community"
@@ -32,10 +33,13 @@ function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
             }}
           />
           <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+            {/* Description */}
             <Typography variant="body1" color="initial" fontWeight={400}>
               {subreddit.description}
             </Typography>
             <Divider sx={{ my: 1 }} />
+
+            {/* Member count */}
             <Box display="flex" justifyContent="center" py={1} alignItems="center">
               <Typography variant="subtitle1" fontWeight={700}>
                 {formatNumber(subreddit.member || 0)}
@@ -46,6 +50,8 @@ function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
               </Typography>
             </Box>
             <Divider sx={{ my: 1 }} />
+
+            {/* Started since mmm/yyyy */}
             <Box display="flex" justifyContent="center" py={1} alignItems="center">
               <Typography sx={{ fontSize: '0.8rem', mr: '5px', color: 'hintText.main' }}>Started since</Typography>
               <Typography variant="body1" color="initial" fontWeight={400}>

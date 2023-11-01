@@ -37,8 +37,8 @@ function MainForm<T extends FieldValues>({
   const [backBtnHover, isBackBtnHover] = useState(false)
   const isEditing = mode === POST_MUTATION_MODE.Edit
 
+  // Populate subId & post id (edit mode)
   useEffect(() => {
-    // set subId & post id if available
     postid && setValue('id' as Path<T>, postid as any)
     subId && setValue('subreddit_id' as Path<T>, subId as any)
   }, [setValue, postid, subId])

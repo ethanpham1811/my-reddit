@@ -5,6 +5,10 @@ import { ApolloCache, useMutation } from '@apollo/client'
 import { useState } from 'react'
 import useUserUpdate from './useUserUpdate'
 
+/**
+ * Create new subreddit
+ * Update user member_of_ids with new sub name
+ */
 function useSubredditCreate() {
   const [addSubreddit] = useMutation(ADD_SUBREDDIT)
   const { updateUser } = useUserUpdate()
@@ -31,12 +35,12 @@ function useSubredditCreate() {
       }
     })
 
-    // error
     if (errors) {
       setLoading(false)
       return { error: errors }
     }
-    // update user to join the new subreddit as first member
+
+    // update user to automatically join the new subreddit as first member
     const res = await updateUser('member_of_ids', name)
 
     setLoading(false)

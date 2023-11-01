@@ -6,7 +6,7 @@ import { generateAutoCompleteUrl } from '@/src/utils'
 import { AutocompleteRenderInputParams } from '@mui/material'
 import { NextRouter } from 'next/router'
 import { SyntheticEvent, useState } from 'react'
-import { renderGroup, renderOption } from './components'
+import { renderGroup, renderOption } from './components/RenderedCbs'
 import SearchBarInput from './components/SearchBarInput'
 
 type TSearchBarProps = {

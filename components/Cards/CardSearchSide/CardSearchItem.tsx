@@ -14,12 +14,11 @@ type TCardSearchItemProps = {
   extraText: string
   link: string
   guestMode?: boolean
-  loading: boolean
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
   type: Exclude<SEARCH_TABS, SEARCH_TABS.Post>
 }
 
-function CardSearchItem({ name, loading, status, btnText, revertBtnText, extraText, link, guestMode, updateUser, type }: TCardSearchItemProps) {
+function CardSearchItem({ name, status, btnText, revertBtnText, extraText, link, guestMode, updateUser, type }: TCardSearchItemProps) {
   const [hoverState, setHoverState] = useState(false)
 
   function onClick() {
@@ -30,6 +29,7 @@ function CardSearchItem({ name, loading, status, btnText, revertBtnText, extraTe
   return (
     <>
       <Stack direction="row" spacing={1} py={1} px={2} alignItems="center">
+        {/* Sub/user avatar */}
         <Link href={link} style={{ color: 'inherit' }}>
           <Avatar
             variant="circular"
@@ -43,6 +43,8 @@ function CardSearchItem({ name, loading, status, btnText, revertBtnText, extraTe
             src={generateUserImage(name)}
           />
         </Link>
+
+        {/* Sub/user name + extra infos */}
         <Stack flex="auto" width="20px">
           <Link href={link} style={{ color: 'inherit' }}>
             <Typography fontSize="0.8rem" variant="h6" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{`${
@@ -53,9 +55,10 @@ function CardSearchItem({ name, loading, status, btnText, revertBtnText, extraTe
             {extraText}
           </Typography>
         </Stack>
+
+        {/* Join/Leave or Follow/Unfollow buttons */}
         {!guestMode && (
           <RdButton
-            // disabled={loading}
             text={hoverState ? revertBtnText : btnText}
             onMouseEnter={() => setHoverState(true)}
             onMouseLeave={() => setHoverState(false)}

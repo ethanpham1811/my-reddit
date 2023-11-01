@@ -69,7 +69,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
           <form onSubmit={(e) => e.preventDefault()}>
             <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
               {/* Usser avatar & cover */}
-              <UserInfoHeader<TCardUserInfoForm> control={control} onSubmitField={onSubmitField} user={user} />
+              <UserInfoHeader<TCardUserInfoForm> control={control} onSubmitField={onSubmitField} user={user} isMe={isMe} />
               <Divider sx={{ my: 1 }} />
 
               {/* User email */}

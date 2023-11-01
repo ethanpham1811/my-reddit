@@ -1,7 +1,11 @@
-import { TRdDrawerProps } from '@/constants/types'
 import Drawer from '@mui/material/Drawer'
-import React from 'react'
+import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 
+type TRdDrawerProps = {
+  open: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
+  children: ReactNode
+}
 function RdDrawer({ open, setOpen, children }: TRdDrawerProps) {
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')) {

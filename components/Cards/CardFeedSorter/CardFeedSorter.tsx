@@ -1,35 +1,17 @@
 import { RdCard } from '@/components'
 import { BORDER_TYPES, ORDERING, SORT_METHOD } from '@/constants/enums'
-import { LocalFireDepartmentIcon, SwapVertOutlinedIcon, TrendingUpOutlinedIcon, WbSunnyIcon } from '@/constants/icons'
-import { TCardFeedSorterProps, TSorter } from '@/constants/types'
+import { SwapVertOutlinedIcon } from '@/constants/icons'
+import { TSortOptions } from '@/constants/types'
 import { IconButton, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
-import { createElement } from 'react'
+import { Dispatch, SetStateAction, createElement } from 'react'
 import { v4 as rid } from 'uuid'
+import { data } from './data'
 
-const data: TSorter[] = [
-  {
-    icon: WbSunnyIcon,
-    methodValue: SORT_METHOD.New,
-    description: 'New posts',
-    label: 'New',
-    optionDisabled: false
-  },
-  {
-    icon: LocalFireDepartmentIcon,
-    methodValue: SORT_METHOD.Hot,
-    description: 'Most upvoted',
-    label: 'Hot',
-    optionDisabled: false
-  },
-  {
-    icon: TrendingUpOutlinedIcon,
-    methodValue: SORT_METHOD.Rising,
-    description: 'Top trending',
-    label: 'Rising',
-    optionDisabled: true
-  }
-]
-
+export type TCardFeedSorterProps = {
+  disabled: boolean
+  sortOptions: TSortOptions
+  setSortOptions: Dispatch<SetStateAction<TSortOptions>>
+}
 function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSorterProps) {
   const onChange = (_: any, method: SORT_METHOD | null) => {
     method && setSortOptions({ ordering: ORDERING.Desc, method })
@@ -37,6 +19,7 @@ function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSort
 
   return (
     <RdCard sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      {/* Sort by New/Hot/Trending buttons */}
       <ToggleButtonGroup
         exclusive
         size="small"
@@ -77,6 +60,8 @@ function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSort
             </ToggleButton>
           ))}
       </ToggleButtonGroup>
+
+      {/* Asc/Desc switcher */}
       <IconButton
         sx={{ ml: 'auto !important', width: '35px', height: '35px' }}
         onClick={(e) => setSortOptions({ ...sortOptions, ordering: sortOptions.ordering === ORDERING.Desc ? ORDERING.Asc : ORDERING.Desc })}

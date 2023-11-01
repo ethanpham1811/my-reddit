@@ -22,7 +22,7 @@ function CardCommentBox({ subName, post_id, user_id, username, commentList }: TC
   const { control, handleSubmit, setValue, watch } = useForm<TPostCommentForm>()
   const commentValue = watch('comment')
 
-  /* submit comment */
+  /* submit comment handler*/
   const onSubmit = handleSubmit(async (formData) => {
     if (!formData.comment || formData.comment == '' || post_id == null || user_id == null) return
 

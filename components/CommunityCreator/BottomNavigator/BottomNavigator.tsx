@@ -1,7 +1,11 @@
 import { RdButton } from '@/components'
-import { TBottomNavigatorProps } from '@/constants/types'
 import { CircularProgress, Paper } from '@mui/material'
+import { Dispatch, SetStateAction } from 'react'
 
+type TBottomNavigatorProps = {
+  setOpen: Dispatch<SetStateAction<boolean>>
+  loading: boolean
+}
 function BottomNavigator({ loading, setOpen }: TBottomNavigatorProps) {
   return (
     <Paper sx={{ mx: { xs: -2, sm: -5 }, mb: { xs: -1, sm: -5 }, mt: 'auto', display: 'flex', borderTop: '1px solid', borderColor: 'orange.main' }}>

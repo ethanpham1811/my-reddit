@@ -12,6 +12,13 @@ type TuseTopSearchQueriedListResponse = {
   setSearchTerm: Dispatch<SetStateAction<string>>
 }
 
+/**
+ * If SearchTerm is empty (user not input anything):
+ * - request for top 3 post with highest votes
+ *
+ * If SearchTerm has value:
+ * - request for 3 subreddits and 3 users (most relevant to search term)
+ */
 function useTopSearchQueriedList(isFocused: boolean): TuseTopSearchQueriedListResponse {
   const [searchTerm, setSearchTerm] = useState('')
   const [trendingLoading, setTrendingLoading] = useState(false)
@@ -33,7 +40,7 @@ function useTopSearchQueriedList(isFocused: boolean): TuseTopSearchQueriedListRe
   const queriedDataList = searchTerm === '' ? trendingData || [] : [...queriedSubs, ...queriedUsers]
   const dataList = queriedDataList.length == 0 && !loading ? notFound : queriedDataList
 
-  // fetch quried user and subreddit list on user typing
+  // fetch queried user and subreddit list on user typing
   useEffect(() => {
     searchTerm !== '' && refetch()
   }, [searchTerm, refetch])

@@ -48,6 +48,8 @@ function PostHeader({ subName, username, createdAt }: TPostHeader) {
           </Stack>
         </Stack>
       )}
+
+      {/* Posted by username */}
       <Typography variant="caption" sx={{ mt: 0.5 }}>
         Posted by{' '}
         <Link href={`/u/${username}`} onClick={(e) => e.stopPropagation()} style={{ color: 'inherit' }}>

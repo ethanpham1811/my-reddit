@@ -1,16 +1,23 @@
-import { Controller, FieldValues } from 'react-hook-form'
+import { Control, Controller, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { SUBREDDIT_LIST_MODE } from '@/constants/enums'
-import { TRdSubredditSelectProps } from '@/constants/types'
 import useSubredditList from '@/hooks/useSubredditList'
-import { Avatar, Box, FormControl, MenuItem, Stack, Typography } from '@mui/material'
+import { Avatar, Box, FormControl, MenuItem, Stack, SxProps, Theme, Typography } from '@mui/material'
 import { Jelly } from '@uiball/loaders'
 import { v4 as rid } from 'uuid'
 import { RdDropdown } from '../..'
 import { generateSeededHexColor, generateUserImage, validateSubredditMember } from '../../../src/utils'
 
+type TRdSubredditSelectProps<T extends FieldValues> = {
+  registerOptions?: RegisterOptions
+  name: FieldPath<T>
+  control: Control<T>
+  width?: string
+  flex?: number
+  sx?: SxProps<Theme>
+}
 function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, control, width, flex, sx }: TRdSubredditSelectProps<T>) {
   const { session } = useAppSession()
   const me = session?.userDetail

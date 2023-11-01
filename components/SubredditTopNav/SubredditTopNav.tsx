@@ -20,6 +20,7 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
   return (
     <Box flexGrow={1}>
       <SubredditNavBar sx={{ pb: 2 }}>
+        {/* Subreddit 100% wide cover */}
         <Image
           src={generateUserCover(name, 2000, 300)}
           width={2000}
@@ -30,6 +31,7 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
         />
         <Container maxWidth="md" sx={{ pt: { xs: 7, sm: 2 } }}>
           <Stack direction={{ xs: 'column', sm: 'row' }}>
+            {/* Sub avatar */}
             <Box
               position={{ xs: 'absolute', sm: 'relative' }}
               sx={{ translate: { xs: '-50% calc(-50% - 3.5rem)', sm: 'none' } }}
@@ -51,6 +53,8 @@ function SubredditTopNav({ name, subType, headline }: TSubredditTopNavProps) {
                 />
               </Link>
             </Box>
+
+            {/* Headline & sub Name */}
             <Stack alignItems={{ xs: 'center', sm: 'flex-start' }}>
               <Typography fontWeight={700} variant="h4" textAlign={{ xs: 'center', sm: 'left' }}>
                 {headline || name}

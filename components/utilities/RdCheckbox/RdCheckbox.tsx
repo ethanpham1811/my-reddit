@@ -1,9 +1,14 @@
-import { TRdCheckboxProps } from '@/constants/types'
 import { Checkbox, FormGroup } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import { Controller, FieldValues } from 'react-hook-form'
+import { ReactNode } from 'react'
+import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
 
-const RdCheckbox = <T extends FieldValues>({ name, control, label, ...rest }: TRdCheckboxProps<T>) => {
+type TRdCheckboxProps<T extends FieldValues> = {
+  name: FieldPath<T>
+  control: Control<T>
+  label: string | ReactNode
+}
+const RdCheckbox = <T extends FieldValues>({ name, control, label }: TRdCheckboxProps<T>) => {
   return (
     <Controller
       name={name}

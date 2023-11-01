@@ -19,21 +19,15 @@ function useCommentAdd() {
       },
       update: (cache, { data: { insertComment } }) => {
         /* TODO: currently using updateQuery since got bug with updateFragment, fix this later */
-        cache.updateQuery(
-          {
-            query: GET_POST_BY_ID,
-            variables: { id: post_id }
-          },
-          (data) => {
-            if (!data) return // abort cache update
+        cache.updateQuery({ query: GET_POST_BY_ID, variables: { id: post_id } }, (data) => {
+          if (!data) return // abort cache update
 
-            const newCommentList = data.post?.comment ? [...data.post?.comment, insertComment] : [insertComment]
+          const newCommentList = data.post?.comment ? [...data.post?.comment, insertComment] : [insertComment]
 
-            return {
-              post: { ...data?.post, comment: newCommentList }
-            }
+          return {
+            post: { ...data?.post, comment: newCommentList }
           }
-        )
+        })
       }
     })
     setLoading(false)

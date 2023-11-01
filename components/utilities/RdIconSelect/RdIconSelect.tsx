@@ -1,7 +1,14 @@
-import { TRdSelect, TSelectOption } from '@/constants/types'
-import { IconButton, ListItemText, Menu, MenuItem, Paper, Typography } from '@mui/material'
+import { TSelectOption } from '@/constants/types'
+import { IconButton, IconButtonProps, ListItemText, Menu, MenuItem, Paper, SvgIconTypeMap, Typography } from '@mui/material'
+import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { createElement, useState } from 'react'
 import { v4 as rid } from 'uuid'
+
+type TRdSelect = IconButtonProps & {
+  options: TSelectOption[]
+  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
+  position?: { top?: string; left?: string; right?: string; bottom?: string }
+}
 
 function RdIconSelect({ disabled, options, icon, disableRipple, size, sx, position = {} }: TRdSelect) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)

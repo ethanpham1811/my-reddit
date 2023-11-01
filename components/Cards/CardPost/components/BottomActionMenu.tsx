@@ -36,6 +36,8 @@ function BottomActionMenu({ postId, subName }: { postId: string; subName: string
           </Link>
         </Box>
       </Stack>
+
+      {/* Deleting post dialog */}
       <RdDialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
         <CardConfirm
           solo

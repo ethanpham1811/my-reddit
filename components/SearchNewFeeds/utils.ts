@@ -1,6 +1,7 @@
 import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 import { formatNumber, validatePostByFollowing, validateSubredditMember } from '@/src/utils'
 
+/* Map data of user/subreddit according to each type */
 export const getFields = (
   me: TUserDetail | null | undefined,
   item: TQueriedSub | TQueriedUser

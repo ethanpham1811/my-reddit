@@ -3,14 +3,19 @@ import { GET_POST_BY_ID, GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
-export type TUseSubredditByNameResponse = {
+type TUseSubByNameAndPostByIdResponse = {
   subreddit: TSubredditDetail | null
   postDetail: TPost | null
   loading: boolean
   error: ApolloError | null
 }
 
-function useSubByNameAndPostById(svSubreddit?: TSubredditDetail | null, svPost?: TPost | null): TUseSubredditByNameResponse {
+/**
+ * Currently using 2 separated api for this hook
+ * because of the unexpected issue with apollo optimistic and cache update
+ * TODO: will be fixed later
+ */
+function useSubByNameAndPostById(svSubreddit?: TSubredditDetail | null, svPost?: TPost | null): TUseSubByNameAndPostByIdResponse {
   const {
     query: { subreddit: subName, postid }
   } = useRouter()
@@ -33,7 +38,6 @@ function useSubByNameAndPostById(svSubreddit?: TSubredditDetail | null, svPost?:
   const subreddit: TSubredditDetail = subData?.subredditByName || svSubreddit
   const postDetail: TPost = postData?.post || svPost
   const loading: boolean = (subLoading || postLoading) && !subreddit && !postDetail
-  // zoom image dialog states
 
   return { subreddit, postDetail, loading, error: subError || postError }
 }

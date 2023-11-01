@@ -12,16 +12,14 @@ import SearchPostItem from './components/SearchPostItem'
 import SearchSubUserItem from './components/SearchSubUserItem'
 
 type TSearchFeedsProps = {
-  // sortOptions: TSortOptions
   searchList: TQueriedPost[] | TQueriedSub[] | TQueriedUser[]
   searchTerm: string
   loading: boolean
-  updateLoading: boolean
   setHasNoPost?: Dispatch<SetStateAction<boolean>>
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
 }
 
-function SearchFeeds({ searchList, updateLoading, loading, setHasNoPost, searchTerm, updateUser }: TSearchFeedsProps) {
+function SearchFeeds({ searchList, loading, setHasNoPost, searchTerm, updateUser }: TSearchFeedsProps) {
   const { session } = useAppSession()
   const me = session?.userDetail
 
@@ -36,7 +34,6 @@ function SearchFeeds({ searchList, updateLoading, loading, setHasNoPost, searchT
       return (
         <SearchSubUserItem
           key={`search_post_item_${item.id}`}
-          loading={updateLoading}
           item={item}
           updateUser={updateUser}
           revertBtnText={status ? 'Leave' : 'Join'}
@@ -46,15 +43,7 @@ function SearchFeeds({ searchList, updateLoading, loading, setHasNoPost, searchT
     }
     if (isSearchQueriedUser(item)) {
       const status = me ? validatePostByFollowing(me?.following_ids, item.username) : false
-      return (
-        <SearchSubUserItem
-          loading={updateLoading}
-          item={item}
-          updateUser={updateUser}
-          revertBtnText={status ? 'Unfollow' : 'Follow'}
-          type={SEARCH_TABS.People}
-        />
-      )
+      return <SearchSubUserItem item={item} updateUser={updateUser} revertBtnText={status ? 'Unfollow' : 'Follow'} type={SEARCH_TABS.People} />
     }
     return <div></div>
   }

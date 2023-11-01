@@ -5,9 +5,9 @@ import { AutocompleteRenderGroupParams, ListSubheader, Stack, Typography } from 
 import Link from 'next/link'
 import { Fragment, HTMLAttributes, ReactNode } from 'react'
 import { v4 as rid } from 'uuid'
-import NotFoundOption from './NotFoundOption'
-import QueriedSubUserOption from './QueriedSubUserOption'
-import TopTrendingOption from './TopTrendingOption'
+import NotFoundOption from '../NotFoundOption'
+import QueriedSubUserOption from '../QueriedSubUserOption'
+import TopTrendingOption from '../TopTrendingOption'
 
 export const renderGroup = (params: AutocompleteRenderGroupParams) => {
   return (

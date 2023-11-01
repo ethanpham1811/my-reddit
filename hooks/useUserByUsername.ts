@@ -4,7 +4,7 @@ import { GET_USER_BY_USERNAME_WITH_POSTS } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
 import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
 
-export type TUseUserByUsernameResponse = {
+type TUseUserByUsernameResponse = {
   user: TUserDetail | null
   userPosts: TPost[] | null
   loading: boolean

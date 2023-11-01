@@ -13,7 +13,12 @@ import AvatarColumn from './components/AvatarColumn'
 import FormColumn from './components/FormColumn'
 import Tools from './components/Tools'
 
-function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined; editModePayload?: TEditModePayload }) {
+type TCardCreatePostProps = {
+  subId?: number | undefined
+  editModePayload?: TEditModePayload
+}
+
+function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   const { session } = useAppSession()
   const { createPost, updatePost, loading } = usePostCreateAndEdit()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -40,6 +45,7 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
 
   const formOpened = !!titleValue || isDirty
 
+  /* set link post mode if eligible */
   useEffect(() => {
     editModePayload?.link && setIsLinkPost(true)
   }, [setIsLinkPost, editModePayload])
@@ -57,6 +63,7 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
     }
   })
 
+  /* Cb to reset the form */
   function mutationCb(error?: boolean) {
     if (error) return
     setTimeout(() => {
@@ -96,9 +103,7 @@ function CardCreatePost({ subId, editModePayload }: { subId?: number | undefined
             mx={{ xs: 'auto !important', sm: '0 !important' }}
           >
             <Tools<TCardCreatePostForm>
-              isMobile={isMobile}
               imagesValue={imagesValue}
-              userName={userName}
               isEditing={isEditing}
               control={control}
               formOpened={formOpened}

@@ -49,7 +49,6 @@ const Search: NextPage = () => {
             searchTerm={searchTerm as string}
             searchList={searchList}
             loading={loading}
-            updateLoading={updateLoading}
             setHasNoPost={setHasNoPost}
           />
         </Stack>

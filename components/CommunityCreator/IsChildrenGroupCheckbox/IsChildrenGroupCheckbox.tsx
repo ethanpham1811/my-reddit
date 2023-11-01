@@ -1,10 +1,13 @@
 import { BORDER_TYPES } from '@/constants/enums'
-import { IsChildrenGroupCheckboxProps } from '@/constants/types'
 import { FormControl, FormLabel, Stack, Typography } from '@mui/material'
-import { FieldValues } from 'react-hook-form'
+import { Control, FieldPath, FieldValues } from 'react-hook-form'
 import { RdCheckbox } from '../..'
 import RdChip from '../../utilities/RdChip/RdChip'
 
+type IsChildrenGroupCheckboxProps<T extends FieldValues> = {
+  name: FieldPath<T>
+  control: Control<T>
+}
 function IsChildrenGroupCheckbox<T extends FieldValues>({ name, control }: IsChildrenGroupCheckboxProps<T>) {
   return (
     <FormControl>

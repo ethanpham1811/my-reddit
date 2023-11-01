@@ -13,6 +13,9 @@ type TSubsMenuListProps = {
   filterByTerm: (option: TMenuItem) => boolean
 }
 
+/**
+ * Community group, list all user's subreddits
+ */
 function SubsMenuList({ options, filterByTerm, ...rest }: TSubsMenuListProps) {
   const { loading, session } = useAppSession()
 

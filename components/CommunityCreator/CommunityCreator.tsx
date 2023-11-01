@@ -1,6 +1,5 @@
 import { SUBREDDIT_TYPE } from '@/constants/enums'
-import { LockIcon, PersonIcon, RemoveRedEyeIcon } from '@/constants/icons'
-import { TCommunityCreatorForm, TCommunityCreatorProps, TCommunityTypeOPtions } from '@/constants/types'
+import { TCommunityCreatorForm, TCommunityCreatorProps } from '@/constants/types'
 import useSubredditCreate from '@/hooks/useSubredditCreate'
 import { subnameValidation } from '@/src/formValidations'
 import { Box, Divider, Stack, Typography } from '@mui/material'
@@ -8,48 +7,21 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { BottomNavigator, IsChildrenGroupCheckbox, RdInput, RdRadioGroup, TopicDropdown } from '..'
-
-export const groupTypeOptions: TCommunityTypeOPtions[] = [
-  {
-    label: 'Public',
-    description: 'Anyone can view, post, and comment to this community',
-    value: 'public',
-    disabled: false,
-    icon: PersonIcon
-  },
-  {
-    label: 'Private',
-    description: 'Only approved users can view and submit to this community',
-    value: 'private',
-    disabled: false,
-    icon: LockIcon
-  },
-  {
-    label: 'Restricted',
-    description: 'Anyone can view this community, but only approved users can post',
-    value: 'restricted',
-    disabled: true,
-    icon: RemoveRedEyeIcon
-  }
-]
+import { groupTypeOptions } from './data'
 
 function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   const { createSubreddit, loading } = useSubredditCreate()
   const { push: redirect } = useRouter()
-  const {
-    handleSubmit,
-    control,
-    formState: { isValid }
-  } = useForm<TCommunityCreatorForm>({ defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false } })
+  const { handleSubmit, control } = useForm<TCommunityCreatorForm>({ defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false } })
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
     const res = await createSubreddit(formData)
 
-    // error
+    // remain the current page with drawer kept opened
     if (res?.error) return toast.error('Create subreddit failed, please try again')
 
-    // success
+    // redirect to created subreddit page & close the drawer
     toast.success('Your Subreddit sucessfully added!')
     redirect(`/r/${formData.name}`)
     setOpen(false)

@@ -12,6 +12,9 @@ type TFeedsMenuListProps = {
   filterByTerm: (option: TMenuItem) => boolean
 }
 
+/**
+ * Feed group, Currently has only 1 option: "Home"
+ */
 function FeedsMenuList({ feedsOptions, filterByTerm, ...rest }: TFeedsMenuListProps) {
   return (
     <>

@@ -50,7 +50,6 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
       InputProps={{
         ...params.InputProps,
         startAdornment: startAdornment(),
-        // endAdornment:  <>{!loading ? <CircularProgress color="inherit" size={20} /> : null}</>,
         placeholder: 'Search Reddit'
       }}
       sx={{
@@ -70,10 +69,6 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
             bgcolor: 'white.main'
           }
         },
-        // 'input.MuiAutocomplete-input': {
-        //   p: '0 !important',
-        //   display: isMobile && !focused ? 'none' : 'block'
-        // },
         '.MuiAutocomplete-endAdornment': {
           display: isMobile && !focused ? 'none' : 'block'
         },

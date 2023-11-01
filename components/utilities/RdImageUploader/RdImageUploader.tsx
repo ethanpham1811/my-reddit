@@ -1,8 +1,11 @@
 import { ImageOutlinedIcon } from '@/constants/icons'
-import { TRdImageUploaderProps } from '@/constants/types'
 import { FormControl } from '@mui/material'
-import { Controller, FieldValues } from 'react-hook-form'
+import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
 
+type TRdImageUploaderProps<T extends FieldValues> = {
+  name: FieldPath<T>
+  control: Control<T>
+}
 function RdImageUploader<T extends FieldValues>({ name, control }: TRdImageUploaderProps<T>) {
   return (
     <FormControl sx={{ '.MuiFormControl-root': { bgcolor: 'transparent' } }}>

@@ -1,10 +1,15 @@
 import { ArrowBackIosIcon, ArrowForwardIosIcon } from '@/constants/icons'
-import { TRdImageCarouselProps } from '@/constants/types'
 import { Paper } from '@mui/material'
-import { memo } from 'react'
+import { Dispatch, SetStateAction, memo } from 'react'
 import Carousel from 'react-material-ui-carousel'
 import DisplayImage from './components/DisplayImage'
 
+type TRdImageCarouselProps = {
+  width: string
+  height: string
+  imgList: string[]
+  setZoomedImg: Dispatch<SetStateAction<string | null>>
+}
 function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarouselProps) {
   function zoomImage(e: any, imgSrc: string) {
     e.stopPropagation()

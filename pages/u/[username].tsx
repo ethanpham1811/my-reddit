@@ -95,7 +95,7 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
             sortOptions={sortOptions}
             noPostText="This user has no post"
             appendPosts={appendPosts('userByUsernameWithPosts')}
-            permissionFailedMsg={noPermissionUserPageMsg(me?.following_ids, username)}
+            permissionFailedMsg={noPermissionUserPageMsg(me?.following_ids, me?.username, username)}
             setHasNoPost={setHasNoPost}
           />
         </Stack>

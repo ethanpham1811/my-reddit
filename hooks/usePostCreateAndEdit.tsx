@@ -66,7 +66,7 @@ function usePostCreateAndEdit() {
         if (username && me) {
           variables = { ...variables, username: me.username }
           query = GET_USER_BY_USERNAME_WITH_POSTS
-          dataKey = 'userByUsernameWithPosts'
+          dataKey = 'userByUsername'
           childKey = 'post'
         }
 

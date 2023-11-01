@@ -16,14 +16,14 @@ type TRegisterForm = {
 }
 function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
   const [showPassword, setShowPassword] = useState(false)
+  const [showRePassword, setShowRePassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const [showRePassword, setShowRePassword] = useState(false)
 
   /* form controllers */
   const { handleSubmit, getValues, control } = useForm<TRegisterForm>()
 
-  /* form submit handler */
+  /* form submit: Register with email + password */
   const onSubmit = handleSubmit(async (formData) => {
     setLoading(true)
     const { email, password, repassword } = formData
@@ -55,6 +55,7 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
   return (
     <form onSubmit={onSubmit}>
       <Stack spacing={2} sx={{ width: { xs: '60vw', sm: '300px' } }}>
+        {/* Error message */}
         {error && (
           <Stack alignItems="center">
             <Typography fontSize="0.8rem" sx={{ color: 'orange.main' }}>
@@ -62,6 +63,8 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
             </Typography>
           </Stack>
         )}
+
+        {/* Form Email / Password / Repassword inputs */}
         <RdInput<TRegisterForm>
           autoComplete="off"
           registerOptions={{ validate: (val): string | boolean => emailValidation(val) }}
@@ -93,12 +96,16 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
           name="repassword"
           placeholder="Re-type your password"
         />
+
+        {/* Register button */}
         <RdButton
           disabled={loading}
           text="Register"
           type="submit"
           endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}
         />
+
+        {/* Back to Login */}
         <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
           Back to{' '}
           <Link sx={{ cursor: 'pointer', color: 'blue.main' }} onClick={() => setIsLoginForm(true)}>

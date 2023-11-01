@@ -3,7 +3,7 @@ import { TSubreddit } from '@/constants/types'
 import { GET_SUBREDDIT_LIST_FULL, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
 
-export type TUseSubredditListResponse = {
+type TUseSubredditListResponse = {
   subredditList: TSubreddit[] | null
   loading: boolean
   error: ApolloError | undefined

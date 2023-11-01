@@ -4,7 +4,7 @@ import { GET_SUBREDDIT_BY_NAME_WITH_POSTS } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
 import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
 
-export type TUseSubByNameResponse = {
+type TUseSubByNameResponse = {
   subreddit: TSubredditDetail | null
   subredditPosts: TPost[] | null
   loading: boolean

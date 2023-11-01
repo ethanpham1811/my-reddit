@@ -1,17 +1,17 @@
-import { TRdTextEditorProps } from '@/constants/types'
 import { Box, FormControl, Skeleton, Typography } from '@mui/material'
 import { Editor } from '@tinymce/tinymce-react'
 import { useState } from 'react'
-import { Controller, FieldValues } from 'react-hook-form'
+import { Control, Controller, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 
-function RdTextEditor<T extends FieldValues>({
-  height = 300,
-  placeholder,
-  control,
-  name,
-  registerOptions,
-  clearBodyOnFocus = true
-}: TRdTextEditorProps<T>) {
+type TRdTextEditorProps<T extends FieldValues> = {
+  registerOptions?: RegisterOptions
+  placeholder: string
+  name: FieldPath<T>
+  control: Control<T>
+  height?: number
+  clearBodyOnFocus?: boolean
+}
+function RdTextEditor<T extends FieldValues>({ height = 300, control, name, registerOptions, clearBodyOnFocus = true }: TRdTextEditorProps<T>) {
   const [isFirstTimeFocused, setIsFirstTimeFocused] = useState(true)
   const [loading, setLoading] = useState(true)
 

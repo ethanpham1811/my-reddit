@@ -1,9 +1,10 @@
 import { TUserDetail } from '@/constants/types'
 import { GET_USER_BY_EMAIL } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
-type TUseSubredditByEmailResponse = [TUserDetail | null, boolean, ApolloError | undefined]
 
-function useUserByEmail(email: string | null | string[] | undefined): TUseSubredditByEmailResponse {
+type TUseUserByEmailResponse = [TUserDetail | null, boolean, ApolloError | undefined]
+
+function useUserByEmail(email: string | null | string[] | undefined): TUseUserByEmailResponse {
   const { data, loading, error } = useQuery(GET_USER_BY_EMAIL, {
     skip: email == null,
     variables: { email }

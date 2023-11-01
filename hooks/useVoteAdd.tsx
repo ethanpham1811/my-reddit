@@ -2,11 +2,15 @@ import { ADD_VOTE, UPDATE_POST_WITH_VOTE_FRAG } from '@/graphql/mutations'
 import { ApolloCache, useMutation } from '@apollo/client'
 import toast from 'react-hot-toast'
 
+/**
+ * create vote:
+ * - with optimistic update
+ * - with cache update
+ */
 function useVoteAdd() {
   const [mutateVote] = useMutation(ADD_VOTE)
 
   const addVote = async (isUpvoteBtn: boolean, myId: number, postId: number) => {
-    // mutation
     const { errors } = await mutateVote({
       variables: {
         post_id: postId,

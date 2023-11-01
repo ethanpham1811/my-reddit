@@ -24,13 +24,13 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
   /* form controllers */
   const { handleSubmit, control, setValue } = useForm<TLoginForm>()
 
+  /* set email by registered email or offer test account for demonstration */
   useEffect(() => {
-    // set email by registered email or offer test account for demonstration
     setValue('email', newUserEmail || 'guest_account@gmail.com')
     !newUserEmail && setValue('password', '123123')
   }, [newUserEmail, setValue])
 
-  /* form submit handler */
+  /* form submit: signin with email + password */
   const onSubmit = handleSubmit(async (formData) => {
     if (!supabase) return
     setLoading(true)
@@ -48,6 +48,7 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
   return (
     <form onSubmit={onSubmit}>
       <Stack spacing={2} sx={{ width: { xs: '60vw', sm: '250px' } }}>
+        {/* Inform messages */}
         {newUserEmail && (
           <Stack alignItems="center">
             <Typography sx={{ color: 'hintText.main' }}>
@@ -63,6 +64,8 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
             </Typography>
           </Stack>
         )}
+
+        {/* Email + Pasword inputs */}
         <RdInput<TLoginForm>
           registerOptions={{ validate: (val): string | boolean => emailValidation(val) }}
           bgcolor="white"
@@ -84,7 +87,11 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
           placeholder="Password"
           focused={!!newUserEmail}
         />
+
+        {/* Login button */}
         <RdButton disabled={loading} text="Login" type="submit" endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />} />
+
+        {/* Not registered? Signup here */}
         <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
           Not Registered?{' '}
           <Link sx={{ cursor: 'pointer', color: 'blue.main' }} onClick={() => setIsLoginForm(false)}>

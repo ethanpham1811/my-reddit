@@ -5,6 +5,15 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+/**
+ * Delete Post flow:
+ * - delete comments of post
+ * - delete votes of post
+ * - delete the post
+ *
+ * Abort if any of above failed
+ * Return to subreddit page on success
+ */
 function usePostDelete() {
   const [loading, setLoading] = useState(false)
   const {

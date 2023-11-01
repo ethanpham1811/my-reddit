@@ -1,7 +1,5 @@
 import { RdCard } from '@/components'
-import { Elements } from '@stripe/react-stripe-js'
-import { StripeElementsOptions, loadStripe } from '@stripe/stripe-js'
-import RdStripeForm from '../../utilities/RdStripeForm/RdStripeForm'
+import { StripeElementsOptions } from '@stripe/stripe-js'
 
 function CardPayment() {
   const options: StripeElementsOptions = {
@@ -11,13 +9,13 @@ function CardPayment() {
     appearance: {}
   }
 
-  const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh')
+  // const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh')
   return (
     <RdCard sx={{ p: 2.5, pt: 1.5 }}>
       {/* <RdStepper /> */}
-      <Elements stripe={stripePromise} options={options}>
+      {/* <Elements stripe={stripePromise} options={options}>
         <RdStripeForm />
-      </Elements>
+      </Elements> */}
     </RdCard>
   )
 }

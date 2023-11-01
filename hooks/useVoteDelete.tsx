@@ -2,6 +2,11 @@ import { DELETE_VOTE } from '@/graphql/mutations'
 import { ApolloCache, useMutation } from '@apollo/client'
 import toast from 'react-hot-toast'
 
+/**
+ * delete vote:
+ * - with optimistic update
+ * - with cache update
+ */
 function useVoteDelete() {
   const [mutateVote] = useMutation(DELETE_VOTE)
 

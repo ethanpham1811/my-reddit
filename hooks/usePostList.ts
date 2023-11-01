@@ -1,7 +1,15 @@
 import { QUERY_LIMIT } from '@/constants/enums'
-import { TPost, TUsePostListResponse } from '@/constants/types'
+import { TFetchMoreArgs, TPost } from '@/constants/types'
 import { GET_PAGINATED_POST_LIST } from '@/graphql/queries'
-import { useQuery } from '@apollo/client'
+import { ApolloError, useQuery } from '@apollo/client'
+import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
+
+type TUsePostListResponse = {
+  postList: TPost[] | null
+  loading: boolean
+  error: ApolloError | undefined
+  fetchMore: FetchMoreFunction<{ [key: string]: TPost[] }, TFetchMoreArgs>
+}
 
 function usePostList(initialPostList?: TPost[] | null): TUsePostListResponse {
   const { data, loading, error, fetchMore } = useQuery(GET_PAGINATED_POST_LIST, {

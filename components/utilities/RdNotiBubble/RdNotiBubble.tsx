@@ -1,6 +1,12 @@
-import { TRdNotiBubbleProps } from '@/constants/types'
+import {} from '@/constants/types'
 import { Badge, styled } from '@mui/material'
+import { ReactNode } from 'react'
 
+type TRdNotiBubbleProps = {
+  content: number | string
+  max: number
+  children: ReactNode
+}
 function RdNotiBubble({ content, max, children }: TRdNotiBubbleProps) {
   const RdNotiBubble = styled(Badge)(({ theme }) => {
     return {
