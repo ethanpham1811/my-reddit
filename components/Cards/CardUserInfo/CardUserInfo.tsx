@@ -22,13 +22,13 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   const isMe = session?.userDetail?.username === user?.username
 
   /* custom default values */
-  const { fullName, dob, username } = user || {}
+  const { fullName, dob } = user || {}
   const defaultValues = useMemo(
     () => ({
-      fullName: fullName == null || fullName === '' ? username : fullName,
+      fullName: fullName == null || fullName === '' ? 'Anonymous' : fullName,
       dob
     }),
-    [fullName, dob, username]
+    [fullName, dob]
   )
 
   useEffect(() => {
@@ -44,14 +44,14 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
 
     if (user && value != null && value !== '' && user[field] !== value) {
       handleSubmit(
-        async (_) => {
+        async () => {
           toast.promise(updateUser(field, value), {
             loading: <RdToast message="Updating your profile..." />,
             success: <RdToast message="Profile saved!" />,
             error: <RdToast message="Could not save." />
           })
         },
-        (_) => {
+        () => {
           // reset the field with initial value
           setValue(field, user?.[field] as any)
         }

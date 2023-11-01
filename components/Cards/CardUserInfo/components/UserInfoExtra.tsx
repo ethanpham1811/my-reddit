@@ -14,8 +14,8 @@ type TUserInfoExtraProps<T extends FieldValues> = {
   onSubmitField: (field: keyof T, val: Dayjs | null) => void
 }
 
-const date10YearsBack = new Date()
-date10YearsBack.setFullYear(date10YearsBack.getFullYear() - 10)
+// const date10YearsBack = new Date()
+// date10YearsBack.setFullYear(date10YearsBack.getFullYear() - 10)
 
 function UserInfoExtra<T extends FieldValues>({ user, isMe, control, onSubmitField }: TUserInfoExtraProps<T>) {
   return (

@@ -4,8 +4,6 @@ import { Avatar, Box } from '@mui/material'
 import { ReactNode, createElement } from 'react'
 
 export const renderSelectedOption = (
-  value: string,
-  mobileMode: boolean,
   options: TMenuItem[],
   activePage: string,
   subOrUserName: string | string[] | undefined,
@@ -31,12 +29,12 @@ export const renderSelectedOption = (
               src={generateUserImage(selectedMenu.name)}
             />
           )}
-          <Box sx={{ display: mobileMode ? 'none' : 'block' }} textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
+          <Box sx={{ display: 'block' }} textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
             {`${subOrUserName ? 'r/' : ''}${selectedMenu.name}` || 'unknown'}
           </Box>
         </>
       ) : (
-        <Box sx={{ display: mobileMode ? 'none' : 'block' }} textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
+        <Box sx={{ display: 'block' }} textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap">
           {pathname === '/search' ? 'Search results' : '404'}
         </Box>
       )}

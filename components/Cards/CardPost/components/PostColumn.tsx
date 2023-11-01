@@ -1,9 +1,11 @@
 import { RdImageCarousel } from '@/components'
+import { MAX_NEW_FEEDS_POST_HEIGHT } from '@/constants/enums'
 import { blurBottomStyle } from '@/mui/styles'
 import { parseHtml } from '@/services'
 import { Box, Typography } from '@mui/material'
 import Link from 'next/link'
-import { Dispatch, SetStateAction, useRef } from 'react'
+import { useRouter } from 'next/router'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import PostHeader from '../components/PostHeader'
 
 type TPostColumnProps = {
@@ -14,21 +16,33 @@ type TPostColumnProps = {
   body: string
   link: string
   linkDescription: string
-  setZoomedImg: Dispatch<SetStateAction<string | null>>
   images: string[] | undefined
+  setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
 
 function PostColumn({ subName, username, createdAt, title, body, link, linkDescription, setZoomedImg, images }: TPostColumnProps) {
-  /* if a post's height > 200px => blur out the overflow bottom part */
+  const [bottomStyle, setBottomStyle] = useState({})
   const ref = useRef<HTMLDivElement>(null)
-  const bottomStyle = ref?.current?.offsetHeight && ref?.current?.offsetHeight >= 200 ? blurBottomStyle : {}
+  const {
+    query: { postid }
+  } = useRouter()
+
+  /* limit post height to 200px in Feeds post list */
+  const containerStyle = !postid ? { position: 'relative', maxHeight: '220px', overflow: 'hidden' } : {}
+
+  /* if a post's height > 200px => blur out the overflow bottom part */
+  useEffect(() => {
+    const exceededHeight: boolean = !postid && ref?.current?.offsetHeight ? ref?.current?.offsetHeight >= MAX_NEW_FEEDS_POST_HEIGHT : false
+    setBottomStyle(exceededHeight ? blurBottomStyle('100px') : {})
+  }, [postid])
 
   return (
     <Box flex={1} ml={1} pl={1}>
       {/* post Header */}
       <PostHeader subName={subName} username={username} createdAt={createdAt} />
+
       {/* post content */}
-      <Box p={1} ref={ref} sx={{ position: 'relative', maxHeight: '220px', overflow: 'hidden' }}>
+      <Box p={1} ref={ref} sx={containerStyle}>
         <Typography variant="h6">{title}</Typography>
         <Typography variant="body1" fontWeight={400} fontSize="1rem" sx={{ ...bottomStyle }}>
           {body ? parseHtml(body) : parseHtml(`<p>${linkDescription}</p>`)}

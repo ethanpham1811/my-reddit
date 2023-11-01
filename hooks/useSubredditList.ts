@@ -1,7 +1,13 @@
 import { SUBREDDIT_LIST_MODE } from '@/constants/enums'
-import { TUseSubredditListResponse } from '@/constants/types'
+import { TSubreddit } from '@/constants/types'
 import { GET_SUBREDDIT_LIST_FULL, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
-import { useQuery } from '@apollo/client'
+import { ApolloError, useQuery } from '@apollo/client'
+
+export type TUseSubredditListResponse = {
+  subredditList: TSubreddit[] | null
+  loading: boolean
+  error: ApolloError | undefined
+}
 
 function useSubredditList(mode: SUBREDDIT_LIST_MODE): TUseSubredditListResponse {
   const { data, loading, error } = useQuery(mode == SUBREDDIT_LIST_MODE.Simple ? GET_SUBREDDIT_LIST_SHORT : GET_SUBREDDIT_LIST_FULL)

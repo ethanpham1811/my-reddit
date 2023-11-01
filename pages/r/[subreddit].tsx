@@ -2,12 +2,10 @@ import { client } from '@/apollo-client'
 import { CardFeedSorter, CardSubredditInfo, MessageBoard, NewFeeds, SubredditTopNav } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { ORDERING, QUERY_LIMIT, SORT_METHOD, SUBREDDIT_TYPE } from '@/constants/enums'
 import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/constants/types'
 import { GET_SUBREDDIT_BY_NAME_WITH_POSTS, GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
 import useSubByNameWithPosts from '@/hooks/useSubByNameWithPosts'
-import useWaitingForISG from '@/hooks/useWaitingForISG'
 import { validateSubredditMember } from '@/services'
 import { Stack } from '@mui/material'
 
@@ -62,8 +60,6 @@ export async function getStaticPaths() {
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
 export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSubredditPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const [waitingForISG] = useWaitingForISG()
-
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
@@ -76,12 +72,6 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
   /* ------------------------------subreddit page info query-------------------------------------*/
 
   const { subreddit, subredditPosts, loading: pageLoading, error = null, fetchMore } = useSubByNameWithPosts(subName, svSubreddit, svSubredditPosts)
-
-  /* ---------------------show loading page on new created dynamic page--------------------------*/
-
-  if (waitingForISG) return <ISGFallBack />
-
-  /* ---------------------------------------------------------------------------------------------*/
 
   // redirect to 404 if no data found
   if (!pageLoading && (subreddit == null || error)) {
@@ -106,12 +96,15 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
     prev: { [key: string]: { [key: string]: TPost[] } },
     fetchMoreResult: { [key: string]: { [key: string]: TPost[] } }
   ) {
-    return {
-      subredditByNameWithPosts: {
-        ...prev?.subredditByNameWithPosts,
-        post: [...prev?.subredditByNameWithPosts?.post, ...fetchMoreResult?.subredditByNameWithPosts?.post]
-      }
-    }
+    console.log(prev, fetchMoreResult)
+    return !prev
+      ? fetchMoreResult
+      : {
+          subredditByNameWithPosts: {
+            ...prev?.subredditByNameWithPosts,
+            post: [...prev?.subredditByNameWithPosts?.post, ...fetchMoreResult?.subredditByNameWithPosts?.post]
+          }
+        }
   }
 
   return (

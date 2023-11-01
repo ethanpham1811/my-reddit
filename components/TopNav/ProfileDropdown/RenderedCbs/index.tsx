@@ -4,7 +4,7 @@ import { Avatar, Box, CircularProgress, Skeleton } from '@mui/material'
 
 import { ReactNode } from 'react'
 
-export const renderSelectedOption = (_: string, username: string | undefined, loading: boolean, mobileMode: boolean = false): ReactNode => {
+export const renderSelectedOption = (username: string | undefined, loading: boolean, mobileMode: boolean = false): ReactNode => {
   return (
     <>
       {loading ? (

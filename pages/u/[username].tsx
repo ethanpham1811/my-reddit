@@ -2,12 +2,10 @@ import { client } from '@/apollo-client'
 import { CardFeedSorter, CardUserInfo, MessageBoard, NewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TUserCompact, TUserDetail } from '@/constants/types'
 import { GET_USER_BY_USERNAME_WITH_POSTS, GET_USER_LIST_SHORT } from '@/graphql/queries'
 import useUserByUsername from '@/hooks/useUserByUsername'
-import useWaitingForISG from '@/hooks/useWaitingForISG'
 import { validatePostByFollowing } from '@/services'
 import { Stack } from '@mui/material'
 
@@ -62,8 +60,6 @@ export async function getStaticPaths() {
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
 export default function User({ user: svUser, userPosts: svUserPosts }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const [waitingForISG] = useWaitingForISG()
-
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
@@ -76,12 +72,6 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
   /* -------------------------------------User detail query--------------------------------------*/
 
   const { user, userPosts, loading: pageLoading, error = null, fetchMore } = useUserByUsername(username, svUser, svUserPosts)
-
-  /* ---------------------show loading page on new created dynamic page--------------------------*/
-
-  if (waitingForISG) return <ISGFallBack />
-
-  /* ---------------------------------------------------------------------------------------------*/
 
   // redirect to 404 if no data found
   if (!pageLoading && (user == null || error)) {
@@ -108,9 +98,11 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
     prev: { [key: string]: { [key: string]: TPost[] } },
     fetchMoreResult: { [key: string]: { [key: string]: TPost[] } }
   ) {
-    return {
-      userByUsername: { ...prev?.userByUsername, post: [...prev?.userByUsername?.post, ...fetchMoreResult?.userByUsername?.post] }
-    }
+    return !prev
+      ? fetchMoreResult
+      : {
+          userByUsername: { ...prev?.userByUsername, post: [...prev?.userByUsername?.post, ...fetchMoreResult?.userByUsername?.post] }
+        }
   }
 
   return (

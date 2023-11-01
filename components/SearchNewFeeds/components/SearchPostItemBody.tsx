@@ -1,18 +1,16 @@
 import { parseHtml } from '@/services'
 import { Box, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
-import { RefObject } from 'react'
 
 type TSearchPostItemBodyProps = {
   title: string
   body: string
   images: string[] | undefined
   id: number
-  ref: RefObject<HTMLDivElement>
   bottomStyle: {}
 }
 
-function SearchPostItemBody({ ref, id, title, body, images, bottomStyle }: TSearchPostItemBodyProps) {
+function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPostItemBodyProps) {
   /* if an item > 200px => add blur bottom effect */
   return (
     <Stack direction="row" spacing={1}>

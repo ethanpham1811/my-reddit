@@ -26,9 +26,8 @@ function useWaitingForISG(): boolean[] {
       !staticPageExists && setWaitingForISG(true)
     }
     const handleRouteComplete = () => {
-      waitingForISG && setWaitingForISG(false)
+      setWaitingForISG(false)
     }
-
     events.on('routeChangeStart', handleRouteChange)
     events.on('routeChangeComplete', handleRouteComplete)
 
@@ -36,7 +35,7 @@ function useWaitingForISG(): boolean[] {
       events.off('routeChangeStart', handleRouteChange)
       events.off('routeChangeComplete', handleRouteComplete)
     }
-  }, [events, waitingForISG])
+  }, [events])
 
   return [waitingForISG]
 }

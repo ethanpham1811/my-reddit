@@ -3,11 +3,9 @@ import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/co
 import ZoomImgDialog from '@/components/Cards/CardPost/components/ZoomImgDialog'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { TPost, TSubredditDetail } from '@/constants/types'
 import { GET_POST_BY_ID, GET_POST_LIST, GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
 import useSubByNameAndPostById from '@/hooks/useSubByNameAndPostById'
-import useWaitingForISG from '@/hooks/useWaitingForISG'
 import { validatePostBySubname } from '@/services'
 import { Stack } from '@mui/material'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
@@ -68,8 +66,6 @@ export async function getStaticPaths() {
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
 export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const [waitingForISG] = useWaitingForISG()
-
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
@@ -83,12 +79,6 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
    * This page temporarily using 2 queries as a workaround for a bug with cache update, fix this later
    */
   const { subreddit, postDetail, loading: pageLoading, error } = useSubByNameAndPostById(svSubreddit, svPost)
-
-  /* ---------------------show loading page on new created dynamic page--------------------------*/
-
-  if (waitingForISG) return <ISGFallBack />
-
-  /* ---------------------------------------------------------------------------------------------*/
 
   // redirect to 404 if no data found
   if (!pageLoading && (postDetail == null || subreddit == null || error)) {

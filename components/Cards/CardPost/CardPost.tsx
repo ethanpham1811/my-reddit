@@ -68,9 +68,9 @@ function CardPost({
               title={title}
               body={body}
               link={link}
+              images={images}
               linkDescription={linkDescription}
               setZoomedImg={setZoomedImg}
-              images={images}
             />
           </Stack>
           {isMyPost && !!postid && <BottomActionMenu subName={subName} postId={postId.toString()} />}

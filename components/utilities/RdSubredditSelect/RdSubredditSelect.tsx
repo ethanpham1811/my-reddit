@@ -59,7 +59,6 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
             error={!!error}
             value={value}
             renderSelectedOption={renderSelectedOption}
-            loading={loading}
             width={width}
             sx={sx}
             flex={flex}

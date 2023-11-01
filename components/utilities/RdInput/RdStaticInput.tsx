@@ -21,17 +21,11 @@ const RdStaticInput = <T extends FieldValues>({ borderColor, placeholder, label,
 
   return (
     <RdInputBase
-      // helperText={error ? error.message : null}
       size="small"
-      // error={!!error}
-      // onChange={onChange}
-      // value={value}
       fullWidth
       label={label}
       placeholder={placeholder}
       variant="outlined"
-      // id={name}
-      // aria-describedby={`helper_${name}`}
       sx={{ '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main`, '&.Mui-focused': { fieldset: { ...borderStyle } } }, ...sx }}
       {...rest}
     />

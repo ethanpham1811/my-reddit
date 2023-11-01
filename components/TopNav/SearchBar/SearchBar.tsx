@@ -66,7 +66,6 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
       isMobile={lgMobile}
       focused={focused}
       groupBy={(option): string => option.groupBy}
-      // open={true}
       onFocus={() => setFocused(true)}
       onBlur={onBlur}
       onInputChange={onInputChange}

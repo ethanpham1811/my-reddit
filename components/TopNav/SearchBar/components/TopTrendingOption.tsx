@@ -1,3 +1,4 @@
+import { MAX_TOP_TRENDING_HEIGHT } from '@/constants/enums'
 import { OutboundOutlinedIcon } from '@/constants/icons'
 import { TQueriedTrending } from '@/constants/types'
 import { blurBottomStyle } from '@/mui/styles'
@@ -9,13 +10,14 @@ import { HTMLAttributes, useEffect, useRef, useState } from 'react'
 function TopTrendingOption({ option, props }: { option: TQueriedTrending; props: HTMLAttributes<HTMLLIElement> }) {
   const [bottomStyle, setBottomStyle] = useState({})
   const ref = useRef<HTMLDivElement>(null)
-  const postFirsImgUrl = option?.images?.[0] ? `${process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL}/${option?.images?.[0]}` : null
+  const postFirsImgUrl: string | null = option?.images?.[0] ? `${process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL}/${option?.images?.[0]}` : null
 
   /* if an item > 120px => blur out the overflow bottom part */
   useEffect(() => {
     if (!ref) return
-    setBottomStyle(ref?.current?.offsetHeight && ref?.current?.offsetHeight >= 120 ? blurBottomStyle : {})
-  }, [ref])
+    const exceededHeight: boolean = ref?.current?.offsetHeight ? ref?.current?.offsetHeight >= MAX_TOP_TRENDING_HEIGHT : false
+    setBottomStyle(exceededHeight ? blurBottomStyle('50px') : {})
+  }, [])
 
   return (
     <>
@@ -26,7 +28,9 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
           '&.MuiListItem-root': { py: 1.5, gap: 2, alignItems: 'flex-start' },
           '&.Mui-focused.MuiAutocomplete-option, &.Mui-focusVisible.MuiAutocomplete-option': {
             bgcolor: 'inputBgOutfocused.main',
-            '.body::after': { background: 'linear-gradient(to top, #F6F7F8, transparent)' }
+            '.blurred-bottom::after': {
+              background: 'linear-gradient(0deg, #F6F7F8 0%, #F6F7F8 30%, rgba(255,255,255,0) 100%)'
+            }
           }
         }}
       >
@@ -57,7 +61,7 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
 
           {/* post body */}
           <Typography
-            className="body"
+            className="blurred-bottom"
             variant="subtitle1"
             sx={{
               pb: 5,

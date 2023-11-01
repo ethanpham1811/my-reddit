@@ -6,7 +6,7 @@ import { AccountCircleOutlinedIcon, InfoOutlinedIcon, LogoutIcon, PreviewOutline
 import { TProfileDropDownList, TProfileDropdownProps } from '@/constants/types'
 import { createGroupedList } from '@/services'
 import { Box, Divider, MenuItem, Typography } from '@mui/material'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { v4 as rid } from 'uuid'
 import { renderSelectedOption } from './RenderedCbs'
 import ProfileMenu from './components/ProfileMenu'
@@ -51,6 +51,10 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
     }
   ]
 
+  function handleRenderSelectedOption(value: string): ReactNode {
+    return renderSelectedOption(sessionUsername || me?.username, !sessionUsername && loading)
+  }
+
   const groupedMenuList = createGroupedList(menuList)
   return (
     <>
@@ -61,7 +65,7 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
         offsetTop="10px"
         minWidth="200px"
         borderColor="inputBorder"
-        renderSelectedOption={(_) => renderSelectedOption(_, sessionUsername || me?.username, !sessionUsername && loading)}
+        renderSelectedOption={handleRenderSelectedOption}
       >
         {me && isMobile && (
           <>

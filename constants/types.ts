@@ -209,7 +209,7 @@ export type TRdButtonProps = ButtonOwnProps &
     width?: string
   }
 export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'error' | 'disabled'> & {
-  renderSelectedOption: (value: string, mobileMode?: boolean) => ReactNode
+  renderSelectedOption: (value: string) => ReactNode
   onChange?: (event: SelectChangeEvent<string>, child: ReactNode) => void
   width?: string
   maxWidth?: string
@@ -369,7 +369,6 @@ export type TUseTopicListResponse = {
   loading: boolean
   error: ApolloError | undefined
 }
-export type TUseSubredditListResponse = { subredditList: TSubreddit[] | null; loading: boolean; error: ApolloError | undefined }
 export type TUseSubByNameResponse = {
   subreddit: TSubredditDetail | null
   subredditPosts: TPost[] | null

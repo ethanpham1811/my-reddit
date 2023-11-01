@@ -29,11 +29,12 @@ function SearchFeeds({ searchList, updateLoading, loading, setHasNoPost, searchT
   }, [searchList, loading, setHasNoPost])
 
   function renderListItem(item: TSearchOptions) {
-    if (isSearchQueriedPost(item)) return <SearchPostItem item={item} />
+    if (isSearchQueriedPost(item)) return <SearchPostItem key={`search_post_item_${item.id}`} item={item} />
     if (isSearchQueriedSub(item)) {
       const status = me ? validateSubredditMember(me?.member_of_ids, item.name) : false
       return (
         <SearchSubUserItem
+          key={`search_post_item_${item.id}`}
           loading={updateLoading}
           item={item}
           updateUser={updateUser}

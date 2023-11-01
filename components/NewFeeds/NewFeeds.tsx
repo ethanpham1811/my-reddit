@@ -3,7 +3,7 @@ import { TFetchMoreArgs, TSortOptions } from '@/constants/types'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TPost } from '@/constants/types'
 import orderBy from 'lodash/orderBy'
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
 import { validatePostBySubname } from '../../services'
 
 import { RdInfiniteScroll } from '@/components'
@@ -24,7 +24,7 @@ export type TNewFeedsProps = {
   permissionFailedMsg: ReactNode | false
   fetchMoreUpdateReturn: (prev: {}, fetchMoreResult: {}) => {}
   fetchMore: FetchMoreFunction<{ [key: string]: TPost[] }, TFetchMoreArgs>
-  setHasNoPost?: Dispatch<SetStateAction<boolean>>
+  setHasNoPost: Dispatch<SetStateAction<boolean>>
 }
 
 const NewFeeds = ({
@@ -43,16 +43,7 @@ const NewFeeds = ({
   // zoom image dialog states
   const [zoomedImg, setZoomedImg] = useState<string | null>(null)
 
-  useEffect(() => {
-    setHasNoPost && postList && setHasNoPost(!loading && postList.length === 0)
-  }, [postList, loading, setHasNoPost])
-
-  // if post in public subreddit OR user in subreddit => return true
-  const verifyPost = (post: TPost): boolean => {
-    return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post?.subreddit?.subType)
-  }
-
-  /* postList mapping */
+  // postList mapping
   const mappedPostList: TPost[] | null =
     postList &&
     orderBy(
@@ -60,6 +51,14 @@ const NewFeeds = ({
       method,
       ordering
     )
+
+  /* set message in MainLayout if no post found */
+  !loading && postList && setHasNoPost(postList.length === 0)
+
+  // if post in public subreddit OR user in subreddit => return true
+  function verifyPost(post: TPost): boolean {
+    return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post?.subreddit?.subType)
+  }
 
   return (
     <>
@@ -74,13 +73,16 @@ const NewFeeds = ({
       ) : (
         <>
           {mappedPostList.length > 0 ? (
-            mappedPostList.map((post) => <CardPost key={`post_${post.id}`} post={post} setZoomedImg={setZoomedImg} />)
+            <>
+              {mappedPostList.map((post) => (
+                <CardPost key={`post_${post.id}`} post={post} setZoomedImg={setZoomedImg} />
+              ))}
+              {/* load more anchor */}
+              <RdInfiniteScroll<TPost> fetchMoreUpdateReturn={fetchMoreUpdateReturn} fetchMore={fetchMore} limit={QUERY_LIMIT} list={postList} />
+            </>
           ) : (
             <MessageBoard head={noPostText} />
           )}
-
-          {/* load more anchor */}
-          <RdInfiniteScroll<TPost> fetchMoreUpdateReturn={fetchMoreUpdateReturn} fetchMore={fetchMore} limit={QUERY_LIMIT} list={postList} />
 
           {/* dialog show zoomed image */}
           <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />

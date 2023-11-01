@@ -1,12 +1,10 @@
 import { client } from '@/apollo-client'
 import { CardAds, CardFeedSorter, CardHomeInfo, NewFeeds } from '@/components'
 import FeedLayout from '@/components/Layouts/FeedLayout'
-import ISGFallBack from '@/components/utilities/ISGFallBack/ISGFallBack'
 import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions } from '@/constants/types'
 import { GET_PAGINATED_POST_LIST } from '@/graphql/queries'
 import usePostList from '@/hooks/usePostList'
-import useWaitingForISG from '@/hooks/useWaitingForISG'
 import { Stack } from '@mui/material'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
@@ -46,22 +44,16 @@ export const getStaticProps = (async (ctx) => {
 /* -----------------------------------------------------PAGE------------------------------------------------ */
 
 export default function Home({ postList: svPostList }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const [waitingForISG] = useWaitingForISG()
-
   const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const [hasNoPost, setHasNoPost] = useState(false)
   const { postList, loading: pageLoading, error, fetchMore } = usePostList(svPostList)
 
-  /* ---------------------show loading page on new created dynamic page--------------------------*/
-
-  if (waitingForISG) return <ISGFallBack />
-
-  /* ---------------------------------------------------------------------------------------------*/
-
   function fetchMoreUpdateReturn(prev: { [key: string]: TPost[] }, fetchMoreResult: { [key: string]: TPost[] }) {
-    return {
-      postPaginatedList: [...prev?.postPaginatedList, ...fetchMoreResult?.postPaginatedList]
-    }
+    return !prev
+      ? fetchMoreResult
+      : {
+          postPaginatedList: [...prev?.postPaginatedList, ...fetchMoreResult?.postPaginatedList]
+        }
   }
 
   return (

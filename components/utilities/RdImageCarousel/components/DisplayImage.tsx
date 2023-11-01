@@ -2,9 +2,9 @@ import { Box, CircularProgress } from '@mui/material'
 import Image from 'next/image'
 import { useState } from 'react'
 
-type TDisplayImage = { width: string; height: string; imgSrc: string; zoomImage: (e: any, imgSrc: string) => void }
+type TDisplayImageProps = { width: string; height: string; imgSrc: string; zoomImage: (e: any, imgSrc: string) => void }
 
-function DisplayImage({ width, height, imgSrc, zoomImage }: TDisplayImage) {
+function DisplayImage({ width, height, imgSrc, zoomImage }: TDisplayImageProps) {
   const [imgLoading, setImgLoading] = useState(true)
 
   return (

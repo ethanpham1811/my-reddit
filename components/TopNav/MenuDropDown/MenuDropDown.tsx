@@ -27,14 +27,7 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
     return option.name.toLowerCase().includes(filterTerm.toLowerCase())
   }
   function handleRenderSelectedOption(value: string): ReactNode {
-    return renderSelectedOption(
-      value,
-      false,
-      [...feedsOptions, ...communityOptions, ...followingOptions, ...activeOptions],
-      activePage,
-      subName,
-      pathname
-    )
+    return renderSelectedOption([...feedsOptions, ...communityOptions, ...followingOptions, ...activeOptions], activePage, subName, pathname)
   }
 
   return (

@@ -2,7 +2,7 @@ import { RdCard } from '@/components'
 import { BORDER_TYPES, ORDERING, SORT_METHOD } from '@/constants/enums'
 import { LocalFireDepartmentIcon, SwapVertOutlinedIcon, TrendingUpOutlinedIcon, WbSunnyIcon } from '@/constants/icons'
 import { TCardFeedSorterProps, TSorter } from '@/constants/types'
-import { IconButton, ToggleButton, ToggleButtonGroup, Typography, styled } from '@mui/material'
+import { IconButton, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { createElement } from 'react'
 import { v4 as rid } from 'uuid'
 
@@ -30,36 +30,36 @@ const data: TSorter[] = [
   }
 ]
 
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '& .MuiToggleButtonGroup-grouped': {
-    margin: theme.spacing(0.5),
-    border: 0,
-    '&.Mui-disabled': {
-      border: 0
-    },
-    '&:not(:first-of-type)': {
-      borderRadius: BORDER_TYPES.Circular
-    },
-    '&:first-of-type': {
-      borderRadius: BORDER_TYPES.Circular
-    }
-  }
-}))
-
 function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSorterProps) {
   const onChange = (_: any, method: SORT_METHOD | null) => {
     method && setSortOptions({ ordering: ORDERING.Desc, method })
   }
 
   return (
-    <RdCard>
-      <StyledToggleButtonGroup
+    <RdCard sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <ToggleButtonGroup
         exclusive
-        sx={{ display: 'flex', gap: 2 }}
         size="small"
         value={sortOptions.method}
         onChange={onChange}
         aria-label="new feeds sorter"
+        sx={{
+          display: 'flex',
+          gap: 2,
+          '& .MuiToggleButtonGroup-grouped': {
+            margin: 0.5,
+            border: 0,
+            '&.Mui-disabled': {
+              border: 0
+            },
+            '&:not(:first-of-type)': {
+              borderRadius: BORDER_TYPES.Circular
+            },
+            '&:first-of-type': {
+              borderRadius: BORDER_TYPES.Circular
+            }
+          }
+        }}
       >
         {data.length > 0 &&
           data.map(({ optionDisabled, methodValue, description, icon, label }) => (
@@ -76,13 +76,13 @@ function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSort
               </Typography>
             </ToggleButton>
           ))}
-        <IconButton
-          sx={{ ml: 'auto !important', width: '35px', height: '35px' }}
-          onClick={(e) => setSortOptions({ ...sortOptions, ordering: sortOptions.ordering === ORDERING.Desc ? ORDERING.Asc : ORDERING.Desc })}
-        >
-          <SwapVertOutlinedIcon sx={{ display: 'block' }} />
-        </IconButton>
-      </StyledToggleButtonGroup>
+      </ToggleButtonGroup>
+      <IconButton
+        sx={{ ml: 'auto !important', width: '35px', height: '35px' }}
+        onClick={(e) => setSortOptions({ ...sortOptions, ordering: sortOptions.ordering === ORDERING.Desc ? ORDERING.Asc : ORDERING.Desc })}
+      >
+        <SwapVertOutlinedIcon sx={{ display: 'block' }} />
+      </IconButton>
     </RdCard>
   )
 }
