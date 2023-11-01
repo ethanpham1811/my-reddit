@@ -32,7 +32,7 @@ export const getStaticProps = (async ({ params }) => {
   } catch (error) {
     throw new Error(`Failed to fetch user info from server`)
   }
-  const user: TUserDetail | null = res?.data?.userByUsername
+  const user: TUserDetail | null = res?.data?.userByUsernameWithPosts
   const userPosts: TPost[] | null = user?.post || null
 
   return {
@@ -101,7 +101,10 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
     return !prev
       ? fetchMoreResult
       : {
-          userByUsername: { ...prev?.userByUsername, post: [...prev?.userByUsername?.post, ...fetchMoreResult?.userByUsername?.post] }
+          userByUsernameWithPosts: {
+            ...prev?.userByUsernameWithPosts,
+            post: [...prev?.userByUsernameWithPosts?.post, ...fetchMoreResult?.userByUsernameWithPosts?.post]
+          }
         }
   }
 

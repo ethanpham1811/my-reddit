@@ -96,7 +96,6 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
     prev: { [key: string]: { [key: string]: TPost[] } },
     fetchMoreResult: { [key: string]: { [key: string]: TPost[] } }
   ) {
-    console.log(prev, fetchMoreResult)
     return !prev
       ? fetchMoreResult
       : {

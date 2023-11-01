@@ -56,6 +56,7 @@ export type TPost = {
   images?: string[]
   comment?: TComment[]
   vote?: TVote[]
+  totalUpvotes?: number
 }
 export type TTopic = {
   id: number
@@ -368,13 +369,6 @@ export type TUseTopicListResponse = {
   topicList: TTopic[] | null
   loading: boolean
   error: ApolloError | undefined
-}
-export type TUseSubByNameResponse = {
-  subreddit: TSubredditDetail | null
-  subredditPosts: TPost[] | null
-  loading: boolean
-  error: ApolloError | undefined
-  fetchMore: FetchMoreFunction<{ [key: string]: TPost[] }, TFetchMoreArgs>
 }
 
 /* ------------------------------------------Data structure Types----------------------------------------- */

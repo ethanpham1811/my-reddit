@@ -21,8 +21,8 @@ export const GET_USER_BY_EMAIL = gql`
   }
 `
 export const GET_USER_BY_USERNAME_WITH_POSTS = gql`
-  query User_by_username($username: String!, $offset: Int, $limit: Int) {
-    userByUsername(username: $username) {
+  query User_by_username_with_posts($username: String!, $offset: Int, $limit: Int) {
+    userByUsernameWithPosts(username: $username) {
       id
       role
       username

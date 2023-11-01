@@ -3,7 +3,7 @@ import { TFetchMoreArgs, TSortOptions } from '@/constants/types'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TPost } from '@/constants/types'
 import orderBy from 'lodash/orderBy'
-import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import { validatePostBySubname } from '../../services'
 
 import { RdInfiniteScroll } from '@/components'
@@ -53,7 +53,9 @@ const NewFeeds = ({
     )
 
   /* set message in MainLayout if no post found */
-  !loading && postList && setHasNoPost(postList.length === 0)
+  useEffect(() => {
+    !loading && postList && setHasNoPost(postList.length === 0)
+  }, [postList, loading, setHasNoPost])
 
   // if post in public subreddit OR user in subreddit => return true
   function verifyPost(post: TPost): boolean {

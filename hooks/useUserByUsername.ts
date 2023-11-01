@@ -13,15 +13,14 @@ export type TUseUserByUsernameResponse = {
 }
 
 function useUserByUsername(
-  username: string | null | string[] | undefined,
+  username: string | string[] | undefined,
   initialUser?: TUserDetail | null,
   initialPostList?: TPost[] | null
 ): TUseUserByUsernameResponse {
   const { data, loading, error, fetchMore } = useQuery(GET_USER_BY_USERNAME_WITH_POSTS, {
-    skip: username == null,
     variables: { username, offset: 0, limit: QUERY_LIMIT }
   })
-  const user: TUserDetail = data?.userByUsername || initialUser
+  const user: TUserDetail = data?.userByUsernameWithPosts || initialUser
   const userPosts: TPost[] = user?.post || initialPostList
 
   return { user, userPosts, loading: loading && !user, error, fetchMore }

@@ -70,7 +70,7 @@ type Query {
   " Queries for type 'User' "
   user(id: ID!): User @dbquery(type: "postgresql", schema: "public", table: "user", configuration: "postgresql_config")
   userByEmail(email: String!): User @dbquery(type: "postgresql", schema: "public", table: "user", configuration: "postgresql_config")
-  userByUsername(username: String!): User @dbquery(type: "postgresql", schema: "public", table: "user", configuration: "postgresql_config")
+  userByUsernameWithPosts(username: String!): User @dbquery(type: "postgresql", schema: "public", table: "user", configuration: "postgresql_config")
   userList: [User] @dbquery(type: "postgresql", schema: "public", table: "user", configuration: "postgresql_config")
   userPaginatedList(first: Int, after: Int): [User]
     @dbquery(
