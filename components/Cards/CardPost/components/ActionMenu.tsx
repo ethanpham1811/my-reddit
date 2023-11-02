@@ -3,13 +3,24 @@ import { MoreHorizIcon } from '@/constants/icons'
 import { TSelectOption } from '@/constants/types'
 import usePostDelete from '@/hooks/usePostDelete'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import CardConfirm from '../../CardConfirm/CardConfirm'
 
-function ActionMenu({ postId, subName }: { postId: string; subName: string }) {
+type TActionMenuProps = {
+  postId: string
+  subName: string
+  setIsDeleting: Dispatch<SetStateAction<boolean>>
+}
+
+function ActionMenu({ postId, subName, setIsDeleting }: TActionMenuProps) {
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const { deletePostData, loading } = usePostDelete()
   const { push: navigate } = useRouter()
+
+  /* disable user interaction while deleting */
+  useEffect(() => {
+    setIsDeleting(loading)
+  }, [loading, setIsDeleting])
 
   /* action options */
   const postActionOptions: TSelectOption[] = [

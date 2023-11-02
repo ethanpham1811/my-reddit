@@ -60,54 +60,59 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
         name={name}
         control={control}
         rules={registerOptions}
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <RdDropdown
-            onChange={onChange}
-            error={!!error}
-            value={value}
-            renderSelectedOption={renderSelectedOption}
-            width={width}
-            sx={sx}
-            flex={flex}
-            minWidth="200px"
-            mobileMode
-            placeholder="Subreddit"
-            borderColor="primary"
-          >
-            {loading ? (
-              <Box px={1} py={0.5}>
-                <RdSkeleton height="20px" />
-              </Box>
-            ) : ownSubredditList && ownSubredditList.length > 0 ? (
-              ownSubredditList.map(({ id, name }) => {
-                return (
-                  <MenuItem
-                    value={id}
-                    key={`menu_${rid()}`}
-                    sx={{ pl: 1, pr: 2, bgcolor: 'inputBgOutfocused.main', '&:hover,&.Mui.focused': { bgcolor: 'primary.main' } }}
-                  >
-                    <Avatar
-                      variant="circular"
-                      sx={{
-                        width: 30,
-                        height: 30,
-                        backgroundColor: generateSeededHexColor(name || 'seed'),
-                        border: (theme): string => `4px solid ${theme.palette.white.main}`
-                      }}
-                      alt={`${name} avatar`}
-                      src={generateUserImage(name || 'seed')}
-                    />
-                    {`r/${name}` || 'unknown'}
-                  </MenuItem>
-                )
-              })
-            ) : (
-              <Box px={2}>
-                <Typography sx={{ color: 'hintText.main' }}>No subreddit found</Typography>
-              </Box>
-            )}
-          </RdDropdown>
-        )}
+        render={({ field: { onChange, value }, fieldState: { error } }) => {
+          // set value to empty string if no option is selected, the input always need to have value,
+          // otherwise the uncontrolled to control issue will occurs
+          const inputValue: string = value ?? ''
+          return (
+            <RdDropdown
+              onChange={onChange}
+              error={!!error}
+              value={inputValue}
+              renderSelectedOption={renderSelectedOption}
+              width={width}
+              sx={sx}
+              flex={flex}
+              minWidth="200px"
+              mobileMode
+              placeholder="Subreddit"
+              borderColor="primary"
+            >
+              {loading ? (
+                <Box px={1} py={0.5}>
+                  <RdSkeleton height="20px" />
+                </Box>
+              ) : ownSubredditList && ownSubredditList.length > 0 ? (
+                ownSubredditList.map(({ id, name }) => {
+                  return (
+                    <MenuItem
+                      value={id}
+                      key={`menu_${rid()}`}
+                      sx={{ pl: 1, pr: 2, bgcolor: 'inputBgOutfocused.main', '&:hover,&.Mui.focused': { bgcolor: 'primary.main' } }}
+                    >
+                      <Avatar
+                        variant="circular"
+                        sx={{
+                          width: 30,
+                          height: 30,
+                          backgroundColor: generateSeededHexColor(name || 'seed'),
+                          border: (theme): string => `4px solid ${theme.palette.white.main}`
+                        }}
+                        alt={`${name} avatar`}
+                        src={generateUserImage(name || 'seed')}
+                      />
+                      {`r/${name}` || 'unknown'}
+                    </MenuItem>
+                  )
+                })
+              ) : (
+                <Box px={2}>
+                  <Typography sx={{ color: 'hintText.main' }}>No subreddit found</Typography>
+                </Box>
+              )}
+            </RdDropdown>
+          )
+        }}
       />
     </FormControl>
   )

@@ -119,10 +119,10 @@ export const ADD_POST = gql`
       linkDescription: $linkDescription
     ) {
       id
-      images
-      body
-      created_at
       title
+      body
+      images
+      created_at
       user {
         username
       }
@@ -135,13 +135,17 @@ export const ADD_POST = gql`
       }
       subreddit {
         name
+        id
         subType
       }
       vote {
+        id
         upvote
+        user_id
       }
       link
       linkDescription
+      totalUpvotes
     }
   }
 `
@@ -190,6 +194,11 @@ export const UPDATE_POST_WITH_VOTE_FRAG = gql`
       user_id
       upvote
     }
+  }
+`
+export const UPDATE_POST_FRAG = gql`
+  fragment UpdatedPost on Post {
+    id
   }
 `
 
@@ -247,6 +256,7 @@ export const ADD_SUBREDDIT = gql`
 export const ADD_COMMENT = gql`
   mutation AddComment($user_id: ID!, $post_id: ID!, $text: String!) {
     insertComment(user_id: $user_id, post_id: $post_id, text: $text) {
+      id
       text
       user {
         username

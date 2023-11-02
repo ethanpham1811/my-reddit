@@ -18,6 +18,22 @@ type TCardCreatePostProps = {
   editModePayload?: TEditModePayload
 }
 
+/**
+ * Normal post:
+ * - title
+ * - body
+ * - images
+ *
+ * Link post:
+ * - title
+ * - link
+ * - linkDescription
+ *
+ * Disable user interaction on:
+ * - deleting post
+ * - newly added optimistic post
+ *
+ */
 function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   const { session } = useAppSession()
   const { createPost, updatePost, loading } = usePostCreateAndEdit()
@@ -25,8 +41,7 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   const [isLinkPost, setIsLinkPost] = useState(false)
   const userName: string | undefined | null = session?.userDetail?.username
   const {
-    push: navigate,
-    query: { mode, subreddit: subName, postid }
+    query: { mode }
   } = useRouter()
   const isEditing = mode === POST_MUTATION_MODE.Edit
 
@@ -42,7 +57,6 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   } = useForm<TCardCreatePostForm>()
   const titleValue = watch('title')
   const imagesValue = watch('images')
-
   const formOpened = !!titleValue || isDirty
 
   /* set link post mode if eligible */
@@ -54,19 +68,18 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   const onSubmit = handleSubmit(async (formData) => {
     // edit post
     if (isEditing) {
-      await updatePost(formData, mutationCb, isLinkPost)
-      navigate(`/r/${subName}/post/${postid}`)
+      updatePost(formData, isLinkPost)
     }
     //create post
     else {
-      createPost(formData, mutationCb, isLinkPost)
+      createPost(formData, createPostCb, isLinkPost)
     }
   })
 
   /* Cb to reset the form */
-  function mutationCb(error?: boolean) {
-    if (error) return
+  function createPostCb() {
     setTimeout(() => {
+      setIsLinkPost(false)
       reset()
     }, 100)
   }

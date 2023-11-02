@@ -28,7 +28,7 @@ function usePostDelete() {
 
   async function deletePostData(post_id: string) {
     setLoading(true)
-    toast.promise(
+    await toast.promise(
       // delete post's comments
       deleteComments({
         variables: { post_id }

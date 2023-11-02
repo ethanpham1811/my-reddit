@@ -1,9 +1,10 @@
 import { CardCommentBox, CardCreatePost as CardEditPost, RdCard } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { POST_MUTATION_MODE } from '@/constants/enums'
+import { OPTIMISTIC_TEMP_ID, POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardPostProps, TUserDetail } from '@/constants/types'
 import { Stack } from '@mui/material'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import ActionMenu from './components/ActionMenu'
 import BottomActionMenu from './components/BottomActionMenu'
 import PostColumn from './components/PostColumn'
@@ -32,13 +33,17 @@ function CardPost({
     query: { postid, mode }
   } = useRouter()
   const isEditing = mode === POST_MUTATION_MODE.Edit
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  // optimistic post || to be deleted post => block user interaction
+  const blockInteraction = postId === OPTIMISTIC_TEMP_ID || isDeleting
 
   // only show subreddit that user is member of
   const isMyPost = me?.username === username
 
   /* navigate to post detail page */
   function goToPost() {
-    !postid && navigate(`/r/${subName}/post/${postId}`)
+    !postid && !blockInteraction && navigate(`/r/${subName}/post/${postId}`)
   }
 
   return (
@@ -55,7 +60,14 @@ function CardPost({
           }}
         />
       ) : (
-        <RdCard onClick={goToPost} sx={{ '&:hover': !postid ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {} }}>
+        <RdCard
+          onClick={goToPost}
+          sx={{
+            pointerEvents: blockInteraction ? 'none' : 'auto',
+            opacity: blockInteraction ? 0.5 : 1,
+            '&:hover': !postid ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {}
+          }}
+        >
           <Stack direction="row">
             {/* side column */}
             <VoteColumn vote={vote} me={me} postId={postId} isMyPost={isMyPost} loadedInPostPage={!!postid} />
@@ -78,12 +90,10 @@ function CardPost({
       )}
 
       {/* 3 dot menu */}
-      {isMyPost && !postid && <ActionMenu subName={subName} postId={postId.toString()} />}
+      {isMyPost && !blockInteraction && !postid && <ActionMenu setIsDeleting={setIsDeleting} subName={subName} postId={postId.toString()} />}
 
       {/* comment box (post detail page) */}
-      {postid != null && (
-        <CardCommentBox subName={subName} commentList={commentList} post_id={postId} user_id={me?.id} username={me?.username as string} />
-      )}
+      {postid != null && <CardCommentBox commentList={commentList} post_id={postId} user_id={me?.id} username={me?.username as string} />}
     </Stack>
   )
 }

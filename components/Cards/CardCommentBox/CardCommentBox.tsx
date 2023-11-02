@@ -2,7 +2,7 @@ import { RdButton, RdCard, RdTextEditor } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TComment, TPostCommentForm } from '@/constants/types'
 import useCommentAdd from '@/hooks/useCommentAdd'
-import { Box, CircularProgress, Link, Stack, Typography } from '@mui/material'
+import { Box, Link, Stack, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CommentList from './components/CommentList'
@@ -11,11 +11,10 @@ type TCardCommentBoxProps = {
   post_id: number | undefined
   user_id: number | undefined
   username: string | undefined
-  subName: string | undefined
   commentList: TComment[] | undefined
 }
 
-function CardCommentBox({ subName, post_id, user_id, username, commentList }: TCardCommentBoxProps) {
+function CardCommentBox({ post_id, user_id, username, commentList }: TCardCommentBoxProps) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const { createComment, loading } = useCommentAdd()
@@ -25,13 +24,11 @@ function CardCommentBox({ subName, post_id, user_id, username, commentList }: TC
   /* submit comment handler*/
   const onSubmit = handleSubmit(async (formData) => {
     if (!formData.comment || formData.comment == '' || post_id == null || user_id == null) return
+    setValue('comment', '')
 
-    const res = await createComment(post_id, user_id, subName, formData)
+    const res = await createComment(post_id, user_id, formData)
 
     if (res?.error) return toast.error(res.error[0].message)
-
-    toast.success('Your comment has been added')
-    setValue('comment', '')
   })
 
   return (
@@ -58,8 +55,7 @@ function CardCommentBox({ subName, post_id, user_id, username, commentList }: TC
               </Box>
               <Box display="flex" justifyContent="right" p={1} pb={2}>
                 <RdButton
-                  endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}
-                  disabled={loading || !commentValue}
+                  disabled={!commentValue}
                   color="blue"
                   sx={{ px: 6 }}
                   filled={!loading && !!commentValue}

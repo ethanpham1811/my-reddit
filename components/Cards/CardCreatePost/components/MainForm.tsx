@@ -1,11 +1,11 @@
 import { POST_MUTATION_MODE } from '@/constants/enums'
-import { DeleteOutlineOutlinedIcon } from '@/constants/icons'
 import { urlValidation } from '@/src/formValidations'
-import { CircularProgress, IconButton, Stack, Tooltip } from '@mui/material'
+import { Stack } from '@mui/material'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { Control, FieldValues, Path, UseFormReset, UseFormSetValue } from 'react-hook-form'
-import { RdButton, RdImageList, RdInput, RdSubredditSelect, RdTextEditor } from '../../..'
+import { RdImageList, RdInput, RdTextEditor } from '../../..'
+import BottomControl from './BottomControl'
 
 type TMainFormProps<T extends FieldValues> = {
   control: Control<T>
@@ -31,10 +31,8 @@ function MainForm<T extends FieldValues>({
   loading
 }: TMainFormProps<T>) {
   const {
-    push: navigate,
-    query: { subreddit: subName, postid, mode }
+    query: { postid, mode }
   } = useRouter()
-  const [backBtnHover, isBackBtnHover] = useState(false)
   const isEditing = mode === POST_MUTATION_MODE.Edit
 
   // Populate subId & post id (edit mode)
@@ -78,45 +76,16 @@ function MainForm<T extends FieldValues>({
       {/* uploaded images preview */}
       {!isLinkPost && imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} cols={5} />}
 
-      {/* Subreddit select & Submit button */}
-      <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">
-        {subId == null && <RdSubredditSelect registerOptions={{ required: true }} control={control} name={'subreddit_id' as Path<T>} width="180px" />}
-        {isEditing && (
-          <RdButton
-            onMouseEnter={() => isBackBtnHover(true)}
-            onMouseLeave={() => isBackBtnHover(false)}
-            onClick={() => navigate(`/r/${subName}/post/${postid}`, undefined, { scroll: false })}
-            filled={backBtnHover}
-            text={'Back to view'}
-            color="blue"
-            sx={{ width: { xs: '50%', sm: '30%' }, py: 1 }}
-          />
-        )}
-        <RdButton
-          endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}
-          disabled={loading || !isDirty}
-          type="submit"
-          text={isEditing ? 'Update' : 'Post'}
-          filled={!loading && !backBtnHover && isDirty}
-          color="blue"
-          sx={{ width: { xs: '50%', sm: '30%' }, py: 0.75 }}
-        />
-
-        {!isEditing && (
-          <Tooltip title="Clear and close">
-            <IconButton
-              disabled={isEditing}
-              sx={{ bgcolor: 'actionIcon.main', p: 0.5, color: 'white.main', '&:hover': { bgcolor: 'actionIcon.main', opacity: 0.8 } }}
-              onClick={() => {
-                setIsLinkPost(false)
-                reset()
-              }}
-            >
-              <DeleteOutlineOutlinedIcon sx={{ display: 'block', fontSize: '1.5rem' }} />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Stack>
+      {/* Subreddit select + Back btn + Post btn + Reset btn (trash can) */}
+      <BottomControl
+        subId={subId}
+        isEditing={isEditing}
+        control={control}
+        loading={loading}
+        isDirty={isDirty}
+        setIsLinkPost={setIsLinkPost}
+        reset={reset}
+      />
     </Stack>
     // {/* <ErrorMessage errors={errors} render={({ message }) => <p>{message}</p>} /> */}
   )

@@ -36,6 +36,7 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
         disabled={loading}
         flex={1}
         mobileMode
+        value=""
         offsetTop="10px"
         minWidth="200px"
         borderColor="inputBorder"
@@ -43,12 +44,12 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
       >
         {/* Display username (mobile only) */}
         {me && isMobile && (
-          <>
+          <Box>
             <Box px={2} pb={1} textAlign="right">
               <Typography>{me.username}</Typography>
             </Box>
             <Divider />
-          </>
+          </Box>
         )}
 
         {/* Menu main options */}

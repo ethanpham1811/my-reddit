@@ -16,7 +16,7 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
   useEffect(() => {
     if (!ref) return
     const exceededHeight: boolean = ref?.current?.offsetHeight ? ref?.current?.offsetHeight >= MAX_TOP_TRENDING_HEIGHT : false
-    setBottomStyle(exceededHeight ? blurBottomStyle('50px') : {})
+    setBottomStyle(exceededHeight ? blurBottomStyle('80px') : {})
   }, [])
 
   return (
@@ -60,17 +60,16 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
           </Typography>
 
           {/* post body */}
-          <Typography
+          <Box
             className="blurred-bottom"
-            variant="subtitle1"
+            pb={5}
+            color="hintText.main"
             sx={{
-              pb: 5,
-              color: 'hintText.main',
               ...bottomStyle
             }}
           >
             {parseHtml(option?.body) || option?.link}
-          </Typography>
+          </Box>
 
           {/* vote-comment counter */}
           <Stack direction="row" alignItems="center" sx={{ position: 'absolute', left: 0, bottom: 0, width: '100%' }}>
