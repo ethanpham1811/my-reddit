@@ -16,7 +16,8 @@ export const notiData: TIconBox[] = [
   {
     icon: <OutboundOutlinedIcon />,
     name: 'Popular',
-    tooltip: 'Work in progress'
+    tooltip: 'Top trending posts',
+    url: '/search'
   },
   {
     icon: <SmsOutlinedIcon />,

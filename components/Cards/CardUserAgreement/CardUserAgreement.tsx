@@ -4,13 +4,13 @@ import { Dispatch, SetStateAction } from 'react'
 
 function CardUserAgreement({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) {
   return (
-    <RdCard sx={{ p: 4 }}>
-      <Stack spacing={2}>
+    <RdCard sx={{ p: 4, display: 'flex' }}>
+      <Stack spacing={2} flex={1}>
         <Stack spacing={2}>
           <Typography variant="h4">User Agreement</Typography>
         </Stack>
         <Divider sx={{ my: 1 }} />
-        <Stack spacing={2}>
+        <Stack flex={1} spacing={2} sx={{ overflowY: 'scroll', overflowX: 'hidden', mr: '-10px !important', pr: '10px' }}>
           <Typography variant="h5">1. Your Access to the Services</Typography>
           <Typography variant="body1">
             No one under 13 is allowed to use or access the Services. We may offer additional Services that require you to be older to use them, so

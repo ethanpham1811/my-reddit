@@ -26,6 +26,7 @@ type QueriedPost {
   subreddit_id: ID!
   comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
   link: String
+  linkDescription: String
 }
 
 type QueriedSub {
@@ -89,13 +90,24 @@ type Query {
         p."images",
         p."subreddit_id",
         p."link",
+        p."linkDescription",
         p."user_id",
+        "subquery"."totalUpvotes",
+        (SELECT COUNT(*) FROM "comment" WHERE "post_id" = p."id") AS "totalComments",
         'Post' AS "groupBy",
         (SELECT array_agg(v) FROM "vote" v WHERE v."post_id" = p."id") AS "vote",
         (SELECT array_agg(c) FROM "comment" c WHERE c."post_id" = p."id") AS "comment"
-      FROM "post" p
-      WHERE p."title" LIKE '%' || $2 || '%' OR p."body" LIKE '%' || $2 || '%'
-      ORDER BY p."created_at" DESC
+      FROM "post" "p"
+      JOIN (
+        SELECT
+            "post_id",
+            SUM(CASE WHEN "upvote" = true THEN 1 ELSE 0 END) - SUM(CASE WHEN "upvote" = false THEN 1 ELSE 0 END) AS "totalUpvotes"
+        FROM "vote"
+        GROUP BY "post_id"
+      ) AS "subquery"
+      ON "p"."id" = "subquery"."post_id"
+      WHERE p."title" LIKE '%' || $2 || '%' OR p."body" LIKE '%' || $2 || '%' OR p."linkDescription" LIKE '%' || $2 || '%'
+      ORDER BY "subquery"."totalUpvotes" DESC
       LIMIT $1
       """
       configuration: "postgresql_config"

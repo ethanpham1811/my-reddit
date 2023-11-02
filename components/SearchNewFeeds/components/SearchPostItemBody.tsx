@@ -1,6 +1,8 @@
+import { RdImgLoader } from '@/components'
 import { parseHtml } from '@/src/utils'
 import { Box, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
+import { useState } from 'react'
 
 type TSearchPostItemBodyProps = {
   title: string
@@ -11,6 +13,8 @@ type TSearchPostItemBodyProps = {
 }
 
 function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPostItemBodyProps) {
+  const [imgLoading, setImgLoading] = useState(true)
+
   return (
     <Stack direction="row" spacing={1}>
       <Stack flex={1}>
@@ -22,9 +26,11 @@ function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPos
         </Typography>
       </Stack>
       {images && (
-        <Box width="140px">
+        <Box width="140px" position="relative">
+          {imgLoading && <RdImgLoader />}
           <Image
-            style={{ border: '1px solid black ', objectFit: 'cover' }}
+            onLoad={() => setImgLoading(false)}
+            style={{ objectFit: 'cover' }}
             alt={`post_ ${id}_preview_image`}
             src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL}/${images[0]}`}
             width={140}

@@ -94,7 +94,8 @@ export type TNotiData = {
 export type TIconBox = {
   icon: ReactNode
   name: string
-  tooltip: string
+  tooltip?: string
+  url?: string
   notification?: TNotiData
   hideOnMobile?: boolean
 }
@@ -293,6 +294,11 @@ export type TQueriedSub = TSubredditDetail & {
 }
 export type TQueriedUser = TUser & {
   groupBy: string
+}
+export type TQueriedResult = {
+  queriedPosts: TQueriedPost[]
+  queriedSubs: TQueriedSub[]
+  queriedUsers: TQueriedUser[]
 }
 export type TQueryNotFound = {
   text: 'Nothing found.'

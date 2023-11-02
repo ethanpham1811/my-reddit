@@ -12,9 +12,9 @@ const RdDialog = ({ open, children, transparent, ...rest }: TRdDialogProps) => {
   return (
     <Dialog
       open={open}
-      scroll="body"
       TransitionComponent={RdTransition}
       keepMounted
+      disableScrollLock
       PaperProps={{
         sx: transparent ? { boxShadow: 'none', bgcolor: 'transparent' } : {}
       }}

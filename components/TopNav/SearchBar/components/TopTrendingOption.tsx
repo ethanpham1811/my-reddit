@@ -21,6 +21,7 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
 
   return (
     <>
+      <Divider />
       <ListItem
         key={`search_result_item_${option.title}`}
         {...props}
@@ -92,7 +93,6 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
           )}
         </Box>
       </ListItem>
-      <Divider />
     </>
   )
 }

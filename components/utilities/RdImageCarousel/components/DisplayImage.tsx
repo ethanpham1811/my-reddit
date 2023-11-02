@@ -1,6 +1,6 @@
-import { Box, CircularProgress } from '@mui/material'
 import Image from 'next/image'
 import { useState } from 'react'
+import RdImgLoader from '../../RdImgLoader/RdImgLoader'
 
 type TDisplayImageProps = { width: string; height: string; imgSrc: string; zoomImage: (e: any, imgSrc: string) => void }
 
@@ -9,11 +9,7 @@ function DisplayImage({ width, height, imgSrc, zoomImage }: TDisplayImageProps) 
 
   return (
     <>
-      {imgLoading && (
-        <Box position="absolute" top="50%" left="50%" sx={{ transform: 'translate(-50%, -50%)' }}>
-          <CircularProgress size={20} sx={{ color: 'orange.main' }} />
-        </Box>
-      )}
+      {imgLoading && <RdImgLoader />}
 
       <Image
         onLoad={() => setImgLoading(false)}

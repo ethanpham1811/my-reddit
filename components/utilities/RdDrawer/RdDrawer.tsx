@@ -16,7 +16,7 @@ function RdDrawer({ open, setOpen, children }: TRdDrawerProps) {
 
   return (
     <div>
-      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+      <Drawer disableScrollLock anchor="right" open={open} onClose={toggleDrawer(false)}>
         {children}
       </Drawer>
     </div>

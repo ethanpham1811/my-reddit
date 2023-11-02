@@ -38,6 +38,7 @@ import RdIconSelect from './utilities/RdIconSelect/RdIconSelect'
 import RdImageCarousel from './utilities/RdImageCarousel/RdImageCarousel'
 import RdImageList from './utilities/RdImageList/RdImageList'
 import RdImageUploader from './utilities/RdImageUploader/RdImageUploader'
+import RdImgLoader from './utilities/RdImgLoader/RdImgLoader'
 import RdInfiniteScroll from './utilities/RdInfiniteScroll/RdInfiniteScroll'
 import RdInlineInput from './utilities/RdInput/RdInlineInput'
 import RdInput from './utilities/RdInput/RdInput'
@@ -84,6 +85,7 @@ export {
   RdImageCarousel,
   RdImageList,
   RdImageUploader,
+  RdImgLoader,
   RdInfiniteScroll,
   RdInlineInput,
   RdInput,

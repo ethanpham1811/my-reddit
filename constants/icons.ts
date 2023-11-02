@@ -14,6 +14,7 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import ErrorIcon from '@mui/icons-material/Error'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
 import HomeIcon from '@mui/icons-material/Home'
 import HttpsOutlinedIcon from '@mui/icons-material/HttpsOutlined'
@@ -63,6 +64,7 @@ export {
   DeleteOutlineOutlinedIcon,
   EmailOutlinedIcon,
   ErrorIcon,
+  ErrorOutlineIcon,
   FcGoogle,
   HighlightOffOutlinedIcon,
   HomeIcon,

@@ -1,5 +1,4 @@
-import { RdDialog } from '@/components'
-import { Box, CircularProgress } from '@mui/material'
+import { RdDialog, RdImgLoader } from '@/components'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 type TPreviewImgDialogProps = {
@@ -25,11 +24,7 @@ function ZoomImgDialog({ zoomDialogOpen: zoomedImg, setZoomDialogOpen }: TPrevie
       }}
       onClick={() => setZoomDialogOpen(null)}
     >
-      {imgLoading && (
-        <Box zIndex={1000} position="absolute" top="50%" left="50%" sx={{ transform: 'translate(-50%, -50%)' }}>
-          <CircularProgress size={20} sx={{ color: 'orange.main' }} />
-        </Box>
-      )}
+      {imgLoading && <RdImgLoader zIndex={1000} />}
 
       {/* TODO: using normal img tag due to layout issue with Next Image, will fix later */}
       {zoomedImg && (

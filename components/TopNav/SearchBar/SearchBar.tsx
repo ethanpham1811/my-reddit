@@ -6,7 +6,7 @@ import { generateAutoCompleteUrl } from '@/src/utils'
 import { AutocompleteRenderInputParams } from '@mui/material'
 import { NextRouter } from 'next/router'
 import { SyntheticEvent, useState } from 'react'
-import { renderGroup, renderOption } from './components/RenderedCbs'
+import { renderContainer, renderGroup, renderOption } from './components/RenderedCbs'
 import SearchBarInput from './components/SearchBarInput'
 
 type TSearchBarProps = {
@@ -74,6 +74,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
       renderInput={renderInput}
       renderGroup={renderGroup}
       renderOption={renderOption}
+      PaperComponent={(props) => renderContainer(props, searchTerm)}
       noOptionsText={<div>Nothing found</div>}
       getOptionLabel={() => ''} // prevent displaying selected option value
       filterOptions={() => dataList} // filtering disabled

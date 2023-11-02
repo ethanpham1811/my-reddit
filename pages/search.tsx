@@ -10,7 +10,6 @@ import { Container, Stack } from '@mui/material'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 
 const Search: NextPage = () => {
   const { session } = useAppSession()
@@ -20,9 +19,8 @@ const Search: NextPage = () => {
     query: { q, type }
   } = useRouter()
   const searchTerm = q ?? ''
-  const [queriedPosts, queriedSubs, queriedUsers, loading, error] = useSearchQueriedList(searchTerm)
-  const [hasNoPost, setHasNoPost] = useState(false)
-  const { updateUser, loading: updateLoading } = useUserUpdate()
+  const { queriedPosts, queriedSubs, queriedUsers, loading, fetchMore } = useSearchQueriedList(searchTerm)
+  const { updateUser } = useUserUpdate()
 
   let searchList: TQueriedPost[] | TQueriedSub[] | TQueriedUser[] = []
   if (type === SEARCH_TABS.Post || !type) searchList = queriedPosts
@@ -43,20 +41,22 @@ const Search: NextPage = () => {
         <SearchFeedsTabBar top="70px" type={type as SEARCH_TABS | undefined} />
       </Container>
       <FeedLayout loading={loading} top="1rem" single={type === SEARCH_TABS.Communities || type === SEARCH_TABS.People}>
+        {/* main tab content */}
         <Stack spacing={2}>
           <SearchFeeds
+            fetchMore={fetchMore}
             updateUser={handleUpdateUser}
             searchTerm={searchTerm as string}
             searchList={searchList}
             loading={loading}
-            setHasNoPost={setHasNoPost}
           />
         </Stack>
+
+        {/* Community & people right side cards: only available on Post tab */}
         <Stack spacing={2}>
           <CardSearchSide<TQueriedSub>
             updateUser={handleUpdateUser}
             loading={loading}
-            updateLoading={updateLoading}
             list={queriedSubs}
             title={'Communities'}
             q={searchTerm as string}
@@ -65,7 +65,6 @@ const Search: NextPage = () => {
           <CardSearchSide<TQueriedUser>
             updateUser={handleUpdateUser}
             loading={loading}
-            updateLoading={updateLoading}
             list={queriedUsers}
             title={'People'}
             q={searchTerm as string}

@@ -44,6 +44,7 @@ function RdIconSelect({ disabled, options, icon, disableRipple, size, sx, positi
       </IconButton>
       <Paper sx={{ mt: '0 !important', width: 320, position: 'relative' }}>
         <Menu
+          disableScrollLock
           open={open}
           sx={{ ...position }}
           anchorEl={anchorEl}

@@ -318,6 +318,8 @@ export const GET_SEARCHED_RESULTS = gql`
       title
       body
       images
+      link
+      linkDescription
       created_at
       user {
         username
