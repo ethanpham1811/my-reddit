@@ -37,7 +37,6 @@ function RdTextEditor<T extends FieldValues>({ height = 300, control, name, regi
             )}
             <Editor
               apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
-              // initialValue={`<p>${placeholder}</p>`}
               value={value}
               onEditorChange={onChange}
               id={name}

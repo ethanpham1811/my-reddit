@@ -27,6 +27,7 @@ type QueriedPost {
   comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
   link: String
   linkDescription: String
+  totalItems: Int
 }
 
 type QueriedSub {
@@ -36,6 +37,7 @@ type QueriedSub {
   member: Int
   isChildrenContent: Boolean
   groupBy: String
+  totalItems: Int
 }
 
 type QueriedUser {
@@ -44,6 +46,7 @@ type QueriedUser {
   fullName: String
   followers: Int
   groupBy: String
+  totalItems: Int
 }
 
 type Query {
@@ -70,82 +73,101 @@ type Query {
             SUM(CASE WHEN "upvote" = true THEN 1 ELSE 0 END) - SUM(CASE WHEN "upvote" = false THEN 1 ELSE 0 END) AS "totalUpvotes"
         FROM "vote"
         GROUP BY "post_id"
-        ORDER BY "totalUpvotes" DESC
-        LIMIT $1
+      ORDER BY "totalUpvotes" DESC
+      LIMIT $1
       ) AS "subquery"
       ON "p"."id" = "subquery"."post_id";
       """
       configuration: "postgresql_config"
     )
-  queriedPosts(quantity: Int!, term: String!): [QueriedPost]
+  queriedPosts(offset: Int, limit: Int, term: String!): [QueriedPost]
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT
-        p."id",
-        p."title",
-        p."body",
-        p."created_at",
-        p."images",
-        p."subreddit_id",
-        p."link",
-        p."linkDescription",
-        p."user_id",
-        "subquery"."totalUpvotes",
-        (SELECT COUNT(*) FROM "comment" WHERE "post_id" = p."id") AS "totalComments",
-        'Post' AS "groupBy",
-        (SELECT array_agg(v) FROM "vote" v WHERE v."post_id" = p."id") AS "vote",
-        (SELECT array_agg(c) FROM "comment" c WHERE c."post_id" = p."id") AS "comment"
-      FROM "post" "p"
-      JOIN (
+      WITH "posts" AS (
         SELECT
+          p."id",
+          p."title",
+          p."body",
+          p."created_at",
+          p."images",
+          p."subreddit_id",
+          p."link",
+          p."linkDescription",
+          p."user_id",
+          "subquery"."totalUpvotes",
+          (SELECT COUNT(*) FROM "comment" WHERE "post_id" = p."id") AS "totalComments",
+          'Post' AS "groupBy",
+          (SELECT array_agg(v) FROM "vote" v WHERE v."post_id" = p."id") AS "vote",
+          (SELECT array_agg(c) FROM "comment" c WHERE c."post_id" = p."id") AS "comment"
+        FROM "post" "p"
+        JOIN (
+          SELECT
             "post_id",
             SUM(CASE WHEN "upvote" = true THEN 1 ELSE 0 END) - SUM(CASE WHEN "upvote" = false THEN 1 ELSE 0 END) AS "totalUpvotes"
-        FROM "vote"
-        GROUP BY "post_id"
-      ) AS "subquery"
-      ON "p"."id" = "subquery"."post_id"
-      WHERE p."title" LIKE '%' || $2 || '%' OR p."body" LIKE '%' || $2 || '%' OR p."linkDescription" LIKE '%' || $2 || '%'
-      ORDER BY "subquery"."totalUpvotes" DESC
-      LIMIT $1
+          FROM "vote"
+          GROUP BY "post_id"
+        ) AS "subquery"
+        ON "p"."id" = "subquery"."post_id"
+        WHERE lower(p."title") LIKE '%' || lower($3) || '%' OR lower(p."body") LIKE '%' || lower($3) || '%' OR lower(p."linkDescription") LIKE '%' || lower($3) || '%'
+      )
+      SELECT
+        *,
+        (SELECT COUNT(*) FROM "posts") AS "totalItems"
+      FROM "posts"
+      ORDER BY "totalUpvotes" DESC
+      LIMIT $2 OFFSET $1
       """
       configuration: "postgresql_config"
     )
-  queriedSubs(quantity: Int!, term: String!): [QueriedSub]
+
+  queriedSubs(offset: Int, limit: Int, term: String!): [QueriedSub]
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
+      WITH "subs" AS (
+        SELECT
+          s."id",
+          s."name",
+          s."headline",
+          s."member",
+          s."isChildrenContent",
+          'Communities' AS "groupBy"
+        FROM "subreddit" s
+        WHERE lower(s."name") LIKE '%' || lower($3) || '%' OR lower(s."headline") LIKE '%' || lower($3) || '%'
+      )
       SELECT
-        s."id",
-        s."name",
-        s."headline",
-        s."member",
-        s."isChildrenContent",
-        'Communities' AS "groupBy"
-      FROM "subreddit" s
-      WHERE s."name" LIKE '%' || $2 || '%' OR s."headline" LIKE '%' || $2 || '%'
-      ORDER BY s."member" DESC
-      LIMIT $1
+        *,
+        (SELECT COUNT(*) FROM "subs") AS "totalItems"
+      FROM "subs"
+      ORDER BY "member" DESC
+      LIMIT $2 OFFSET $1
       """
       configuration: "postgresql_config"
     )
-  queriedUsers(quantity: Int!, term: String!): [QueriedUser]
+  queriedUsers(offset: Int, limit: Int, term: String!): [QueriedUser]
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
+      WITH "users" AS (
+        SELECT
+          u."id",
+          u."username",
+          u."fullName",
+          u."followers",
+          'People' AS "groupBy"
+        FROM "user" u
+        WHERE lower(u."username") LIKE '%' || lower($3) || '%' OR lower(u."fullName") LIKE '%' || lower($3) || '%'
+      )
       SELECT
-        u."id",
-        u."username",
-        u."fullName",
-        u."followers",
-        'People' AS "groupBy"
-      FROM "user" u
-      WHERE u."username" LIKE '%' || $2 || '%' OR u."fullName" LIKE '%' || $2 || '%'
-      ORDER BY u."username" DESC
-      LIMIT $1
+        *,
+        (SELECT COUNT(*) FROM "users") AS "totalItems"
+      FROM "users"
+      ORDER BY "username" DESC
+      LIMIT $2 OFFSET $1
       """
       configuration: "postgresql_config"
     )

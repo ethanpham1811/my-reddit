@@ -1,22 +1,30 @@
-import { TFetchMoreArgs, TQueriedPost, TQueriedResult, TQueriedSub, TQueriedUser } from '@/constants/types'
+import { QUERY_LIMIT } from '@/constants/enums'
+import { TQueriedPost, TQueriedResponse, TQueriedSub, TQueriedUser } from '@/constants/types'
 import { GET_SEARCHED_RESULTS } from '@/graphql/queries'
 import { ApolloError, useQuery } from '@apollo/client'
-import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
+import { useRouter } from 'next/router'
 
-type TUseSearchQueriedListResponse = TQueriedResult & {
+type TUseSearchQueriedListResponse = TQueriedResponse & {
   loading: boolean
   error: ApolloError | undefined
-  fetchMore: FetchMoreFunction<{ [key: string]: TQueriedResult }, TFetchMoreArgs>
 }
 
 function useSearchQueriedList(searchTerm: string | string[] | undefined): TUseSearchQueriedListResponse {
-  const { data, loading, error, fetchMore } = useQuery(GET_SEARCHED_RESULTS, {
-    variables: { quantity: 5, term: typeof searchTerm !== 'string' ? '' : searchTerm }
+  const {
+    query: { page }
+  } = useRouter()
+
+  // fetch paginated data by query params
+  const curPage = page ? parseInt(page as string) : 1
+  const offset = curPage ? (curPage - 1) * QUERY_LIMIT : 0
+
+  const { data, loading, error } = useQuery(GET_SEARCHED_RESULTS, {
+    variables: { offset, limit: QUERY_LIMIT, term: typeof searchTerm !== 'string' ? '' : searchTerm }
   })
   const queriedPosts: TQueriedPost[] = data?.queriedPosts ?? []
   const queriedSubs: TQueriedSub[] = data?.queriedSubs ?? []
   const queriedUsers: TQueriedUser[] = data?.queriedUsers ?? []
 
-  return { queriedPosts, queriedSubs, queriedUsers, loading, error, fetchMore }
+  return { queriedPosts, queriedSubs, queriedUsers, loading, error }
 }
 export default useSearchQueriedList

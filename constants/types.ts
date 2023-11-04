@@ -288,18 +288,22 @@ export type TQueriedTrending = TPost & {
 }
 export type TQueriedPost = TPost & {
   groupBy: string
+  totalItems: number
 }
 export type TQueriedSub = TSubredditDetail & {
   groupBy: string
+  totalItems: number
 }
 export type TQueriedUser = TUser & {
   groupBy: string
+  totalItems: number
 }
-export type TQueriedResult = {
+export type TQueriedResponse = {
   queriedPosts: TQueriedPost[]
   queriedSubs: TQueriedSub[]
   queriedUsers: TQueriedUser[]
 }
+export type TQueriedList = TQueriedPost[] | TQueriedSub[] | TQueriedUser[]
 export type TQueryNotFound = {
   text: 'Nothing found.'
   groupBy: string

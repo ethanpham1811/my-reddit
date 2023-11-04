@@ -5,9 +5,17 @@ import { blurBottomStyle } from '@/mui/styles'
 import { parseHtml } from '@/src/utils'
 import { Box, Divider, ListItem, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { HTMLAttributes, useEffect, useRef, useState } from 'react'
 
-function TopTrendingOption({ option, props }: { option: TQueriedTrending; props: HTMLAttributes<HTMLLIElement> }) {
+type TTropTrendingOptionProps = {
+  option: TQueriedTrending
+  props: HTMLAttributes<HTMLLIElement>
+  url: string
+}
+
+function TopTrendingOption({ option, props, url }: TTropTrendingOptionProps) {
+  const { push: navigate } = useRouter()
   const [bottomStyle, setBottomStyle] = useState({})
   const ref = useRef<HTMLDivElement>(null)
   const postFirsImgUrl: string | null = option?.images?.[0] ? `${process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL}/${option?.images?.[0]}` : null
@@ -23,6 +31,10 @@ function TopTrendingOption({ option, props }: { option: TQueriedTrending; props:
     <>
       <Divider />
       <ListItem
+        onClick={(e) => {
+          e.preventDefault()
+          navigate(url)
+        }}
         key={`search_result_item_${option.title}`}
         {...props}
         sx={{

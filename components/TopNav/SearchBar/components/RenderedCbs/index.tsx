@@ -3,7 +3,6 @@ import { TAutocompleteOptions } from '@/constants/types'
 import { isNotFound, isQueriedSub, isQueriedTrending, isQueriedUser } from '@/src/typeCheck'
 import { generateAutoCompleteUrl } from '@/src/utils'
 import { AutocompleteRenderGroupParams, Box, Divider, ListSubheader, Stack, Typography } from '@mui/material'
-import Link from 'next/link'
 import { Fragment, HTMLAttributes, ReactNode } from 'react'
 import { v4 as rid } from 'uuid'
 import NotFoundOption from '../NotFoundOption'
@@ -78,16 +77,16 @@ export const renderOption = (props: HTMLAttributes<HTMLLIElement>, option: TAuto
     // use Link only for prefetch functionality, disable navigation on click
     <Fragment key={`search_result_${rid()}`}>
       {!isNF ? (
-        <Link href={url} onClick={(e) => e.preventDefault()} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <>
           {isPost && (
             /* Top trending posts options */
-            <TopTrendingOption option={option} props={props} />
+            <TopTrendingOption option={option} props={props} url={url} />
           )}
           {(isSub || isUser) && (
             /* Communities and people options  */
-            <QueriedSubUserOption option={option} props={props} />
+            <QueriedSubUserOption option={option} props={props} url={url} />
           )}
-        </Link>
+        </>
       ) : (
         <NotFoundOption option={option} props={props} />
       )}

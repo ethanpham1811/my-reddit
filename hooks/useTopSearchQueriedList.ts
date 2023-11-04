@@ -31,7 +31,7 @@ function useTopSearchQueriedList(isFocused: boolean): TuseTopSearchQueriedListRe
     loading: queriedLoading,
     error,
     refetch
-  } = useQuery(GET_QUERIED_SUBS_USERS, { skip: searchTerm === '', variables: { quantity: 3, term: searchTerm } })
+  } = useQuery(GET_QUERIED_SUBS_USERS, { skip: searchTerm === '', variables: { offset: 0, limit: 3, term: searchTerm } })
   const queriedSubs: TQueriedSub[] = queriedData?.queriedSubs ?? []
   const queriedUsers: TQueriedUser[] = queriedData?.queriedUsers ?? []
 

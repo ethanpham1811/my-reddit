@@ -293,8 +293,8 @@ export const GET_TOP_TRENDING_POSTS = gql`
   }
 `
 export const GET_QUERIED_SUBS_USERS = gql`
-  query Subs_n_Users_by_term($quantity: Int!, $term: String!) {
-    queriedSubs(quantity: $quantity, term: $term) {
+  query Subs_n_Users_by_term($offset: Int, $limit: Int, $term: String!) {
+    queriedSubs(offset: $offset, limit: $limit, term: $term) {
       id
       name
       headline
@@ -302,7 +302,7 @@ export const GET_QUERIED_SUBS_USERS = gql`
       isChildrenContent
       groupBy
     }
-    queriedUsers(quantity: $quantity, term: $term) {
+    queriedUsers(offset: $offset, limit: $limit, term: $term) {
       id
       username
       fullName
@@ -312,8 +312,8 @@ export const GET_QUERIED_SUBS_USERS = gql`
   }
 `
 export const GET_SEARCHED_RESULTS = gql`
-  query Search_result($quantity: Int!, $term: String!) {
-    queriedPosts(quantity: $quantity, term: $term) {
+  query Search_result($offset: Int, $limit: Int, $term: String!) {
+    queriedPosts(offset: $offset, limit: $limit, term: $term) {
       id
       title
       body
@@ -340,21 +340,24 @@ export const GET_SEARCHED_RESULTS = gql`
         user_id
       }
       groupBy
+      totalItems
     }
-    queriedSubs(quantity: $quantity, term: $term) {
+    queriedSubs(offset: $offset, limit: $limit, term: $term) {
       id
       name
       headline
       member
       isChildrenContent
       groupBy
+      totalItems
     }
-    queriedUsers(quantity: $quantity, term: $term) {
+    queriedUsers(offset: $offset, limit: $limit, term: $term) {
       id
       username
       fullName
       followers
       groupBy
+      totalItems
     }
   }
 `

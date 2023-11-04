@@ -31,47 +31,49 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
         {loading ? (
           <RdSkeleton />
         ) : list && list.length > 0 ? (
-          list.map((item) => {
-            let name = ''
-            let status = false
-            let btnText = ''
-            let revertBtnText = ''
-            let extraText = ''
-            let link = '/'
-            let type = SEARCH_TABS.People
+          list
+            .filter((_, i) => i < 3)
+            .map((item) => {
+              let name = ''
+              let status = false
+              let btnText = ''
+              let revertBtnText = ''
+              let extraText = ''
+              let link = '/'
+              let type = SEARCH_TABS.People
 
-            if ('username' in item) {
-              name = item.username?.toString()
-              status = me ? validatePostByFollowing(me?.following_ids, item.username) : false
-              btnText = status ? 'Following' : 'Follow'
-              revertBtnText = status ? 'Unfollow' : 'Follow'
-              extraText = formatNumber(item.followers) + ' Followers'
-              link = `u/${item.username}`
-            } else {
-              name = item.name?.toString()
-              status = me ? validateSubredditMember(me?.member_of_ids, item.name) : false
-              btnText = status ? 'Joined' : 'Join'
-              revertBtnText = status ? 'Leave' : 'Join'
-              extraText = formatNumber(item.member || 0) + ' Members'
-              link = `r/${item.name}`
-              type = SEARCH_TABS.Communities
-            }
+              if ('username' in item) {
+                name = item.username?.toString()
+                status = me ? validatePostByFollowing(me?.following_ids, item.username) : false
+                btnText = status ? 'Following' : 'Follow'
+                revertBtnText = status ? 'Unfollow' : 'Follow'
+                extraText = formatNumber(item.followers) + ' Followers'
+                link = `u/${item.username}`
+              } else {
+                name = item.name?.toString()
+                status = me ? validateSubredditMember(me?.member_of_ids, item.name) : false
+                btnText = status ? 'Joined' : 'Join'
+                revertBtnText = status ? 'Leave' : 'Join'
+                extraText = formatNumber(item.member || 0) + ' Members'
+                link = `r/${item.name}`
+                type = SEARCH_TABS.Communities
+              }
 
-            return (
-              <CardSearchItem
-                revertBtnText={revertBtnText}
-                type={type}
-                updateUser={updateUser}
-                key={`${name}_search_result`}
-                guestMode={!me}
-                name={name}
-                status={status}
-                btnText={btnText}
-                extraText={extraText}
-                link={link}
-              />
-            )
-          })
+              return (
+                <CardSearchItem
+                  revertBtnText={revertBtnText}
+                  type={type}
+                  updateUser={updateUser}
+                  key={`${name}_search_result`}
+                  guestMode={!me}
+                  name={name}
+                  status={status}
+                  btnText={btnText}
+                  extraText={extraText}
+                  link={link}
+                />
+              )
+            })
         ) : (
           <MessageBoard head="Nothing found" />
         )}

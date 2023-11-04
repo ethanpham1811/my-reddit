@@ -3,7 +3,7 @@ import CardSearchSide from '@/components/Cards/CardSearchSide/CardSearchSide'
 import FeedLayout from '@/components/Layouts/FeedLayout'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SEARCH_TABS } from '@/constants/enums'
-import { TQueriedPost, TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
+import { TQueriedList, TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 import useSearchQueriedList from '@/hooks/useSearchQueriedList'
 import useUserUpdate from '@/hooks/useUserUpdate'
 import { Container, Stack } from '@mui/material'
@@ -14,15 +14,14 @@ import { useRouter } from 'next/router'
 const Search: NextPage = () => {
   const { session } = useAppSession()
   const me = session?.userDetail
-  // const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
   const {
     query: { q, type }
   } = useRouter()
   const searchTerm = q ?? ''
-  const { queriedPosts, queriedSubs, queriedUsers, loading, fetchMore } = useSearchQueriedList(searchTerm)
+  const { queriedPosts, queriedSubs, queriedUsers, loading } = useSearchQueriedList(searchTerm)
   const { updateUser } = useUserUpdate()
 
-  let searchList: TQueriedPost[] | TQueriedSub[] | TQueriedUser[] = []
+  let searchList: TQueriedList = []
   if (type === SEARCH_TABS.Post || !type) searchList = queriedPosts
   if (type === SEARCH_TABS.Communities) searchList = queriedSubs
   if (type === SEARCH_TABS.People) searchList = queriedUsers
@@ -43,13 +42,7 @@ const Search: NextPage = () => {
       <FeedLayout loading={loading} top="1rem" single={type === SEARCH_TABS.Communities || type === SEARCH_TABS.People}>
         {/* main tab content */}
         <Stack spacing={2}>
-          <SearchFeeds
-            fetchMore={fetchMore}
-            updateUser={handleUpdateUser}
-            searchTerm={searchTerm as string}
-            searchList={searchList}
-            loading={loading}
-          />
+          <SearchFeeds updateUser={handleUpdateUser} searchTerm={searchTerm as string} searchList={searchList} loading={loading} />
         </Stack>
 
         {/* Community & people right side cards: only available on Post tab */}

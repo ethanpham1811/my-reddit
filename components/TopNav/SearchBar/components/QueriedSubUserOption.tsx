@@ -2,18 +2,25 @@ import { TQueriedSub, TQueriedUser } from '@/constants/types'
 import { isQueriedSub } from '@/src/typeCheck'
 import { formatNumber, generateSeededHexColor, generateUserImage } from '@/src/utils'
 import { Avatar, Box, ListItem, Stack, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 import { HTMLAttributes } from 'react'
 
 type TQueriedSubUserOptionProps = {
   option: TQueriedSub | TQueriedUser
   props: HTMLAttributes<HTMLLIElement>
+  url: string
 }
 
-function QueriedSubUserOption({ option, props }: TQueriedSubUserOptionProps) {
+function QueriedSubUserOption({ option, props, url }: TQueriedSubUserOptionProps) {
+  const { push: navigate } = useRouter()
   const isSub = isQueriedSub(option)
 
   return (
     <ListItem
+      onClick={(e) => {
+        e.preventDefault()
+        navigate(url)
+      }}
       key={`search_result_item_${isSub ? option.name : option.username}`}
       {...props}
       sx={{ '&.MuiListItem-root': { gap: 2, alignItems: 'flex-start' }, '&:hover': { bgcolor: 'inputBgOutfocused.main' } }}
