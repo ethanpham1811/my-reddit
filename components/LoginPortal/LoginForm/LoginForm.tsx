@@ -89,7 +89,12 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
         />
 
         {/* Login button */}
-        <RdButton disabled={loading} text="Login" type="submit" endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />} />
+        <RdButton
+          disabled={loading}
+          text={loading ? 'Signing in..' : 'Login'}
+          type="submit"
+          endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}
+        />
 
         {/* Not registered? Signup here */}
         <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>

@@ -26,7 +26,34 @@ function RdTextEditor<T extends FieldValues>({ height = 300, control, name, regi
             height={height}
             display="flex"
             flexDirection="column"
-            sx={{ '.tox-tinymce': { borderWidth: '1px', borderColor: 'inputBorder.main', borderRadius: '4px' } }}
+            sx={{
+              '.tox-tinymce': {
+                borderWidth: '1px',
+                borderColor: 'inputBorder.main',
+                borderRadius: '4px',
+                '&:not(.tox-tinymce-inline) .tox-editor-header': {
+                  backgroundColor: 'white.main'
+                },
+                '.tox-toolbar-overlord': {
+                  backgroundColor: 'white.main',
+                  color: 'black.main'
+                },
+                '.tox-toolbar__primary': {
+                  backgroundColor: 'white.main',
+                  color: 'black.main'
+                },
+                '.tox-edit-area__iframe': {
+                  backgroundColor: 'tinyEditor.main'
+                },
+                '.tox-statusbar': {
+                  backgroundColor: 'white.main',
+                  color: 'black.main'
+                },
+                '.tox-tbtn svg': {
+                  color: 'black.main'
+                }
+              }
+            }}
           >
             {loading && (
               <Box position="absolute" width="100%" height={300}>
@@ -50,6 +77,9 @@ function RdTextEditor<T extends FieldValues>({ height = 300, control, name, regi
               init={{
                 height: 300,
                 menubar: false,
+                color_default_background: '#000',
+                color_cols_background: 1,
+                color_map: ['#000'],
                 plugins: [
                   'advlist autolink lists link image',
                   'charmap print preview anchor help',

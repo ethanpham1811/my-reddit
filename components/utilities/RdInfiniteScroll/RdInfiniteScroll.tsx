@@ -12,9 +12,9 @@ type TRdInfiniteScrollProps<T> = {
 }
 
 const RdInfiniteScroll = <T extends {}>({ fetchMore, limit, list, appendPosts }: TRdInfiniteScrollProps<T>) => {
-  const [offset, setOffset] = useState<number>(limit)
-  const [loading, setLoading] = useState(false)
   const curListLength = list?.length || 0
+  const [offset, setOffset] = useState<number>(curListLength) // offset start at the index of the last item of current list
+  const [loading, setLoading] = useState(false)
   const endOfList: boolean = offset > curListLength
   const ref = useRef(null)
 

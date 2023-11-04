@@ -3,7 +3,7 @@ import CardUserAgreement from '@/components/Cards/CardUserAgreement/CardUserAgre
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { createGroupedList } from '@/src/utils'
-import { Box, Divider, Typography } from '@mui/material'
+import { Box, Divider, Typography, useTheme } from '@mui/material'
 import { ReactNode, useState } from 'react'
 import { v4 as rid } from 'uuid'
 import { buildProfileMenuData } from '../data'
@@ -19,11 +19,14 @@ type TProfileDropdownProps = {
 function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDropdownProps) {
   const { session } = useAppSession()
   const me = session?.userDetail
+  const {
+    palette: { mode }
+  } = useTheme()
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const [dialogType, setDialogType] = useState(PROFILE_DIALOG_TYPE.Logout)
 
   // Build grouped menu data
-  const menuList = buildProfileMenuData(me?.username)
+  const menuList = buildProfileMenuData(me?.username, { darkMode: mode !== 'light' })
   const groupedMenuList = createGroupedList(menuList)
 
   function handleRenderSelectedOption(value: string): ReactNode {

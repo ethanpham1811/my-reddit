@@ -98,6 +98,7 @@ export type TIconBox = {
   url?: string
   notification?: TNotiData
   hideOnMobile?: boolean
+  active?: boolean
 }
 export type TMenuItem = Omit<TSubreddit, 'id' | 'subType'> & {
   group: MAIN_MENU_GROUP
@@ -273,6 +274,7 @@ export type TProfileDropDownList = {
   groupBy: string
   disabled?: boolean
   onClick?: boolean
+  checked?: boolean
   dialog?: PROFILE_DIALOG_TYPE
   groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }

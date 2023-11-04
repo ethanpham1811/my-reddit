@@ -4,8 +4,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardCreatePostForm, TEditModePayload } from '@/constants/types'
 import usePostCreateAndEdit from '@/hooks/usePostCreateAndEdit'
-import { theme } from '@/mui/theme'
-import { Box, Divider, Stack, useMediaQuery } from '@mui/material'
+import { Box, Divider, Stack, useMediaQuery, useTheme } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { RdCard } from '../..'
@@ -36,8 +35,9 @@ type TCardCreatePostProps = {
  */
 function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   const { session } = useAppSession()
+  const { breakpoints } = useTheme()
   const { createPost, updatePost, loading } = usePostCreateAndEdit()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const isMobile = useMediaQuery(breakpoints.down('sm'))
   const [isLinkPost, setIsLinkPost] = useState(false)
   const userName: string | undefined | null = session?.userDetail?.username
   const {

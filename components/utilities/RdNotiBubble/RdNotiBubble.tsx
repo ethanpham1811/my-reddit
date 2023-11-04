@@ -15,7 +15,7 @@ function RdNotiBubble({ content, max, children }: TRdNotiBubbleProps) {
         padding: '0 4px',
         height: '16px',
         lineHeight: 1,
-        color: 'white',
+        color: '#fff',
         minWidth: '16px',
         backgroundColor: theme.palette.orange.main
       }

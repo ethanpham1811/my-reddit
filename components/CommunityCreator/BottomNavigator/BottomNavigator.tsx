@@ -14,7 +14,7 @@ function BottomNavigator({ loading, setOpen }: TBottomNavigatorProps) {
         endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}
         disabled={loading}
         filled={!loading}
-        text="Create"
+        text={loading ? 'Creating..' : 'Create'}
         type="submit"
         sx={{ borderRadius: 0, py: 1, fontSize: '1rem' }}
       />

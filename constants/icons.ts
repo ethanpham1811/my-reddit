@@ -11,6 +11,7 @@ import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CloseIcon from '@mui/icons-material/Close'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import ErrorIcon from '@mui/icons-material/Error'
@@ -61,6 +62,7 @@ export {
   CheckCircleIcon,
   CloseIcon,
   CreateOutlinedIcon,
+  DarkModeOutlinedIcon,
   DeleteOutlineOutlinedIcon,
   EmailOutlinedIcon,
   ErrorIcon,

@@ -2,7 +2,7 @@ import { RdImageCarousel } from '@/components'
 import { MAX_NEW_FEEDS_POST_HEIGHT } from '@/constants/enums'
 import { blurBottomStyle } from '@/mui/styles'
 import { parseHtml } from '@/src/utils'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, useTheme } from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
@@ -22,6 +22,9 @@ type TPostColumnProps = {
 
 function PostColumn({ subName, username, createdAt, title, body, link, linkDescription, setZoomedImg, images }: TPostColumnProps) {
   const [bottomStyle, setBottomStyle] = useState({})
+  const {
+    palette: { mode }
+  } = useTheme()
   const ref = useRef<HTMLDivElement>(null)
   const {
     query: { postid }
@@ -33,8 +36,8 @@ function PostColumn({ subName, username, createdAt, title, body, link, linkDescr
   /* if a post's height > 200px => blur out the overflow bottom part */
   useEffect(() => {
     const exceededHeight: boolean = !postid && ref?.current?.offsetHeight ? ref?.current?.offsetHeight >= MAX_NEW_FEEDS_POST_HEIGHT : false
-    setBottomStyle(exceededHeight ? blurBottomStyle('100px') : {})
-  }, [postid])
+    setBottomStyle(exceededHeight ? blurBottomStyle('100px', mode) : {})
+  }, [postid, mode])
 
   return (
     <Box flex={1} ml={1} pl={1}>

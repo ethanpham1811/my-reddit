@@ -8,7 +8,7 @@ const RdInputBase = styled(TextField)(({ theme }) => ({
     borderRadius: '4px',
     color: theme.palette.inputText.main,
     '&.Mui-focused, &:hover': {
-      backgroundColor: 'white'
+      backgroundColor: 'white.main'
     },
     fieldset: {
       borderWidth: '1px !important'

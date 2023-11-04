@@ -62,7 +62,13 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
             control={control}
             sx={{ mt: 1 }}
             label={
-              <Typography variant="h5" sx={{ mt: 2 }}>
+              <Typography
+                variant="h5"
+                sx={{
+                  mt: 2,
+                  color: 'black.main'
+                }}
+              >
                 Community type
               </Typography>
             }

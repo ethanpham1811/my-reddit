@@ -100,7 +100,7 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
         {/* Register button */}
         <RdButton
           disabled={loading}
-          text="Register"
+          text={loading ? 'Registering..' : 'Register'}
           type="submit"
           endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}
         />

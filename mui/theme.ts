@@ -13,108 +13,182 @@ export const notoSans = Noto_Sans({
   display: 'swap'
 })
 
-// Create a theme instance.
-export const theme: Theme = createTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 1024,
-      lg: 1200,
-      xl: 1536
-    }
+const lightPalette = {
+  primary: {
+    main: '#DAE0E6'
   },
-  spacing: 8,
-  palette: {
-    primary: {
-      main: '#DAE0E6'
-    },
-    secondary: {
-      main: '#19857b'
-    },
-    error: {
-      main: red.A400
-    },
-    icon: {
-      main: '#1A1A1B' // Custom color value
-    },
-    actionIcon: {
-      main: '#878A8C' // Custom color value
-    },
-    inputBgOutfocused: {
-      main: '#F6F7F8' // Custom color value
-    },
-    inputBorder: {
-      main: '#cccecf' // Custom color value
-    },
-    inputText: {
-      main: '#1c1c1c' // Custom color value
-    },
-    cardBorder: {
-      main: '#ccc' // Custom color value
-    },
-    hintText: {
-      main: '#7c7c7c' // Custom color value
-    },
-    white: {
-      main: '#fff' // Custom color value
-    },
-    blue: {
-      main: '#0079D3' // Custom color value
-    },
-    lightblue: {
-      main: '#e9f5fd' // Custom color value
-    },
-    orange: {
-      main: '#ff4500' // Custom color value
-    },
-    green: {
-      main: '#44b700' // Custom color value
-    }
+  secondary: {
+    main: '#19857b'
   },
-  typography: {
-    fontFamily: notoSans.style.fontFamily,
-    fontSize: 12.25,
-    fontWeightBold: 700,
-    fontWeightMedium: 600,
-    fontWeightRegular: 500,
-    fontWeightLight: 400
+  error: {
+    main: red.A400
   },
-
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          // ...darkScrollbar(),
-          backgroundColor: '#DAE0E6',
-          fontSize: '1rem',
-          fontWeight: 400
-        }
-      }
-    },
-    MuiContainer: {
-      styleOverrides: {
-        root: {
-          paddingLeft: '1rem !important',
-          paddingRight: '1rem !important'
-        }
-      }
-    },
-    MuiTypography: {
-      defaultProps: {
-        variantMapping: {
-          h1: 'h2',
-          h2: 'h2',
-          h3: 'h2',
-          h4: 'h2',
-          h5: 'h2',
-          h6: 'h2',
-          subtitle1: 'h2',
-          subtitle2: 'h2',
-          body1: 'span',
-          body2: 'span'
-        }
-      }
-    }
+  icon: {
+    main: '#1A1A1B' // Custom color value
+  },
+  actionIcon: {
+    main: '#878A8C' // Custom color value
+  },
+  inputBgOutfocused: {
+    main: '#F6F7F8' // Custom color value
+  },
+  inputBorder: {
+    main: '#cccecf' // Custom color value
+  },
+  inputText: {
+    main: '#1c1c1c' // Custom color value
+  },
+  cardBorder: {
+    main: '#ccc' // Custom color value
+  },
+  hintText: {
+    main: '#7c7c7c' // Custom color value
+  },
+  cardBg: {
+    main: '#fff' // Custom color value
+  },
+  tinyEditor: {
+    main: '#fff' // Custom color value
+  },
+  white: {
+    main: '#fff' // Custom color value
+  },
+  dark: {
+    main: '#000' // Custom color value
+  },
+  blue: {
+    main: '#0079D3' // Custom color value
+  },
+  lightblue: {
+    main: '#e9f5fd' // Custom color value
+  },
+  orange: {
+    main: '#ff4500' // Custom color value
+  },
+  green: {
+    main: '#44b700' // Custom color value
   }
-})
+}
+
+const darkPalette = {
+  primary: {
+    main: '#1a1a1a'
+  },
+  secondary: {
+    main: '#1a1a1a'
+  },
+  error: {
+    main: red.A400
+  },
+  icon: {
+    main: '#fff' // Custom color value
+  },
+  actionIcon: {
+    main: '#878A8C' // Custom color value
+  },
+  inputBgOutfocused: {
+    main: '#222' // Custom color value
+  },
+  inputBorder: {
+    main: '#333' // Custom color value
+  },
+  inputText: {
+    main: '#fff' // Custom color value
+  },
+  cardBorder: {
+    main: '#444' // Custom color value
+  },
+  hintText: {
+    main: '#7c7c7c' // Custom color value
+  },
+  cardBg: {
+    main: '#121212' // Custom color value
+  },
+  tinyEditor: {
+    main: '#d0d0d0' // Custom color value
+  },
+  white: {
+    main: '#000' // Custom color value
+  },
+  black: {
+    main: '#fff' // Custom color value
+  },
+  blue: {
+    main: '#0079D3' // Custom color value
+  },
+  lightblue: {
+    main: '#191919' // Custom color value
+  },
+  orange: {
+    main: '#ff4500' // Custom color value
+  },
+  green: {
+    main: '#44b700' // Custom color value
+  }
+}
+
+// Create a theme instance.
+export const buildTheme = (mode: 'light' | 'dark'): Theme => {
+  const palette = mode === 'light' ? lightPalette : darkPalette
+  return createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 1024,
+        lg: 1200,
+        xl: 1536
+      }
+    },
+    spacing: 8,
+    palette: {
+      mode,
+      ...palette
+    },
+    typography: {
+      fontFamily: notoSans.style.fontFamily,
+      fontSize: 12.25,
+      fontWeightBold: 700,
+      fontWeightMedium: 600,
+      fontWeightRegular: 500,
+      fontWeightLight: 400
+    },
+
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            // ...darkScrollbar(),
+            backgroundColor: mode === 'light' ? '#DAE0E6' : '#1a1a1a',
+            fontSize: '1rem',
+            fontWeight: 400
+          }
+        }
+      },
+      MuiContainer: {
+        styleOverrides: {
+          root: {
+            paddingLeft: '1rem !important',
+            paddingRight: '1rem !important'
+          }
+        }
+      },
+      MuiTypography: {
+        defaultProps: {
+          variantMapping: {
+            h1: 'h2',
+            h2: 'h2',
+            h3: 'h2',
+            h4: 'h2',
+            h5: 'h2',
+            h6: 'h2',
+            subtitle1: 'h2',
+            subtitle2: 'h2',
+            body1: 'span',
+            body2: 'span'
+          }
+        }
+      }
+    }
+  })
+}

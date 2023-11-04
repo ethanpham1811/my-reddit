@@ -21,6 +21,8 @@ function BottomControl<T extends FieldValues>({ subId, isEditing, control, loadi
     push: navigate,
     query: { subreddit: subName, postid }
   } = useRouter()
+  const submitBtnText = isEditing ? 'Update' : 'Post'
+  const loadingSubmitBtnText = isEditing ? 'Updating..' : 'Posting..'
 
   return (
     <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" width="100%">
@@ -45,7 +47,7 @@ function BottomControl<T extends FieldValues>({ subId, isEditing, control, loadi
         endIcon={loading && <CircularProgress sx={{ color: 'orange.main' }} size={20} />}
         disabled={loading || !isDirty}
         type="submit"
-        text={isEditing ? 'Update' : 'Post'}
+        text={loading ? loadingSubmitBtnText : submitBtnText}
         filled={!loading && !backBtnHover && isDirty}
         color="blue"
         sx={{ width: { xs: '50%', sm: '30%' }, py: 0.75 }}

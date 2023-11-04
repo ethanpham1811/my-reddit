@@ -2,8 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
 import useUserUpdate from '@/hooks/useUserUpdate'
-import { theme } from '@/mui/theme'
-import { Stack, useMediaQuery } from '@mui/material'
+import { Stack, useMediaQuery, useTheme } from '@mui/material'
 import { useState } from 'react'
 import { RdButton, RdChip } from '../..'
 
@@ -13,9 +12,10 @@ type TActionButton = {
 }
 
 function ActionButton({ name, subType }: TActionButton) {
+  const { breakpoints } = useTheme()
   const { session } = useAppSession()
   const me = session?.userDetail
-  const isMobile = useMediaQuery(theme.breakpoints.down('xl'))
+  const isMobile = useMediaQuery(breakpoints.down('xl'))
   const [showLeaveBtn, setShowLeaveBtn] = useState(false)
   const { updateUser } = useUserUpdate()
 

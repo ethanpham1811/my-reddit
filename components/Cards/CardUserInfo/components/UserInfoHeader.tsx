@@ -15,7 +15,7 @@ type TUserInfoHeaderProps<T extends FieldValues> = {
 function UserInfoHeader<T extends FieldValues>({ control, onSubmitField, user, isMe }: TUserInfoHeaderProps<T>) {
   return (
     <>
-      <Typography variant="h6" color="initial" fontWeight={700}>
+      <Typography variant="h6" color="black" fontWeight={700}>
         {isMe ? (
           <RdInlineInput<T>
             registerOptions={{ validate: (val) => fullNameValidation(val) }}

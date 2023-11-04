@@ -15,7 +15,7 @@ function MessageBoard({ head, highlight, tail, pt, hasLogin }: TMessageBoardProp
 
   return (
     <Box display="flex" justifyContent="center" pt={pt}>
-      <Typography variant="body1" color="initial" fontWeight={400}>
+      <Typography variant="body1" color="black" fontWeight={400}>
         {head}
         <Typography fontWeight={500} onClick={onLogin} sx={{ color: 'blue.main', cursor: hasLogin ? 'pointer' : 'auto' }}>
           {highlight}

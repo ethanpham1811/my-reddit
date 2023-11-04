@@ -30,7 +30,7 @@ function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarou
         autoPlay={false}
         navButtonsProps={{
           style: {
-            backgroundColor: '#fff'
+            backgroundColor: 'white.main'
           }
         }}
         indicatorContainerProps={{

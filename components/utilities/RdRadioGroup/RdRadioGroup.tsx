@@ -31,7 +31,10 @@ const RdRadioGroup = <T extends FieldValues>({ sx, options, name, control, label
         render={({ field: { onChange, value } }) => (
           <RadioGroup
             sx={{
-              '.MuiButtonBase-root': { alignSelf: { xs: 'flex-start', sm: 'center' }, pt: { xs: '2px', sm: '9px' } },
+              '.MuiButtonBase-root': {
+                alignSelf: { xs: 'flex-start', sm: 'center' },
+                pt: { xs: '2px', sm: '9px' }
+              },
               gap: { xs: 1, sm: 0 },
               ...sx
             }}

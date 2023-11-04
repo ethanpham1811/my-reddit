@@ -34,7 +34,7 @@ function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
           />
           <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
             {/* Description */}
-            <Typography variant="body1" color="initial" fontWeight={400}>
+            <Typography variant="body1" color="black" fontWeight={400}>
               {subreddit.description}
             </Typography>
             <Divider sx={{ my: 1 }} />
@@ -54,7 +54,7 @@ function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
             {/* Started since mmm/yyyy */}
             <Box display="flex" justifyContent="center" py={1} alignItems="center">
               <Typography sx={{ fontSize: '0.8rem', mr: '5px', color: 'hintText.main' }}>Started since</Typography>
-              <Typography variant="body1" color="initial" fontWeight={400}>
+              <Typography variant="body1" color="black" fontWeight={400}>
                 {subreddit.created_at && format(new Date(subreddit.created_at), 'MMM yyyy')}
               </Typography>
             </Box>

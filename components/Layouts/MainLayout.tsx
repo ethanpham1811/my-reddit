@@ -43,7 +43,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             toastOptions={{
               duration: 3000,
               style: {
-                background: '#fff',
+                background: 'white.main',
                 color: '#1A1A1B',
                 fontSize: '0.8rem'
               },

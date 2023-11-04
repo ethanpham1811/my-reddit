@@ -3,7 +3,7 @@ import { OutboundOutlinedIcon } from '@/constants/icons'
 import { TQueriedTrending } from '@/constants/types'
 import { blurBottomStyle } from '@/mui/styles'
 import { parseHtml } from '@/src/utils'
-import { Box, Divider, ListItem, Stack, Typography } from '@mui/material'
+import { Box, Divider, ListItem, Stack, Typography, useTheme } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { HTMLAttributes, useEffect, useRef, useState } from 'react'
@@ -16,15 +16,19 @@ type TTropTrendingOptionProps = {
 
 function TopTrendingOption({ option, props, url }: TTropTrendingOptionProps) {
   const { push: navigate } = useRouter()
+  const {
+    palette: { mode }
+  } = useTheme()
   const [bottomStyle, setBottomStyle] = useState({})
   const ref = useRef<HTMLDivElement>(null)
   const postFirsImgUrl: string | null = option?.images?.[0] ? `${process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL}/${option?.images?.[0]}` : null
+  const hoveredBtmBgcolor = mode === 'light' ? '#F6F7F8' : '#222 '
 
   /* if an item > 120px => blur out the overflow bottom part */
   useEffect(() => {
     if (!ref) return
     const exceededHeight: boolean = ref?.current?.offsetHeight ? ref?.current?.offsetHeight >= MAX_TOP_TRENDING_HEIGHT : false
-    setBottomStyle(exceededHeight ? blurBottomStyle('80px') : {})
+    setBottomStyle(exceededHeight ? blurBottomStyle('80px', mode, true) : {})
   }, [])
 
   return (
@@ -42,7 +46,7 @@ function TopTrendingOption({ option, props, url }: TTropTrendingOptionProps) {
           '&.Mui-focused.MuiAutocomplete-option, &.Mui-focusVisible.MuiAutocomplete-option': {
             bgcolor: 'inputBgOutfocused.main',
             '.blurred-bottom::after': {
-              background: 'linear-gradient(0deg, #F6F7F8 0%, #F6F7F8 30%, rgba(255,255,255,0) 100%)'
+              background: `linear-gradient(0deg, ${hoveredBtmBgcolor} 0%, ${hoveredBtmBgcolor} 30%, transparent 100%)`
             }
           }
         }}

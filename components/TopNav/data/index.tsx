@@ -1,8 +1,8 @@
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import {
   AccountCircleOutlinedIcon,
-  AddSharpIcon,
   CampaignOutlinedIcon,
+  DarkModeOutlinedIcon,
   InfoOutlinedIcon,
   NotificationsOutlinedIcon,
   OutboundOutlinedIcon,
@@ -14,10 +14,17 @@ import { TIconBox, TProfileDropDownList } from '@/constants/types'
 /* data tree for Notification Box */
 export const notiData: TIconBox[] = [
   {
+    icon: <DarkModeOutlinedIcon />,
+    name: 'Darkmode',
+    tooltip: 'Dark mode',
+    active: true
+  },
+  {
     icon: <OutboundOutlinedIcon />,
     name: 'Popular',
     tooltip: 'Top trending posts',
-    url: '/search'
+    url: '/search',
+    active: true
   },
   {
     icon: <SmsOutlinedIcon />,
@@ -36,11 +43,6 @@ export const notiData: TIconBox[] = [
       content: 999,
       max: 99
     },
-    tooltip: 'Work in progress'
-  },
-  {
-    icon: <AddSharpIcon />,
-    name: 'Create',
     hideOnMobile: true,
     tooltip: 'Work in progress'
   },
@@ -53,7 +55,7 @@ export const notiData: TIconBox[] = [
 ]
 
 /* data tree for Profile Menu Dropdown */
-export function buildProfileMenuData(username: string | undefined): TProfileDropDownList[] {
+export function buildProfileMenuData(username: string | undefined, options: { darkMode: boolean }): TProfileDropDownList[] {
   return [
     {
       name: 'Profile',
@@ -84,7 +86,7 @@ export function buildProfileMenuData(username: string | undefined): TProfileDrop
       value: 'mode',
       switcher: true,
       groupBy: 'View Options',
-      disabled: true,
+      checked: options.darkMode,
       groupIcon: PreviewOutlinedIcon
     },
     {

@@ -102,7 +102,7 @@ type Query {
           (SELECT array_agg(v) FROM "vote" v WHERE v."post_id" = p."id") AS "vote",
           (SELECT array_agg(c) FROM "comment" c WHERE c."post_id" = p."id") AS "comment"
         FROM "post" "p"
-        JOIN (
+        LEFT JOIN (
           SELECT
             "post_id",
             SUM(CASE WHEN "upvote" = true THEN 1 ELSE 0 END) - SUM(CASE WHEN "upvote" = false THEN 1 ELSE 0 END) AS "totalUpvotes"

@@ -28,7 +28,7 @@ function CardHomeInfo() {
         sx={{ p: 0, mt: -2.5 }}
       />
       <CardContent sx={{ p: 0 }}>
-        <Typography variant="body1" color="initial" fontWeight={400}>
+        <Typography variant="body1" color="black" fontWeight={400}>
           Your personal Reddit frontpage. Come here to check in with your favorite communities.
         </Typography>
       </CardContent>

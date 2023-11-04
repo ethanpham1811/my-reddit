@@ -50,14 +50,17 @@ export const OnlineDotStyle = styled(Badge)(({ theme }) => ({
 export const postHoverStyle = (postId?: string | null | undefined) => ({
   '&:hover': !postId ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {}
 })
-export const blurBottomStyle = (height: string) => ({
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    height,
-    width: '100%',
-    background: 'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,0) 100%)'
+export const blurBottomStyle = (height: string, mode: 'light' | 'dark', isTopNav?: boolean) => {
+  const bgColor = mode === 'light' ? '#fff' : isTopNav ? '#000' : '#121212'
+  return {
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      height,
+      width: '100%',
+      background: `linear-gradient(0deg, ${bgColor} 0%, 0%, ${bgColor} 30%, transparent 100%)`
+    }
   }
-})
+}

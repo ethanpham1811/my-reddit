@@ -12,7 +12,7 @@ function IsChildrenGroupCheckbox<T extends FieldValues>({ name, control }: IsChi
   return (
     <FormControl>
       <FormLabel id={`${name}-radio-group`} sx={{ '&.Mui-focused': { color: 'black' }, color: 'black' }}>
-        <Typography variant="h5" sx={{ mt: 2 }}>
+        <Typography variant="h5" sx={{ mt: 2, color: 'black.main' }}>
           Children content
         </Typography>
       </FormLabel>

@@ -5,7 +5,7 @@ import { generateSeededHexColor, generateUserCover, generateUserImage } from '..
 import ActionButton from './components/ActionButton'
 
 const SubredditNavBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: '#fff',
+  backgroundColor: theme.palette.white.main,
   boxShadow: 'none',
   position: 'static'
 }))

@@ -1,10 +1,11 @@
+import { ColorModeContext } from '@/components/Layouts/MuiLayout'
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { TProfileDropDownList } from '@/constants/types'
 import { Events, eventEmitter } from '@/src/eventEmitter'
 import { Divider, List, MenuItem, Stack, SvgIconTypeMap, Switch } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import Link from 'next/link'
-import { Dispatch, SetStateAction, createElement } from 'react'
+import { Dispatch, SetStateAction, createElement, useContext } from 'react'
 import { v4 as rid } from 'uuid'
 import ProfileGroupHeader from '../components/ProfileGroupHeader'
 
@@ -17,15 +18,22 @@ type TProfileMenuProps = {
 }
 
 function ProfileMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDialog, ...rest }: TProfileMenuProps) {
+  const { toggleColorMode } = useContext(ColorModeContext)
+
   /* fire event to open create community drawer (only for Create Community Option) */
   function onCreateCommunity() {
     eventEmitter.dispatch(Events.OPEN_CREATE_COMMUNITY_DRAWER, true)
   }
 
+  /* fire event to open create community drawer (only for Create Community Option) */
+  function onSwitchDarkMode() {
+    toggleColorMode()
+  }
+
   return (
     <List key={`profile_menu_${rid()}`}>
       <ProfileGroupHeader label={group} groupIcon={groupIcon} />
-      {menuItems.map(({ name, value, switcher, url, disabled, dialog, onClick }) => (
+      {menuItems.map(({ name, value, switcher, url, disabled, dialog, onClick, checked }) => (
         <MenuItem
           disabled={disabled}
           key={`profile_menu_item_${rid()}`}
@@ -47,9 +55,13 @@ function ProfileMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDial
             </Link>
           ) : (
             <Stack
-              onClick={() => {
+              onClick={(e) => {
                 if (onClick) {
                   value === 'createCommunity' && onCreateCommunity()
+                }
+                if (switcher) {
+                  e.stopPropagation()
+                  value === 'mode' && onSwitchDarkMode()
                 }
 
                 if (dialog) {
@@ -61,7 +73,14 @@ function ProfileMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDial
               sx={{ alignItems: 'center', p: '6px 16px', display: 'flex', flex: '1' }}
             >
               {name || 'unknown'}
-              {switcher && createElement(Switch, { sx: { ml: 'auto', '.Mui-checked+.MuiSwitch-track': { opacity: 1, bgcolor: 'orange.main' } } })}
+              {switcher &&
+                createElement(Switch, {
+                  checked,
+                  sx: {
+                    ml: 'auto',
+                    '.Mui-checked': { '.MuiSwitch-thumb': { color: 'orange.main' }, '&+.MuiSwitch-track': { opacity: 1 } }
+                  }
+                })}
             </Stack>
           )}
         </MenuItem>

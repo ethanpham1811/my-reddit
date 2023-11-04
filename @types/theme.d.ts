@@ -10,7 +10,10 @@ declare module '@mui/material/styles' {
     inputText: Palette['primary']
     cardBorder: Palette['primary']
     hintText: Palette['primary']
+    cardBg: Palette['primary']
+    tinyEditor: Palette['primary']
     white: Palette['primary']
+    black: Palette['primary']
     blue: Palette['primary']
     lightblue: Palette['primary']
     orange: Palette['primary']
@@ -24,7 +27,10 @@ declare module '@mui/material/styles' {
     inputText?: PaletteOptions['primary']
     cardBorder?: PaletteOptions['primary']
     hintText?: PaletteOptions['primary']
+    cardBg?: PaletteOptions['primary']
+    tinyEditor?: PaletteOptions['primary']
     white?: PaletteOptions['primary']
+    black?: PaletteOptions['primary']
     blue?: PaletteOptions['primary']
     lightblue?: PaletteOptions['primary']
     orange?: PaletteOptions['primary']
@@ -32,6 +38,7 @@ declare module '@mui/material/styles' {
   }
   interface PaletteColor {
     white?: string
+    black?: string
     blue?: string
     orange?: string
     green?: string
@@ -39,6 +46,7 @@ declare module '@mui/material/styles' {
 
   interface SimplePaletteColorOptions {
     white?: string
+    black?: string
     blue?: string
     orange?: string
     green?: string

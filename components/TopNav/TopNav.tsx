@@ -1,14 +1,13 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { MOBILE_CUSTOM_BREAKPOINT } from '@/constants/enums'
-import { theme } from '@/mui/theme'
-import { AppBar, Box, Stack, styled, useMediaQuery } from '@mui/material'
+import { AppBar, Box, Stack, styled, useMediaQuery, useTheme } from '@mui/material'
 import { useRouter } from 'next/router'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
 import LoginButton from './LoginButton/LoginButton'
 
 const NavBar = styled(AppBar)(({ theme }) => {
   return {
-    backgroundColor: '#fff',
+    backgroundColor: theme.palette.white.main,
     boxShadow: 'none',
     padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`
   }
@@ -16,13 +15,14 @@ const NavBar = styled(AppBar)(({ theme }) => {
 
 function TopNav({ sessionUsername }: { sessionUsername: string | undefined }) {
   const { session, loading } = useAppSession()
+  const { breakpoints } = useTheme()
   const router = useRouter()
   const {
     query: { subreddit: subName, username },
     pathname: pathName,
     push: navigate
   } = router
-  const xlMobile = useMediaQuery(theme.breakpoints.down('lg'))
+  const xlMobile = useMediaQuery(breakpoints.down('lg'))
   const lgMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Lg)
   const mdMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Md)
 

@@ -30,7 +30,6 @@ function PostHeader({ subName, username, createdAt }: TPostHeader) {
                 height: 20,
                 mr: 0.5,
                 backgroundColor: generateSeededHexColor(subName)
-                // border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
               }}
               alt={subName}
               src={generateUserImage(subName)}

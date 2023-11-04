@@ -17,7 +17,7 @@ const ISGFallBack = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: 'white.main'
       }}
     >
       <Box display="flex" justifyContent="center" py={4} flexDirection="column" gap={2}>
