@@ -1,10 +1,13 @@
 import { SecurityOutlinedIcon } from '@/constants/icons'
-import { CardActions, CardHeader } from '@mui/material'
+import { CardActions, CardHeader, useMediaQuery, useTheme } from '@mui/material'
 import { useState } from 'react'
-import { RdButton, RdCard } from '../..'
+import { RdButton, RdCard, RdDrawer } from '../..'
+import CardPayment from '../CardPayment/CardPayment'
 
 function CardAds() {
-  const [isOpenDialog, setIsOpenDialog] = useState(false)
+  const { breakpoints } = useTheme()
+  const isMobile = useMediaQuery(breakpoints.down('sm'))
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false)
 
   return (
     <RdCard>
@@ -25,11 +28,13 @@ function CardAds() {
         subheader="The best Reddit experience"
       />
       <CardActions sx={{ p: 0, pt: 0.5 }}>
-        <RdButton onClick={() => setIsOpenDialog(true)} filled text={'Try Now'} invertColor />
+        <RdButton onClick={() => setIsOpenDrawer(true)} filled text={'Try Now'} invertColor />
       </CardActions>
-      {/* <RdDialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
+
+      {/* Left drawer (Premium registration form) */}
+      <RdDrawer disableScrollLock={!isMobile} anchor="left" open={isOpenDrawer} setOpen={setIsOpenDrawer}>
         <CardPayment />
-      </RdDialog> */}
+      </RdDrawer>
     </RdCard>
   )
 }

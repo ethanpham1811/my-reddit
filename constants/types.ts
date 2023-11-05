@@ -2,7 +2,7 @@ import { AutocompleteProps, PaletteOptions, SelectChangeEvent, SelectProps, SvgI
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from '@supabase/supabase-js'
 import { Dayjs } from 'dayjs'
-import { Dispatch, ReactNode, SetStateAction } from 'react'
+import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldError, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
 import { MAIN_MENU_GROUP, ORDERING, PROFILE_DIALOG_TYPE, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
 
@@ -280,6 +280,14 @@ export type TProfileDropDownList = {
 }
 export type TEditModePayload = Pick<TCardCreatePostForm, 'title' | 'body' | 'link' | 'linkDescription'> & {
   images: string[] | undefined
+}
+
+/* --------------------------------------------- Data Types---------------------------------------------- */
+
+export type TStepperData = {
+  stepLabel: string
+  component: string
+  checkStatus?: boolean
 }
 
 /* --------------------------------------------- Query Types---------------------------------------------- */

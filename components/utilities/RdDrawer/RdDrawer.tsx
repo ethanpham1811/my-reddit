@@ -1,12 +1,12 @@
-import Drawer from '@mui/material/Drawer'
+import Drawer, { DrawerProps } from '@mui/material/Drawer'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 
-type TRdDrawerProps = {
+type TRdDrawerProps = DrawerProps & {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
   children: ReactNode
 }
-function RdDrawer({ open, setOpen, children }: TRdDrawerProps) {
+function RdDrawer({ open, setOpen, children, ...rest }: TRdDrawerProps) {
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')) {
       return
@@ -16,7 +16,7 @@ function RdDrawer({ open, setOpen, children }: TRdDrawerProps) {
 
   return (
     <div>
-      <Drawer disableScrollLock anchor="right" open={open} onClose={toggleDrawer(false)}>
+      <Drawer open={open} onClose={toggleDrawer(false)} {...rest}>
         {children}
       </Drawer>
     </div>

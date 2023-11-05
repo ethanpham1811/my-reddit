@@ -8,6 +8,7 @@ import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined'
 import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined'
 import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined'
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined'
+import CheckIcon from '@mui/icons-material/Check'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CloseIcon from '@mui/icons-material/Close'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
@@ -60,6 +61,7 @@ export {
   CakeOutlinedIcon,
   CampaignOutlinedIcon,
   CheckCircleIcon,
+  CheckIcon,
   CloseIcon,
   CreateOutlinedIcon,
   DarkModeOutlinedIcon,

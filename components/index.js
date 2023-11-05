@@ -25,6 +25,7 @@ import MenuDropDown from './TopNav/MenuDropDown/MenuDropDown'
 import ProfileDropdown from './TopNav/ProfileDropdown/ProfileDropdown'
 import SearchBar from './TopNav/SearchBar/SearchBar'
 import TopNav from './TopNav/TopNav'
+import RdAdItem from './utilities/RdAdItem/RdAdItem'
 import RdAutoComplete from './utilities/RdAutoComplete/RdAutoComplete'
 import RdButton from './utilities/RdButton/RdButton'
 import RdCard from './utilities/RdCard/RdCard'
@@ -44,8 +45,9 @@ import RdInlineInput from './utilities/RdInput/RdInlineInput'
 import RdInput from './utilities/RdInput/RdInput'
 import RdMultipleDropdown from './utilities/RdMultipleDropdown/RdMultipleDropdown'
 import RdNotiBubble from './utilities/RdNotiBubble/RdNotiBubble'
+import RdPaypalForm from './utilities/RdPaypalForm/RdPaypalForm'
+import RdPricing from './utilities/RdPricing/RdPricing'
 import RdRadioGroup from './utilities/RdRadioGroup/RdRadioGroup'
-import RdStripeForm from './utilities/RdStripeForm/RdStripeForm'
 import RdSubredditSelect from './utilities/RdSubredditSelect/RdSubredditSelect'
 import RdTextEditor from './utilities/RdTextEditor/RdTextEditor'
 import RdToast from './utilities/RdToast/RdToast'
@@ -72,6 +74,7 @@ export {
   MessageBoard,
   NewFeeds,
   ProfileDropdown,
+  RdAdItem,
   RdAutoComplete,
   RdButton,
   RdCard,
@@ -91,8 +94,9 @@ export {
   RdInput,
   RdMultipleDropdown,
   RdNotiBubble,
+  RdPaypalForm,
+  RdPricing,
   RdRadioGroup,
-  RdStripeForm,
   RdSubredditSelect,
   RdTextEditor,
   RdToast,

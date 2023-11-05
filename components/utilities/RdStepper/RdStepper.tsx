@@ -1,108 +1,86 @@
+import { TStepperData } from '@/constants/types'
+import { Divider, Stack } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Step from '@mui/material/Step'
 import StepButton from '@mui/material/StepButton'
 import Stepper from '@mui/material/Stepper'
 import Typography from '@mui/material/Typography'
-import * as React from 'react'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
 
-const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad']
+type TRdStepperProps = {
+  steps: TStepperData[]
+  renderStepContent: (activeStep: number) => ReactNode
+  activeStep: number
+  stepFinished: boolean
+  setActiveStep: Dispatch<SetStateAction<number>>
+}
 
-const RdStepper = () => {
-  const [activeStep, setActiveStep] = React.useState(0)
-  const [completed, setCompleted] = React.useState<{
-    [k: number]: boolean
-  }>({})
+const RdStepper = ({ steps, activeStep, setActiveStep, renderStepContent, stepFinished }: TRdStepperProps) => {
+  const totalSteps: number = steps?.length || 0
+  const isLastStep: boolean = activeStep === totalSteps
+  const isFirststep: boolean = activeStep === 1
 
-  const totalSteps = () => {
-    return steps.length
-  }
-
-  const completedSteps = () => {
-    return Object.keys(completed).length
-  }
-
-  const isLastStep = () => {
-    return activeStep === totalSteps() - 1
-  }
-
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps()
-  }
-
-  const handleNext = () => {
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1
-    setActiveStep(newActiveStep)
-  }
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1)
-  }
-
-  const handleStep = (step: number) => () => {
-    setActiveStep(step)
-  }
-
-  const handleComplete = () => {
-    const newCompleted = completed
-    newCompleted[activeStep] = true
-    setCompleted(newCompleted)
-    handleNext()
-  }
-
-  const handleReset = () => {
-    setActiveStep(0)
-    setCompleted({})
-  }
+  const handleNext = () => !isLastStep && setActiveStep((prevStep) => prevStep + 1)
+  const handleBack = () => !isFirststep && stepFinished && setActiveStep((prevStep) => prevStep - 1)
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Stepper nonLinear activeStep={activeStep}>
-        {steps.map((label, index) => (
-          <Step key={label} completed={completed[index]}>
-            <StepButton color="inherit" onClick={handleStep(index)}>
-              {label}
+    <Box sx={{ width: '100%', height: '100%' }} display="flex" flexDirection="column">
+      {/* header indicator */}
+      <Stepper nonLinear activeStep={activeStep - 1}>
+        {steps?.map(({ stepLabel }, index) => (
+          <Step key={stepLabel} completed={index + 1 < activeStep}>
+            <StepButton
+              disableRipple
+              disabled
+              sx={{
+                '.Mui-completed': {
+                  svg: {
+                    color: 'orange.main'
+                  }
+                },
+                '.Mui-active': {
+                  svg: {
+                    borderRadius: '999px',
+                    border: '2px solid',
+                    borderColor: 'orange.main',
+                    color: 'white.main',
+                    '.MuiStepIcon-text': { color: 'white.main' }
+                  }
+                },
+                svg: { color: 'primary.main' }
+              }}
+            >
+              {stepLabel}
             </StepButton>
           </Step>
         ))}
       </Stepper>
-      <div>
-        {allStepsCompleted() ? (
-          <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Box sx={{ flex: '1 1 auto' }} />
-              <Button onClick={handleReset}>Reset</Button>
-            </Box>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1, py: 1 }}>Step {activeStep + 1}</Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
-                Back
-              </Button>
-              <Box sx={{ flex: '1 1 auto' }} />
-              <Button onClick={handleNext} sx={{ mr: 1 }}>
-                Next
-              </Button>
-              {activeStep !== steps.length &&
-                (completed[activeStep] ? (
-                  <Typography variant="caption" sx={{ display: 'inline-block' }}>
-                    Step {activeStep + 1} already completed
-                  </Typography>
-                ) : (
-                  <Button onClick={handleComplete}>{completedSteps() === totalSteps() - 1 ? 'Finish' : 'Complete Step'}</Button>
-                ))}
-            </Box>
-          </React.Fragment>
-        )}
-      </div>
+      <Divider sx={{ mt: 4, mb: 2 }} />
+
+      {/* dynamic step content */}
+      <Typography sx={{ mb: 2 }} variant="subtitle2" fontSize="1rem" textAlign="center">
+        {steps[activeStep - 1]?.stepLabel}
+      </Typography>
+      <Box display="flex" my="auto">
+        {renderStepContent(activeStep)}
+      </Box>
+
+      {/* bottom navigation */}
+      <Box mt="auto">
+        <Divider sx={{ mt: 4 }} />
+        <Stack>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, pb: 3 }}>
+            <Button disabled={isFirststep} color="orange" onClick={handleBack} sx={{ mr: 1 }}>
+              Back
+            </Button>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button disabled={isLastStep || !stepFinished} color="orange" onClick={handleNext} sx={{ mr: 1 }}>
+              Next
+            </Button>
+          </Box>
+        </Stack>
+      </Box>
     </Box>
   )
 }

@@ -2,7 +2,7 @@ import { CheckCircleIcon } from '@/constants/icons'
 import { TAppSession } from '@/constants/types'
 import useCommunityDrawer from '@/hooks/useCommunityDrawer'
 import useUserDetailForSession from '@/hooks/useUserDetailForSession'
-import { Box } from '@mui/material'
+import { Box, useMediaQuery, useTheme } from '@mui/material'
 import { Jelly } from '@uiball/loaders'
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { ErrorIcon, Toaster } from 'react-hot-toast'
@@ -16,6 +16,8 @@ export const AppContext = createContext<{ session: TAppSession; loading: boolean
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const [appSession, loading, sessionUsername] = useUserDetailForSession()
+  const { breakpoints } = useTheme()
+  const isMobile = useMediaQuery(breakpoints.down('sm'))
   const [isAppLoading, setIsAppLoading] = useState(true)
   const [isDrawerOpened, setIsDrawerOpened] = useCommunityDrawer()
 
@@ -61,7 +63,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           />
 
           {/* Right drawer (Community creation form) */}
-          <RdDrawer open={isDrawerOpened} setOpen={setIsDrawerOpened}>
+          <RdDrawer disableScrollLock={!isMobile} anchor="right" open={isDrawerOpened} setOpen={setIsDrawerOpened}>
             <CommunityCreator setOpen={setIsDrawerOpened} />
           </RdDrawer>
         </Box>
