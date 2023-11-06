@@ -1,7 +1,7 @@
 import { RdDatePicker } from '@/components'
 import { Brightness5OutlinedIcon, CakeOutlinedIcon } from '@/constants/icons'
 import { TUserDetail } from '@/constants/types'
-import { Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@/mui'
 import format from 'date-fns/format'
 import { Dayjs } from 'dayjs'
 import { Control, FieldValues, Path, RegisterOptions } from 'react-hook-form'

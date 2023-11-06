@@ -1,7 +1,6 @@
 import { TComment, TVote } from '@/constants/types'
-
+import { Stack, Typography } from '@/mui'
 import { getTotalUpvote } from '@/src/utils'
-import { Stack, Typography } from '@mui/material'
 
 /**
  * Bottom bar of postItem with "Vote counter" and "Comment counter"

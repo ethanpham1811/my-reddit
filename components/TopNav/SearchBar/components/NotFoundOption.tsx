@@ -1,5 +1,5 @@
 import { TQueryNotFound } from '@/constants/types'
-import { ListItem, Typography } from '@mui/material'
+import { ListItem, Typography } from '@/mui'
 import { HTMLAttributes } from 'react'
 
 function NotFoundOption({ option, props }: { option: TQueryNotFound; props: HTMLAttributes<HTMLLIElement> }) {

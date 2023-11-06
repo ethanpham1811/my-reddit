@@ -1,6 +1,6 @@
 import { KeyboardArrowDownIcon } from '@/constants/icons'
 import { TRdMultipleDropdownProps } from '@/constants/types'
-import { Box, FormHelperText, Select } from '@mui/material'
+import { Box, FormHelperText, Select } from '@/mui'
 import { ReactNode, useState } from 'react'
 import { v4 as rid } from 'uuid'
 

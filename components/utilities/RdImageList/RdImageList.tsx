@@ -1,4 +1,5 @@
-import { ImageList, ImageListItem, ImageListOwnProps, Stack } from '@mui/material'
+import { ImageList, ImageListItem, Stack } from '@/mui'
+import { ImageListOwnProps } from '@mui/material/ImageList'
 import Image from 'next/image'
 import { memo } from 'react'
 import { v4 as rid } from 'uuid'

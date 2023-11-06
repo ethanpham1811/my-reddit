@@ -1,9 +1,8 @@
-import { AutocompleteRenderInputParams, Avatar, Stack, TextField } from '@mui/material'
-
 import { RdChip } from '@/components'
-import { HighlightOffOutlinedIcon } from '@/constants/icons'
+import { HighlightOffOutlinedIcon, SearchIcon } from '@/constants/icons'
+import { Avatar, Stack, TextField } from '@/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
-import SearchIcon from '@mui/icons-material/Search'
+import { AutocompleteRenderInputParams } from '@mui/material/Autocomplete'
 import { Dispatch, SetStateAction } from 'react'
 
 type TInputProps = {

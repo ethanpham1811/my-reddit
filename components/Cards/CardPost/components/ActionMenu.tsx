@@ -1,7 +1,7 @@
 import { RdDialog, RdIconSelect } from '@/components'
 import { MoreHorizIcon } from '@/constants/icons'
 import { TSelectOption } from '@/constants/types'
-import usePostDelete from '@/hooks/usePostDelete'
+import { usePostDelete } from '@/hooks'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import CardConfirm from '../../CardConfirm/CardConfirm'

@@ -1,4 +1,4 @@
-import { Skeleton, Stack } from '@mui/material'
+import { Skeleton, Stack } from '@/mui'
 
 export function RdSkeleton({ height = '25px' }: { height?: string }) {
   return (

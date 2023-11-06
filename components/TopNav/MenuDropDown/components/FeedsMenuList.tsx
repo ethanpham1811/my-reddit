@@ -1,6 +1,6 @@
 import { MAIN_MENU_GROUP } from '@/constants/enums'
 import { TMenuItem } from '@/constants/types'
-import { ListItemText, MenuItem } from '@mui/material'
+import { ListItemText, MenuItem } from '@/mui'
 import Link from 'next/link'
 import { createElement } from 'react'
 import { v4 as rid } from 'uuid'

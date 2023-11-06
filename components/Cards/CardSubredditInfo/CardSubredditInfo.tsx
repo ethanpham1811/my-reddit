@@ -1,7 +1,7 @@
 import { RdSkeleton } from '@/components/Skeletons'
 import { TSubredditDetail } from '@/constants/types'
+import { Box, CardContent, CardHeader, Divider, Typography } from '@/mui'
 import { formatNumber, generateSeededHexColor } from '@/src/utils'
-import { Box, CardContent, CardHeader, Divider, Typography } from '@mui/material'
 import { format } from 'date-fns'
 import { RdCard } from '../..'
 import SubredditButtons from './components/SubredditButtons'

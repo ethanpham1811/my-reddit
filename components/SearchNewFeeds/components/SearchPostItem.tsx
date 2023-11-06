@@ -1,8 +1,7 @@
-import { TQueriedPost } from '@/constants/types'
-import { blurBottomStyle, postHoverStyle } from '@/mui/styles'
-
 import { MAX_NEW_FEEDS_POST_HEIGHT } from '@/constants/enums'
-import { Divider, Stack, useTheme } from '@mui/material'
+import { TQueriedPost } from '@/constants/types'
+import { Divider, Stack, useTheme } from '@/mui'
+import { blurBottomStyle, postHoverStyle } from '@/mui/styles'
 import { useRouter } from 'next/router'
 import { Fragment, useRef } from 'react'
 import SearchPostItemBody from './SearchPostItemBody'
@@ -11,7 +10,9 @@ import SearchPostItemHeader from './SearchPostItemHeader'
 
 function SearchPostItem({ item }: { item: TQueriedPost }) {
   const { push: navigate } = useRouter()
-  const { palette: {mode} } = useTheme()
+  const {
+    palette: { mode }
+  } = useTheme()
   const {
     id,
     title,

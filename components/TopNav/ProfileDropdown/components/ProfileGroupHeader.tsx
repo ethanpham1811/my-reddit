@@ -1,4 +1,5 @@
-import { ListSubheader, SvgIconTypeMap, Typography } from '@mui/material'
+import { ListSubheader, Typography } from '@/mui'
+import { SvgIconTypeMap } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { createElement } from 'react'
 

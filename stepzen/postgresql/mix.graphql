@@ -28,6 +28,7 @@ type QueriedPost {
   link: String
   linkDescription: String
   totalItems: Int
+  totalUpvotes: Int
 }
 
 type QueriedSub {
@@ -85,7 +86,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      WITH "posts" AS (
+          WITH "posts" AS (
         SELECT
           p."id",
           p."title",
@@ -96,7 +97,7 @@ type Query {
           p."link",
           p."linkDescription",
           p."user_id",
-          "subquery"."totalUpvotes",
+          COALESCE("subquery"."totalUpvotes", 0) AS "totalUpvotes",
           (SELECT COUNT(*) FROM "comment" WHERE "post_id" = p."id") AS "totalComments",
           'Post' AS "groupBy",
           (SELECT array_agg(v) FROM "vote" v WHERE v."post_id" = p."id") AS "vote",

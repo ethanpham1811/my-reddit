@@ -1,6 +1,6 @@
 import { TFetchMoreArgs } from '@/constants/types'
+import { Box, Stack, Typography } from '@/mui'
 import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
-import { Box, Stack, Typography } from '@mui/material'
 import { Jelly } from '@uiball/loaders'
 import { useEffect, useRef, useState } from 'react'
 

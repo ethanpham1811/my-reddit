@@ -1,5 +1,5 @@
 import { SEARCH_TABS } from '@/constants/enums'
-import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
+import { ToggleButton, ToggleButtonGroup, Typography } from '@/mui'
 import { useRouter } from 'next/router'
 import { v4 as rid } from 'uuid'
 import { tabList } from '../data'

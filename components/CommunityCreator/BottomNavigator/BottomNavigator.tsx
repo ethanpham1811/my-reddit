@@ -1,5 +1,5 @@
 import { RdButton } from '@/components'
-import { CircularProgress, Paper } from '@mui/material'
+import { CircularProgress, Paper } from '@/mui'
 import { Dispatch, SetStateAction } from 'react'
 
 type TBottomNavigatorProps = {

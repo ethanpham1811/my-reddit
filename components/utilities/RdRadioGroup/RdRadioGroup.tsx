@@ -1,7 +1,4 @@
-import FormControl from '@mui/material/FormControl'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormLabel from '@mui/material/FormLabel'
-import Radio from '@mui/material/Radio'
+import { FormControl, FormControlLabel, FormLabel, Radio } from '@/mui'
 import RadioGroup, { RadioGroupProps } from '@mui/material/RadioGroup'
 import { Control, Controller, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 import { v4 as rid } from 'uuid'

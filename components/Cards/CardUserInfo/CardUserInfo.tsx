@@ -1,19 +1,14 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { TCardUserInfoForm, TCardUserInfoProps } from '@/constants/types'
-import useUserUpdate from '@/hooks/useUserUpdate'
-import { CardContent, Divider } from '@mui/material'
+import { useUserUpdate } from '@/hooks'
+import { CardContent, Divider } from '@/mui'
 import { Dayjs } from 'dayjs'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { RdCard, RdToast } from '../..'
-import UserButtons from './components/UserButtons'
-import UserInfoEmail from './components/UserInfoEmail'
-import UserInfoExtra from './components/UserInfoExtra'
-import UserInfoFollower from './components/UserInfoFollower'
-import UserInfoHeader from './components/UserInfoHeader'
-import UserInfoMedia from './components/UserInfoMedia'
+import { UserButtons, UserInfoEmail, UserInfoExtra, UserInfoFollower, UserInfoHeader, UserInfoMedia } from './components/'
 
 function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   const { control, setValue, getValues, handleSubmit, clearErrors } = useForm<TCardUserInfoForm>()

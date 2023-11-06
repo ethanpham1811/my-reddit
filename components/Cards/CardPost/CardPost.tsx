@@ -2,7 +2,7 @@ import { CardCommentBox, CardCreatePost as CardEditPost, RdCard } from '@/compon
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { OPTIMISTIC_TEMP_ID, POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardPostProps, TUserDetail } from '@/constants/types'
-import { Stack } from '@mui/material'
+import { Stack } from '@/mui'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import ActionMenu from './components/ActionMenu'

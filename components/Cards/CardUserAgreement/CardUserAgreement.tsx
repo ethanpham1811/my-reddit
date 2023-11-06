@@ -1,5 +1,5 @@
 import { RdButton, RdCard } from '@/components'
-import { Divider, List, ListItem, Stack, Typography } from '@mui/material'
+import { Divider, List, ListItem, Stack, Typography } from '@/mui'
 import { Dispatch, SetStateAction } from 'react'
 
 function CardUserAgreement({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) {

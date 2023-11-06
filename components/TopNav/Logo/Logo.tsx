@@ -1,7 +1,7 @@
+import { Box, useTheme } from '@/mui'
 import logoMobileUrl from '@/public/logo-mobile.png'
 import logoUrl from '@/public/logo.png'
 import logoDarkUrl from '@/public/logo_dark.png'
-import { Box, useTheme } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
 

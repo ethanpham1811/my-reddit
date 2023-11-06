@@ -1,5 +1,6 @@
 import { CheckIcon } from '@/constants/icons'
-import { Divider, List, ListItem, Stack, StackProps, Typography } from '@mui/material'
+import { Divider, List, ListItem, Stack, Typography } from '@/mui'
+import { StackProps } from '@mui/material/Stack'
 
 type TRdAdItemProps = StackProps & {
   title: string

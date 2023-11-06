@@ -341,6 +341,7 @@ export const GET_SEARCHED_RESULTS = gql`
       }
       groupBy
       totalItems
+      totalUpvotes
     }
     queriedSubs(offset: $offset, limit: $limit, term: $term) {
       id

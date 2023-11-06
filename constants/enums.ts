@@ -8,6 +8,13 @@ export const DEFAULT_BUTTON_COLOR = 'orange'
 export const BUCKET = 'post_images'
 export const BUCKET_SUBFOLDER = 'public'
 export const UPDATE_USER_ARRAY_KEY = ['member_of_ids', 'following_ids', 'socialLinks']
+export enum NOTI_BOX_NAME {
+  Darkmode = 'Darkmode',
+  Popular = 'Popular',
+  Chat = 'Chat',
+  Notification = 'Notification',
+  Guide = 'Guide'
+}
 export enum POST_MUTATION_MODE {
   Create = 'create',
   Edit = 'edit'

@@ -1,6 +1,6 @@
 import { TUserDetail } from '@/constants/types'
+import { Box, Typography } from '@/mui'
 import { formatNumber } from '@/src/utils'
-import { Box, Typography } from '@mui/material'
 
 function UserInfoFollower({ user }: { user: TUserDetail | null }) {
   return (

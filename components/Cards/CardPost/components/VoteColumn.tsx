@@ -1,10 +1,8 @@
 import { ImArrowDown, ImArrowUp } from '@/constants/icons'
 import { TUserDetail, TVote } from '@/constants/types'
-import useVoteAdd from '@/hooks/useVoteAdd'
-import useVoteDelete from '@/hooks/useVoteDelete'
-import useVoteUpdate from '@/hooks/useVoteUpdate'
+import { useVoteAdd, useVoteDelete, useVoteUpdate } from '@/hooks'
+import { Box, IconButton, Stack, Typography } from '@/mui'
 import { getTotalUpvote } from '@/src/utils'
-import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { MouseEvent, useState } from 'react'
 
 type TVoteColumn = {
@@ -53,11 +51,11 @@ function VoteColumn({ vote: votes, me, postId, isMyPost, loadedInPostPage }: TVo
   return (
     <Box width={40} m={-1} mb={isMyPost && loadedInPostPage ? 0 : -1} bgcolor="inputBgOutfocused.main">
       <Stack alignItems="center">
-        <IconButton onClick={(e) => handleVote(e, true)}>
+        <IconButton sx={{ cursor: loading || !me ? 'auto' : 'pointer' }} disableRipple={loading || !me} onClick={(e) => handleVote(e, true)}>
           <ImArrowUp style={{ color: `${vote != null && vote.upvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
         <Typography>{voteCount}</Typography>
-        <IconButton onClick={(e) => handleVote(e, false)}>
+        <IconButton sx={{ cursor: loading || !me ? 'auto' : 'pointer' }} disableRipple={loading || !me} onClick={(e) => handleVote(e, false)}>
           <ImArrowDown style={{ color: `${vote != null && !vote.upvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
       </Stack>

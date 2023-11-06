@@ -1,6 +1,6 @@
 import { TMenuItem } from '@/constants/types'
+import { Avatar, Box } from '@/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
-import { Avatar, Box } from '@mui/material'
 import { ReactNode, createElement } from 'react'
 
 export const renderSelectedOption = (

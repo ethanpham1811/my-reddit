@@ -1,6 +1,6 @@
+import { Avatar, Box } from '@/mui'
 import { OnlineDotStyle } from '@/mui/styles'
 import { generateUserImage } from '@/src/utils'
-import { Avatar, Box } from '@mui/material'
 import Link from 'next/link'
 
 function AvatarColumn({ userName }: { userName: string | undefined }) {

@@ -1,6 +1,6 @@
 import { TRdAutoCompleteProps } from '@/constants/types'
+import { Autocomplete } from '@/mui'
 import { borderColorStyle } from '@/mui/styles'
-import { Autocomplete } from '@mui/material'
 
 function RdAutoComplete<
   OptionType,

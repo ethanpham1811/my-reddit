@@ -1,5 +1,5 @@
 import { BORDER_TYPES } from '@/constants/enums'
-import { FormControl, FormLabel, Stack, Typography } from '@mui/material'
+import { FormControl, FormLabel, Stack, Typography } from '@/mui'
 import { Control, FieldPath, FieldValues } from 'react-hook-form'
 import { RdCheckbox } from '../..'
 import RdChip from '../../utilities/RdChip/RdChip'

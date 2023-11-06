@@ -1,5 +1,5 @@
 import { RdPaypalForm } from '@/components'
-import { Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@/mui'
 
 type TPaymentCheckoutProps = {
   amount: number | null

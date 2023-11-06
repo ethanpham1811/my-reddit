@@ -1,7 +1,7 @@
 import { TQueriedSub, TQueriedUser } from '@/constants/types'
+import { Avatar, Box, ListItem, Stack, Typography } from '@/mui'
 import { isQueriedSub } from '@/src/typeCheck'
 import { formatNumber, generateSeededHexColor, generateUserImage } from '@/src/utils'
-import { Avatar, Box, ListItem, Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { HTMLAttributes } from 'react'
 

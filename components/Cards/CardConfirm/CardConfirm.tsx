@@ -1,5 +1,5 @@
 import { RdButton, RdCard } from '@/components'
-import { Divider, Stack, Typography } from '@mui/material'
+import { Divider, Stack, Typography } from '@/mui'
 import { Dispatch, SetStateAction } from 'react'
 
 type TCardConfirmProps = {

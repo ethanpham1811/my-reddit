@@ -2,9 +2,10 @@ import { MessageBoard } from '@/components'
 import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TComment } from '@/constants/types'
+import { Avatar, Box, Stack } from '@/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
-import { Avatar, Box, Link, Stack } from '@mui/material'
 import { orderBy } from 'lodash'
+import Link from 'next/link'
 import { useState } from 'react'
 import Comment from './Comment'
 
@@ -29,7 +30,7 @@ function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
         orderBy(commentList.filter(filterByTerm), SORT_METHOD.New, ORDERING.Desc).map(({ id, text, user: { username }, created_at }) => (
           <Stack sx={{ pt: 5 }} direction="row" key={`comment_by_user_${username}_${id}`}>
             {/* side column */}
-            <Box width={40} mx={-1} mt={-1.25}>
+            <Box width={40} mx={-1}>
               <Link href={`/u/${username}`}>
                 <Avatar
                   sx={{

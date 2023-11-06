@@ -1,6 +1,6 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { MOBILE_CUSTOM_BREAKPOINT } from '@/constants/enums'
-import { AppBar, Box, Stack, styled, useMediaQuery, useTheme } from '@mui/material'
+import { AppBar, Box, Stack, styled, useMediaQuery, useTheme } from '@/mui'
 import { useRouter } from 'next/router'
 import { IconBox, Logo, MenuDropDown, ProfileDropdown, SearchBar } from '..'
 import LoginButton from './LoginButton/LoginButton'

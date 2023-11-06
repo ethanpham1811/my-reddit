@@ -1,13 +1,13 @@
 import {} from '@/constants/types'
-import { Badge, styled } from '@mui/material'
+import { styled } from '@/mui'
+import Badge, { BadgeProps } from '@mui/material/Badge'
 import { ReactNode } from 'react'
 
-type TRdNotiBubbleProps = {
-  content: number | string
+type TRdNotiBubbleProps = BadgeProps & {
   max: number
   children: ReactNode
 }
-function RdNotiBubble({ content, max, children }: TRdNotiBubbleProps) {
+function RdNotiBubble({ max, children }: TRdNotiBubbleProps) {
   const RdNotiBubble = styled(Badge)(({ theme }) => {
     return {
       '.MuiBadge-badge': {
@@ -21,11 +21,7 @@ function RdNotiBubble({ content, max, children }: TRdNotiBubbleProps) {
       }
     }
   })
-  return (
-    <RdNotiBubble badgeContent={content} max={max}>
-      {children}
-    </RdNotiBubble>
-  )
+  return <RdNotiBubble max={max}>{children}</RdNotiBubble>
 }
 
 export default RdNotiBubble

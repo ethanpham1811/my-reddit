@@ -18,6 +18,8 @@ declare module '@mui/material/styles' {
     lightblue: Palette['primary']
     orange: Palette['primary']
     green: Palette['primary']
+    yellow: Palette['primary']
+    purple: Palette['primary']
   }
   interface PaletteOptions {
     icon?: PaletteOptions['primary']
@@ -35,6 +37,8 @@ declare module '@mui/material/styles' {
     lightblue?: PaletteOptions['primary']
     orange?: PaletteOptions['primary']
     green?: PaletteOptions['primary']
+    yellow?: PaletteOptions['primary']
+    purple?: PaletteOptions['primary']
   }
   interface PaletteColor {
     white?: string
@@ -42,6 +46,8 @@ declare module '@mui/material/styles' {
     blue?: string
     orange?: string
     green?: string
+    yellow?: string
+    purple?: string
   }
 
   interface SimplePaletteColorOptions {
@@ -50,6 +56,8 @@ declare module '@mui/material/styles' {
     blue?: string
     orange?: string
     green?: string
+    yellow?: string
+    purple?: string
   }
 }
 
@@ -59,6 +67,8 @@ declare module '@mui/material/Button' {
     blue: true
     orange: true
     green: true
+    yellow: true
+    purple: true
   }
 }
 

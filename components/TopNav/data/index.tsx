@@ -1,8 +1,8 @@
-import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
+import { NOTI_BOX_NAME, PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import {
   AccountCircleOutlinedIcon,
-  CampaignOutlinedIcon,
   DarkModeOutlinedIcon,
+  ErrorOutlineIcon,
   InfoOutlinedIcon,
   NotificationsOutlinedIcon,
   OutboundOutlinedIcon,
@@ -14,21 +14,21 @@ import { TIconBox, TProfileDropDownList } from '@/constants/types'
 /* data tree for Notification Box */
 export const notiData: TIconBox[] = [
   {
-    icon: <DarkModeOutlinedIcon />,
-    name: 'Darkmode',
+    icon: DarkModeOutlinedIcon,
+    name: NOTI_BOX_NAME.Darkmode,
     tooltip: 'Dark mode',
     active: true
   },
   {
-    icon: <OutboundOutlinedIcon />,
-    name: 'Popular',
+    icon: OutboundOutlinedIcon,
+    name: NOTI_BOX_NAME.Popular,
     tooltip: 'Top trending posts',
     url: '/search',
     active: true
   },
   {
-    icon: <SmsOutlinedIcon />,
-    name: 'Chat',
+    icon: SmsOutlinedIcon,
+    name: NOTI_BOX_NAME.Chat,
     notification: {
       content: 12,
       max: 99
@@ -37,8 +37,8 @@ export const notiData: TIconBox[] = [
     tooltip: 'Work in progress'
   },
   {
-    icon: <NotificationsOutlinedIcon />,
-    name: 'Notification',
+    icon: NotificationsOutlinedIcon,
+    name: NOTI_BOX_NAME.Notification,
     notification: {
       content: 999,
       max: 99
@@ -47,10 +47,11 @@ export const notiData: TIconBox[] = [
     tooltip: 'Work in progress'
   },
   {
-    icon: <CampaignOutlinedIcon />,
-    name: 'Advertise',
+    icon: ErrorOutlineIcon,
+    name: NOTI_BOX_NAME.Guide,
     hideOnMobile: true,
-    tooltip: 'Work in progress'
+    tooltip: 'Quick user guide',
+    active: true
   }
 ]
 

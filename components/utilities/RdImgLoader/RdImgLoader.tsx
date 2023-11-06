@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from '@mui/material'
+import { Box, CircularProgress } from '@/mui'
 
 function RdImgLoader({ zIndex }: { zIndex?: number }) {
   return (

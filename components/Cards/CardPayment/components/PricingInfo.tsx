@@ -1,5 +1,5 @@
 import { RdPricing } from '@/components'
-import { Stack } from '@mui/material'
+import { Stack } from '@/mui'
 import { Dispatch, SetStateAction } from 'react'
 import { pricinginfoData } from '../data'
 

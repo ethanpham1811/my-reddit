@@ -1,4 +1,5 @@
-import { CardHeader, CardMedia, Stack, StackProps, Typography } from '@mui/material'
+import { CardHeader, CardMedia, Stack, Typography } from '@/mui'
+import { StackProps } from '@mui/material/Stack'
 
 type TRdAdItemProps = StackProps & {
   title: string

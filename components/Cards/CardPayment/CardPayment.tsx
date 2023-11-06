@@ -1,14 +1,22 @@
 import RdStepper from '@/components/utilities/RdStepper/RdStepper'
-import { Box } from '@mui/material'
-import { createElement, useState } from 'react'
+import { CloseIcon } from '@/constants/icons'
+import { Box, IconButton } from '@/mui'
+import { Dispatch, SetStateAction, createElement, useState } from 'react'
 import { componentRegistry, pricinginfoData, steps } from './data'
 
-function CardPayment() {
+function CardPayment({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) {
   const [activeStep, setActiveStep] = useState<number>(1)
   const [selectedPricing, setSelectedPricing] = useState<number | null>(null)
   const stepFinished = checkSelectedPricing(activeStep)
 
+  // retrieve price from pricing data
   const selectedPrice = selectedPricing != null ? pricinginfoData[selectedPricing].price : 0
+
+  const closeDrawerBtn = (
+    <IconButton onClick={() => setOpen(false)}>
+      <CloseIcon sx={{ color: 'actionIcon.main', fontSize: '1.5rem' }} />
+    </IconButton>
+  )
 
   /* dynamically return step components */
   function renderStepContent(activeStep: number) {
@@ -49,6 +57,7 @@ function CardPayment() {
         stepFinished={stepFinished}
         steps={steps}
         renderStepContent={renderStepContent}
+        middleBtnSlot={closeDrawerBtn}
       />
     </Box>
   )

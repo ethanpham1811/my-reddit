@@ -1,5 +1,5 @@
 import { TUserDetail } from '@/constants/types'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography } from '@/mui'
 
 type TUserInfoEmailProps = {
   user: TUserDetail | null

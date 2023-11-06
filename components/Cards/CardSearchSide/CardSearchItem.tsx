@@ -1,7 +1,7 @@
 import { SEARCH_TABS } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
+import { Avatar, Divider, Stack, Typography } from '@/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
-import { Avatar, Divider, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 import { useState } from 'react'
 import { RdButton } from '../..'

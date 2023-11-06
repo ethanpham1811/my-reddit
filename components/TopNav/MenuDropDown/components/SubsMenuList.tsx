@@ -2,7 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { MAIN_MENU_GROUP, SUB_PEOPLE_MENU_ITEM } from '@/constants/enums'
 import { TMenuItem } from '@/constants/types'
-import { Divider, ListItemText, MenuItem } from '@mui/material'
+import { Box, Divider, Typography } from '@/mui'
 import { v4 as rid } from 'uuid'
 import GroupHeader from './MenuGroupHeader'
 import SubAndPeopleMenuItem from './SubAndPeopleMenuItem'
@@ -31,9 +31,9 @@ function SubsMenuList({ options, filterByTerm, ...rest }: TSubsMenuListProps) {
           .filter(filterByTerm)
           .map(({ name }) => <SubAndPeopleMenuItem type={SUB_PEOPLE_MENU_ITEM.Communities} {...rest} name={name} key={`communities_menu_${rid()}`} />)
       ) : (
-        <MenuItem>
-          <ListItemText primary="You didn't join any community"></ListItemText>
-        </MenuItem>
+        <Box px={2} py={0.75}>
+          <Typography variant="body1">You did not join any subreddit</Typography>
+        </Box>
       )}
     </>
   )

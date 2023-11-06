@@ -1,6 +1,6 @@
 import { KeyboardArrowDownIcon } from '@/constants/icons'
 import { TRdDropdownProps } from '@/constants/types'
-import { Box, Select } from '@mui/material'
+import { Box, Select } from '@/mui'
 import { ReactNode } from 'react'
 
 function RdDropdown({

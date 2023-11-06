@@ -1,5 +1,5 @@
+import { CardContent, CardMedia, Link, Stack, Typography } from '@/mui'
 import notFoundUrl from '@/public/telescope-robot.png'
-import { CardContent, CardMedia, Link, Stack, Typography } from '@mui/material'
 import { RdCard } from '../..'
 
 export const NotFound = ({ searchTerm }: { searchTerm?: string }) => {

@@ -1,5 +1,5 @@
 import { ImageOutlinedIcon } from '@/constants/icons'
-import { FormControl } from '@mui/material'
+import { FormControl } from '@/mui'
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
 
 type TRdImageUploaderProps<T extends FieldValues> = {

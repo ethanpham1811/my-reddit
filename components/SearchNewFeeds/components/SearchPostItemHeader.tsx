@@ -1,5 +1,5 @@
+import { Avatar, Box, Stack, Typography } from '@/mui'
 import { customFormatDistance, generateSeededHexColor, generateUserImage } from '@/src/utils'
-import { Avatar, Box, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 
 type TSearchPostItemHeaderProps = { subName: string; username: string; created_at: Date }

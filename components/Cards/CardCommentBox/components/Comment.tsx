@@ -1,5 +1,6 @@
+import { Box, Stack, Typography } from '@/mui'
 import { customFormatDistance, parseHtml } from '@/src/utils'
-import { Box, Link, Stack, Typography } from '@mui/material'
+import Link from 'next/link'
 
 function Comment({ username, created_at, text }: { username: string; created_at: Date; text: string }) {
   return (

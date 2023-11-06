@@ -1,5 +1,5 @@
 import { DeleteOutlineOutlinedIcon } from '@/constants/icons'
-import { CircularProgress, IconButton, Stack, Tooltip } from '@mui/material'
+import { CircularProgress, IconButton, Stack, Tooltip } from '@/mui'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Control, FieldValues, Path, UseFormReset } from 'react-hook-form'
@@ -16,7 +16,7 @@ type TBottomControlProps<T extends FieldValues> = {
 }
 
 function BottomControl<T extends FieldValues>({ subId, isEditing, control, loading, isDirty, setIsLinkPost, reset }: TBottomControlProps<T>) {
-  const [backBtnHover, isBackBtnHover] = useState(false)
+  const [backBtnHover, setBackBtnHover] = useState(false)
   const {
     push: navigate,
     query: { subreddit: subName, postid }
@@ -32,8 +32,8 @@ function BottomControl<T extends FieldValues>({ subId, isEditing, control, loadi
       {/* Back button */}
       {isEditing && (
         <RdButton
-          onMouseEnter={() => isBackBtnHover(true)}
-          onMouseLeave={() => isBackBtnHover(false)}
+          onMouseEnter={() => setBackBtnHover(true)}
+          onMouseLeave={() => setBackBtnHover(false)}
           onClick={() => navigate(`/r/${subName}/post/${postid}`, undefined, { scroll: false })}
           filled={backBtnHover}
           text={'Back to view'}

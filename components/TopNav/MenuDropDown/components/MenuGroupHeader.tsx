@@ -1,5 +1,5 @@
 import { MAIN_MENU_GROUP } from '@/constants/enums'
-import { ListSubheader, Typography } from '@mui/material'
+import { ListSubheader, Typography } from '@/mui'
 
 function MenuGroupHeader({ label }: { label: MAIN_MENU_GROUP }) {
   return (

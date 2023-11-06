@@ -1,5 +1,5 @@
 import { ErrorOutlineIcon } from '@/constants/icons'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography } from '@/mui'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 
 const RdPaypalForm = ({ amount }: { amount: number }) => {

@@ -1,6 +1,6 @@
 import { RdButton, RdInput } from '@/components'
+import { CircularProgress, Link, Stack, Typography } from '@/mui'
 import { emailValidation } from '@/src/formValidations'
-import { CircularProgress, Link, Stack, Typography } from '@mui/material'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'

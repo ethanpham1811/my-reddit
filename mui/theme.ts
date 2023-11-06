@@ -53,7 +53,7 @@ const lightPalette = {
   white: {
     main: '#fff' // Custom color value
   },
-  dark: {
+  black: {
     main: '#000' // Custom color value
   },
   blue: {
@@ -67,6 +67,12 @@ const lightPalette = {
   },
   green: {
     main: '#44b700' // Custom color value
+  },
+  yellow: {
+    main: '#ffd623' // Custom color value
+  },
+  purple: {
+    main: '#fa00e2' // Custom color value
   }
 }
 
@@ -124,6 +130,12 @@ const darkPalette = {
   },
   green: {
     main: '#44b700' // Custom color value
+  },
+  yellow: {
+    main: '#ffd623' // Custom color value
+  },
+  purple: {
+    main: '#fa00e2' // Custom color value
   }
 }
 

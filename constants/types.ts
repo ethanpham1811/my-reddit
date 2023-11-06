@@ -92,7 +92,7 @@ export type TNotiData = {
   max: number
 }
 export type TIconBox = {
-  icon: ReactNode
+  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
   name: string
   tooltip?: string
   url?: string
@@ -280,6 +280,11 @@ export type TProfileDropDownList = {
 }
 export type TEditModePayload = Pick<TCardCreatePostForm, 'title' | 'body' | 'link' | 'linkDescription'> & {
   images: string[] | undefined
+}
+export type TCardGuideListData = {
+  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
+  text: string
+  color: string
 }
 
 /* --------------------------------------------- Data Types---------------------------------------------- */

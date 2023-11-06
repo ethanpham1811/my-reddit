@@ -1,7 +1,8 @@
 import { DEFAULT_BUTTON_COLOR } from '@/constants/enums'
 import { TButtonColor } from '@/constants/types'
 import { notoSans } from '@/mui/theme'
-import { Button, ButtonOwnProps, ButtonProps, SxProps, Theme } from '@mui/material'
+import Button, { ButtonOwnProps, ButtonProps } from '@mui/material/Button'
+import { SxProps, Theme } from '@mui/material/styles'
 
 type TRdButtonProps = ButtonOwnProps &
   Pick<ButtonProps, 'type' | 'onClick' | 'onMouseEnter' | 'onMouseLeave'> & {

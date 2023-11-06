@@ -1,5 +1,6 @@
+import { Typography } from '@/mui'
 import { Events, eventEmitter } from '@/src/eventEmitter'
-import { Box, BoxProps, Typography } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
 
 type TMessageBoardProps = BoxProps & {
   head: string

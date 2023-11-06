@@ -1,5 +1,5 @@
 import { ArrowBackIosIcon, ArrowForwardIosIcon } from '@/constants/icons'
-import { Paper } from '@mui/material'
+import { Paper } from '@/mui'
 import { Dispatch, SetStateAction, memo } from 'react'
 import Carousel from 'react-material-ui-carousel'
 import DisplayImage from './components/DisplayImage'

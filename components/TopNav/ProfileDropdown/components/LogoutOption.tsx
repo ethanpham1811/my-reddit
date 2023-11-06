@@ -1,5 +1,5 @@
 import { LogoutIcon } from '@/constants/icons'
-import { MenuItem } from '@mui/material'
+import { MenuItem } from '@/mui'
 
 type TLogoutOptionProps = {
   value: string

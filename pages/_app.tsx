@@ -1,5 +1,6 @@
 import { MainLayout } from '@/components'
 import MuiLayout from '@/components/Layouts/MuiLayout'
+import { createEmotionCache } from '@/mui/createEmotionCache'
 import { ApolloProvider } from '@apollo/client'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
@@ -9,7 +10,6 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useState } from 'react'
 import { client } from '../apollo-client'
-import { createEmotionCache } from '../mui/createEmotionCache'
 import '../styles/global.css'
 
 export interface TMyAppProps extends AppProps {

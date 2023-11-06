@@ -1,6 +1,6 @@
 import { RdImgLoader } from '@/components'
+import { Box, Stack, Typography } from '@/mui'
 import { parseHtml } from '@/src/utils'
-import { Box, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 

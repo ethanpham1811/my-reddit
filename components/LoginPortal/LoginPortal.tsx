@@ -1,6 +1,6 @@
 import { client } from '@/apollo-client'
 import { BsFacebook, BsReddit } from '@/constants/icons'
-import { Box, Divider, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Divider, IconButton, Stack, Typography } from '@/mui'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { Jelly } from '@uiball/loaders'

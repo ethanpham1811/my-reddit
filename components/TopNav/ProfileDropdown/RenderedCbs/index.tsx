@@ -1,6 +1,6 @@
+import { Avatar, Box, CircularProgress, Skeleton } from '@/mui'
 import { OnlineDotStyle } from '@/mui/styles'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
-import { Avatar, Box, CircularProgress, Skeleton } from '@mui/material'
 
 import { ReactNode } from 'react'
 

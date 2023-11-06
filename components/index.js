@@ -7,6 +7,7 @@ import CardLogout from './Cards/CardLogout/CardLogout'
 import CardNotFound from './Cards/CardNotFound/CardNotFound'
 import CardPost from './Cards/CardPost/CardPost'
 import CardSubredditInfo from './Cards/CardSubredditInfo/CardSubredditInfo'
+import CardUserGuide from './Cards/CardUserGuide/CardUserGuide'
 import CardUserInfo from './Cards/CardUserInfo/CardUserInfo'
 import BottomNavigator from './CommunityCreator/BottomNavigator/BottomNavigator'
 import CommunityCreator from './CommunityCreator/CommunityCreator'
@@ -63,6 +64,7 @@ export {
   CardNotFound,
   CardPost,
   CardSubredditInfo,
+  CardUserGuide,
   CardUserInfo,
   CommunityCreator,
   IconBox,

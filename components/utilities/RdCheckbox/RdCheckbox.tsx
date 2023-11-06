@@ -1,4 +1,4 @@
-import { Checkbox, FormGroup } from '@mui/material'
+import { Checkbox, FormGroup } from '@/mui'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { ReactNode } from 'react'
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'

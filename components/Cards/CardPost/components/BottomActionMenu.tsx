@@ -1,6 +1,6 @@
 import { RdDialog } from '@/components'
-import usePostDelete from '@/hooks/usePostDelete'
-import { Box, Link, Stack, Typography } from '@mui/material'
+import { usePostDelete } from '@/hooks'
+import { Box, Link, Stack, Typography } from '@/mui'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import CardConfirm from '../../CardConfirm/CardConfirm'

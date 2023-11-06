@@ -1,6 +1,6 @@
 import { CardCreatePost } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { Box, Container, Grid, Skeleton, Stack } from '@mui/material'
+import { Box, Container, Grid, Skeleton, Stack } from '@/mui'
 import { useRouter } from 'next/router'
 import { Children, Fragment, ReactNode } from 'react'
 import { RdSkeletonListItem, RdSkeletonSideColumn } from '../Skeletons'

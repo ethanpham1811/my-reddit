@@ -1,6 +1,6 @@
 import { RdButton, RdInput } from '@/components'
+import { CircularProgress, Link, Stack, Typography } from '@/mui'
 import { emailValidation, passwordValidation, rePasswordValidation } from '@/src/formValidations'
-import { CircularProgress, Link, Stack, Typography } from '@mui/material'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import PasswordEye from '../PasswordEye'

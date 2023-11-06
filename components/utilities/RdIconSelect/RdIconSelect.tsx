@@ -1,6 +1,8 @@
 import { TSelectOption } from '@/constants/types'
-import { IconButton, IconButtonProps, ListItemText, Menu, MenuItem, Paper, SvgIconTypeMap, Typography } from '@mui/material'
+import { IconButton, ListItemText, Menu, MenuItem, Paper, Typography } from '@/mui'
+import { IconButtonProps } from '@mui/material/IconButton'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
+import { SvgIconTypeMap } from '@mui/material/SvgIcon'
 import { createElement, useState } from 'react'
 import { v4 as rid } from 'uuid'
 

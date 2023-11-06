@@ -1,5 +1,5 @@
 import { QUERY_LIMIT } from '@/constants/enums'
-import { Pagination, PaginationProps } from '@mui/material'
+import Pagination, { PaginationProps } from '@mui/material/Pagination'
 import { useRouter } from 'next/router'
 
 type TRdPaginatorProps<T> = PaginationProps & {

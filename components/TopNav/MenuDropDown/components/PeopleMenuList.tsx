@@ -2,7 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { RdSkeleton } from '@/components/Skeletons'
 import { MAIN_MENU_GROUP, SUB_PEOPLE_MENU_ITEM } from '@/constants/enums'
 import { TMenuItem } from '@/constants/types'
-import { Divider, ListItemText, MenuItem } from '@mui/material'
+import { Box, Divider, Typography } from '@/mui'
 import { v4 as rid } from 'uuid'
 import GroupHeader from './MenuGroupHeader'
 import SubAndPeopleMenuItem from './SubAndPeopleMenuItem'
@@ -31,9 +31,9 @@ function PeopleMenuList({ options, filterByTerm, ...rest }: TPeopleMenuListProps
           .filter(filterByTerm)
           .map(({ name }) => <SubAndPeopleMenuItem type={SUB_PEOPLE_MENU_ITEM.People} {...rest} name={name} key={`people_menu_${rid()}`} />)
       ) : (
-        <MenuItem>
-          <ListItemText primary="You don't follow anyone"></ListItemText>
-        </MenuItem>
+        <Box px={2} py={0.75}>
+          <Typography variant="body1">You are not following anyone</Typography>
+        </Box>
       )}
     </>
   )

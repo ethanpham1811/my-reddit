@@ -1,6 +1,5 @@
 import { TRdStaticInputProps } from '@/constants/types'
-import { styled } from '@mui/material'
-import TextField from '@mui/material/TextField'
+import { styled, TextField } from '@/mui'
 import { FieldValues } from 'react-hook-form'
 
 const RdInputBase = styled(TextField)(({ theme }) => ({

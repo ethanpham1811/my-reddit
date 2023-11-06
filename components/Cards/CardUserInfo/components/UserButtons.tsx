@@ -1,9 +1,9 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
-import useUserUpdate from '@/hooks/useUserUpdate'
+import { useUserUpdate } from '@/hooks'
+import { CardActions, Divider } from '@/mui'
 import { Events, eventEmitter } from '@/src/eventEmitter'
-import { CardActions, Divider } from '@mui/material'
 import { useState } from 'react'
 import { RdButton } from '../../..'
 

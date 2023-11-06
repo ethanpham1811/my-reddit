@@ -1,8 +1,9 @@
 import { RdButton, RdCard, RdTextEditor } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TComment, TPostCommentForm } from '@/constants/types'
-import useCommentAdd from '@/hooks/useCommentAdd'
-import { Box, Link, Stack, Typography } from '@mui/material'
+import { useCommentAdd } from '@/hooks'
+import { Box, Stack, Typography } from '@/mui'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CommentList from './components/CommentList'
@@ -41,7 +42,7 @@ function CardCommentBox({ post_id, user_id, username, commentList }: TCardCommen
               {
                 <Typography variant="body2" sx={{ p: 1, color: 'hintText.main' }}>
                   Comment as{' '}
-                  <Link href={`/u/${username}`}>
+                  <Link href={`/u/${username}`} style={{ textDecoration: 'none' }}>
                     <Typography variant="body2" sx={{ color: 'blue.main' }}>
                       {username}
                     </Typography>

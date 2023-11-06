@@ -1,8 +1,8 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
 import { HttpsOutlinedIcon, PublicOutlinedIcon } from '@/constants/icons'
-import useUserUpdate from '@/hooks/useUserUpdate'
-import { Stack, useMediaQuery, useTheme } from '@mui/material'
+import { useUserUpdate } from '@/hooks'
+import { Stack, useMediaQuery, useTheme } from '@/mui'
 import { useState } from 'react'
 import { RdButton, RdChip } from '../..'
 

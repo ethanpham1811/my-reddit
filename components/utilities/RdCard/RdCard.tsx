@@ -1,4 +1,4 @@
-import { Card, CardOwnProps, CardProps } from '@mui/material'
+import Card, { CardOwnProps, CardProps } from '@mui/material/Card'
 
 function RdCard({ children, sx, ...rest }: CardOwnProps & Pick<CardProps, 'onClick' | 'onBlur'>) {
   return (

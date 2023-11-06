@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@mui/material'
+import { AppBar, Avatar, Box, Container, Stack, Typography, styled } from '@/mui'
 import Image from 'next/image'
 import Link from 'next/link'
 import { generateSeededHexColor, generateUserCover, generateUserImage } from '../../src/utils'

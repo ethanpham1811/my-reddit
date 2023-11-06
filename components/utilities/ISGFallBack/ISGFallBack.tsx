@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mui/material'
+import { Box, Paper } from '@/mui'
 
 /**
  * White fullscreen white fixed div with text in middle

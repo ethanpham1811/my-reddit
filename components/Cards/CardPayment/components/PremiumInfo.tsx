@@ -1,5 +1,5 @@
 import { RdAdItem } from '@/components'
-import { Stack } from '@mui/material'
+import { Stack } from '@/mui'
 import { premiumInfoData } from '../data'
 
 function PremiumInfo() {
