@@ -1,4 +1,5 @@
 import RdStepper from '@/components/utilities/RdStepper/RdStepper'
+import { PaymentStepComName } from '@/constants/enums'
 import { CloseIcon } from '@/constants/icons'
 import { Box, IconButton } from '@/mui'
 import { Dispatch, SetStateAction, createElement, useState } from 'react'
@@ -19,21 +20,20 @@ function CardPayment({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
   )
 
   /* dynamically return step components */
-  function renderStepContent(activeStep: number) {
-    const componentName: string = steps[activeStep - 1].component
+  function renderStepTab(activeStep: number) {
+    const componentName: PaymentStepComName = steps[activeStep - 1].component
     const StepContent = componentRegistry[componentName]
-    const props: { [key: string]: unknown } = {}
 
-    /* pass the needed props */
-    if (componentName === 'PricingInfo') {
-      props.selectedPricing = selectedPricing
-      props.setSelectedPricing = setSelectedPricing
+    if (componentName === PaymentStepComName.PricingInfo) {
+      return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PricingInfo], { selectedPricing, setSelectedPricing })
     }
-    if (componentName === 'PaymentCheckout') {
-      props.amount = selectedPrice
+    if (componentName === PaymentStepComName.PaymentCheckout) {
+      return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PaymentCheckout], { amount: selectedPrice })
     }
-
-    return createElement(StepContent, props)
+    if (componentName === PaymentStepComName.PremiumInfo) {
+      return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PremiumInfo])
+    }
+    return <Box>Wrong step mapping</Box>
   }
 
   /* if user hasn't choose pricing at step 2, block next step */
@@ -56,7 +56,7 @@ function CardPayment({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
         setActiveStep={setActiveStep}
         stepFinished={stepFinished}
         steps={steps}
-        renderStepContent={renderStepContent}
+        renderStepTab={renderStepTab}
         middleBtnSlot={closeDrawerBtn}
       />
     </Box>

@@ -1,4 +1,4 @@
-import { ColorModeContext } from '@/components/Layouts/MuiLayout'
+import { ColorModeContext } from '@/components/Layouts/MuiProvider'
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { TProfileDropDownList } from '@/constants/types'
 import { Divider, List, MenuItem, Stack, Switch } from '@/mui'

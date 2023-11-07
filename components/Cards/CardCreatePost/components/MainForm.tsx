@@ -9,20 +9,22 @@ import BottomControl from './BottomControl'
 
 type TMainFormProps<T extends FieldValues> = {
   control: Control<T>
+  open: boolean
   isLinkPost: boolean
   imagesValue: FileList | undefined
   subId: number | undefined
   loading: boolean
   isDirty: boolean
   reset: UseFormReset<T>
-  setValue: UseFormSetValue<T>
+  setFormValue: UseFormSetValue<T>
   setIsLinkPost: Dispatch<SetStateAction<boolean>>
 }
 
 function MainForm<T extends FieldValues>({
   setIsLinkPost,
   reset,
-  setValue,
+  setFormValue,
+  open,
   isDirty,
   isLinkPost,
   control,
@@ -37,12 +39,12 @@ function MainForm<T extends FieldValues>({
 
   // Populate subId & post id (edit mode)
   useEffect(() => {
-    postid && setValue('id' as Path<T>, postid as any)
-    subId && setValue('subreddit_id' as Path<T>, subId as any)
-  }, [setValue, postid, subId])
+    postid && setFormValue('id' as Path<T>, postid as any)
+    subId && setFormValue('subreddit_id' as Path<T>, subId as any)
+  }, [setFormValue, postid, subId])
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} display={open ? 'flex' : 'none'}>
       {/* link or textEditor */}
       {isLinkPost ? (
         <Stack spacing={1.5}>

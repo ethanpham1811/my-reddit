@@ -1,18 +1,19 @@
 type Post {
   body: String
-  comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
   created_at: DateTime!
   id: ID!
   images: [String]
-  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
-  subreddit_id: ID!
   title: String!
-  vote: [Vote] @materializer(query: "voteUsingVote_post_id_fkey")
-  user: User @materializer(query: "userUsingPost_user_id_fkey")
-  user_id: ID!
   link: String
   linkDescription: String
   totalUpvotes: Int
+  totalComments: Int
+  user_id: ID!
+  subreddit_id: ID!
+  user: User @materializer(query: "userUsingPost_user_id_fkey")
+  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
+  comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
+  vote: [Vote] @materializer(query: "voteUsingVote_post_id_fkey")
 }
 
 """
@@ -21,7 +22,27 @@ Feel free to modify them or aggregate more.
 """
 type Query {
   " Queries for type 'Post' "
-  post(id: ID!): Post @dbquery(type: "postgresql", schema: "public", table: "post", configuration: "postgresql_config")
+  post(id: ID!): Post
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT
+         p."body",
+         p."created_at",
+         p."id",
+         p."images",
+         p."subreddit_id",
+         p."title",
+         p."user_id",
+         p."link",
+         p."linkDescription",
+         (SELECT COUNT(*) FROM "comment" WHERE "post_id" = p."id") AS "totalComments"
+       FROM "post" "p"
+       WHERE "id" = $1
+      """
+      configuration: "postgresql_config"
+    )
   postList: [Post] @dbquery(type: "postgresql", schema: "public", table: "post", configuration: "postgresql_config")
   postPaginatedList(offset: Int, limit: Int): [Post]
     @dbquery(
@@ -38,6 +59,7 @@ type Query {
         p."user_id",
         p."link",
         p."linkDescription",
+        (SELECT COUNT(*) FROM "comment" WHERE "post_id" = p."id") AS "totalComments",
         COALESCE("subquery"."totalUpvotes", 0) AS "totalUpvotes"
       FROM "post" "p"
       LEFT JOIN (

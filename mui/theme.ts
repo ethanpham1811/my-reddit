@@ -169,11 +169,23 @@ export const buildTheme = (mode: 'light' | 'dark'): Theme => {
     components: {
       MuiCssBaseline: {
         styleOverrides: {
+          // Add permanent scrollbar so it won't alter html width on hidding/showing
+          html: {
+            overflowY: 'scroll'
+          },
           body: {
-            // ...darkScrollbar(),
             backgroundColor: mode === 'light' ? '#DAE0E6' : '#1a1a1a',
             fontSize: '1rem',
             fontWeight: 400
+          },
+          //TinyMCE elements overridings (comment box)
+          '.parsed-html p': {
+            marginTop: 0,
+            marginBottom: 0
+          },
+          'input[type=file], input[type=file]::-webkit-file-upload-button': {
+            /* chromes and blink button */
+            cursor: 'pointer'
           }
         }
       },

@@ -27,7 +27,7 @@ const RdPaypalForm = ({ amount }: { amount: number }) => {
         return order.id
       })
   }
-  function onApprove(data: any) {
+  function onApprove(data: unknown) {
     // replace this url with your server
     return fetch('https://react-paypal-js-storybook.fly.dev/api/paypal/capture-order', {
       method: 'POST',
@@ -35,7 +35,7 @@ const RdPaypalForm = ({ amount }: { amount: number }) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        orderID: data.orderID
+        orderID: data && typeof data === 'object' && 'orderID' in data && data.orderID
       })
     })
       .then((response) => response.json())

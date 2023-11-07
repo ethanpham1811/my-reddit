@@ -3,21 +3,23 @@ import { SecurityOutlinedIcon } from '@/constants/icons'
 import { CardActions, CardHeader, useMediaQuery, useTheme } from '@/mui'
 import { Events, eventEmitter } from '@/src/eventEmitter'
 import { useState } from 'react'
-import { RdButton, RdCard, RdDrawer } from '../..'
-import CardPayment from '../CardPayment/CardPayment'
+import { RdButton, RdCard } from '../..'
 
 function CardAds() {
   const { session } = useAppSession()
   const me = session?.userDetail
   const { breakpoints } = useTheme()
-  const isMobile = useMediaQuery(breakpoints.down('sm'))
   const isMobileXl = useMediaQuery(breakpoints.down('xl'))
-  const [isOpenDrawer, setIsOpenDrawer] = useState(false)
   const [showLoginBtn, setShowLoginBtn] = useState(false)
 
   /* fire event to open login modal */
-  function onClick() {
+  function onClickLogin() {
     eventEmitter.dispatch(Events.OPEN_LOGIN_MODAL, true)
+  }
+
+  /* fire event to open premium drawer */
+  function onClickTryNow() {
+    eventEmitter.dispatch(Events.OPEN_PREMIUM_DRAWER, true)
   }
 
   return (
@@ -40,10 +42,10 @@ function CardAds() {
       />
       <CardActions sx={{ p: 0, pt: 0.5 }}>
         {me ? (
-          <RdButton onClick={() => setIsOpenDrawer(true)} filled text={'Try Now'} invertColor />
+          <RdButton onClick={onClickTryNow} filled text={'Try Now'} invertColor />
         ) : (
           <RdButton
-            onClick={onClick}
+            onClick={onClickLogin}
             filled={isMobileXl ? true : showLoginBtn}
             text={showLoginBtn ? 'Login' : isMobileXl ? 'Login' : 'Try Now'}
             onMouseEnter={() => setShowLoginBtn(true)}
@@ -51,11 +53,6 @@ function CardAds() {
           />
         )}
       </CardActions>
-
-      {/* Left drawer (Premium registration form) */}
-      <RdDrawer disableScrollLock={!isMobile} anchor="left" open={isOpenDrawer} setOpen={setIsOpenDrawer}>
-        <CardPayment setOpen={setIsOpenDrawer} />
-      </RdDrawer>
     </RdCard>
   )
 }

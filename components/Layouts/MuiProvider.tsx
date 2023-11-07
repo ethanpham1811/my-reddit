@@ -6,7 +6,7 @@ import { buildTheme } from '../../mui/theme'
 
 export const ColorModeContext = createContext({ toggleColorMode: () => {} })
 
-function MuiLayout({ children }: { children: ReactNode }) {
+function MuiProvider({ children }: { children: ReactNode }) {
   /* Dark mode setup */
   const [mode, setMode] = useState<'light' | 'dark'>((cookie.get('color-mode') as 'light' | 'dark') || 'light')
   const colorMode = useMemo(
@@ -34,4 +34,4 @@ function MuiLayout({ children }: { children: ReactNode }) {
   )
 }
 
-export default MuiLayout
+export default MuiProvider

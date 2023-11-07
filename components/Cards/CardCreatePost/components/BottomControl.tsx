@@ -1,5 +1,5 @@
-import { DeleteOutlineOutlinedIcon } from '@/constants/icons'
-import { CircularProgress, IconButton, Stack, Tooltip } from '@/mui'
+import { CloseIcon } from '@/constants/icons'
+import { CircularProgress, IconButton, Stack } from '@/mui'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Control, FieldValues, Path, UseFormReset } from 'react-hook-form'
@@ -59,18 +59,16 @@ function BottomControl<T extends FieldValues>({ subId, isEditing, control, loadi
         - switch to normal post
       */}
       {!isEditing && (
-        <Tooltip title="Clear and close">
-          <IconButton
-            disabled={isEditing}
-            sx={{ bgcolor: 'actionIcon.main', p: 0.5, color: 'white.main', '&:hover': { bgcolor: 'actionIcon.main', opacity: 0.8 } }}
-            onClick={() => {
-              setIsLinkPost(false)
-              reset()
-            }}
-          >
-            <DeleteOutlineOutlinedIcon sx={{ display: 'block', fontSize: '1.5rem' }} />
-          </IconButton>
-        </Tooltip>
+        <IconButton
+          disabled={isEditing}
+          sx={{ p: 0.5, color: 'actionIcon.main' }}
+          onClick={() => {
+            setIsLinkPost(false)
+            reset()
+          }}
+        >
+          <CloseIcon sx={{ display: 'block', fontSize: '1.5rem' }} />
+        </IconButton>
       )}
     </Stack>
   )

@@ -1,21 +1,16 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import AddSharpIcon from '@mui/icons-material/AddSharp'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined'
 import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined'
-import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined'
 import CheckIcon from '@mui/icons-material/Check'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CloseIcon from '@mui/icons-material/Close'
+import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined'
 import ErrorIcon from '@mui/icons-material/Error'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
@@ -30,53 +25,43 @@ import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import LockIcon from '@mui/icons-material/Lock'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import OutboundOutlinedIcon from '@mui/icons-material/OutboundOutlined'
 import PersonIcon from '@mui/icons-material/Person'
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined'
 import PreviewOutlinedIcon from '@mui/icons-material/PreviewOutlined'
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
-import RocketIcon from '@mui/icons-material/Rocket'
 import ScreenSearchDesktopOutlinedIcon from '@mui/icons-material/ScreenSearchDesktopOutlined'
 import SearchIcon from '@mui/icons-material/Search'
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined'
-import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined'
+import StarsIcon from '@mui/icons-material/Stars'
 import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined'
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import { BsFacebook, BsReddit } from 'react-icons/bs'
-import { FcGoogle } from 'react-icons/fc'
 import { ImArrowDown, ImArrowUp } from 'react-icons/im'
 
 export {
   AccountCircleOutlinedIcon,
-  AddSharpIcon,
   ArrowBackIosIcon,
-  ArrowDownwardOutlinedIcon,
   ArrowForwardIcon,
   ArrowForwardIosIcon,
-  ArrowUpwardOutlinedIcon,
   ArticleOutlinedIcon,
   Brightness5OutlinedIcon,
   BsFacebook,
   BsReddit,
   CakeOutlinedIcon,
-  CampaignOutlinedIcon,
   CheckCircleIcon,
   CheckIcon,
   CloseIcon,
+  CommentOutlinedIcon,
   CreateOutlinedIcon,
   DarkModeOutlinedIcon,
-  DeleteOutlineOutlinedIcon,
-  EmailOutlinedIcon,
   ErrorIcon,
   ErrorOutlineIcon,
-  FcGoogle,
   GroupsOutlinedIcon,
   HighlightOffOutlinedIcon,
   HomeIcon,
@@ -91,20 +76,17 @@ export {
   LockIcon,
   LogoutIcon,
   MoreHorizIcon,
-  NotificationsIcon,
   NotificationsOutlinedIcon,
   OutboundOutlinedIcon,
   PersonAddAltOutlinedIcon,
   PersonIcon,
   PreviewOutlinedIcon,
-  PriorityHighIcon,
   PublicOutlinedIcon,
   RemoveRedEyeIcon,
-  RocketIcon,
   ScreenSearchDesktopOutlinedIcon,
   SearchIcon,
   SecurityOutlinedIcon,
-  SmsOutlinedIcon,
+  StarsIcon,
   SwapVertOutlinedIcon,
   TrendingUpOutlinedIcon,
   VisibilityOffIcon,

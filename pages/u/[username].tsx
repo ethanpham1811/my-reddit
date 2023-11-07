@@ -84,7 +84,7 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
       <Head>
         <title>u/{username}</title>
       </Head>
-      <FeedLayout top="70px">
+      <FeedLayout top="70px" allowCreatePost={username === me?.username.toString() ?? false}>
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
           <NewFeeds

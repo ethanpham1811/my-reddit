@@ -22,7 +22,8 @@ function CardPost({
     subreddit: { name: subName, id: subId },
     comment: commentList,
     link,
-    linkDescription
+    linkDescription,
+    totalComments
   },
   setZoomedImg
 }: TCardPostProps) {
@@ -85,7 +86,9 @@ function CardPost({
               setZoomedImg={setZoomedImg}
             />
           </Stack>
-          {isMyPost && !!postid && <BottomActionMenu subName={subName} postId={postId.toString()} />}
+
+          {/* comment count + edit/delete buttons */}
+          <BottomActionMenu isMyPost={isMyPost} totalComments={totalComments} subName={subName} postId={postId.toString()} />
         </RdCard>
       )}
 

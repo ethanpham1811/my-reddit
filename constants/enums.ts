@@ -11,7 +11,7 @@ export const UPDATE_USER_ARRAY_KEY = ['member_of_ids', 'following_ids', 'socialL
 export enum NOTI_BOX_NAME {
   Darkmode = 'Darkmode',
   Popular = 'Popular',
-  Chat = 'Chat',
+  Premium = 'Premium',
   Notification = 'Notification',
   Guide = 'Guide'
 }
@@ -70,4 +70,10 @@ export enum PROFILE_DIALOG_TYPE {
 export enum MOBILE_CUSTOM_BREAKPOINT {
   Lg = '(max-width:1024px)',
   Md = '(max-width:700px)'
+}
+
+export enum PaymentStepComName {
+  PremiumInfo = 'PremiumInfo',
+  PricingInfo = 'PricingInfo',
+  PaymentCheckout = 'PaymentCheckout'
 }

@@ -3,7 +3,7 @@ import { BORDER_TYPES, ORDERING, SORT_METHOD } from '@/constants/enums'
 import { SwapVertOutlinedIcon } from '@/constants/icons'
 import { TSortOptions } from '@/constants/types'
 import { IconButton, ToggleButton, ToggleButtonGroup, Typography } from '@/mui'
-import { Dispatch, SetStateAction, createElement } from 'react'
+import { Dispatch, MouseEvent, SetStateAction, createElement } from 'react'
 import { v4 as rid } from 'uuid'
 import { data } from './data'
 
@@ -13,7 +13,7 @@ export type TCardFeedSorterProps = {
   setSortOptions: Dispatch<SetStateAction<TSortOptions>>
 }
 function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSorterProps) {
-  const onChange = (_: any, method: SORT_METHOD | null) => {
+  const onChange = (_: MouseEvent<HTMLElement, globalThis.MouseEvent>, method: SORT_METHOD | null) => {
     method && setSortOptions({ ordering: ORDERING.Desc, method })
   }
 

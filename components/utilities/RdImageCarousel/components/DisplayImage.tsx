@@ -1,8 +1,13 @@
 import Image from 'next/image'
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import RdImgLoader from '../../RdImgLoader/RdImgLoader'
 
-type TDisplayImageProps = { width: string; height: string; imgSrc: string; zoomImage: (e: any, imgSrc: string) => void }
+type TDisplayImageProps = {
+  width: string
+  height: string
+  imgSrc: string
+  zoomImage: (e: MouseEvent<HTMLImageElement, globalThis.MouseEvent>, imgSrc: string) => void
+}
 
 function DisplayImage({ width, height, imgSrc, zoomImage }: TDisplayImageProps) {
   const [imgLoading, setImgLoading] = useState(true)

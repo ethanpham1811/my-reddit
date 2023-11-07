@@ -51,6 +51,7 @@ type Query {
         p."user_id",
         p."link",
         p."linkDescription",
+        (SELECT COUNT(*) FROM "comment" WHERE "post_id" = p."id") AS "totalComments",
         COALESCE("subquery"."totalUpvotes", 0) AS "totalUpvotes"
       FROM "post" "p"
       LEFT JOIN (

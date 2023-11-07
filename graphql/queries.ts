@@ -65,6 +65,7 @@ export const GET_USER_BY_USERNAME_WITH_POSTS = gql`
         link
         linkDescription
         totalUpvotes
+        totalComments
       }
     }
   }
@@ -137,6 +138,7 @@ export const GET_SUBREDDIT_BY_NAME_WITH_POSTS = gql`
         link
         linkDescription
         totalUpvotes
+        totalComments
       }
     }
   }
@@ -226,6 +228,7 @@ export const GET_PAGINATED_POST_LIST = gql`
       link
       linkDescription
       totalUpvotes
+      totalComments
     }
   }
 `
@@ -260,6 +263,7 @@ export const GET_POST_BY_ID = gql`
       }
       link
       linkDescription
+      totalComments
     }
   }
 `

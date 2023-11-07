@@ -1,53 +1,48 @@
 import { CardUserGuide, RdDialog, RdNotiBubble } from '@/components'
-import { ColorModeContext } from '@/components/Layouts/MuiLayout'
-import { NOTI_BOX_NAME } from '@/constants/enums'
+import { ColorModeContext } from '@/components/Layouts/MuiProvider'
+import { TIconBox } from '@/constants/types'
 import { Box, IconButton, Stack, Tooltip } from '@/mui'
+import { Events, eventEmitter } from '@/src/eventEmitter'
 import { notificationsLabel } from '@/src/utils'
 import cookie from 'js-cookie'
 import { useRouter } from 'next/router'
 import { Fragment, createElement, useContext, useEffect, useState } from 'react'
-import { notiData } from '../data'
+import { buildData } from '../data'
 
 function IconBox({ isMobile }: { isMobile: boolean }) {
   const { push: navigate } = useRouter()
   const { toggleColorMode } = useContext(ColorModeContext)
-  const [isOpenDialog, setIsOpenDialog] = useState(false)
+  const [userGuideOpen, setUserGuideOpen] = useState(false)
   const firstTime = !cookie.get('first-time-visit-my-reddit')
+  const notiData: TIconBox[] = buildData({ toggleColorMode, openPremiumDrawer, setUserGuideOpen, navigate })
 
   /* open the user guide for the first time using the app */
   useEffect(() => {
     if (firstTime) {
-      setIsOpenDialog(true)
+      setUserGuideOpen(true)
       cookie.set('first-time-visit-my-reddit', 'true')
     }
   }, [firstTime])
 
-  function onClick(name: string, url?: string) {
-    if (name === NOTI_BOX_NAME.Darkmode) {
-      toggleColorMode()
-    }
-    if (name === NOTI_BOX_NAME.Guide) {
-      setIsOpenDialog(true)
-    }
-
-    url && navigate(url)
+  function openPremiumDrawer() {
+    eventEmitter.dispatch(Events.OPEN_PREMIUM_DRAWER, true)
   }
 
   return (
     <>
       <Stack direction="row">
         {notiData.length > 0 &&
-          notiData.map(({ name, active, tooltip, notification, url, icon, hideOnMobile }) => (
+          notiData.map(({ name, disabled, tooltip, notification, icon, hideOnMobile, onClick }) => (
             <Fragment key={`noti_bubble_${name}`}>
               {isMobile && hideOnMobile ? null : (
                 <Tooltip title={tooltip}>
                   <Box>
                     <IconButton
-                      onClick={() => onClick(name, url)}
+                      onClick={onClick}
                       size="large"
                       sx={{ color: 'icon.main', p: 1.25, fontSize: '2rem', '&.Mui-disabled': { color: 'hintText.main' } }}
                       aria-label={notificationsLabel(100)}
-                      disabled={!active}
+                      disabled={disabled}
                     >
                       {notification ? (
                         <RdNotiBubble badgeContent={notification.content} max={notification.max}>
@@ -65,8 +60,8 @@ function IconBox({ isMobile }: { isMobile: boolean }) {
       </Stack>
 
       {/* Function list dialog */}
-      <RdDialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
-        <CardUserGuide setOpen={setIsOpenDialog} />
+      <RdDialog open={userGuideOpen} onClose={() => setUserGuideOpen(false)}>
+        <CardUserGuide setOpen={setUserGuideOpen} />
       </RdDialog>
     </>
   )

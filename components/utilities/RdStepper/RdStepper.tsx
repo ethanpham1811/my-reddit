@@ -5,14 +5,14 @@ import { Dispatch, ReactNode, SetStateAction } from 'react'
 
 type TRdStepperProps = {
   steps: TStepperData[]
-  renderStepContent: (activeStep: number) => ReactNode
+  renderStepTab: (activeStep: number) => ReactNode
   activeStep: number
   stepFinished: boolean
   middleBtnSlot?: ReactNode
   setActiveStep: Dispatch<SetStateAction<number>>
 }
 
-const RdStepper = ({ middleBtnSlot, steps, activeStep, setActiveStep, renderStepContent, stepFinished }: TRdStepperProps) => {
+const RdStepper = ({ middleBtnSlot, steps, activeStep, setActiveStep, renderStepTab, stepFinished }: TRdStepperProps) => {
   const totalSteps: number = steps?.length || 0
   const isLastStep: boolean = activeStep === totalSteps
   const isFirststep: boolean = activeStep === 1
@@ -59,7 +59,7 @@ const RdStepper = ({ middleBtnSlot, steps, activeStep, setActiveStep, renderStep
         {steps[activeStep - 1]?.stepLabel}
       </Typography>
       <Box display="flex" my="auto">
-        {renderStepContent(activeStep)}
+        {renderStepTab(activeStep)}
       </Box>
 
       {/* bottom navigation */}

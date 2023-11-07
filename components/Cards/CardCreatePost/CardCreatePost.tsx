@@ -102,8 +102,8 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
               editModePayload={editModePayload}
               control={control}
               formOpened={formOpened}
-              getValues={getValues}
-              setValue={setValue}
+              getFormValues={getValues}
+              setFormValue={setValue}
               loading={loading}
               isLinkPost={isLinkPost}
               subId={subId}

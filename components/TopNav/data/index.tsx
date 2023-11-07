@@ -7,34 +7,38 @@ import {
   NotificationsOutlinedIcon,
   OutboundOutlinedIcon,
   PreviewOutlinedIcon,
-  SmsOutlinedIcon
+  StarsIcon
 } from '@/constants/icons'
 import { TIconBox, TProfileDropDownList } from '@/constants/types'
+import { Dispatch, SetStateAction } from 'react'
+
+type TBuildDataProps = {
+  toggleColorMode: () => void
+  openPremiumDrawer: () => void
+  setUserGuideOpen: Dispatch<SetStateAction<boolean>>
+  navigate: (url: string) => Promise<boolean>
+}
 
 /* data tree for Notification Box */
-export const notiData: TIconBox[] = [
+export const buildData = ({ toggleColorMode, openPremiumDrawer, setUserGuideOpen, navigate }: TBuildDataProps): TIconBox[] => [
   {
     icon: DarkModeOutlinedIcon,
     name: NOTI_BOX_NAME.Darkmode,
     tooltip: 'Dark mode',
-    active: true
+    onClick: toggleColorMode
   },
   {
     icon: OutboundOutlinedIcon,
     name: NOTI_BOX_NAME.Popular,
     tooltip: 'Top trending posts',
-    url: '/search',
-    active: true
+    onClick: () => navigate('/search')
   },
   {
-    icon: SmsOutlinedIcon,
-    name: NOTI_BOX_NAME.Chat,
-    notification: {
-      content: 12,
-      max: 99
-    },
+    icon: StarsIcon,
+    name: NOTI_BOX_NAME.Premium,
+    tooltip: 'Premium subscription',
     hideOnMobile: true,
-    tooltip: 'Work in progress'
+    onClick: openPremiumDrawer
   },
   {
     icon: NotificationsOutlinedIcon,
@@ -44,14 +48,16 @@ export const notiData: TIconBox[] = [
       max: 99
     },
     hideOnMobile: true,
-    tooltip: 'Work in progress'
+    tooltip: 'Work in progress',
+    disabled: true,
+    onClick: () => {}
   },
   {
     icon: ErrorOutlineIcon,
     name: NOTI_BOX_NAME.Guide,
     hideOnMobile: true,
     tooltip: 'Quick user guide',
-    active: true
+    onClick: () => setUserGuideOpen(true)
   }
 ]
 

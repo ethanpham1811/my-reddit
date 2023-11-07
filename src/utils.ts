@@ -1,6 +1,6 @@
 import { client } from '@/apollo-client'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
-import { TAutocompleteOptions, TQueryNotFound, TVote } from '@/constants/types'
+import { TAutocompleteOptions, TProfileDropDownList, TQueryNotFound, TVote } from '@/constants/types'
 import { GET_USER_BY_EMAIL } from '@/graphql/queries'
 import { ApolloError } from '@apollo/client'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
@@ -45,7 +45,9 @@ export const validateSubredditMember = (memberOfIds: string[] | undefined, subPa
   return memberOfIds?.includes(subPageName as string) || false
 }
 
-export const createGroupedList = (list: { groupBy: string; groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>; [key: string]: any }[]) => {
+export const createGroupedList = (
+  list: Partial<TProfileDropDownList> & { groupBy: string; groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> }[]
+) => {
   const groupedArray = groupBy(list, 'groupBy')
   return Object.keys(groupedArray).map((group) => ({
     group,

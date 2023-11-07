@@ -1,4 +1,5 @@
 import { Skeleton, Stack } from '@/mui'
+import { Fragment } from 'react'
 
 export function RdSkeleton({ height = '25px' }: { height?: string }) {
   return (
@@ -25,6 +26,19 @@ export function RdSkeletonSideColumn() {
     <>
       <Skeleton sx={{ display: 'flex', mb: 2 }} variant="rectangular" width="100%" height="100px" />
       <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="100%" height="200px" />
+    </>
+  )
+}
+export function RdSkeletonDoublePost() {
+  return (
+    <>
+      <Skeleton variant="rectangular" width="100%" height="60px" />
+      <Skeleton variant="rectangular" width="100%" height="60px" />
+      {[0, 1].map((el) => (
+        <Fragment key={`skeleton_${el}`}>
+          <RdSkeletonListItem py={0} index={el.toString()} />
+        </Fragment>
+      ))}
     </>
   )
 }

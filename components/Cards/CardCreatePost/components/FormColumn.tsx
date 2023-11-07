@@ -5,16 +5,16 @@ import { postTitleValidation } from '@/src/formValidations'
 import { useEffect, useRef } from 'react'
 import MainForm from '../components/MainForm'
 
-import { TFormColumnProps } from '@/constants/types'
+import { TEditModePayload, TFormColumnProps } from '@/constants/types'
 import { useConvertUrlToImages } from '@/hooks'
 import { useRouter } from 'next/router'
-import { FieldValues, Path } from 'react-hook-form'
+import { FieldValues, Path, PathValue } from 'react-hook-form'
 
 function FormColumn<T extends FieldValues>({
   control,
   formOpened,
-  getValues,
-  setValue,
+  getFormValues,
+  setFormValue,
   loading,
   isLinkPost,
   subId,
@@ -30,22 +30,23 @@ function FormColumn<T extends FieldValues>({
     query: { postid }
   } = useRouter()
 
-  /* mapping post data and populate fields value in edit mode */
+  /* mapping post data and populate fields value in edit mode  */
   useEffect(() => {
     if (editModePayload) {
       Object.keys(editModePayload).forEach((key) => {
-        setValue(key as Path<T>, key !== 'images' ? (editModePayload as { [key: string]: any })[key] : uploadedImgFiles)
+        const value = key !== 'images' ? editModePayload[key as keyof TEditModePayload] : uploadedImgFiles
+        setFormValue(key as Path<T>, value as PathValue<T, Path<T>>)
       })
     }
-  }, [setValue, editModePayload, uploadedImgFiles])
+  }, [setFormValue, editModePayload, uploadedImgFiles])
 
   /* Event subscriber for opening the form from somewhere else */
   useEffect(() => {
     let sto: NodeJS.Timeout | null = null
 
-    eventEmitter.subscribe(Events.OPEN_CREATE_POST_FORM, (state) => {
+    eventEmitter.subscribe(Events.OPEN_CREATE_POST_FORM, (_) => {
       ref?.current?.focus()
-      !getValues('title' as Path<T>) && setValue('title' as Path<T>, 'Your post title' as any)
+      !getFormValues('title' as Path<T>) && setFormValue('title' as Path<T>, 'Your post title' as PathValue<T, Path<T>>)
 
       sto = setTimeout(() => {
         ref?.current?.select()
@@ -55,10 +56,11 @@ function FormColumn<T extends FieldValues>({
       sto && clearTimeout(sto)
       eventEmitter.unsubscribe(Events.OPEN_CREATE_POST_FORM)
     }
-  }, [setValue, getValues, postid, subId])
+  }, [setFormValue, getFormValues, postid, subId])
 
   return (
     <Stack spacing={1.5} flex={1}>
+      {/* Title input */}
       <RdInput<T>
         ref={ref}
         bgcolor="white"
@@ -69,19 +71,20 @@ function FormColumn<T extends FieldValues>({
         placeholder="Create Post"
         registerOptions={{ validate: (val) => postTitleValidation(val) }}
       />
-      {formOpened && (
-        <MainForm<T>
-          reset={reset}
-          setValue={setValue}
-          isDirty={isDirty}
-          loading={loading}
-          isLinkPost={isLinkPost}
-          control={control}
-          imagesValue={imagesValue}
-          subId={subId}
-          setIsLinkPost={setIsLinkPost}
-        />
-      )}
+
+      {/* Rest of the form (only show on form focused) */}
+      <MainForm<T>
+        open={formOpened}
+        reset={reset}
+        setFormValue={setFormValue}
+        isDirty={isDirty}
+        loading={loading}
+        isLinkPost={isLinkPost}
+        control={control}
+        imagesValue={imagesValue}
+        subId={subId}
+        setIsLinkPost={setIsLinkPost}
+      />
     </Stack>
   )
 }

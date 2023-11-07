@@ -55,7 +55,7 @@ export default function Home({ postList: svPostList }: InferGetStaticPropsType<t
         <title>My Reddit</title>
       </Head>
 
-      <FeedLayout top="70px">
+      <FeedLayout top="70px" allowCreatePost>
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
           <NewFeeds

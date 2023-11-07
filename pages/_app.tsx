@@ -1,16 +1,14 @@
-import { MainLayout } from '@/components'
-import MuiLayout from '@/components/Layouts/MuiLayout'
+import { MainLayout, MuiProvider } from '@/components'
 import { createEmotionCache } from '@/mui/createEmotionCache'
 import { ApolloProvider } from '@apollo/client'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { SessionContextProvider as SupabaseAuthProvider } from '@supabase/auth-helpers-react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useState } from 'react'
 import { client } from '../apollo-client'
-import '../styles/global.css'
 
 export interface TMyAppProps extends AppProps {
   emotionCache?: EmotionCache
@@ -29,15 +27,15 @@ export default function App({ Component, emotionCache = createEmotionCache(), pa
       </Head>
 
       <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!, components: 'buttons', currency: 'USD' }}>
-        <MuiLayout>
+        <MuiProvider>
           <ApolloProvider client={client}>
-            <SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+            <SupabaseAuthProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
               <MainLayout>
                 <Component {...pageProps} />
               </MainLayout>
-            </SessionContextProvider>
+            </SupabaseAuthProvider>
           </ApolloProvider>
-        </MuiLayout>
+        </MuiProvider>
       </PayPalScriptProvider>
     </CacheProvider>
   )

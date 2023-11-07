@@ -4,7 +4,7 @@ import { Session } from '@supabase/supabase-js'
 import { Dayjs } from 'dayjs'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldError, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
-import { MAIN_MENU_GROUP, ORDERING, PROFILE_DIALOG_TYPE, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
+import { MAIN_MENU_GROUP, ORDERING, PROFILE_DIALOG_TYPE, PaymentStepComName, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
 
 /* --------------------------------------------Common Types-------------------------------------------- */
 export type TUserCompact = {
@@ -41,6 +41,7 @@ export type TPost = {
   comment?: TComment[]
   vote?: TVote[]
   totalUpvotes?: number
+  totalComments?: number
 }
 export type TTopic = {
   id: number
@@ -95,10 +96,10 @@ export type TIconBox = {
   icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
   name: string
   tooltip?: string
-  url?: string
   notification?: TNotiData
   hideOnMobile?: boolean
-  active?: boolean
+  disabled?: boolean
+  onClick: () => unknown
 }
 export type TMenuItem = Omit<TSubreddit, 'id' | 'subType'> & {
   group: MAIN_MENU_GROUP
@@ -242,8 +243,8 @@ export type TCardUserInfoForm = {
 }
 export type TFormColumnProps<T extends FieldValues> = {
   control: Control<T>
-  getValues: UseFormGetValues<T>
-  setValue: UseFormSetValue<T>
+  getFormValues: UseFormGetValues<T>
+  setFormValue: UseFormSetValue<T>
   loading: boolean
   isLinkPost: boolean
   subId: number | undefined
@@ -291,7 +292,7 @@ export type TCardGuideListData = {
 
 export type TStepperData = {
   stepLabel: string
-  component: string
+  component: PaymentStepComName
   checkStatus?: boolean
 }
 

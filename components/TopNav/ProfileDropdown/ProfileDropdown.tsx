@@ -29,7 +29,7 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
   const menuList = buildProfileMenuData(me?.username, { darkMode: mode !== 'light' })
   const groupedMenuList = createGroupedList(menuList)
 
-  function handleRenderSelectedOption(value: string): ReactNode {
+  function handleRenderSelectedOption(_: string): ReactNode {
     return renderSelectedOption(sessionUsername || me?.username, !sessionUsername && loading)
   }
 

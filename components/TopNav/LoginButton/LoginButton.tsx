@@ -7,7 +7,7 @@ function LoginButton() {
 
   /* fire event to open login modal  */
   useEffect(() => {
-    eventEmitter.subscribe(Events.OPEN_LOGIN_MODAL, (value) => [setOpen(value)])
+    eventEmitter.subscribe(Events.OPEN_LOGIN_MODAL, (value: unknown) => typeof value === 'boolean' && setOpen(value))
     return () => eventEmitter.unsubscribe(Events.OPEN_LOGIN_MODAL)
   }, [])
 

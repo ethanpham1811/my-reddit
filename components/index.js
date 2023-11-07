@@ -14,6 +14,7 @@ import CommunityCreator from './CommunityCreator/CommunityCreator'
 import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/IsChildrenGroupCheckbox'
 import TopicDropdown from './CommunityCreator/TopicDropdown/TopicDropdown'
 import MainLayout from './Layouts/MainLayout'
+import MuiProvider from './Layouts/MuiProvider'
 import LoginPortal from './LoginPortal/LoginPortal'
 import MessageBoard from './MessageBoard/MessageBoard'
 import NewFeeds from './NewFeeds/NewFeeds'
@@ -74,6 +75,7 @@ export {
   MainLayout,
   MenuDropDown,
   MessageBoard,
+  MuiProvider,
   NewFeeds,
   ProfileDropdown,
   RdAdItem,

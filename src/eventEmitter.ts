@@ -8,19 +8,20 @@
 export enum Events {
   OPEN_CREATE_POST_FORM = 'OPEN_CREATE_POST_FORM',
   OPEN_CREATE_COMMUNITY_DRAWER = 'OPEN_CREATE_COMMUNITY_DRAWER',
-  OPEN_LOGIN_MODAL = 'OPEN_LOGIN_MODAL'
+  OPEN_LOGIN_MODAL = 'OPEN_LOGIN_MODAL',
+  OPEN_PREMIUM_DRAWER = 'OPEN_PREMIUM_DRAWER'
 }
 
-type EventCallback = (data: any) => void
+type EventCallback = (data: unknown) => void
 
 export const eventEmitter = {
   events: {} as Record<string, EventCallback[]>,
 
-  dispatch(event: Events, data: any) {
+  dispatch(event: Events, data: unknown) {
     if (this.events[event]) this.events[event].forEach((callback) => callback(data))
   },
 
-  subscribe(event: Events, callback: (data: any) => any) {
+  subscribe(event: Events, callback: (_: unknown) => void) {
     if (!this.events[event]) this.events[event] = []
     this.events[event].push(callback)
   },
