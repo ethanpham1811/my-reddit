@@ -1,7 +1,9 @@
+import { MessageBoard } from '@/components'
 import { TFetchMoreArgs } from '@/constants/types'
-import { Box, Stack, Typography } from '@/mui'
+import { Box, Stack } from '@/mui'
 import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
 import { Jelly } from '@uiball/loaders'
+import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 
 type TRdInfiniteScrollProps<T> = {
@@ -12,11 +14,12 @@ type TRdInfiniteScrollProps<T> = {
 }
 
 const RdInfiniteScroll = <T extends {}>({ fetchMore, limit, list, appendPosts }: TRdInfiniteScrollProps<T>) => {
+  const router = useRouter()
+  const ref = useRef(null)
   const curListLength = list?.length || 0
   const [offset, setOffset] = useState<number>(curListLength) // offset start at the index of the last item of current list
   const [loading, setLoading] = useState(false)
-  const endOfList: boolean = offset > curListLength
-  const ref = useRef(null)
+  const endOfList: boolean = offset > curListLength || offset < limit - 1
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -52,9 +55,7 @@ const RdInfiniteScroll = <T extends {}>({ fetchMore, limit, list, appendPosts }:
           <Jelly size={30} speed={0.7} color="#ff4500" />
         </Box>
       ) : endOfList ? (
-        <Box display="flex" justifyContent="center">
-          <Typography>No more post</Typography>
-        </Box>
+        <MessageBoard head="No more post" hasBackground={!!router?.query?.username} />
       ) : (
         <Box ref={ref} sx={{ height: '5px' }}></Box>
       )}

@@ -24,14 +24,14 @@ function CardPayment({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
     const componentName: PaymentStepComName = steps[activeStep - 1].component
     const StepContent = componentRegistry[componentName]
 
+    if (componentName === PaymentStepComName.PremiumInfo) {
+      return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PremiumInfo])
+    }
     if (componentName === PaymentStepComName.PricingInfo) {
       return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PricingInfo], { selectedPricing, setSelectedPricing })
     }
     if (componentName === PaymentStepComName.PaymentCheckout) {
       return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PaymentCheckout], { amount: selectedPrice })
-    }
-    if (componentName === PaymentStepComName.PremiumInfo) {
-      return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PremiumInfo])
     }
     return <Box>Wrong step mapping</Box>
   }

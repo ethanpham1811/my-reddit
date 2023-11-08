@@ -9,8 +9,8 @@ function UserInfoFollower({ user }: { user: TUserDetail | null }) {
         {formatNumber(user?.followers || 0)}
       </Typography>{' '}
       &nbsp;
-      <Typography variant="subtitle2" sx={{ color: 'hintText.main', mt: '-1px' }}>
-        Followers
+      <Typography variant="subtitle2" sx={{ fontSize: '0.8rem', color: 'hintText.main' }}>
+        followers
       </Typography>
     </Box>
   )

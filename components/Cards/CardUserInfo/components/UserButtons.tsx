@@ -18,6 +18,7 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
   const me = session?.userDetail
   const { updateUser, loading } = useUserUpdate()
   const [showUnfollowBtn, setShowUnfollowBtn] = useState(false)
+  const isDisabled: boolean = !me || !me.member_of_ids || me?.member_of_ids?.length === 0
 
   /* onSubmit: add/remove follower from user's following_ids */
   async function handleFollowingAction(isUnfollow: boolean) {
@@ -62,7 +63,7 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
               </>
             ) : (
               <>
-                <RdButton onClick={onCreatePost} text={'New Post'} filled color="blue" invertColor />
+                <RdButton disabled={isDisabled} onClick={onCreatePost} text={'Create Post'} filled={!isDisabled} color="blue" invertColor />
               </>
             )}
           </CardActions>

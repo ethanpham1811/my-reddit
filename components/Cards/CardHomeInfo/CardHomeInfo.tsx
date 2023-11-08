@@ -9,6 +9,7 @@ import { RdButton, RdCard } from '../..'
 function CardHomeInfo() {
   const { session } = useAppSession()
   const me = session?.userDetail
+  const isDisabled: boolean = !me || !me.member_of_ids || me?.member_of_ids?.length === 0
 
   function onCreatePost() {
     eventEmitter.dispatch(Events.OPEN_CREATE_POST_FORM, true)
@@ -36,7 +37,8 @@ function CardHomeInfo() {
         <>
           <Divider sx={{ my: 0.5 }} />
           <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <RdButton text={'Create Post'} filled color="blue" invertColor onClick={onCreatePost} />
+            <RdButton disabled={isDisabled} text={'Create Post'} filled={!isDisabled} color="blue" invertColor onClick={onCreatePost} />
+
             <RdButton text={'Create Community'} color="blue" onClick={onCreateCommunity} />
           </CardActions>
         </>

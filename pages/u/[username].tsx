@@ -6,8 +6,9 @@ import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/constants/enums'
 import { TPost, TSortOptions, TUserCompact, TUserDetail } from '@/constants/types'
 import { GET_USER_BY_USERNAME_WITH_POSTS, GET_USER_LIST_SHORT } from '@/graphql/queries'
 import { useUserByUsername } from '@/hooks'
-import { Stack } from '@/mui'
+import { Box, Stack } from '@/mui'
 import { appendPosts, noPermissionUserPageMsg } from '@/src/pageFunctions'
+import { generateUserCover } from '@/src/utils'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
@@ -80,11 +81,11 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
   }
 
   return (
-    <div>
+    <Box height="100vh">
       <Head>
         <title>u/{username}</title>
       </Head>
-      <FeedLayout top="70px" allowCreatePost={username === me?.username.toString() ?? false}>
+      <FeedLayout top="70px" allowCreatePost={username === me?.username.toString() ?? false} sx={{ position: 'relative', zIndex: 1 }}>
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
           <NewFeeds
@@ -95,12 +96,22 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
             sortOptions={sortOptions}
             noPostText="This user has no post"
             appendPosts={appendPosts('userByUsernameWithPosts')}
-            permissionFailedMsg={noPermissionUserPageMsg(me?.following_ids, me?.username, username)}
+            permissionFailedMsg={noPermissionUserPageMsg(me?.following_ids, me?.username, username, true)}
             setHasNoPost={setHasNoPost}
           />
         </Stack>
         <CardUserInfo user={user} loading={pageLoading} />
       </FeedLayout>
-    </div>
+
+      {/* user custom background (position fixed) */}
+      <Box
+        sx={{ backgroundImage: `url(${generateUserCover(user?.username, 2000, 1000, 7)})` }}
+        position="fixed"
+        top={0}
+        left={0}
+        width="100vw"
+        height="100vh"
+      />
+    </Box>
   )
 }

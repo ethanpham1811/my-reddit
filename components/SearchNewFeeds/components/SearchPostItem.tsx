@@ -3,7 +3,7 @@ import { TQueriedPost } from '@/constants/types'
 import { Divider, Stack, useTheme } from '@/mui'
 import { blurBottomStyle, postHoverStyle } from '@/mui/styles'
 import { useRouter } from 'next/router'
-import { Fragment, useRef } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import SearchPostItemBody from './SearchPostItemBody'
 import SearchPostItemFooter from './SearchPostItemFooter'
 import SearchPostItemHeader from './SearchPostItemHeader'
@@ -24,10 +24,15 @@ function SearchPostItem({ item }: { item: TQueriedPost }) {
     comment,
     images
   } = item
+  const [blurredBottomStyle, setBlurredBottomStyle] = useState({})
 
   /* if a post's height > 200px => blur out the overflow bottom part */
   const ref = useRef<HTMLDivElement>(null)
-  const bottomStyle = ref?.current?.offsetHeight && ref?.current?.offsetHeight >= MAX_NEW_FEEDS_POST_HEIGHT ? blurBottomStyle('80px', mode) : {}
+  useEffect(() => {
+    if (!ref?.current) return
+    const isHeightExceeded = ref?.current?.offsetHeight && ref?.current?.offsetHeight >= MAX_NEW_FEEDS_POST_HEIGHT
+    setBlurredBottomStyle(isHeightExceeded ? blurBottomStyle('80px', mode) : {})
+  }, [ref, mode])
 
   /* navigate to post detail page */
   const goToPost = () => navigate(`/r/${subName}/post/${id}`)
@@ -51,7 +56,7 @@ function SearchPostItem({ item }: { item: TQueriedPost }) {
       >
         {/* header & body */}
         <SearchPostItemHeader subName={subName} username={username} created_at={created_at} />
-        <SearchPostItemBody title={title} body={body} images={images} id={id} bottomStyle={bottomStyle} />
+        <SearchPostItemBody title={title} body={body} images={images} id={id} bottomStyle={blurredBottomStyle} />
 
         {/* upvote & comment count */}
         <SearchPostItemFooter vote={vote} comment={comment} />

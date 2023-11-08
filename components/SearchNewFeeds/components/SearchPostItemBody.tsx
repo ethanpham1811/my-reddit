@@ -2,7 +2,7 @@ import { RdImgLoader } from '@/components'
 import { Box, Stack, Typography } from '@/mui'
 import { parseHtml } from '@/src/utils'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 type TSearchPostItemBodyProps = {
   title: string
@@ -14,11 +14,6 @@ type TSearchPostItemBodyProps = {
 
 function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPostItemBodyProps) {
   const [imgLoading, setImgLoading] = useState(true)
-  const [style, setStyle] = useState(bottomStyle)
-
-  useEffect(() => {
-    setStyle(bottomStyle)
-  }, [bottomStyle])
 
   return (
     <Stack direction="row" spacing={1}>
@@ -26,7 +21,7 @@ function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPos
         <Typography variant="h6" sx={{ color: 'black.main' }}>
           {title}
         </Typography>
-        <Typography fontSize="0.8rem" sx={{ pb: 5, color: 'hintText.main', ...style }}>
+        <Typography fontSize="0.8rem" sx={{ pb: 5, color: 'hintText.main', ...bottomStyle }}>
           {parseHtml(body)}
         </Typography>
       </Stack>

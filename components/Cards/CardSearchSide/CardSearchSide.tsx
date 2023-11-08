@@ -47,14 +47,14 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
                 status = me ? validatePostByFollowing(me?.following_ids, item.username) : false
                 btnText = status ? 'Following' : 'Follow'
                 revertBtnText = status ? 'Unfollow' : 'Follow'
-                extraText = formatNumber(item.followers) + ' Followers'
+                extraText = formatNumber(item.followers) + ' followers'
                 link = `u/${item.username}`
               } else {
                 name = item.name?.toString()
                 status = me ? validateSubredditMember(me?.member_of_ids, item.name) : false
                 btnText = status ? 'Joined' : 'Join'
                 revertBtnText = status ? 'Leave' : 'Join'
-                extraText = formatNumber(item.member || 0) + ' Members'
+                extraText = formatNumber(item.member || 0) + ' members'
                 link = `r/${item.name}`
                 type = SEARCH_TABS.Communities
               }

@@ -8,7 +8,9 @@ type TUserInfoEmailProps = {
 function UserInfoEmail({ user }: TUserInfoEmailProps) {
   return (
     <Box display="flex" justifyContent="center" alignItems="center" py={1}>
-      <Typography variant="subtitle2">{user?.email}</Typography>
+      <Typography variant="subtitle2" sx={{ fontSize: '0.8rem' }}>
+        {user?.email}
+      </Typography>
     </Box>
   )
 }

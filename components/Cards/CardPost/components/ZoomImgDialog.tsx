@@ -1,5 +1,7 @@
 import { RdDialog, RdImgLoader } from '@/components'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Box } from '@/mui'
+import Image from 'next/image'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 type TPreviewImgDialogProps = {
   zoomDialogOpen: string | null
@@ -8,11 +10,7 @@ type TPreviewImgDialogProps = {
 
 function ZoomImgDialog({ zoomDialogOpen: zoomedImg, setZoomDialogOpen }: TPreviewImgDialogProps) {
   const [imgLoading, setImgLoading] = useState(true)
-
-  // refresh loading state when new img come in
-  useEffect(() => {
-    setImgLoading(true)
-  }, [zoomedImg])
+  const [imgSize, setImgSize] = useState({ width: '50px', height: '50px' })
 
   return (
     <RdDialog
@@ -28,12 +26,27 @@ function ZoomImgDialog({ zoomDialogOpen: zoomedImg, setZoomDialogOpen }: TPrevie
 
       {/* TODO: using normal img tag due to layout issue with Next Image, will fix later */}
       {zoomedImg && (
-        <img
-          onLoad={() => setImgLoading(false)}
-          src={process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + zoomedImg}
-          alt={'zoomed image'}
-          style={{ maxWidth: '90vw', maxHeight: '90vh' }}
-        />
+        <Box
+          sx={{
+            opacity: imgLoading ? 0 : 1,
+            width: imgSize.width,
+            height: imgSize.height,
+            maxWidth: (theme) => theme.breakpoints.values.xl,
+            maxHeight: '90vh'
+          }}
+        >
+          <Image
+            onLoad={({ target }) => {
+              const { naturalWidth: w, naturalHeight: h } = target as HTMLImageElement
+              setImgSize({ width: w + 'px', height: h + 'px' })
+              setImgLoading(false)
+            }}
+            src={process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + zoomedImg}
+            alt={'zoomed image'}
+            layout="fill"
+            objectFit="contain"
+          />
+        </Box>
       )}
     </RdDialog>
   )

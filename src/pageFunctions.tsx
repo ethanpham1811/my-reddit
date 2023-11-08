@@ -10,20 +10,22 @@ import { validatePostByFollowing, validateSubredditMember } from './utils'
  * - appendPosts: sub page & user page (nested in user & sub obj)
  */
 export function appendHomePagePosts(prev: { [key: string]: TPost[] }, fetchMoreResult: { [key: string]: TPost[] }) {
-  return !prev
+  const isCurrentListEmpty: boolean = !prev || !prev.postPaginatedList
+  return isCurrentListEmpty
     ? fetchMoreResult
     : {
-        postPaginatedList: [...prev?.postPaginatedList, ...fetchMoreResult?.postPaginatedList]
+        postPaginatedList: [...(prev?.postPaginatedList || []), ...(fetchMoreResult?.postPaginatedList || [])]
       }
 }
 export function appendPosts(key: string) {
   return (prev: { [key: string]: { [key: string]: TPost[] } }, fetchMoreResult: { [key: string]: { [key: string]: TPost[] } }) => {
-    return !prev
+    const isCurrentListEmpty: boolean = !prev || !prev[key]
+    return isCurrentListEmpty
       ? fetchMoreResult
       : {
           [key]: {
             ...prev[key],
-            post: [...prev[key]?.post, ...fetchMoreResult[key]?.post]
+            post: [...(prev[key]?.post || []), ...(fetchMoreResult[key]?.post || [])]
           }
         }
   }
@@ -51,14 +53,15 @@ export function noPermissionSubPageMsg(
 export function noPermissionUserPageMsg(
   following_ids: string[] | undefined,
   myUsername: string | string[] | undefined,
-  username: string | string[] | undefined
+  username: string | string[] | undefined,
+  isUserPage?: boolean
 ): ReactNode | false {
   const verifyFollower = validatePostByFollowing(following_ids, username) || myUsername === username
 
   return !username ? ( // if user is not logged in
-    <MessageBoard head="You need to " highlight="login" tail=" to view their content" hasLogin />
+    <MessageBoard head="You need to " highlight="login" tail=" to view their content" hasLogin hasBackground={isUserPage} />
   ) : !verifyFollower ? ( // if user is not following the user page
-    <MessageBoard head="You need to follow " highlight={username as string} tail=" to view their posts" />
+    <MessageBoard head="You need to follow " highlight={username as string} tail=" to view their posts" hasBackground={isUserPage} />
   ) : (
     false
   )

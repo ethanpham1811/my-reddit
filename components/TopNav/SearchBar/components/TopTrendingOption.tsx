@@ -29,7 +29,7 @@ function TopTrendingOption({ option, props, url }: TTropTrendingOptionProps) {
     if (!ref) return
     const exceededHeight: boolean = ref?.current?.offsetHeight ? ref?.current?.offsetHeight >= MAX_TOP_TRENDING_HEIGHT : false
     setBottomStyle(exceededHeight ? blurBottomStyle('80px', mode, true) : {})
-  }, [])
+  }, [mode])
 
   return (
     <>

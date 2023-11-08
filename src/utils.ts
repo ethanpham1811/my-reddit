@@ -109,8 +109,8 @@ export const customFormatDistance = (targetDate: Date) => {
 
 /*--------------------------------------------- Generators -------------------------------------------- */
 export const generateUserImage = (seed: string | null | undefined): string => `https://robohash.org/${seed ?? 'seed'}.png`
-export const generateUserCover = (seed: string | null | undefined, width: number, height: number): string =>
-  `https://picsum.photos/seed/${seed ?? 'seed'}/${width}/${height}`
+export const generateUserCover = (seed: string | null | undefined, width: number, height: number, blur?: number): string =>
+  `https://picsum.photos/seed/${seed ?? 'seed'}/${width}/${height}${blur ? `?blur=${blur}` : ''}`
 export const generateSeededHexColor = (seed: string | null | undefined): string => {
   let sum = 0
   for (const letter of seed || 'seed') sum += letter.charCodeAt(0)

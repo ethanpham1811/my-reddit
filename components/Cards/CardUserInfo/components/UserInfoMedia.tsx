@@ -8,7 +8,7 @@ function UserInfoMedia({ user }: { user: TUserDetail | null }) {
       <CardMedia
         component="img"
         height={80}
-        image={generateUserCover(user?.username || 'seed', 400, 100)}
+        image={generateUserCover(user?.email || 'seed', 400, 100)}
         alt="user cover"
         sx={{ mx: -2, mt: -2, width: 'auto' }}
       />

@@ -20,15 +20,15 @@ function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
   }
 
   return (
-    <Box bgcolor="lightblue.main" mx={1} pb={3} pt={1} mb={1}>
+    <Box bgcolor="lightblue.main" m={1} pb={3} pt={2}>
       {commentList && commentList.length > 0 && (
         <Box px={2}>
           <RdStaticInput sx={{ ml: 2.5 }} bgcolor="white" fullWidth={false} onChange={handleFilter} placeholder="Filter comments" />
         </Box>
       )}
       {commentList && commentList.length > 0 ? (
-        orderBy(commentList.filter(filterByTerm), SORT_METHOD.New, ORDERING.Desc).map(({ id, text, user: { username }, created_at }) => (
-          <Stack sx={{ pt: 5 }} direction="row" key={`comment_by_user_${username}_${id}`}>
+        orderBy(commentList.filter(filterByTerm), SORT_METHOD.New, ORDERING.Desc).map(({ id, text, user: { username }, created_at }, i) => (
+          <Stack sx={{ pt: i === 0 ? 3 : 5 }} direction="row" key={`comment_by_user_${username}_${id}`}>
             {/* side column */}
             <Box width={40} mx={-1}>
               <Link href={`/u/${username}`}>
@@ -51,7 +51,7 @@ function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
           </Stack>
         ))
       ) : (
-        <MessageBoard pt={2} head="This post has no comment" />
+        <MessageBoard pt={1} head="This post has no comment" />
       )}
     </Box>
   )

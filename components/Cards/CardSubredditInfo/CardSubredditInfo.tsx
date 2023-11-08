@@ -46,15 +46,17 @@ function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
               </Typography>{' '}
               &nbsp;
               <Typography variant="subtitle2" sx={{ color: 'hintText.main' }}>
-                Members
+                members
               </Typography>
             </Box>
             <Divider sx={{ my: 1 }} />
 
             {/* Started since mmm/yyyy */}
             <Box display="flex" justifyContent="center" py={1} alignItems="center">
-              <Typography sx={{ fontSize: '0.8rem', mr: '5px', color: 'hintText.main' }}>Started since</Typography>
-              <Typography variant="body1" color="black" fontWeight={400}>
+              <Typography variant="subtitle2" sx={{ fontSize: '0.8rem', mr: '5px', color: 'hintText.main' }}>
+                Started since
+              </Typography>
+              <Typography variant="subtitle1" color="black" fontWeight={700}>
                 {subreddit.created_at && format(new Date(subreddit.created_at), 'MMM yyyy')}
               </Typography>
             </Box>

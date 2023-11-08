@@ -61,7 +61,7 @@ const NewFeeds = ({
   return (
     <>
       {loading || !mappedPostList ? (
-        [0, 1].map((el) => (
+        [0].map((el) => (
           <Fragment key={`skeleton_${el}`}>
             <RdSkeletonListItem index={el.toString()} />
           </Fragment>
@@ -79,10 +79,10 @@ const NewFeeds = ({
               <RdInfiniteScroll<TPost> appendPosts={appendPosts} fetchMore={fetchMore} limit={QUERY_LIMIT} list={postList} />
 
               {/* dialog show zoomed image */}
-              <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />
+              {zoomedImg && <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />}
             </>
           ) : (
-            <MessageBoard head={noPostText} />
+            <MessageBoard head={noPostText} hasBackground />
           )}
         </>
       )}

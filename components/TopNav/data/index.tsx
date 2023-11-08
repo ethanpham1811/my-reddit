@@ -9,10 +9,11 @@ import {
   PreviewOutlinedIcon,
   StarsIcon
 } from '@/constants/icons'
-import { TIconBox, TProfileDropDownList } from '@/constants/types'
+import { TIconBox, TProfileDropDownList, TUserDetail } from '@/constants/types'
 import { Dispatch, SetStateAction } from 'react'
 
 type TBuildDataProps = {
+  me: TUserDetail | null | undefined
   toggleColorMode: () => void
   openPremiumDrawer: () => void
   setUserGuideOpen: Dispatch<SetStateAction<boolean>>
@@ -20,7 +21,7 @@ type TBuildDataProps = {
 }
 
 /* data tree for Notification Box */
-export const buildData = ({ toggleColorMode, openPremiumDrawer, setUserGuideOpen, navigate }: TBuildDataProps): TIconBox[] => [
+export const buildData = ({ me, toggleColorMode, openPremiumDrawer, setUserGuideOpen, navigate }: TBuildDataProps): TIconBox[] => [
   {
     icon: DarkModeOutlinedIcon,
     name: NOTI_BOX_NAME.Darkmode,
@@ -38,6 +39,7 @@ export const buildData = ({ toggleColorMode, openPremiumDrawer, setUserGuideOpen
     name: NOTI_BOX_NAME.Premium,
     tooltip: 'Premium subscription',
     hideOnMobile: true,
+    disabled: !me,
     onClick: openPremiumDrawer
   },
   {

@@ -1,15 +1,15 @@
-import { useForm } from 'react-hook-form'
-
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardCreatePostForm, TEditModePayload } from '@/constants/types'
-import { usePostCreateAndEdit } from '@/hooks'
+import { useEditPostDataMap, usePostCreateAndEdit, usePostCreateFormListener, usePostCreateFormMode } from '@/hooks'
 import { Box, Divider, Stack, Typography, useMediaQuery, useTheme } from '@/mui'
+import { postTitleValidation } from '@/src/formValidations'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { RdCard } from '../..'
+import { useRef } from 'react'
+import { Path, useForm } from 'react-hook-form'
+import { RdCard, RdInput } from '../..'
 import AvatarColumn from './components/AvatarColumn'
-import FormColumn from './components/FormColumn'
+import MainForm from './components/MainForm'
 import Tools from './components/Tools'
 
 type TCardCreatePostProps = {
@@ -40,24 +40,21 @@ type TCardCreatePostProps = {
 function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   const { session } = useAppSession()
   const me = session?.userDetail
-  const { breakpoints } = useTheme()
-  const { createPost, updatePost, loading } = usePostCreateAndEdit()
-  const isMobile = useMediaQuery(breakpoints.down('sm'))
-  const [isLinkPost, setIsLinkPost] = useState(false)
-  const userName: string | undefined | null = session?.userDetail?.username
-  const {
-    query: { mode }
-  } = useRouter()
-  const isEditing: boolean = mode === POST_MUTATION_MODE.Edit
   const isDisabled: boolean = !me || !me.member_of_ids || me?.member_of_ids?.length === 0
-
-  /* form controllers */
+  const userName: string | undefined | null = session?.userDetail?.username
+  const ref = useRef<HTMLInputElement | null>(null)
+  const router = useRouter()
+  const isEditing: boolean = router?.query?.mode === POST_MUTATION_MODE.Edit
+  const { breakpoints } = useTheme()
+  const isMobile = useMediaQuery(breakpoints.down('sm'))
+  const { createPost, updatePost, loading } = usePostCreateAndEdit()
+  const [isLinkPost, setIsLinkPost] = usePostCreateFormMode(editModePayload)
   const {
     reset,
     handleSubmit,
     watch,
-    setValue,
-    getValues,
+    setValue: setFormValue,
+    getValues: getFormValues,
     control,
     formState: { isDirty }
   } = useForm<TCardCreatePostForm>()
@@ -65,21 +62,15 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   const imagesValue = watch('images')
   const formOpened = !!titleValue || isDirty
 
-  /* set link post mode if eligible */
-  useEffect(() => {
-    editModePayload?.link && setIsLinkPost(true)
-  }, [setIsLinkPost, editModePayload])
+  /* map post data to the form in edit mode */
+  useEditPostDataMap(editModePayload, setFormValue)
+
+  /* listener to open the form from anywhere in the app */
+  usePostCreateFormListener(subId, ref, getFormValues, setFormValue)
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
-    // edit post
-    if (isEditing) {
-      updatePost(formData, isLinkPost)
-    }
-    //create post
-    else {
-      createPost(formData, createPostCb, isLinkPost)
-    }
+    isEditing ? updatePost(formData, isLinkPost) : createPost(formData, createPostCb, isLinkPost)
   })
 
   /* Cb to reset the form */
@@ -95,24 +86,39 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
       <RdCard sx={{ p: { xs: 2, sm: 1.5 }, opacity: isDisabled ? 0.5 : 1 }}>
         <form onSubmit={onSubmit}>
           <Stack direction={formOpened ? { xs: 'column', sm: 'row' } : 'row'} spacing={{ xs: 1, sm: '0' }}>
-            {/* left column */}
+            {/* ----------------------------left column---------------------------- */}
             {(!isMobile || !formOpened) && <AvatarColumn userName={userName} />}
-            {/* main section */}
-            <FormColumn<TCardCreatePostForm>
-              editModePayload={editModePayload}
-              control={control}
-              formOpened={formOpened}
-              getFormValues={getValues}
-              setFormValue={setValue}
-              loading={loading}
-              isLinkPost={isLinkPost}
-              subId={subId}
-              imagesValue={imagesValue}
-              isDirty={isDirty}
-              reset={reset}
-              setIsLinkPost={setIsLinkPost}
-            />
-            {/* right column */}
+
+            {/* ----------------------------main section---------------------------- */}
+            <Stack spacing={1.5} flex={1}>
+              {/* Title input */}
+              <RdInput<TCardCreatePostForm>
+                ref={ref}
+                bgcolor="white"
+                flex={1}
+                control={control}
+                name={'title' as Path<TCardCreatePostForm>}
+                indentedHelper
+                placeholder="Create Post"
+                registerOptions={{ validate: (val) => postTitleValidation(val) }}
+              />
+
+              {/* Rest of the form (only show on form focused) */}
+              <MainForm<TCardCreatePostForm>
+                open={formOpened}
+                reset={reset}
+                setFormValue={setFormValue}
+                isDirty={isDirty}
+                loading={loading}
+                isLinkPost={isLinkPost}
+                control={control}
+                imagesValue={imagesValue}
+                subId={subId}
+                setIsLinkPost={setIsLinkPost}
+              />
+            </Stack>
+
+            {/* ----------------------------right column---------------------------- */}
             <Divider />
             <Box
               width={{ xs: 'auto', sm: 40 }}
