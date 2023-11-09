@@ -23,7 +23,7 @@ type TPostColumnProps = {
 function PostColumn({ subName, username, createdAt, title, body, link, linkDescription, setZoomedImg, images }: TPostColumnProps) {
   const [bottomStyle, setBottomStyle] = useState({})
   const {
-    palette: { mode }
+    palette: { mode, blue }
   } = useTheme()
   const ref = useRef<HTMLDivElement>(null)
   const {
@@ -40,7 +40,7 @@ function PostColumn({ subName, username, createdAt, title, body, link, linkDescr
   }, [postid, mode])
 
   return (
-    <Box flex={1} ml={1} pl={1}>
+    <Box flex={1} ml={1} pl={1} overflow="hidden">
       {/* post Header */}
       <PostHeader subName={subName} username={username} createdAt={createdAt} />
 
@@ -55,7 +55,7 @@ function PostColumn({ subName, username, createdAt, title, body, link, linkDescr
       {/* TODO: link preview: {link && <LinkPreview url={link} width="400px" />} */}
       {link && (
         <Box py={1} px={2} bgcolor="inputBgOutfocused.main" borderRadius="4px">
-          <Link onClick={(e) => e.stopPropagation()} href={link} target="_blank" style={{ textDecoration: 'none' }}>
+          <Link onClick={(e) => e.stopPropagation()} href={link} target="_blank" style={{ textDecoration: 'none', color: blue.main }}>
             {link}
           </Link>
         </Box>

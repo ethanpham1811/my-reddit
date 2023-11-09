@@ -1,19 +1,7 @@
 import { gql } from '@apollo/client'
+import { COMMENT_FRAGMENT, POST_FRAGMENT, USER_FRAGMENT } from './fragments'
 
 /* ------------------------------ USER--------------------------------- */
-export const ADD_USER = gql`
-  mutation AddUser($email: String, $role: String, $fullName: String, $coverUrl: String, $username: String!, $dob: Date) {
-    insertUser(email: $email, role: $role, fullName: $fullName, coverUrl: $coverUrl, username: $username, dob: $dob) {
-      id
-      role
-      username
-      fullName
-      email
-      coverUrl
-      dob
-    }
-  }
-`
 export const UPDATE_USER = gql`
   mutation UpdateUser(
     $id: ID!
@@ -45,65 +33,14 @@ export const UPDATE_USER = gql`
       following_ids: $following_ids
       role: $role
     ) {
-      id
-      role
-      username
-      fullName
-      followers
-      coverUrl
-      email
-      dob
-      created_at
-      karma
-      socialLinks
-      member_of_ids
-      following_ids
+      ...UserFragment
       post {
-        id
-        title
-        body
-        images
-        created_at
-        user {
-          username
-        }
-        comment {
-          created_at
-          user {
-            username
-          }
-          text
-        }
-        subreddit {
-          name
-          id
-          subType
-        }
-        vote {
-          id
-          upvote
-          user_id
-        }
-        link
-        linkDescription
+        ...PostFragment
       }
     }
   }
-`
-export const UPDATE_USER_FRAG = gql`
-  fragment UpdatedUserFrag on User {
-    id
-    created_at
-    email
-    dob
-    coverUrl
-    photoUrl
-    karma
-    socialLinks
-    member_of_ids
-    following_ids
-    post
-  }
+  ${POST_FRAGMENT}
+  ${USER_FRAGMENT}
 `
 
 /* ----------------------------- POST -------------------------------- */
@@ -118,36 +55,10 @@ export const ADD_POST = gql`
       link: $link
       linkDescription: $linkDescription
     ) {
-      id
-      title
-      body
-      images
-      created_at
-      user {
-        username
-      }
-      comment {
-        created_at
-        user {
-          username
-        }
-        text
-      }
-      subreddit {
-        name
-        id
-        subType
-      }
-      vote {
-        id
-        upvote
-        user_id
-      }
-      link
-      linkDescription
-      totalUpvotes
+      ...PostFragment
     }
   }
+  ${POST_FRAGMENT}
 `
 export const DELETE_POST = gql`
   mutation DeletePost($id: ID!) {
@@ -159,32 +70,10 @@ export const DELETE_POST = gql`
 export const UPDATE_POST = gql`
   mutation UpdatePost($id: ID!, $body: String, $images: [String], $title: String, $link: String, $linkDescription: String) {
     updatePost(id: $id, body: $body, images: $images, title: $title, link: $link, linkDescription: $linkDescription) {
-      id
-      images
-      body
-      created_at
-      title
-      user {
-        username
-      }
-      comment {
-        created_at
-        user {
-          username
-        }
-        text
-      }
-      subreddit {
-        name
-        subType
-      }
-      vote {
-        upvote
-      }
-      link
-      linkDescription
+      ...PostFragment
     }
   }
+  ${POST_FRAGMENT}
 `
 export const UPDATE_POST_WITH_VOTE_FRAG = gql`
   fragment UpdatedPostWithVote on Post {
@@ -256,24 +145,15 @@ export const ADD_SUBREDDIT = gql`
 export const ADD_COMMENT = gql`
   mutation AddComment($user_id: ID!, $post_id: ID!, $text: String!) {
     insertComment(user_id: $user_id, post_id: $post_id, text: $text) {
-      id
-      text
-      user {
-        username
-      }
-      created_at
+      ...CommentFragment
     }
   }
+  ${COMMENT_FRAGMENT}
 `
 export const UPDATE_COMMENT = gql`
   mutation UpdateComment($id: ID!, $text: String!) {
     updateComment(id: $id, text: $text) {
-      id
-      text
-      user {
-        username
-      }
-      created_at
+      ...CommentFragment
     }
   }
 `

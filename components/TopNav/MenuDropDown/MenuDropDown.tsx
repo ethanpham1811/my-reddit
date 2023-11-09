@@ -38,7 +38,7 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
   return (
     <RdDropdown
       renderSelectedOption={handleRenderSelectedOption}
-      value={me ? activePage || '' : 'home'}
+      value={me ? activePage || '' : 'Home'}
       flex={1}
       offsetTop="10px"
       width="20vw"
@@ -51,10 +51,10 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       </List>
 
       {/* Feeds list */}
-      <FeedsMenuList value="home" feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
+      <FeedsMenuList value="Home" feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
 
       {/* Subreddit list */}
-      <SubsMenuList value="home" options={communityOptions} filterByTerm={filterByTerm} />
+      <SubsMenuList value="Home" options={communityOptions} filterByTerm={filterByTerm} />
 
       {/* Following list */}
       <PeopleMenuList value="active" options={followingOptions} filterByTerm={filterByTerm} />

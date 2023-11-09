@@ -1,74 +1,26 @@
 import { gql } from '@apollo/client'
+import { POST_FRAGMENT, SUBREDDIT_FRAGMENT, USER_FRAGMENT } from './fragments'
 
 /* ------------------------------ USER--------------------------------- */
 export const GET_USER_BY_EMAIL = gql`
   query User_by_email($email: String!) {
     userByEmail(email: $email) {
-      id
-      role
-      username
-      fullName
-      followers
-      coverUrl
-      email
-      dob
-      created_at
-      karma
-      socialLinks
-      member_of_ids
-      following_ids
+      ...UserFragment
     }
   }
+  ${USER_FRAGMENT}
 `
 export const GET_USER_BY_USERNAME_WITH_POSTS = gql`
   query User_by_username_with_posts($username: String!, $offset: Int, $limit: Int) {
     userByUsernameWithPosts(username: $username) {
-      id
-      role
-      username
-      fullName
-      followers
-      coverUrl
-      email
-      dob
-      created_at
-      karma
-      socialLinks
-      member_of_ids
-      following_ids
+      ...UserFragment
       post(offset: $offset, limit: $limit) {
-        id
-        title
-        body
-        images
-        created_at
-        user {
-          username
-        }
-        comment {
-          created_at
-          user {
-            username
-          }
-          text
-        }
-        subreddit {
-          name
-          id
-          subType
-        }
-        vote {
-          id
-          upvote
-          user_id
-        }
-        link
-        linkDescription
-        totalUpvotes
-        totalComments
+        ...PostFragment
       }
     }
   }
+  ${USER_FRAGMENT}
+  ${POST_FRAGMENT}
 `
 export const GET_USER_LIST_SHORT = gql`
   query Users_short {
@@ -83,65 +35,22 @@ export const GET_USER_LIST_SHORT = gql`
 export const GET_SUBREDDIT_BY_NAME = gql`
   query Sub_by_name($name: String!) {
     subredditByName(name: $name) {
-      coverUrl
-      created_at
-      description
-      headline
-      id
-      isChildrenContent
-      member
-      name
-      subType
-      topic_ids
+      ...SubredditFragment
     }
   }
+  ${SUBREDDIT_FRAGMENT}
 `
 export const GET_SUBREDDIT_BY_NAME_WITH_POSTS = gql`
   query Sub_by_name($name: String!, $offset: Int, $limit: Int) {
     subredditByNameWithPosts(name: $name) {
-      coverUrl
-      created_at
-      description
-      headline
-      id
-      isChildrenContent
-      member
-      name
-      subType
-      topic_ids
+      ...SubredditFragment
       post(offset: $offset, limit: $limit) {
-        id
-        title
-        body
-        images
-        created_at
-        user {
-          username
-        }
-        comment {
-          created_at
-          user {
-            username
-          }
-          text
-        }
-        subreddit {
-          id
-          name
-          subType
-        }
-        vote {
-          id
-          upvote
-          user_id
-        }
-        link
-        linkDescription
-        totalUpvotes
-        totalComments
+        ...PostFragment
       }
     }
   }
+  ${SUBREDDIT_FRAGMENT}
+  ${POST_FRAGMENT}
 `
 export const GET_SUBREDDIT_LIST_SHORT = gql`
   query Subs_short {
@@ -152,120 +61,39 @@ export const GET_SUBREDDIT_LIST_SHORT = gql`
     }
   }
 `
-export const GET_SUBREDDIT_LIST_FULL = gql`
+export const GET_SUBREDDIT_LIST = gql`
   query Subs_full {
     subredditList {
-      id
-      topic_ids
-      name
-      subType
-      created_at
-      isChildrenContent
+      ...SubredditFragment
     }
   }
+  ${SUBREDDIT_FRAGMENT}
 `
 
 /* ----------------------------- POST -------------------------------- */
 export const GET_POST_LIST = gql`
   query Posts {
     postList {
-      id
-      title
-      body
-      images
-      created_at
-      user {
-        username
-      }
-      comment {
-        created_at
-        user {
-          username
-        }
-        text
-      }
-      subreddit {
-        name
-        subType
-      }
-      vote {
-        id
-        upvote
-        user_id
-      }
-      link
-      linkDescription
+      ...PostFragment
     }
   }
+  ${POST_FRAGMENT}
 `
 export const GET_PAGINATED_POST_LIST = gql`
   query Posts($offset: Int, $limit: Int) {
     postPaginatedList(offset: $offset, limit: $limit) {
-      id
-      title
-      body
-      images
-      created_at
-      user {
-        username
-      }
-      comment {
-        created_at
-        user {
-          username
-        }
-        text
-      }
-      subreddit {
-        name
-        subType
-      }
-      vote {
-        id
-        upvote
-        user_id
-      }
-      link
-      linkDescription
-      totalUpvotes
-      totalComments
+      ...PostFragment
     }
   }
+  ${POST_FRAGMENT}
 `
 export const GET_POST_BY_ID = gql`
   query Post_by_id($id: ID!) {
     post(id: $id) {
-      id
-      title
-      body
-      images
-      created_at
-      user {
-        username
-      }
-      comment {
-        id
-        created_at
-        user {
-          username
-        }
-        text
-      }
-      subreddit {
-        name
-        id
-        subType
-      }
-      vote {
-        id
-        upvote
-        user_id
-      }
-      link
-      linkDescription
-      totalComments
+      ...PostFragment
     }
   }
+  ${POST_FRAGMENT}
 `
 /* ----------------------------- TOPIC -------------------------------- */
 export const GET_TOPIC_LIST = gql`
@@ -318,34 +146,9 @@ export const GET_QUERIED_SUBS_USERS = gql`
 export const GET_SEARCHED_RESULTS = gql`
   query Search_result($offset: Int, $limit: Int, $term: String!) {
     queriedPosts(offset: $offset, limit: $limit, term: $term) {
-      id
-      title
-      body
-      images
-      link
-      linkDescription
-      created_at
-      user {
-        username
-      }
-      comment {
-        created_at
-        user {
-          username
-        }
-        text
-      }
-      subreddit {
-        name
-      }
-      vote {
-        id
-        upvote
-        user_id
-      }
+      ...PostFragment
       groupBy
       totalItems
-      totalUpvotes
     }
     queriedSubs(offset: $offset, limit: $limit, term: $term) {
       id
@@ -365,4 +168,5 @@ export const GET_SEARCHED_RESULTS = gql`
       totalItems
     }
   }
+  ${POST_FRAGMENT}
 `

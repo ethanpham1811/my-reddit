@@ -76,7 +76,7 @@ function Comment({ commentId, username, created_at, text: initComment }: TCommen
 
       {/* 3 dots menu */}
       {isMyComment && !blockInteraction && (
-        <ActionMenu setIsDeleting={setIsDeleting} onClickEdit={() => setIsEditing(true)} commentId={commentId.toString()} />
+        <ActionMenu setIsDeleting={setIsDeleting} onClickEdit={() => setIsEditing(true)} commentId={commentId?.toString()} />
       )}
     </Stack>
   )

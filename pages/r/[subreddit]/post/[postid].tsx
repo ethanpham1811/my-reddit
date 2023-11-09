@@ -69,7 +69,7 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
-    query: { subreddit: subName },
+    query: { subreddit: subName, mode },
     push: navigate
   } = useRouter()
   const [zoomedImg, setZoomedImg] = useState<string | null>(null)
@@ -84,9 +84,15 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
     return null
   }
 
+  // edit page: redirect to home if user not logged in
+  if (!me && mode === 'edit') {
+    navigate('/')
+    return null
+  }
+
   // if post in public subreddit OR user is member of subreddit => return true
   const verifyPost = (): boolean => {
-    return me?.id === postDetail?.user?.id || validatePostBySubname(me?.member_of_ids, subName, postDetail?.subreddit?.subType)
+    return me?.username === postDetail?.user?.username || validatePostBySubname(me?.member_of_ids, subName, postDetail?.subreddit?.subType)
   }
 
   return (
@@ -97,7 +103,12 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
       <SubredditTopNav name={subreddit?.name} subType={subreddit?.subType} headline={subreddit?.headline} />
       <FeedLayout top="1rem" subredditId={subreddit?.id} loading={pageLoading}>
         {!verifyPost() ? (
-          <MessageBoard head={'This post is private, please join '} highlight={subName as string} />
+          <MessageBoard
+            head={`This post is private, please ${me ? 'join' : ''} `}
+            highlight={!me ? 'login' : (subName as string)}
+            tail={!me ? ` and join the ${subName as string}` : undefined}
+            hasLogin={!me}
+          />
         ) : (
           <Stack spacing={2}>
             {postDetail && (

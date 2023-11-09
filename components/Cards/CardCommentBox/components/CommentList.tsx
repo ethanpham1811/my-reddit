@@ -11,7 +11,6 @@ function CommentList({ commentList, filterTerm }: { commentList: TComment[] | un
   function filterByTerm(option: TComment): boolean {
     return option.text.toLowerCase().includes(filterTerm.toLowerCase()) || option.user.username.toLowerCase().includes(filterTerm.toLowerCase())
   }
-
   return (
     <Box bgcolor="lightblue.main" m={1} pb={3} pt={2}>
       {commentList && commentList.length > 0 ? (

@@ -62,7 +62,7 @@ function usePostCreateAndEdit() {
       optimisticResponse: {
         insertPost: {
           id: OPTIMISTIC_TEMP_ID,
-          title: title,
+          title: title || '',
           body: body || null,
           link: link || null,
           linkDescription: linkDescription || null,
@@ -73,14 +73,15 @@ function usePostCreateAndEdit() {
             __typename: 'User'
           },
           subreddit: {
-            id: subreddit?.id || '',
             name: subreddit?.name || '',
+            id: subreddit?.id || '',
             subType: subreddit?.subType || '',
             __typename: 'Subreddit'
           },
           vote: [],
           comment: [],
-          totalUpvotes: null,
+          totalUpvotes: 0,
+          totalComments: 0,
           __typename: 'Post'
         }
       },
@@ -148,6 +149,11 @@ function usePostCreateAndEdit() {
 
     // turn of loading & close the form at this point and show optimistic update
     navigate(`/r/${subName}/post/${postid}`)
+
+    const payload: Omit<TCardCreatePostForm, 'subreddit_id'> & { subreddit_id?: number } = {
+      ...formData
+    }
+    if (payload['subreddit_id']) delete payload['subreddit_id']
 
     const { errors } = await editPost({
       variables: {

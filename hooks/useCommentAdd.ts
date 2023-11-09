@@ -24,12 +24,12 @@ function useCommentAdd() {
       optimisticResponse: {
         insertComment: {
           id: OPTIMISTIC_TEMP_ID,
+          text: formData.comment,
           user: {
             username: me?.username || 'unknown',
             __typename: 'User'
           },
           created_at: new Date().toISOString(),
-          text: formData.comment,
           __typename: 'Comment'
         }
       },
