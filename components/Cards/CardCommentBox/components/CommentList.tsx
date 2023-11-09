@@ -1,34 +1,22 @@
 import { MessageBoard } from '@/components'
-import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
 import { ORDERING, SORT_METHOD } from '@/constants/enums'
 import { TComment } from '@/constants/types'
 import { Avatar, Box, Stack } from '@/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import { orderBy } from 'lodash'
 import Link from 'next/link'
-import { useState } from 'react'
 import Comment from './Comment'
 
-function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
-  const [filterTerm, setFilterTerm] = useState('')
-
-  function handleFilter(e: React.ChangeEvent<HTMLInputElement>) {
-    setFilterTerm(e.target.value)
-  }
+function CommentList({ commentList, filterTerm }: { commentList: TComment[] | undefined; filterTerm: string }) {
   function filterByTerm(option: TComment): boolean {
     return option.text.toLowerCase().includes(filterTerm.toLowerCase()) || option.user.username.toLowerCase().includes(filterTerm.toLowerCase())
   }
 
   return (
     <Box bgcolor="lightblue.main" m={1} pb={3} pt={2}>
-      {commentList && commentList.length > 0 && (
-        <Box px={2}>
-          <RdStaticInput sx={{ ml: 2.5 }} bgcolor="white" fullWidth={false} onChange={handleFilter} placeholder="Filter comments" />
-        </Box>
-      )}
       {commentList && commentList.length > 0 ? (
         orderBy(commentList.filter(filterByTerm), SORT_METHOD.New, ORDERING.Desc).map(({ id, text, user: { username }, created_at }, i) => (
-          <Stack sx={{ pt: i === 0 ? 3 : 5 }} direction="row" key={`comment_by_user_${username}_${id}`}>
+          <Stack sx={{ pt: i === 0 ? 1 : 3 }} direction="row" key={`comment_by_user_${username}_${id}`}>
             {/* side column */}
             <Box width={40} mx={-1}>
               <Link href={`/u/${username}`}>
@@ -47,7 +35,7 @@ function CommentList({ commentList }: { commentList: TComment[] | undefined }) {
             </Box>
 
             {/* comment section */}
-            <Comment username={username} created_at={created_at} text={text} />
+            <Comment commentId={id?.toString()} username={username} created_at={created_at} text={text} />
           </Stack>
         ))
       ) : (

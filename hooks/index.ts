@@ -1,4 +1,5 @@
 import useCommentAdd from './useCommentAdd'
+import useCommentUpdate from './useCommentUpdate'
 import useConvertUrlToImages from './useConvertUrlToImages'
 import useDrawer from './useDrawer'
 import useEditPostDataMap from './useEditPostDataMap'
@@ -27,6 +28,7 @@ import useWaitingForISG from './useWaitingForISG'
 
 export {
   useCommentAdd,
+  useCommentUpdate,
   useConvertUrlToImages,
   useDrawer,
   useEditPostDataMap,

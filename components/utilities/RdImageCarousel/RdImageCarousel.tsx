@@ -1,5 +1,5 @@
 import { ArrowBackIosIcon, ArrowForwardIosIcon } from '@/constants/icons'
-import { Paper } from '@/mui'
+import { Paper, useTheme } from '@/mui'
 import { Dispatch, MouseEvent, SetStateAction, memo } from 'react'
 import Carousel from 'react-material-ui-carousel'
 import DisplayImage from './components/DisplayImage'
@@ -11,6 +11,7 @@ type TRdImageCarouselProps = {
   setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
 function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarouselProps) {
+  const theme = useTheme()
   function zoomImage(e: MouseEvent<HTMLImageElement, globalThis.MouseEvent>, imgSrc: string) {
     e.stopPropagation()
     setZoomedImg(imgSrc)
@@ -20,17 +21,18 @@ function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarou
     <>
       <Carousel
         NextIcon={<ArrowForwardIosIcon sx={{ color: 'actionIcon.main' }} />}
-        PrevIcon={<ArrowBackIosIcon sx={{ color: 'actionIcon.main' }} />}
+        PrevIcon={<ArrowBackIosIcon sx={{ color: 'actionIcon.main', position: 'relative', left: '4px' }} />}
         height={300}
         indicators={imgList.length > 1}
         fullHeightHover={false}
         sx={{ width }}
         animation="slide"
-        navButtonsAlwaysVisible={imgList.length > 1}
         autoPlay={false}
+        navButtonsAlwaysVisible
         navButtonsProps={{
           style: {
-            backgroundColor: 'white.main'
+            display: imgList.length > 1 ? 'flex' : 'none',
+            backgroundColor: theme.palette.white.main
           }
         }}
         indicatorContainerProps={{

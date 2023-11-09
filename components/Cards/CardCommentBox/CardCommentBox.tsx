@@ -1,9 +1,11 @@
-import { RdButton, RdCard, RdTextEditor } from '@/components'
+import { RdButton, RdCard, RdNakedInput } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
+import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
 import { TComment, TPostCommentForm } from '@/constants/types'
 import { useCommentAdd } from '@/hooks'
 import { Box, Stack, Typography } from '@/mui'
 import Link from 'next/link'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CommentList from './components/CommentList'
@@ -19,18 +21,23 @@ function CardCommentBox({ post_id, user_id, username, commentList }: TCardCommen
   const { session } = useAppSession()
   const me = session?.userDetail
   const { createComment, loading } = useCommentAdd()
+  const [filterTerm, setFilterTerm] = useState('')
   const { control, handleSubmit, setValue, watch } = useForm<TPostCommentForm>()
   const commentValue = watch('comment')
 
   /* submit comment handler*/
   const onSubmit = handleSubmit(async (formData) => {
-    if (!formData.comment || formData.comment == '' || post_id == null || user_id == null) return
+    if (!formData.comment || post_id == null || user_id == null) return
     setValue('comment', '')
 
     const res = await createComment(post_id, user_id, formData)
 
     if (res?.error) return toast.error(res.error[0].message)
   })
+
+  function handleFilter(e: React.ChangeEvent<HTMLInputElement>) {
+    setFilterTerm(e.target.value)
+  }
 
   return (
     <RdCard sx={{ p: 2 }}>
@@ -52,9 +59,18 @@ function CardCommentBox({ post_id, user_id, username, commentList }: TCardCommen
 
               {/* body text editor */}
               <Box p={1}>
-                <RdTextEditor<TPostCommentForm> control={control} height={200} name={'comment'} placeholder="What are your thoughts?" />
+                <RdNakedInput<TPostCommentForm> multiline fullWidth control={control} name={'comment'} placeholder="What are your thoughts?" />
               </Box>
-              <Box display="flex" justifyContent="right" p={1} pb={2}>
+
+              <Box display="flex" justifyContent="space-between" p={1} pb={2}>
+                {/* comment filter */}
+                <Box display="flex">
+                  {commentList && commentList.length > 0 && (
+                    <RdStaticInput bgcolor="white" fullWidth={false} onChange={handleFilter} placeholder="Filter comments" />
+                  )}
+                </Box>
+
+                {/* Post comment btn */}
                 <RdButton
                   disabled={!commentValue}
                   color="blue"
@@ -69,7 +85,7 @@ function CardCommentBox({ post_id, user_id, username, commentList }: TCardCommen
           </form>
         </Stack>
       )}
-      <CommentList commentList={commentList} />
+      <CommentList filterTerm={filterTerm} commentList={commentList} />
     </RdCard>
   )
 }

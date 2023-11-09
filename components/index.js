@@ -46,6 +46,7 @@ import RdInfiniteScroll from './utilities/RdInfiniteScroll/RdInfiniteScroll'
 import RdInlineInput from './utilities/RdInput/RdInlineInput'
 import RdInput from './utilities/RdInput/RdInput'
 import RdMultipleDropdown from './utilities/RdMultipleDropdown/RdMultipleDropdown'
+import RdNakedInput from './utilities/RdNakedInput/RdNakedInput'
 import RdNotiBubble from './utilities/RdNotiBubble/RdNotiBubble'
 import RdPaypalForm from './utilities/RdPaypalForm/RdPaypalForm'
 import RdPricing from './utilities/RdPricing/RdPricing'
@@ -97,6 +98,7 @@ export {
   RdInlineInput,
   RdInput,
   RdMultipleDropdown,
+  RdNakedInput,
   RdNotiBubble,
   RdPaypalForm,
   RdPricing,

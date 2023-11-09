@@ -64,7 +64,7 @@ export type TSubredditDetail = TSubreddit & {
 }
 export type TComment = {
   id: number
-  created_at: Date
+  created_at: string
   user: TUser
   text: string
 }

@@ -265,6 +265,25 @@ export const ADD_COMMENT = gql`
     }
   }
 `
+export const UPDATE_COMMENT = gql`
+  mutation UpdateComment($id: ID!, $text: String!) {
+    updateComment(id: $id, text: $text) {
+      id
+      text
+      user {
+        username
+      }
+      created_at
+    }
+  }
+`
+export const DELETE_COMMENT_BY_ID = gql`
+  mutation DeleteCommentById($id: ID!) {
+    deleteComment(id: $id) {
+      id
+    }
+  }
+`
 export const DELETE_COMMENTS_BY_POST_ID = gql`
   mutation DeleteCommentsSOfPost($post_id: ID!) {
     deleteCommentsOfPost(post_id: $post_id) {

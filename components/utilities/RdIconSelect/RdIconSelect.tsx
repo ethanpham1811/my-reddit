@@ -12,6 +12,9 @@ type TRdSelect = IconButtonProps & {
   position?: { top?: string; left?: string; right?: string; bottom?: string }
 }
 
+/**
+ * 3 dots icon with select popover
+ */
 function RdIconSelect({ disabled, options, icon, disableRipple, size, sx, position = {} }: TRdSelect) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -27,11 +30,12 @@ function RdIconSelect({ disabled, options, icon, disableRipple, size, sx, positi
 
   return (
     <>
+      {/* 3 dots button */}
       <IconButton
         disabled={disabled}
         disableRipple={disableRipple}
         size={size}
-        sx={sx}
+        sx={{ '&.Mui-focusVisible': { bgcolor: 'inputBorder.main' }, ...sx }}
         id={`rd-select-btn-${btnId}`}
         aria-haspopup="true"
         aria-controls={open ? 'basic-menu' : undefined}
@@ -44,6 +48,8 @@ function RdIconSelect({ disabled, options, icon, disableRipple, size, sx, positi
       >
         {createElement(icon)}
       </IconButton>
+
+      {/* The dropdown popover */}
       <Paper sx={{ mt: '0 !important', width: 320, position: 'relative' }}>
         <Menu
           disableScrollLock
