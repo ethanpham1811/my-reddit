@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client'
-import { POST_FRAGMENT, SUBREDDIT_FRAGMENT, USER_FRAGMENT } from './fragments'
+import { POST_FRAGMENT, QUERIED_POST_FRAGMENT, SUBREDDIT_FRAGMENT, USER_FRAGMENT } from './fragments'
 
 /* ------------------------------ USER--------------------------------- */
 export const GET_USER_BY_EMAIL = gql`
@@ -146,9 +146,7 @@ export const GET_QUERIED_SUBS_USERS = gql`
 export const GET_SEARCHED_RESULTS = gql`
   query Search_result($offset: Int, $limit: Int, $term: String!) {
     queriedPosts(offset: $offset, limit: $limit, term: $term) {
-      ...PostFragment
-      groupBy
-      totalItems
+      ...QueriedPostFragment
     }
     queriedSubs(offset: $offset, limit: $limit, term: $term) {
       id
@@ -168,5 +166,5 @@ export const GET_SEARCHED_RESULTS = gql`
       totalItems
     }
   }
-  ${POST_FRAGMENT}
+  ${QUERIED_POST_FRAGMENT}
 `

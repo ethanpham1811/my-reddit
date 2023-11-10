@@ -33,6 +33,7 @@ function Tools<T extends FieldValues>({ imagesValue, isEditing, control, formOpe
         <Tooltip title={isLinkPost ? 'Please switch to text mode' : 'Create Media Post'}>
           <Box>
             <IconButton
+              tabIndex={-1}
               disabled={!formOpened || isLinkPost}
               sx={{ bgcolor: imagesValue && imagesValue?.length !== 0 ? 'primary.main' : 'unset', ml: '7px' }}
             >

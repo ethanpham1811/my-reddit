@@ -106,9 +106,9 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
         />
 
         {/* Back to Login */}
-        <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
+        <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main', display: 'flex', alignItems: 'center', gap: 0.5 }}>
           Back to{' '}
-          <Link sx={{ cursor: 'pointer', color: 'blue.main' }} onClick={() => setIsLoginForm(true)}>
+          <Link component="button" sx={{ cursor: 'pointer', color: 'blue.main' }} onClick={() => setIsLoginForm(true)}>
             Login
           </Link>
         </Typography>

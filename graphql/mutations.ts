@@ -156,6 +156,7 @@ export const UPDATE_COMMENT = gql`
       ...CommentFragment
     }
   }
+  ${COMMENT_FRAGMENT}
 `
 export const DELETE_COMMENT_BY_ID = gql`
   mutation DeleteCommentById($id: ID!) {

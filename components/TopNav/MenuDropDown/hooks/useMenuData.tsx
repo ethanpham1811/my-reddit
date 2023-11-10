@@ -15,14 +15,15 @@ function useMenuData(me: TUserDetail | null | undefined, isUserOrSubPage: boolea
     {
       name: 'Home',
       icon: HomeIcon,
-      group: MAIN_MENU_GROUP.Feeds
+      group: MAIN_MENU_GROUP.Feeds,
+      url: '/'
     }
   ]
   const communityOptions: TMenuItem[] = followingSubList
-    ? followingSubList.map((name: string): TMenuItem => ({ name, group: MAIN_MENU_GROUP.Communities }))
+    ? followingSubList.map((name: string): TMenuItem => ({ name, group: MAIN_MENU_GROUP.Communities, url: `/r/${name}` }))
     : []
   const followingOptions: TMenuItem[] = followingUserList
-    ? followingUserList.map((name: string): TMenuItem => ({ name, group: MAIN_MENU_GROUP.People }))
+    ? followingUserList.map((name: string): TMenuItem => ({ name, group: MAIN_MENU_GROUP.People, url: `/u/${name}` }))
     : []
   const activeOptions: TMenuItem[] = isUserOrSubPage
     ? [

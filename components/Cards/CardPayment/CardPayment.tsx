@@ -1,5 +1,5 @@
 import RdStepper from '@/components/utilities/RdStepper/RdStepper'
-import { PaymentStepComName } from '@/constants/enums'
+import { PAYMENT_STEP_COM_NAME } from '@/constants/enums'
 import { CloseIcon } from '@/constants/icons'
 import { Box, IconButton } from '@/mui'
 import { Dispatch, SetStateAction, createElement, useState } from 'react'
@@ -21,17 +21,17 @@ function CardPayment({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
 
   /* dynamically return step components */
   function renderStepTab(activeStep: number) {
-    const componentName: PaymentStepComName = steps[activeStep - 1].component
+    const componentName: PAYMENT_STEP_COM_NAME = steps[activeStep - 1].component
     const StepContent = componentRegistry[componentName]
 
-    if (componentName === PaymentStepComName.PremiumInfo) {
-      return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PremiumInfo])
+    if (componentName === PAYMENT_STEP_COM_NAME.PremiumInfo) {
+      return createElement(StepContent as (typeof componentRegistry)[PAYMENT_STEP_COM_NAME.PremiumInfo])
     }
-    if (componentName === PaymentStepComName.PricingInfo) {
-      return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PricingInfo], { selectedPricing, setSelectedPricing })
+    if (componentName === PAYMENT_STEP_COM_NAME.PricingInfo) {
+      return createElement(StepContent as (typeof componentRegistry)[PAYMENT_STEP_COM_NAME.PricingInfo], { selectedPricing, setSelectedPricing })
     }
-    if (componentName === PaymentStepComName.PaymentCheckout) {
-      return createElement(StepContent as (typeof componentRegistry)[PaymentStepComName.PaymentCheckout], { amount: selectedPrice })
+    if (componentName === PAYMENT_STEP_COM_NAME.PaymentCheckout) {
+      return createElement(StepContent as (typeof componentRegistry)[PAYMENT_STEP_COM_NAME.PaymentCheckout], { amount: selectedPrice })
     }
     return <Box>Wrong step mapping</Box>
   }

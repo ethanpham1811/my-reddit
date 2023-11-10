@@ -1,4 +1,4 @@
-import { NOTI_BOX_NAME, PROFILE_DIALOG_TYPE } from '@/constants/enums'
+import { NOTI_BOX_NAME, PROFILE_DIALOG_TYPE, PROFILE_MENU_OPTION_TYPE, PROFILE_MENU_OPTION_VALUE } from '@/constants/enums'
 import {
   AccountCircleOutlinedIcon,
   DarkModeOutlinedIcon,
@@ -14,19 +14,19 @@ import { Dispatch, SetStateAction } from 'react'
 
 type TBuildDataProps = {
   me: TUserDetail | null | undefined
-  toggleColorMode: () => void
+  toggleDarkMode: () => void
   openPremiumDrawer: () => void
   setUserGuideOpen: Dispatch<SetStateAction<boolean>>
   navigate: (url: string) => Promise<boolean>
 }
 
 /* data tree for Notification Box */
-export const buildData = ({ me, toggleColorMode, openPremiumDrawer, setUserGuideOpen, navigate }: TBuildDataProps): TIconBox[] => [
+export const buildData = ({ me, toggleDarkMode, openPremiumDrawer, setUserGuideOpen, navigate }: TBuildDataProps): TIconBox[] => [
   {
     icon: DarkModeOutlinedIcon,
     name: NOTI_BOX_NAME.Darkmode,
     tooltip: 'Dark mode',
-    onClick: toggleColorMode
+    onClick: toggleDarkMode
   },
   {
     icon: OutboundOutlinedIcon,
@@ -68,42 +68,51 @@ export function buildProfileMenuData(username: string | undefined, options: { da
   return [
     {
       name: 'Profile',
-      value: 'profile',
-      url: `/u/${username || ''}`,
-      disabled: !username,
       groupBy: 'My Space',
-      groupIcon: AccountCircleOutlinedIcon
+      value: PROFILE_MENU_OPTION_VALUE.profile,
+      type: PROFILE_MENU_OPTION_TYPE.Link,
+      groupIcon: AccountCircleOutlinedIcon,
+      key: 'profile_menu_1',
+      disabled: !username,
+      url: `/u/${username || ''}`
     },
     {
       name: 'Create community',
-      value: 'createCommunity',
-      disabled: !username,
       groupBy: 'My Space',
-      onClick: true,
-      groupIcon: AccountCircleOutlinedIcon
+      value: PROFILE_MENU_OPTION_VALUE.createCommunity,
+      type: PROFILE_MENU_OPTION_TYPE.Event,
+      groupIcon: AccountCircleOutlinedIcon,
+      key: 'profile_menu_2',
+      disabled: !username
     },
     {
       name: 'Online Status',
-      value: 'status',
-      switcher: true,
       groupBy: 'My Space',
+      value: PROFILE_MENU_OPTION_VALUE.status,
+      type: PROFILE_MENU_OPTION_TYPE.Switcher,
+      groupIcon: AccountCircleOutlinedIcon,
+      key: 'profile_menu_3',
       disabled: true,
-      groupIcon: AccountCircleOutlinedIcon
+      switcher: true
     },
     {
       name: 'Dark Mode',
-      value: 'mode',
-      switcher: true,
       groupBy: 'View Options',
+      value: PROFILE_MENU_OPTION_VALUE.mode,
+      type: PROFILE_MENU_OPTION_TYPE.Switcher,
+      groupIcon: PreviewOutlinedIcon,
+      key: 'profile_menu_4',
       checked: options.darkMode,
-      groupIcon: PreviewOutlinedIcon
+      switcher: true
     },
     {
       name: 'User Agreement',
-      value: 'User Agreement',
       groupBy: 'Terms & Policies',
-      dialog: PROFILE_DIALOG_TYPE.UserAgreement,
-      groupIcon: InfoOutlinedIcon
+      value: PROFILE_MENU_OPTION_VALUE.userAgreement,
+      type: PROFILE_MENU_OPTION_TYPE.Modal,
+      groupIcon: InfoOutlinedIcon,
+      key: 'profile_menu_5',
+      dialog: PROFILE_DIALOG_TYPE.UserAgreement
     }
   ]
 }

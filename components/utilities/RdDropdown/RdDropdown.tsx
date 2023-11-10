@@ -45,15 +45,19 @@ function RdDropdown({
             display: 'flex'
           },
           fieldset: {
+            borderWidth: '1px !important',
             borderColor: `${borderColor ?? 'white'}.main`
           },
           '&:hover': {
-            fieldset: { borderColor: 'primary.main' }
+            fieldset: {
+              borderColor: 'primary.main',
+              '&.MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' }
+            }
           },
           '&.Mui-focused': {
-            fieldset: { borderWidth: '1px !important' },
+            fieldset: { '&.MuiOutlinedInput-notchedOutline': { borderColor: 'black.main' } },
             '[aria-expanded=true]': {
-              '~ fieldset': { borderBottomColor: offsetTop ? 'primary.main' : 'none', borderWidth: '1px' }
+              '~ fieldset': { borderColor: offsetTop ? 'primary.main' : 'none' }
             }
           }
         }}

@@ -4,7 +4,7 @@ import cookie from 'js-cookie'
 import { ReactNode, createContext, useMemo, useState } from 'react'
 import { buildTheme } from '../../mui/theme'
 
-export const ColorModeContext = createContext({ toggleColorMode: () => {} })
+export const ColorModeContext = createContext({ toggleDarkMode: () => {} })
 
 function MuiProvider({ children }: { children: ReactNode }) {
   /* Dark mode setup */
@@ -12,7 +12,7 @@ function MuiProvider({ children }: { children: ReactNode }) {
   const colorMode = useMemo(
     () => ({
       mode,
-      toggleColorMode: () => {
+      toggleDarkMode: () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
 
         // store color mode in cookie

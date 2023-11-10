@@ -3,22 +3,35 @@ import { Avatar, ListItemText, MenuItem } from '@/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import Image from 'next/image'
 import Link from 'next/link'
+import { KeyboardEvent } from 'react'
+
+type TSubAndPeopleMenuItemProps = {
+  type: SUB_PEOPLE_MENU_ITEM
+  name: string
+  value: string
+  url: string
+  onEnter: (e: KeyboardEvent<HTMLLIElement>, url: string) => void
+}
 
 /**
  * Menu item for communities and people
  */
-function SubAndPeopleMenuItem({ type, name, ...rest }: { type: SUB_PEOPLE_MENU_ITEM; name: string; value: string }) {
+function SubAndPeopleMenuItem({ type, name, url, onEnter, ...rest }: TSubAndPeopleMenuItemProps) {
   const prefix = type === SUB_PEOPLE_MENU_ITEM.Communities ? 'r' : 'u'
 
   return (
-    <Link href={`/${prefix}/${name}`} style={{ color: 'unset', textDecoration: 'none' }}>
-      <MenuItem {...rest} value={name}>
+    <MenuItem {...rest} value={name} onKeyUp={(e) => onEnter(e, url)}>
+      <Link
+        // href={`/${prefix}/${name}`}
+        href={url}
+        style={{ color: 'unset', textDecoration: 'none', flex: 1, display: 'flex', gap: '0.5rem', alignItems: 'center' }}
+      >
         <Avatar variant="circular" sx={{ bgcolor: generateSeededHexColor(name), width: 20, height: 20 }}>
           <Image src={generateUserImage(name)} alt={`community ${name} avatar`} aria-label={`community ${name} avatar`} width={20} height={20} />
         </Avatar>
         <ListItemText primary={`${prefix}/${name}`} />
-      </MenuItem>
-    </Link>
+      </Link>
+    </MenuItem>
   )
 }
 

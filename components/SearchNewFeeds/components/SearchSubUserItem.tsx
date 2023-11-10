@@ -50,7 +50,7 @@ function SearchSubUserItem({ item, updateUser, revertBtnText, type }: TSearchSub
 
         {/* Sub/User name + extra infos */}
         <Stack flex={1}>
-          <Link href={link} style={{ color: 'inherit' }}>
+          <Link href={link} style={{ color: 'inherit', width: 'max-content' }}>
             <Typography fontSize="0.8rem" variant="h6">{`${type === SEARCH_TABS.Communities ? 'r' : 'u'}/${name}`}</Typography>
           </Link>
           <Typography fontSize="0.8rem" sx={{ color: 'hintText.main' }}>

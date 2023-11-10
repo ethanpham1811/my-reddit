@@ -4,7 +4,7 @@ import { OPTIMISTIC_TEMP_ID, POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardPostProps, TUserDetail } from '@/constants/types'
 import { Stack } from '@/mui'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { KeyboardEvent, MouseEvent, useState } from 'react'
 import ActionMenu from './components/ActionMenu'
 import BottomActionMenu from './components/BottomActionMenu'
 import PostColumn from './components/PostColumn'
@@ -43,7 +43,8 @@ function CardPost({
   const isMyPost = me?.username === username
 
   /* navigate to post detail page */
-  function goToPost() {
+  function goToPost(e: MouseEvent | KeyboardEvent) {
+    if (e.type === 'keydown' && (e as KeyboardEvent).key !== 'Enter') return
     !postid && !blockInteraction && navigate(`/r/${subName}/post/${postId}`)
   }
 
@@ -62,6 +63,8 @@ function CardPost({
         />
       ) : (
         <RdCard
+          tabIndex={postid ? -1 : 0}
+          onKeyDown={goToPost}
           onClick={goToPost}
           sx={{
             pointerEvents: blockInteraction ? 'none' : 'auto',

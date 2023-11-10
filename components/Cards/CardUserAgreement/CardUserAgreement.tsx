@@ -10,7 +10,7 @@ function CardUserAgreement({ setOpen }: { setOpen: Dispatch<SetStateAction<boole
           <Typography variant="h4">User Agreement</Typography>
         </Stack>
         <Divider sx={{ my: 1 }} />
-        <Stack flex={1} spacing={2} sx={{ overflowY: 'scroll', overflowX: 'hidden', mr: '-10px !important', pr: '10px' }}>
+        <Stack flex={1} spacing={2} sx={{ overflowY: 'scroll', overflowX: 'hidden', mr: '-10px !important', pr: '10px' }} tabIndex={0}>
           <Typography variant="h5">1. Your Access to the Services</Typography>
           <Typography variant="body1">
             No one under 13 is allowed to use or access the Services. We may offer additional Services that require you to be older to use them, so

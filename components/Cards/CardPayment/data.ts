@@ -3,7 +3,7 @@ import PaymentCheckout from './components/PaymentCheckout'
 import PremiumInfo from './components/PremiumInfo'
 import PricingInfo from './components/PricingInfo'
 
-import { PaymentStepComName } from '@/constants/enums'
+import { PAYMENT_STEP_COM_NAME } from '@/constants/enums'
 import ad1Url from '@/public/ad1.png'
 import ad2Url from '@/public/ad2.png'
 import ad3Url from '@/public/ad3.png'
@@ -23,9 +23,9 @@ type TPricingInfoData = {
 }
 
 export const componentRegistry: {
-  [PaymentStepComName.PremiumInfo]: typeof PremiumInfo
-  [PaymentStepComName.PricingInfo]: typeof PricingInfo
-  [PaymentStepComName.PaymentCheckout]: typeof PaymentCheckout
+  [PAYMENT_STEP_COM_NAME.PremiumInfo]: typeof PremiumInfo
+  [PAYMENT_STEP_COM_NAME.PricingInfo]: typeof PricingInfo
+  [PAYMENT_STEP_COM_NAME.PaymentCheckout]: typeof PaymentCheckout
 } = {
   PremiumInfo,
   PricingInfo,
@@ -35,15 +35,15 @@ export const componentRegistry: {
 export const steps: TStepperData[] = [
   {
     stepLabel: 'About premium',
-    component: PaymentStepComName.PremiumInfo
+    component: PAYMENT_STEP_COM_NAME.PremiumInfo
   },
   {
     stepLabel: 'Pricing',
-    component: PaymentStepComName.PricingInfo
+    component: PAYMENT_STEP_COM_NAME.PricingInfo
   },
   {
     stepLabel: 'Payment',
-    component: PaymentStepComName.PaymentCheckout,
+    component: PAYMENT_STEP_COM_NAME.PaymentCheckout,
     checkStatus: true
   }
 ]

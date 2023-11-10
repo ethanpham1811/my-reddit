@@ -1,21 +1,20 @@
 type Post {
+  id: ID!
+  title: String!
   body: String
   created_at: DateTime!
-  id: ID!
   images: [String]
-  title: String!
   link: String
   linkDescription: String
-  totalUpvotes: Int
-  totalComments: Int
   user_id: ID!
   subreddit_id: ID!
   user: User @materializer(query: "userUsingPost_user_id_fkey")
   subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
   comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
   vote: [Vote] @materializer(query: "voteUsingVote_post_id_fkey")
+  totalUpvotes: Int
+  totalComments: Int
 }
-
 """
 The following queries are just a set of examples of how to access your schema.
 Feel free to modify them or aggregate more.

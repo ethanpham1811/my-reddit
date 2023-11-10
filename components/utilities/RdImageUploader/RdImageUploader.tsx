@@ -12,9 +12,9 @@ function RdImageUploader<T extends FieldValues>({ name, control }: TRdImageUploa
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange } }) => (
           <label htmlFor="upload-image">
-            <ImageOutlinedIcon sx={{ display: 'block' }} />
+            <ImageOutlinedIcon sx={{ display: 'block', position: 'relative', top: '1px' }} />
             <input
               id="upload-image"
               multiple

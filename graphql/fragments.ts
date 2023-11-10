@@ -7,10 +7,10 @@ export const POST_FRAGMENT = gql`
     id
     title
     body
+    created_at
+    images
     link
     linkDescription
-    images
-    created_at
     user {
       username
     }
@@ -18,11 +18,6 @@ export const POST_FRAGMENT = gql`
       id
       name
       subType
-    }
-    vote {
-      id
-      upvote
-      user_id
     }
     comment {
       id
@@ -32,10 +27,52 @@ export const POST_FRAGMENT = gql`
       }
       text
     }
+    vote {
+      id
+      upvote
+      user_id
+    }
     totalUpvotes
     totalComments
   }
 `
+export const QUERIED_POST_FRAGMENT = gql`
+  fragment QueriedPostFragment on QueriedPost {
+    id
+    title
+    body
+    created_at
+    images
+    link
+    linkDescription
+    user {
+      username
+    }
+    subreddit {
+      id
+      name
+      subType
+    }
+    comment {
+      id
+      created_at
+      user {
+        username
+      }
+      text
+    }
+    vote {
+      id
+      upvote
+      user_id
+    }
+    totalUpvotes
+    totalComments
+    groupBy
+    totalItems
+  }
+`
+
 export const USER_FRAGMENT = gql`
   fragment UserFragment on User {
     id

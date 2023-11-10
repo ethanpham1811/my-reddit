@@ -24,7 +24,7 @@ function IsChildrenGroupCheckbox<T extends FieldValues>({ name, control }: IsChi
             <RdChip shape={BORDER_TYPES.Rounded} clickable={false} size="small" label="Super SFW" color="success" variant="filled" />
             &nbsp;
             <Typography variant="body1" fontWeight={600} component="span">
-              18- year old community
+              Under 18 years old community
             </Typography>
           </Stack>
         }

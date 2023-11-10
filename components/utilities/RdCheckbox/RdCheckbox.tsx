@@ -15,7 +15,17 @@ const RdCheckbox = <T extends FieldValues>({ name, control, label }: TRdCheckbox
       control={control}
       render={({ field: { onChange, value } }) => (
         <FormGroup>
-          <FormControlLabel control={<Checkbox sx={{ '&.Mui-checked': { color: 'unset' } }} checked={value} onChange={onChange} />} label={label} />
+          <FormControlLabel
+            control={
+              <Checkbox
+                sx={{ '&.Mui-checked': { color: 'unset' } }}
+                checked={value}
+                onKeyDown={(e) => e.key === 'Enter' && onChange(!value)}
+                onChange={onChange}
+              />
+            }
+            label={label}
+          />
         </FormGroup>
       )}
     />

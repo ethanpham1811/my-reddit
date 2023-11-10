@@ -51,6 +51,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
               helper="21 Characters remaining"
               width="60%"
               bgcolor="white"
+              height="22.25px"
             />
             <TopicDropdown<TCommunityCreatorForm> registerOptions={{ required: 'Please choose a topic' }} control={control} name="topic_ids" />
           </Stack>

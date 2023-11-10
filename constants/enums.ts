@@ -71,9 +71,21 @@ export enum MOBILE_CUSTOM_BREAKPOINT {
   Lg = '(max-width:1024px)',
   Md = '(max-width:700px)'
 }
-
-export enum PaymentStepComName {
+export enum PAYMENT_STEP_COM_NAME {
   PremiumInfo = 'PremiumInfo',
   PricingInfo = 'PricingInfo',
   PaymentCheckout = 'PaymentCheckout'
+}
+export enum PROFILE_MENU_OPTION_TYPE {
+  Link = 'Link',
+  Modal = 'Modal',
+  Event = 'Event',
+  Switcher = 'Switcher'
+}
+export enum PROFILE_MENU_OPTION_VALUE {
+  profile = 'profile',
+  createCommunity = 'createCommunity',
+  status = 'status',
+  userAgreement = 'userAgreement',
+  mode = 'mode'
 }

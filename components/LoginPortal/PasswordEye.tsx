@@ -1,4 +1,5 @@
 import { RemoveRedEyeIcon, VisibilityOffIcon } from '@/constants/icons'
+import { Box } from '@/mui'
 import { Dispatch, SetStateAction } from 'react'
 
 type TPasswordEyeProps = {
@@ -7,13 +8,32 @@ type TPasswordEyeProps = {
 }
 function PasswordEye({ showPassword, setShowPassword }: TPasswordEyeProps) {
   return (
-    <>
+    <Box
+      sx={{
+        svg: {
+          fontSize: '1rem',
+          ml: 1.5,
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          '&:focus': { outline: 'none', color: 'orange.main' }
+        }
+      }}
+    >
       {showPassword ? (
-        <RemoveRedEyeIcon onClick={() => setShowPassword(!showPassword)} sx={{ fontSize: '1rem', ml: 1.5, cursor: 'pointer' }} />
+        <RemoveRedEyeIcon
+          tabIndex={0}
+          onClick={() => setShowPassword(!showPassword)}
+          onKeyDown={(e) => e.key === 'Enter' && setShowPassword(!showPassword)}
+        />
       ) : (
-        <VisibilityOffIcon onClick={() => setShowPassword(!showPassword)} sx={{ fontSize: '1rem', ml: 1.5, cursor: 'pointer' }} />
+        <VisibilityOffIcon
+          tabIndex={0}
+          onClick={() => setShowPassword(!showPassword)}
+          onKeyDown={(e) => e.key === 'Enter' && setShowPassword(!showPassword)}
+        />
       )}
-    </>
+    </Box>
   )
 }
 

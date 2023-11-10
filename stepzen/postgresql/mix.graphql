@@ -2,33 +2,34 @@ type QueriedTrending {
   id: ID!
   title: String!
   body: String
+  created_at: Date
+  images: [String]
+  link: String
+  subreddit_id: ID!
+  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
   groupBy: String
   totalUpvotes: Int
   totalComments: Int
-  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
-  subreddit_id: ID!
-  created_at: Date
-  link: String
-  images: [String]
 }
 
 type QueriedPost {
   id: ID!
   title: String!
   body: String
-  created_at: Date!
+  created_at: DateTime!
   images: [String]
-  groupBy: String
-  vote: [Vote] @materializer(query: "voteUsingVote_post_id_fkey")
-  user: User @materializer(query: "userUsingPost_user_id_fkey")
-  user_id: ID!
-  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
-  subreddit_id: ID!
-  comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
   link: String
   linkDescription: String
-  totalItems: Int
+  user_id: ID!
+  subreddit_id: ID!
+  user: User @materializer(query: "userUsingPost_user_id_fkey")
+  subreddit: Subreddit @materializer(query: "subredditUsingPost_subreddit_id_fkey")
+  comment: [Comment] @materializer(query: "commentUsingComment_post_id_fkey")
+  vote: [Vote] @materializer(query: "voteUsingVote_post_id_fkey")
   totalUpvotes: Int
+  totalComments: Int
+  groupBy: String
+  totalItems: Int
 }
 
 type QueriedSub {

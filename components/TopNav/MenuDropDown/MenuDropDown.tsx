@@ -4,7 +4,7 @@ import RdStaticInput from '@/components/utilities/RdInput/RdStaticInput'
 import { TMenuItem } from '@/constants/types'
 import { List, MenuItem } from '@/mui'
 import { useRouter } from 'next/router'
-import { ReactNode, useState } from 'react'
+import { KeyboardEvent, ReactNode, useRef, useState } from 'react'
 import { renderSelectedOption } from './RenderedCbs'
 import FeedsMenuList from './components/FeedsMenuList'
 import PeopleMenuList from './components/PeopleMenuList'
@@ -19,6 +19,8 @@ type TMenuDropdownProps = {
 function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
   const { pathname } = useRouter()
   const { session } = useAppSession()
+  const { push: navigate } = useRouter()
+  const menuRef = useRef<HTMLLIElement | null>(null)
   const me = session?.userDetail
   const [filterTerm, setFilterTerm] = useState('')
   const isUserOrSubPage: boolean = !!userPageName || !!subName
@@ -31,8 +33,24 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
   function filterByTerm(option: TMenuItem): boolean {
     return option.name.toLowerCase().includes(filterTerm.toLowerCase())
   }
-  function handleRenderSelectedOption(value: string): ReactNode {
+  function handleRenderSelectedOption(_: string): ReactNode {
     return renderSelectedOption([...feedsOptions, ...communityOptions, ...followingOptions, ...activeOptions], activePage, subName, pathname)
+  }
+
+  /* handle tab when being focused in filtering input  */
+  function handleTab(e: KeyboardEvent<HTMLDivElement>) {
+    if (e.key === 'Tab' || e.key === 'ArrowDown') {
+      e.stopPropagation()
+      e.preventDefault()
+      menuRef && menuRef?.current && menuRef?.current?.focus()
+    }
+  }
+
+  /* handle Enter on focused menu */
+  function onEnter(e: KeyboardEvent<HTMLLIElement>, url: string): void {
+    if (e.key === 'Enter') {
+      navigate(url)
+    }
   }
 
   return (
@@ -40,6 +58,7 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       renderSelectedOption={handleRenderSelectedOption}
       value={me ? activePage || '' : 'Home'}
       flex={1}
+      autoFocus
       offsetTop="10px"
       width="20vw"
       maxWidth="200px"
@@ -47,17 +66,24 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
     >
       {/* Filter input */}
       <List sx={{ p: 2, pt: 1 }}>
-        <RdStaticInput borderColor="black" autoFocus onChange={handleFilter} placeholder="Filter" />
+        <RdStaticInput
+          autoFocus
+          onKeyDown={(e) => handleTab(e)}
+          onClick={(e) => e.stopPropagation()}
+          borderColor="black"
+          onChange={handleFilter}
+          placeholder="Filter"
+        />
       </List>
 
       {/* Feeds list */}
-      <FeedsMenuList value="Home" feedsOptions={feedsOptions} filterByTerm={filterByTerm} />
+      <FeedsMenuList ref={menuRef} onEnter={onEnter} value="Home" feedsOptions={feedsOptions} />
 
       {/* Subreddit list */}
-      <SubsMenuList value="Home" options={communityOptions} filterByTerm={filterByTerm} />
+      <SubsMenuList onEnter={onEnter} value="Home" options={communityOptions} filterByTerm={filterByTerm} />
 
       {/* Following list */}
-      <PeopleMenuList value="active" options={followingOptions} filterByTerm={filterByTerm} />
+      <PeopleMenuList onEnter={onEnter} value="active" options={followingOptions} filterByTerm={filterByTerm} />
 
       {/* Hidden option - A little hack for displaying unlisted Item (for profile pages) */}
       {isUserOrSubPage && <MenuItem sx={{ minHeight: 'auto', p: 0 }} disabled value={activePage}></MenuItem>}

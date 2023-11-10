@@ -8,6 +8,7 @@ type TLogoutOptionProps = {
 function LogoutOption({ ...rest }: TLogoutOptionProps) {
   return (
     <MenuItem
+      tabIndex={0}
       sx={{
         '&.MuiButtonBase-root': { fontWeight: 600, justifyContent: 'flex-end', color: 'orange.main', '&:hover': { bgcolor: 'primary.main' } }
       }}

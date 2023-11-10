@@ -123,7 +123,7 @@ const darkPalette = {
     main: '#0079D3' // Custom color value
   },
   lightblue: {
-    main: '#191919' // Custom color value
+    main: '#d0d0d0' // Custom color value
   },
   orange: {
     main: '#ff4500' // Custom color value

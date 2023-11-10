@@ -1,10 +1,8 @@
 import { client } from '@/apollo-client'
 import { SUBREDDIT_TYPE } from '@/constants/enums'
-import { TAutocompleteOptions, TProfileDropDownList, TQueryNotFound, TVote } from '@/constants/types'
+import { TAutocompleteOptions, TProfileDropDownList, TProfileDropdownGroupedList, TQueryNotFound, TVote } from '@/constants/types'
 import { GET_USER_BY_EMAIL } from '@/graphql/queries'
 import { ApolloError } from '@apollo/client'
-import { OverridableComponent } from '@mui/material/OverridableComponent'
-import { SvgIconTypeMap } from '@mui/material/SvgIcon'
 import { formatDistanceToNow } from 'date-fns'
 import groupBy from 'lodash/groupBy'
 import { JSXElementConstructor, ReactElement } from 'react'
@@ -45,9 +43,7 @@ export const validateSubredditMember = (memberOfIds: string[] | undefined, subPa
   return memberOfIds?.includes(subPageName as string) || false
 }
 
-export const createGroupedList = (
-  list: Partial<TProfileDropDownList> & { groupBy: string; groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> }[]
-) => {
+export const createGroupedList = (list: TProfileDropDownList[]): TProfileDropdownGroupedList[] => {
   const groupedArray = groupBy(list, 'groupBy')
   return Object.keys(groupedArray).map((group) => ({
     group,

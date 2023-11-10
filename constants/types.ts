@@ -4,7 +4,16 @@ import { Session } from '@supabase/supabase-js'
 import { Dayjs } from 'dayjs'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldError, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
-import { MAIN_MENU_GROUP, ORDERING, PROFILE_DIALOG_TYPE, PaymentStepComName, SEARCH_TABS, SORT_METHOD, SUBREDDIT_TYPE } from './enums'
+import {
+  MAIN_MENU_GROUP,
+  ORDERING,
+  PAYMENT_STEP_COM_NAME,
+  PROFILE_DIALOG_TYPE,
+  PROFILE_MENU_OPTION_TYPE,
+  SEARCH_TABS,
+  SORT_METHOD,
+  SUBREDDIT_TYPE
+} from './enums'
 
 /* --------------------------------------------Common Types-------------------------------------------- */
 export type TUserCompact = {
@@ -102,6 +111,7 @@ export type TIconBox = {
   onClick: () => unknown
 }
 export type TMenuItem = Omit<TSubreddit, 'id' | 'subType'> & {
+  url?: string
   group: MAIN_MENU_GROUP
   icon?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }
@@ -155,7 +165,7 @@ export type TRdAutoCompleteProps<
   focused: boolean
 }
 
-export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'error' | 'disabled'> & {
+export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'error' | 'disabled' | 'autoFocus'> & {
   renderSelectedOption: (value: string) => ReactNode
   onChange?: (event: SelectChangeEvent<string>, child: ReactNode) => void
   width?: string
@@ -192,6 +202,7 @@ export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
   control: Control<T>
   helper?: string
   width?: string
+  height?: string
   flex?: number
   bgcolor?: string
   endIcon?: ReactNode
@@ -268,16 +279,22 @@ export type TCommunityTypeOPtions = {
   icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
 }
 export type TProfileDropDownList = {
-  name?: string
-  value?: string
-  switcher?: boolean
-  url?: string
+  name: string
+  value: string
+  key: string
   groupBy: string
+  type: PROFILE_MENU_OPTION_TYPE
   disabled?: boolean
-  onClick?: boolean
+  switcher?: boolean
   checked?: boolean
+  url?: string
   dialog?: PROFILE_DIALOG_TYPE
   groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
+}
+export type TProfileDropdownGroupedList = {
+  group: string
+  groupIcon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>
+  items: TProfileDropDownList[]
 }
 export type TEditModePayload = Pick<TCardCreatePostForm, 'title' | 'body' | 'link' | 'linkDescription'> & {
   images: string[] | undefined
@@ -292,7 +309,7 @@ export type TCardGuideListData = {
 
 export type TStepperData = {
   stepLabel: string
-  component: PaymentStepComName
+  component: PAYMENT_STEP_COM_NAME
   checkStatus?: boolean
 }
 

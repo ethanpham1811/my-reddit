@@ -1,7 +1,7 @@
 import { RdDialog } from '@/components'
 import { CommentOutlinedIcon } from '@/constants/icons'
 import { usePostDelete } from '@/hooks'
-import { Box, Link, Stack, Typography } from '@/mui'
+import { Box, Button, Stack, Typography } from '@/mui'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import CardConfirm from '../../CardConfirm/CardConfirm'
@@ -45,16 +45,16 @@ function BottomActionMenu({ postId, isMyPost, subName, totalComments }: TBottomA
           {/* only available if the post is mine */}
           {isMyPost && !!postid && (
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <Link onClick={handleEditPost} underline="hover" sx={{ color: 'blue.main', cursor: 'pointer' }}>
-                <Typography fontSize="0.8rem" variant="body1">
+              <Button onClick={handleEditPost} sx={{ minWidth: '40px', px: 0, color: 'blue.main', cursor: 'pointer' }}>
+                <Typography fontSize="0.8rem" variant="body1" textTransform="none">
                   Edit
                 </Typography>
-              </Link>
-              <Link onClick={handleDeletePost} underline="hover" sx={{ color: 'blue.main', cursor: 'pointer' }}>
-                <Typography fontSize="0.8rem" variant="body1">
+              </Button>
+              <Button onClick={handleDeletePost} sx={{ minWidth: '40px', px: 0, color: 'blue.main', cursor: 'pointer' }}>
+                <Typography fontSize="0.8rem" variant="body1" textTransform="none">
                   Delete
                 </Typography>
-              </Link>
+              </Button>
             </Stack>
           )}
         </Box>

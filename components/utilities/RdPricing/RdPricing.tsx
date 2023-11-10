@@ -13,6 +13,7 @@ type TRdAdItemProps = StackProps & {
 function RdPricing({ active, title, description, price, benefits, sx, ...rest }: TRdAdItemProps) {
   return (
     <Stack
+      component="button"
       sx={{ '&:hover': { cursor: 'pointer' }, bgcolor: active ? 'lightblue.main' : 'transparent', ...sx }}
       justifySelf="center"
       spacing={1}

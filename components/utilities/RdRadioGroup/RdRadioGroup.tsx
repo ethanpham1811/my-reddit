@@ -40,10 +40,12 @@ const RdRadioGroup = <T extends FieldValues>({ sx, options, name, control, label
             aria-labelledby={`${name} radio group`}
             name={`${name}-radio-group`}
           >
-            {options.map(({ value, label, icon, description, disabled }: TRadioOption) => (
+            {options.map(({ value: itemValue, label, icon, description, disabled }: TRadioOption) => (
               <FormControlLabel
                 key={`option_${rid()}`}
-                value={value}
+                value={itemValue}
+                tabIndex={0}
+                onKeyDown={(e) => e.key === 'Enter' && onChange(itemValue)}
                 control={<Radio sx={{ '&.Mui-checked': { color: 'unset' } }} />}
                 label={
                   <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }}>

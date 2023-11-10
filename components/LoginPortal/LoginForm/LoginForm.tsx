@@ -97,9 +97,9 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
         />
 
         {/* Not registered? Signup here */}
-        <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
+        <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main', display: 'flex', alignItems: 'center', gap: 0.5 }}>
           Not Registered?{' '}
-          <Link sx={{ cursor: 'pointer', color: 'blue.main' }} onClick={() => setIsLoginForm(false)}>
+          <Link component="button" sx={{ cursor: 'pointer', color: 'blue.main' }} onClick={() => setIsLoginForm(false)}>
             Signup
           </Link>
         </Typography>

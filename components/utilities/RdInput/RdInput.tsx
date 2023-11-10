@@ -1,7 +1,7 @@
 import { TRdInputProps } from '@/constants/types'
 import { FormControl, FormHelperText, InputLabel, TextField, styled } from '@/mui'
 import { borderColorStyle } from '@/mui/styles'
-import { ReactElement, Ref, forwardRef } from 'react'
+import { ForwardedRef, ReactElement, forwardRef } from 'react'
 import { Controller, FieldValues } from 'react-hook-form'
 
 const RdInputBase = styled(TextField)(({ theme }) => {
@@ -17,8 +17,8 @@ const RdInputBase = styled(TextField)(({ theme }) => {
 })
 
 const RdInput = <T extends FieldValues>(
-  { registerOptions, name, control, label, flex, width, helper, sx, bgcolor, indentedHelper, endIcon, ...rest }: TRdInputProps<T>,
-  ref: Ref<HTMLInputElement>
+  { registerOptions, name, control, label, flex, width, height, helper, sx, bgcolor, indentedHelper, endIcon, ...rest }: TRdInputProps<T>,
+  ref: ForwardedRef<HTMLInputElement>
 ) => {
   return (
     <FormControl sx={{ flex, '.MuiFormControl-root': { bgcolor: 'transparent' }, ...borderColorStyle, width }}>
@@ -43,7 +43,12 @@ const RdInput = <T extends FieldValues>(
             aria-describedby={`helper_${name}`}
             sx={{
               '.MuiFormHelperText-root.Mui-error': { color: 'orange.main', mx: 0 },
-              '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main` },
+              '.MuiInputBase-root': {
+                bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main`,
+                input: {
+                  height
+                }
+              },
               '.MuiFormHelperText-root': {
                 pl: indentedHelper ? 1 : 0
               },
@@ -61,5 +66,4 @@ const RdInput = <T extends FieldValues>(
   )
 }
 
-// Set generic type for forwardRef
-export default forwardRef(RdInput) as <T extends FieldValues>(p: TRdInputProps<T> & { ref?: Ref<HTMLInputElement> }) => ReactElement
+export default forwardRef(RdInput) as <T extends FieldValues>(p: TRdInputProps<T> & { ref?: ForwardedRef<HTMLInputElement> }) => ReactElement

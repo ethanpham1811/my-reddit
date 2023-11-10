@@ -53,7 +53,7 @@ const RdInlineInput = <T extends FieldValues>({
                   size="small"
                   error={!!error}
                   onChange={onChange}
-                  onKeyUp={(e) => {
+                  onKeyDown={(e) => {
                     e.key === 'Enter' && e.currentTarget.querySelector('input')?.blur()
                   }}
                   onBlur={handleSubmit}
@@ -90,6 +90,13 @@ const RdInlineInput = <T extends FieldValues>({
                 />
               ) : (
                 <Box
+                  tabIndex={0}
+                  onKeyUp={(e) => {
+                    if (e.key === 'Enter') {
+                      setEditing(true)
+                      e.stopPropagation()
+                    }
+                  }}
                   onClick={() => setEditing(true)}
                   ref={labelRef}
                   width="max-content"

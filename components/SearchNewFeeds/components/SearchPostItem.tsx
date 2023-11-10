@@ -3,7 +3,7 @@ import { TQueriedPost } from '@/constants/types'
 import { Divider, Stack, useTheme } from '@/mui'
 import { blurBottomStyle, postHoverStyle } from '@/mui/styles'
 import { useRouter } from 'next/router'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from 'react'
 import SearchPostItemBody from './SearchPostItemBody'
 import SearchPostItemFooter from './SearchPostItemFooter'
 import SearchPostItemHeader from './SearchPostItemHeader'
@@ -35,7 +35,10 @@ function SearchPostItem({ item }: { item: TQueriedPost }) {
   }, [ref, mode])
 
   /* navigate to post detail page */
-  const goToPost = () => navigate(`/r/${subName}/post/${id}`)
+  function goToPost(e: MouseEvent | KeyboardEvent) {
+    if (e.type === 'keydown' && (e as KeyboardEvent).key !== 'Enter') return
+    navigate(`/r/${subName}/post/${id}`)
+  }
 
   return (
     <Fragment key={`post_${id}_search_result`}>
@@ -44,7 +47,9 @@ function SearchPostItem({ item }: { item: TQueriedPost }) {
         spacing={1}
         py={2}
         px={3}
+        tabIndex={0}
         alignContent="flex-start"
+        onKeyDown={goToPost}
         onClick={goToPost}
         sx={{
           position: 'relative',

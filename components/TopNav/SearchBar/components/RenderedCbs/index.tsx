@@ -35,7 +35,7 @@ export const renderContainer = (props: HTMLAttributes<HTMLElement>, searchTerm: 
           <Box display="flex" alignItems="center">
             <ErrorOutlineIcon sx={{ fontSize: '0.9rem', color: 'hintText.main', mr: 0.5 }} />
             <Typography sx={{ color: 'hintText.main' }} fontSize={12}>
-              Please enter to search for post
+              Enter to search for post
             </Typography>
           </Box>
         )}

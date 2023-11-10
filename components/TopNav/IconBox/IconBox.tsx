@@ -14,10 +14,10 @@ function IconBox({ isMobile }: { isMobile: boolean }) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const { push: navigate } = useRouter()
-  const { toggleColorMode } = useContext(ColorModeContext)
+  const { toggleDarkMode } = useContext(ColorModeContext)
   const [userGuideOpen, setUserGuideOpen] = useState(false)
   const firstTime = !cookie.get('first-time-visit-my-reddit')
-  const notiData: TIconBox[] = buildData({ me, toggleColorMode, openPremiumDrawer, setUserGuideOpen, navigate })
+  const notiData: TIconBox[] = buildData({ me, toggleDarkMode, openPremiumDrawer, setUserGuideOpen, navigate })
 
   /* open the user guide for the first time using the app */
   useEffect(() => {

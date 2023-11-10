@@ -2,14 +2,15 @@ import { CardLogout, RdDialog, RdDropdown } from '@/components'
 import CardUserAgreement from '@/components/Cards/CardUserAgreement/CardUserAgreement'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
+import { TProfileDropDownList, TProfileDropdownGroupedList } from '@/constants/types'
 import { Box, Divider, Typography, useTheme } from '@/mui'
 import { createGroupedList } from '@/src/utils'
 import { ReactNode, useState } from 'react'
 import { v4 as rid } from 'uuid'
 import { buildProfileMenuData } from '../data'
 import { renderSelectedOption } from './RenderedCbs'
+import GroupMenu from './components/GroupMenu'
 import LogoutOption from './components/LogoutOption'
-import ProfileMenu from './components/ProfileMenu'
 
 type TProfileDropdownProps = {
   loading: boolean
@@ -26,8 +27,8 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
   const [dialogType, setDialogType] = useState(PROFILE_DIALOG_TYPE.Logout)
 
   // Build grouped menu data
-  const menuList = buildProfileMenuData(me?.username, { darkMode: mode !== 'light' })
-  const groupedMenuList = createGroupedList(menuList)
+  const menuList: TProfileDropDownList[] = buildProfileMenuData(me?.username, { darkMode: mode !== 'light' })
+  const groupedMenuList: TProfileDropdownGroupedList[] = createGroupedList(menuList)
 
   function handleRenderSelectedOption(_: string): ReactNode {
     return renderSelectedOption(sessionUsername || me?.username, !sessionUsername && loading)
@@ -59,7 +60,7 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
         {me && groupedMenuList.length > 0 ? (
           groupedMenuList.map(({ items, group, groupIcon }) => {
             return (
-              <ProfileMenu
+              <GroupMenu
                 setIsOpenDialog={setIsOpenDialog}
                 setDialogType={setDialogType}
                 menuItems={items}
