@@ -1,16 +1,22 @@
 import { INIT_SCROLL_TOP_THRESHOLD, SHOW_SCROLL_TOP_THRESHOLD } from '@/constants/enums'
 import { ArrowCircleRightSharpIcon, ArrowDownwardTwoToneIcon, ArrowUpwardTwoToneIcon } from '@/constants/icons'
-import { Box, IconButton, Link, Typography, useMediaQuery } from '@/mui'
+import { Box, IconButton, Typography, useMediaQuery } from '@/mui'
 import { useTheme } from '@mui/material/styles'
 import useScrollTrigger from '@mui/material/useScrollTrigger'
 import { MutableRefObject, useEffect, useState } from 'react'
+
+type TRdScrollBtnProps = {
+  wrapperRef: MutableRefObject<HTMLDivElement | null>
+  topRef: MutableRefObject<HTMLDivElement | null>
+  bottomRef: MutableRefObject<HTMLDivElement | null>
+}
 
 /**
  * Show/hide at a specific top offset
  * Switch top/bottom icon on scrolling across half wrapper length
  * Has mobile-pc styling
  */
-function RdScrollBtn({ wrapperRef }: { wrapperRef: MutableRefObject<HTMLDivElement | null> }) {
+function RdScrollBtn({ wrapperRef, topRef, bottomRef }: TRdScrollBtnProps) {
   const { breakpoints } = useTheme()
   const isMobile = useMediaQuery(breakpoints.down('md'))
   const [scrollThreshold, setScrollThreshold] = useState<number>(SHOW_SCROLL_TOP_THRESHOLD)
@@ -35,6 +41,10 @@ function RdScrollBtn({ wrapperRef }: { wrapperRef: MutableRefObject<HTMLDivEleme
     threshold: scrollThreshold
   })
 
+  function scrollTo() {
+    isHalfWayScrolled ? topRef?.current?.scrollIntoView() : bottomRef?.current?.scrollIntoView()
+  }
+
   return (
     <Box
       sx={{
@@ -47,8 +57,8 @@ function RdScrollBtn({ wrapperRef }: { wrapperRef: MutableRefObject<HTMLDivEleme
         pointerEvents: is200pxPassed ? 'auto' : 'none'
       }}
     >
-      <Link href={isHalfWayScrolled ? '#top-nav' : '#bottom-anchor'}>
-        {isMobile ? (
+      {isMobile ? (
+        <button onClick={scrollTo} style={{ cursor: 'pointer' }}>
           <Box
             position="fixed"
             bottom={0}
@@ -72,14 +82,12 @@ function RdScrollBtn({ wrapperRef }: { wrapperRef: MutableRefObject<HTMLDivEleme
               )}
             </Typography>
           </Box>
-        ) : (
-          <IconButton sx={{ mx: 'auto', display: 'flex', mt: 0.5 }}>
-            <ArrowCircleRightSharpIcon
-              sx={{ fontSize: '2rem', color: 'blue.main', transform: `rotate(${isHalfWayScrolled ? '-90deg' : '90deg'})` }}
-            />
-          </IconButton>
-        )}
-      </Link>
+        </button>
+      ) : (
+        <IconButton sx={{ mx: 'auto', display: 'flex', mt: 0.5 }} onClick={scrollTo}>
+          <ArrowCircleRightSharpIcon sx={{ fontSize: '2rem', color: 'blue.main', transform: `rotate(${isHalfWayScrolled ? '-90deg' : '90deg'})` }} />
+        </IconButton>
+      )}
     </Box>
   )
 }

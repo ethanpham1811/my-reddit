@@ -38,7 +38,7 @@ function UserInfoExtra<T extends FieldValues>({ user, isMe, control, onSubmitFie
             <CakeOutlinedIcon sx={{ fontSize: '0.8rem', mr: 0.5, color: 'blue.main' }} /> {user?.dob ? format(new Date(user.dob), 'P') : 'N/A'}
           </Typography>
         ) : (
-          <RdDatePicker width="100px" label={false} disableFuture name={'dob' as Path<T>} control={control} onSubmitField={onSubmitField} />
+          <RdDatePicker width="120px" label={false} disableFuture name={'dob' as Path<T>} control={control} onSubmitField={onSubmitField} />
         )}
       </Stack>
     </Stack>

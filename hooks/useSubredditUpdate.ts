@@ -1,3 +1,4 @@
+import { TSubredditDetail } from '@/constants/types'
 import { SUBREDDIT_FRAGMENT } from '@/graphql/fragments'
 import { UPDATE_SUBREDDIT } from '@/graphql/mutations'
 import { ApolloCache, useMutation } from '@apollo/client'
@@ -13,19 +14,21 @@ function useSubredditUpdate() {
   const [mutateSub] = useMutation(UPDATE_SUBREDDIT)
 
   /* update function to use in components */
-  const updateSub = async (id: string, fields: { headline?: string; description?: string }) => {
+  const updateSub = async (id: string, key: keyof Pick<TSubredditDetail, 'description' | 'headline'>, newVal: string) => {
     setLoading(true)
+
+    const updatedField = { [key]: newVal }
 
     const { errors } = await mutateSub({
       variables: {
         id,
-        ...fields
+        ...updatedField
       },
       optimisticResponse: {
         updateSubreddit: {
           id,
           __typename: 'Subreddit',
-          ...fields
+          ...updatedField
         }
       },
       update: (cache: ApolloCache<any>, { data: { updateSubreddit } }) => {

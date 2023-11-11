@@ -65,7 +65,7 @@ type Mutation {
   " Mutations for type 'Subreddit' "
   deleteSubreddit(id: ID!): Subreddit
     @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: DELETE, configuration: "postgresql_config")
-  insertSubreddit(name: String!, subType: String!, topic_ids: [String]!, isChildrenContent: Boolean!): Subreddit
+  insertSubreddit(name: String!, subType: String!, topic_ids: [String]!, isChildrenContent: Boolean!, user_id: ID!): Subreddit
     @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: INSERT, configuration: "postgresql_config")
   updateSubreddit(id: ID!, description: String, headline: String): Subreddit
     @dbquery(

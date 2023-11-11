@@ -1,7 +1,6 @@
 import { AutocompleteProps, PaletteOptions, SelectChangeEvent, SelectProps, SvgIconTypeMap, SxProps, TextFieldProps } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { Session } from '@supabase/supabase-js'
-import { Dayjs } from 'dayjs'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldError, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
 import {
@@ -223,7 +222,7 @@ export type TRdInlineInputProps<T extends FieldValues> = TextFieldProps & {
   loading?: boolean
   endIcon?: boolean
   fontSize?: string
-  onFieldSubmit: (field: FieldPath<T>, val: Dayjs | string | null) => void
+  onFieldSubmit: (field: FieldPath<T>, val: unknown) => void
 }
 export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
   helper?: string
@@ -232,7 +231,6 @@ export type TRdStaticInputProps<T extends FieldValues> = TextFieldProps & {
   bgcolor?: string
   borderColor?: string
 }
-
 export type TCardUserInfoProps = {
   user: TUserDetail | null
   loading: boolean
@@ -273,8 +271,9 @@ export type TFormColumnProps<T extends FieldValues> = {
 export type TPostCommentForm = {
   comment: string
 }
-export type TCardSubredditInfoForm = {
+export type TSubredditEditForm = {
   description: string
+  headline: string
 }
 /* ------------------------------------------Data structure Types----------------------------------------- */
 export type TCommunityTypeOPtions = {

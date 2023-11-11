@@ -12,7 +12,10 @@ import CommunityTypeRadio from './CommunityTypeRadio/CommunityTypeRadio'
 function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   const { createSubreddit, loading } = useSubredditCreate()
   const { push: redirect } = useRouter()
-  const { handleSubmit, control } = useForm<TCommunityCreatorForm>({ defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false } })
+  const { handleSubmit, control } = useForm<TCommunityCreatorForm>({
+    mode: 'all',
+    defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false }
+  })
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {

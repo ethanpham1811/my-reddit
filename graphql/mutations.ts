@@ -129,14 +129,17 @@ export const UPDATE_VOTE = gql`
 
 /* ------------------------------ SUBREDDIT ------------------------------ */
 export const ADD_SUBREDDIT = gql`
-  mutation AddSubreddit($name: String!, $topic_ids: [String]!, $subType: String!, $isChildrenContent: Boolean!) {
-    insertSubreddit(name: $name, topic_ids: $topic_ids, subType: $subType, isChildrenContent: $isChildrenContent) {
+  mutation AddSubreddit($name: String!, $topic_ids: [String]!, $subType: String!, $isChildrenContent: Boolean!, $user_id: ID!) {
+    insertSubreddit(name: $name, topic_ids: $topic_ids, subType: $subType, isChildrenContent: $isChildrenContent, user_id: $user_id) {
+      id
       name
       topic_ids
       subType
       isChildrenContent
       created_at
-      id
+      user {
+        username
+      }
     }
   }
 `

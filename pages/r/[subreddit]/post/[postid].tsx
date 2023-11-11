@@ -100,14 +100,7 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
       <Head>
         <title>r/{subName}</title>
       </Head>
-      <SubredditTopNav
-        id={subreddit?.id}
-        isChildrenContent={subreddit?.isChildrenContent}
-        owner={subreddit?.user?.username}
-        name={subreddit?.name}
-        subType={subreddit?.subType}
-        headline={subreddit?.headline}
-      />
+      <SubredditTopNav subreddit={subreddit} owner={subreddit?.user?.username} />
       <FeedLayout top="1rem" subredditId={subreddit?.id} loading={pageLoading}>
         {!verifyPost() ? (
           <MessageBoard

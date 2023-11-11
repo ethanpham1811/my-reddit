@@ -12,6 +12,7 @@ import useSearchQueriedList from './useSearchQueriedList'
 import useSubByName from './useSubByName'
 import useSubByNameAndPostById from './useSubByNameAndPostById'
 import useSubByNameWithPosts from './useSubByNameWithPosts'
+import useSubUpdateForm from './useSubUpdateForm'
 import useSubredditCreate from './useSubredditCreate'
 import useSubredditList from './useSubredditList'
 import useSubredditUpdate from './useSubredditUpdate'
@@ -21,6 +22,7 @@ import useTopicList from './useTopicList'
 import useUserByEmail from './useUserByEmail'
 import useUserByUsername from './useUserByUsername'
 import useUserDetailForSession from './useUserDetailForSession'
+import useUserInfoForm from './useUserInfoForm'
 import useUserUpdate from './useUserUpdate'
 import useVoteAdd from './useVoteAdd'
 import useVoteDelete from './useVoteDelete'
@@ -42,6 +44,7 @@ export {
   useSubByName,
   useSubByNameAndPostById,
   useSubByNameWithPosts,
+  useSubUpdateForm,
   useSubredditCreate,
   useSubredditList,
   useSubredditUpdate,
@@ -51,6 +54,7 @@ export {
   useUserByEmail,
   useUserByUsername,
   useUserDetailForSession,
+  useUserInfoForm,
   useUserUpdate,
   useVoteAdd,
   useVoteDelete,

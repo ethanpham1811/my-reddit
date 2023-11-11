@@ -82,7 +82,7 @@ const RdInlineInput = <T extends FieldValues>({
                       },
                       fieldset: { border: 'none' },
                       '&.Mui-focused': {
-                        bgcolor: 'primary.main'
+                        bgcolor: 'inlineEditBg.main'
                       }
                     },
                     ...sx

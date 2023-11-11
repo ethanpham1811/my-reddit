@@ -1,3 +1,4 @@
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { TCommunityCreatorForm } from '@/constants/types'
 import { ADD_SUBREDDIT } from '@/graphql/mutations'
 import { GET_SUBREDDIT_LIST_SHORT } from '@/graphql/queries'
@@ -10,11 +11,15 @@ import useUserUpdate from './useUserUpdate'
  * Update user member_of_ids with new sub name
  */
 function useSubredditCreate() {
+  const { session } = useAppSession()
+  const me = session?.userDetail
   const [addSubreddit] = useMutation(ADD_SUBREDDIT)
   const { updateUser } = useUserUpdate()
   const [loading, setLoading] = useState(false)
 
   const createSubreddit = async (formData: TCommunityCreatorForm) => {
+    if (!me) return
+
     setLoading(true)
     const { name, topic_ids, subType, isChildrenContent } = formData
 
@@ -23,7 +28,8 @@ function useSubredditCreate() {
         name,
         topic_ids,
         subType,
-        isChildrenContent
+        isChildrenContent,
+        user_id: me?.id
       },
       update: (cache: ApolloCache<any>, { data: { insertSubreddit } }) => {
         cache.updateQuery({ query: GET_SUBREDDIT_LIST_SHORT }, (data) => {

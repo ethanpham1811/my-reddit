@@ -17,6 +17,7 @@ function ZoomImgDialog({ zoomDialogOpen: zoomedImg, setZoomDialogOpen }: TPrevie
       open={!!zoomedImg}
       maxWidth="xl"
       transparent
+      sx={{ '.MuiDialog-paperScrollPaper': { overflow: 'hidden' } }}
       onClose={() => {
         setZoomDialogOpen(null)
       }}

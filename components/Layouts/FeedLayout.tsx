@@ -28,6 +28,7 @@ function FeedLayout({ allowCreatePost = false, loading, children, top, subreddit
   const me = session?.userDetail
   const router = useRouter()
   const wrapperRef = useRef<HTMLDivElement | null>(null)
+  const bottomRef = useRef<HTMLDivElement | null>(null)
 
   // children addressing
   const mainContent = Children.toArray(children)[0]
@@ -57,7 +58,7 @@ function FeedLayout({ allowCreatePost = false, loading, children, top, subreddit
             </Stack>
 
             {/* anchor for scroll to bottom */}
-            <Box id="bottom-anchor" />
+            <Box id="bottom-anchor" ref={bottomRef} />
           </Grid>
 
           {/* right side cards */}
@@ -67,7 +68,7 @@ function FeedLayout({ allowCreatePost = false, loading, children, top, subreddit
                 {sessionLoading ? <RdSkeletonSideColumn /> : sideContent}
 
                 {/* scroll to top/bottom btn */}
-                <RdScrollBtn wrapperRef={wrapperRef} />
+                <RdScrollBtn wrapperRef={wrapperRef} topRef={wrapperRef} bottomRef={bottomRef} />
               </Box>
             </Grid>
           )}

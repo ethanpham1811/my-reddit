@@ -58,7 +58,6 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       renderSelectedOption={handleRenderSelectedOption}
       value={me ? activePage || '' : 'Home'}
       flex={1}
-      autoFocus
       offsetTop="10px"
       width="20vw"
       maxWidth="200px"

@@ -14,7 +14,7 @@ function RdPricing({ active, title, description, price, benefits, sx, ...rest }:
   return (
     <Stack
       component="button"
-      sx={{ '&:hover': { cursor: 'pointer' }, bgcolor: active ? 'lightblue.main' : 'transparent', ...sx }}
+      sx={{ '&:hover': { cursor: 'pointer' }, color: 'black.main', bgcolor: active ? 'premiumPricingBg.main' : 'white.main', ...sx }}
       justifySelf="center"
       spacing={1}
       border="1px solid"

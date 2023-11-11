@@ -22,7 +22,7 @@ function CardCommentBox({ post_id, user_id, username, commentList }: TCardCommen
   const me = session?.userDetail
   const { createComment, loading } = useCommentAdd()
   const [filterTerm, setFilterTerm] = useState('')
-  const { control, handleSubmit, setValue, watch } = useForm<TPostCommentForm>()
+  const { control, handleSubmit, setValue, watch } = useForm<TPostCommentForm>({ mode: 'all' })
   const commentValue = watch('comment')
 
   /* submit comment handler*/

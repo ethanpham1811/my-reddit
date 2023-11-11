@@ -2,12 +2,11 @@ import { RdInlineInput } from '@/components'
 import { TUserDetail } from '@/constants/types'
 import { Typography } from '@/mui'
 import { fullNameValidation } from '@/src/formValidations'
-import { Dayjs } from 'dayjs'
 import { Control, FieldValues, Path } from 'react-hook-form'
 
 type TUserInfoHeaderProps<T extends FieldValues> = {
   control: Control<T>
-  onSubmitField: (field: keyof T, val: Dayjs | string | null) => void
+  onSubmitField: (field: keyof T, val: unknown) => void
   user: TUserDetail | null
   isMe: boolean
 }

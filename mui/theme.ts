@@ -50,6 +50,15 @@ const lightPalette = {
   tinyEditor: {
     main: '#fff' // Custom color value
   },
+  inlineEditBg: {
+    main: '#DAE0E6' // Custom color value
+  },
+  commentBox: {
+    main: '#e9f5fd' // Custom color value
+  },
+  premiumPricingBg: {
+    main: '#e9f5fd' // Custom color value
+  },
   white: {
     main: '#fff' // Custom color value
   },
@@ -112,6 +121,15 @@ const darkPalette = {
   },
   tinyEditor: {
     main: '#d0d0d0' // Custom color value
+  },
+  inlineEditBg: {
+    main: '#7c7c7c' // Custom color value
+  },
+  commentBox: {
+    main: '#494949' // Custom color value
+  },
+  premiumPricingBg: {
+    main: '#ff4500' // Custom color value
   },
   white: {
     main: '#000' // Custom color value

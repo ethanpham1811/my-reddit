@@ -41,14 +41,14 @@ export const fullNameValidation = (value: string, length: number = 16): boolean 
   const nameRegex = /^[A-Za-z]+( [A-Za-z]+)*$/
   if (value === '') return 'Can not be empty'
   if (value?.length > length) return 'Sorry, too long'
-  if (!nameRegex.test(value)) return 'Invalid name'
+  if (!nameRegex.test(value)) return 'No special character allowed'
   return true
 }
 export const textValidation = (value: string, length: number = 30): boolean | string => {
   const nameRegex = /^(?!\s)[\s\S]*(?<!\s)$/
   if (value === '') return 'Can not be empty'
   if (value?.length > length) return 'Sorry, too long'
-  if (!nameRegex.test(value)) return 'Invalid name'
+  if (!nameRegex.test(value)) return 'First and end character must not be space'
   return true
 }
 export const postTitleValidation = (value: string): boolean | string => {

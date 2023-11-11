@@ -19,7 +19,7 @@ type TEditFormProps = {
  */
 function EditForm({ closeEditForm, setUpdatedText, created_at, initComment, commentId }: TEditFormProps) {
   const { editComment } = useCommentUpdate()
-  const { control, handleSubmit, setValue, watch } = useForm<TPostCommentForm>()
+  const { control, handleSubmit, setValue, watch } = useForm<TPostCommentForm>({ mode: 'all' })
   const commentValue = watch('comment')
 
   /* map comment text to form */

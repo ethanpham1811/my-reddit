@@ -37,7 +37,10 @@ function RdDatePicker<T extends FieldValues>({ width, name, control, registerOpt
                   p: 0,
                   input: { p: 0, fontSize: '0.8rem', color: 'hintText.main', textAlign: 'center' },
                   fieldset: { display: 'none' },
-                  '.MuiIconButton-root': { mr: -2, color: 'blue.main', position: 'relative', top: -1 }
+                  '.MuiInputAdornment-root': {
+                    ml: 0,
+                    '.MuiIconButton-root': { color: 'blue.main', position: 'relative', top: -1 }
+                  }
                 }
               }}
               {...rest}
