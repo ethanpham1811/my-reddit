@@ -13,6 +13,7 @@ const RdInlineInput = <T extends FieldValues>({
   label,
   width,
   helper,
+  headline,
   sx,
   fontSize,
   center,
@@ -73,7 +74,7 @@ const RdInlineInput = <T extends FieldValues>({
                         height: 'auto',
                         textAlign: center ? 'center' : 'left',
                         fontSize: fontSize ?? '14px',
-                        fontWeight: 500,
+                        fontWeight: headline ? 700 : 500,
                         lineHeight: 1.6,
                         '&.Mui-disabled': {
                           color: 'inherit'
@@ -100,9 +101,10 @@ const RdInlineInput = <T extends FieldValues>({
                   onClick={() => setEditing(true)}
                   ref={labelRef}
                   width="max-content"
-                  whiteSpace="nowrap"
+                  whiteSpace="unset"
                   fontSize={fontSize ?? '14px'}
-                  fontWeight={500}
+                  fontWeight={headline ? 700 : 500}
+                  sx={{ width: '100%' }}
                 >
                   {value}
                   <CreateOutlinedIcon

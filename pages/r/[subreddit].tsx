@@ -84,7 +84,14 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
       <Head>
         <title>r/{subName}</title>
       </Head>
-      <SubredditTopNav name={subreddit?.name} subType={subreddit?.subType} headline={subreddit?.headline} />
+      <SubredditTopNav
+        id={subreddit?.id}
+        isChildrenContent={subreddit?.isChildrenContent}
+        owner={subreddit?.user?.username}
+        name={subreddit?.name}
+        subType={subreddit?.subType}
+        headline={subreddit?.headline}
+      />
       <FeedLayout top="1rem" subredditId={subreddit?.id} allowCreatePost={me?.member_of_ids?.includes(subName as string) ?? false}>
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />

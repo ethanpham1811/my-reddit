@@ -14,6 +14,7 @@ import useSubByNameAndPostById from './useSubByNameAndPostById'
 import useSubByNameWithPosts from './useSubByNameWithPosts'
 import useSubredditCreate from './useSubredditCreate'
 import useSubredditList from './useSubredditList'
+import useSubredditUpdate from './useSubredditUpdate'
 import useSupabaseUpload from './useSupabaseUpload'
 import useTopSearchQueriedList from './useTopSearchQueriedList'
 import useTopicList from './useTopicList'
@@ -43,6 +44,7 @@ export {
   useSubByNameWithPosts,
   useSubredditCreate,
   useSubredditList,
+  useSubredditUpdate,
   useSupabaseUpload,
   useTopSearchQueriedList,
   useTopicList,

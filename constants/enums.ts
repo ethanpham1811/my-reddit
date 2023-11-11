@@ -7,6 +7,8 @@ export const OPTIMISTIC_TEMP_ID = 99999
 export const DEFAULT_BUTTON_COLOR = 'orange'
 export const BUCKET = 'post_images'
 export const BUCKET_SUBFOLDER = 'public'
+export const SHOW_SCROLL_TOP_THRESHOLD = 50
+export const INIT_SCROLL_TOP_THRESHOLD = 200
 export const UPDATE_USER_ARRAY_KEY = ['member_of_ids', 'following_ids', 'socialLinks']
 export enum NOTI_BOX_NAME {
   Darkmode = 'Darkmode',

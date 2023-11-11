@@ -9,6 +9,8 @@ type Subreddit {
   description: String
   headline: String
   isChildrenContent: Boolean!
+  user_id: ID!
+  user: User @materializer(query: "userUsingSubreddit_user_id_fkey")
   post(offset: Int, limit: Int): [Post]
     @materializer(
       query: "postUsingPost_subreddit_id_fkey"
@@ -21,38 +23,6 @@ The following queries are just a set of examples of how to access your schema.
 Feel free to modify them or aggregate more.
 """
 type Query {
-  postUsingPost_subreddit_id_fkey(subreddit_id: ID!, offset: Int, limit: Int): [Post]
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      query: """
-      SELECT
-        p."body",
-        p."created_at",
-        p."id",
-        p."images",
-        p."subreddit_id",
-        p."title",
-        p."user_id",
-        p."link",
-        p."linkDescription",
-        (SELECT COUNT(*) FROM "comment" WHERE "post_id" = p."id") AS "totalComments",
-        COALESCE("subquery"."totalUpvotes", 0) AS "totalUpvotes"
-      FROM "post" "p"
-      LEFT JOIN (
-        SELECT
-          "post_id",
-          SUM(CASE WHEN "upvote" = true THEN 1 ELSE -1 END) AS "totalUpvotes"
-        FROM "vote"
-        GROUP BY "post_id"
-      ) AS "subquery"
-      ON "p"."id" = "subquery"."post_id"
-      WHERE "subreddit_id" = $1
-      ORDER BY "created_at" DESC
-      LIMIT $3 OFFSET $2;
-      """
-      configuration: "postgresql_config"
-    )
   " Queries for type 'Subreddit' "
   subreddit(id: ID!): Subreddit @dbquery(type: "postgresql", schema: "public", table: "subreddit", configuration: "postgresql_config")
   subredditByNameWithPosts(name: String!): Subreddit
@@ -62,7 +32,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "id", "name", "topic_ids", "subType", "member", "created_at", "coverUrl","description", "headline",  "isChildrenContent"  FROM "subreddit" WHERE "name" = $1
+      SELECT "id", "name", "topic_ids", "subType", "member", "created_at", "coverUrl","description", "headline",  "isChildrenContent", "user_id"  FROM "subreddit" WHERE "name" = $1
       """
       configuration: "postgresql_config"
     )
@@ -72,7 +42,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "coverUrl", "created_at", "description", "headline", "id", "isChildrenContent", "member", "name", "subType" FROM "subreddit" ORDER BY "id" LIMIT $1 OFFSET $2
+      SELECT "coverUrl", "created_at", "description", "headline", "id", "isChildrenContent", "member", "name", "subType", "user_id" FROM "subreddit" ORDER BY "id" LIMIT $1 OFFSET $2
       """
       configuration: "postgresql_config"
     )
@@ -81,7 +51,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "coverUrl", "created_at", "description", "headline", "id", "isChildrenContent", "member", "name", "subType" FROM "subreddit" WHERE "id" = $1
+      SELECT "coverUrl", "created_at", "description", "headline", "id", "isChildrenContent", "member", "name", "subType", "user_id" FROM "subreddit" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -97,30 +67,14 @@ type Mutation {
     @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: DELETE, configuration: "postgresql_config")
   insertSubreddit(name: String!, subType: String!, topic_ids: [String]!, isChildrenContent: Boolean!): Subreddit
     @dbquery(type: "postgresql", schema: "public", table: "subreddit", dml: INSERT, configuration: "postgresql_config")
-  updateSubreddit(
-    id: ID!
-    coverUrl: String
-    description: String
-    headline: String
-    isChildrenContent: Boolean
-    member: ID
-    name: String
-    subType: String
-    topic_ids: [String]
-  ): Subreddit
+  updateSubreddit(id: ID!, description: String, headline: String): Subreddit
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
       UPDATE "subreddit" SET
-        "coverUrl" = COALESCE($2, "coverUrl"),
-        "created_at" = COALESCE($3, "created_at"),
-        "description" = COALESCE($4, "description"),
-        "headline" = COALESCE($5, "headline"),
-        "isChildrenContent" = COALESCE($6, "isChildrenContent"),
-        "member" = COALESCE($7, "member"),
-        "name" = COALESCE($8, "name"),
-        "subType" = COALESCE($9, "subType")
+        "description" = COALESCE($2, "description"),
+        "headline" = COALESCE($3, "headline")
       WHERE
         "id" = $1
       RETURNING *

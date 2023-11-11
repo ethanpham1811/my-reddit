@@ -37,7 +37,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   async function onSubmitField(field: keyof TCardUserInfoForm, submitVal: Dayjs | string | null) {
     const value = submitVal || getValues(field)
 
-    if (user && value != null && value !== '' && user[field] !== value) {
+    if (user && value && user[field] !== value) {
       handleSubmit(
         async () => {
           toast.promise(updateUser(field, value), {

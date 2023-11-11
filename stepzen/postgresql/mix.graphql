@@ -40,6 +40,8 @@ type QueriedSub {
   isChildrenContent: Boolean
   groupBy: String
   totalItems: Int
+  user_id: ID!
+  user: User @materializer(query: "userUsingSubreddit_user_id_fkey")
 }
 
 type QueriedUser {
@@ -87,7 +89,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-          WITH "posts" AS (
+      WITH "posts" AS (
         SELECT
           p."id",
           p."title",
@@ -136,6 +138,7 @@ type Query {
           s."headline",
           s."member",
           s."isChildrenContent",
+          s."user_id",
           'Communities' AS "groupBy"
         FROM "subreddit" s
         WHERE lower(s."name") LIKE '%' || lower($3) || '%' OR lower(s."headline") LIKE '%' || lower($3) || '%'

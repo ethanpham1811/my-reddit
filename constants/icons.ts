@@ -1,7 +1,10 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp'
+import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined'
 import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined'
@@ -47,8 +50,11 @@ import { ImArrowDown, ImArrowUp } from 'react-icons/im'
 export {
   AccountCircleOutlinedIcon,
   ArrowBackIosIcon,
+  ArrowCircleRightSharpIcon,
+  ArrowDownwardTwoToneIcon,
   ArrowForwardIcon,
   ArrowForwardIosIcon,
+  ArrowUpwardTwoToneIcon,
   ArticleOutlinedIcon,
   Brightness5OutlinedIcon,
   BsFacebook,

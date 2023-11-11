@@ -171,7 +171,8 @@ export const buildTheme = (mode: 'light' | 'dark'): Theme => {
         styleOverrides: {
           // Add permanent scrollbar so it won't alter html width on hidding/showing
           html: {
-            overflowY: 'scroll'
+            overflowY: 'scroll',
+            scrollBehavior: 'smooth'
           },
           body: {
             backgroundColor: mode === 'light' ? '#DAE0E6' : '#1a1a1a',

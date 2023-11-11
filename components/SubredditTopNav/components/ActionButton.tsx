@@ -9,9 +9,10 @@ import { RdButton, RdChip } from '../..'
 type TActionButton = {
   name: string | null | undefined
   subType: string | null | undefined
+  isMySub: boolean
 }
 
-function ActionButton({ name, subType }: TActionButton) {
+function ActionButton({ name, subType, isMySub }: TActionButton) {
   const { breakpoints } = useTheme()
   const { session } = useAppSession()
   const me = session?.userDetail
@@ -28,7 +29,7 @@ function ActionButton({ name, subType }: TActionButton) {
       sx={{ alignSelf: 'flex-start', alignItems: 'center', mr: { xs: 'auto', sm: 'unset' }, ml: 'auto', mt: { xs: 1, sm: 0.5 }, pl: 1 }}
       direction="row"
     >
-      {me?.member_of_ids?.includes(name as string) ? (
+      {!isMySub && me?.member_of_ids?.includes(name as string) ? (
         <RdButton
           onClick={onLeaveSubreddit}
           filled={isMobile ? true : showLeaveBtn}

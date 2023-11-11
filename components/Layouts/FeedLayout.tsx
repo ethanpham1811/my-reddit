@@ -3,8 +3,10 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { Box, Container, Grid, Stack } from '@/mui'
 import { ContainerProps } from '@mui/material/Container'
 import { SxProps, Theme } from '@mui/material/styles'
-import { Children, ReactNode } from 'react'
+import { useRouter } from 'next/router'
+import { Children, ReactNode, useRef } from 'react'
 import { RdSkeletonDoublePost, RdSkeletonSideColumn } from '../Skeletons'
+import RdScrollBtn from '../utilities/RdScrollBtn/RdScrollBtn'
 
 type TFeedLayoutProps = Pick<ContainerProps, 'sx'> & {
   children: ReactNode
@@ -24,16 +26,25 @@ type TFeedLayoutProps = Pick<ContainerProps, 'sx'> & {
 function FeedLayout({ allowCreatePost = false, loading, children, top, subredditId, single = false, sx }: TFeedLayoutProps) {
   const { session, loading: sessionLoading } = useAppSession()
   const me = session?.userDetail
+  const router = useRouter()
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
 
   // children addressing
   const mainContent = Children.toArray(children)[0]
   const sideContent = Children.toArray(children)[1]
 
   return (
-    <Container maxWidth="md" sx={{ pt: top, pb: 5, ...sx }}>
+    <Container ref={wrapperRef} maxWidth="md" sx={{ pt: top, pb: 5, ...sx }}>
       <Box>
         <Grid container spacing={3}>
-          <Grid xs={16} md={single || loading ? 16 : 8} item order={!single || loading ? { xs: 2, md: 1 } : {}}>
+          <Grid
+            sx={{ '&.MuiGrid-item': { pt: { xs: 2, md: 3 } } }}
+            maxWidth={{ xs: '100%', md: '66.666667%' }}
+            xs={16}
+            md={single || loading ? 16 : 8}
+            item
+            order={!single || loading ? { xs: 2, md: 1 } : {}}
+          >
             <Stack spacing={2}>
               {sessionLoading ? (
                 <RdSkeletonDoublePost />
@@ -44,12 +55,20 @@ function FeedLayout({ allowCreatePost = false, loading, children, top, subreddit
                 </>
               )}
             </Stack>
+
+            {/* anchor for scroll to bottom */}
+            <Box id="bottom-anchor" />
           </Grid>
 
           {/* right side cards */}
           {!single && !loading && (
             <Grid xs={16} md={4} item order={{ xs: 1, md: 2 }}>
-              {sessionLoading ? <RdSkeletonSideColumn /> : sideContent}
+              <Box sx={{ position: { xs: 'unset', md: 'sticky' }, top: { xs: 'unset', md: router?.query?.subreddit ? '60px' : '70px' } }}>
+                {sessionLoading ? <RdSkeletonSideColumn /> : sideContent}
+
+                {/* scroll to top/bottom btn */}
+                <RdScrollBtn wrapperRef={wrapperRef} />
+              </Box>
             </Grid>
           )}
         </Grid>

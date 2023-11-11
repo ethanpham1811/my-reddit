@@ -27,7 +27,7 @@ function TopNav({ sessionUsername }: { sessionUsername: string | undefined }) {
   const mdMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Md)
 
   return (
-    <Box flexGrow={1}>
+    <Box flexGrow={1} id="top-nav">
       <NavBar>
         <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} sx={{ justifyContent: 'flex-start' }}>
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={{ sx: 0, md: 1 }} flex={mdMobile ? 1 : 0}>

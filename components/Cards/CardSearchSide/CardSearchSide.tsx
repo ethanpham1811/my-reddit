@@ -40,6 +40,7 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
               let revertBtnText = ''
               let extraText = ''
               let link = '/'
+              let ownerUsername = undefined
               let type = SEARCH_TABS.People
 
               if ('username' in item) {
@@ -57,10 +58,12 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
                 extraText = formatNumber(item.member || 0) + ' members'
                 link = `r/${item.name}`
                 type = SEARCH_TABS.Communities
+                ownerUsername = item?.user?.username
               }
 
               return (
                 <CardSearchItem
+                  ownerUsername={ownerUsername}
                   revertBtnText={revertBtnText}
                   type={type}
                   updateUser={updateUser}

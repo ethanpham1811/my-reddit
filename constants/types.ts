@@ -68,7 +68,10 @@ export type TSubredditDetail = TSubreddit & {
   description?: string
   member: number
   isChildrenContent: boolean
-  created_at: Date
+  created_at: string
+  user: {
+    username: string
+  }
   post: TPost[]
 }
 export type TComment = {
@@ -216,6 +219,7 @@ export type TRdInlineInputProps<T extends FieldValues> = TextFieldProps & {
   width?: string
   bgcolor?: string
   center?: boolean
+  headline?: boolean
   loading?: boolean
   endIcon?: boolean
   fontSize?: string
@@ -269,7 +273,9 @@ export type TFormColumnProps<T extends FieldValues> = {
 export type TPostCommentForm = {
   comment: string
 }
-
+export type TCardSubredditInfoForm = {
+  description: string
+}
 /* ------------------------------------------Data structure Types----------------------------------------- */
 export type TCommunityTypeOPtions = {
   label: string

@@ -156,6 +156,9 @@ export const GET_SEARCHED_RESULTS = gql`
       isChildrenContent
       groupBy
       totalItems
+      user {
+        username
+      }
     }
     queriedUsers(offset: $offset, limit: $limit, term: $term) {
       id

@@ -37,10 +37,17 @@ export const urlValidation = (value: string): boolean | string => {
   if (!urlRegex.test(value)) return 'Invalid URL'
   return true
 }
-export const fullNameValidation = (value: string): boolean | string => {
+export const fullNameValidation = (value: string, length: number = 16): boolean | string => {
   const nameRegex = /^[A-Za-z]+( [A-Za-z]+)*$/
   if (value === '') return 'Can not be empty'
-  if (value?.length > 16) return 'Sorry, too long'
+  if (value?.length > length) return 'Sorry, too long'
+  if (!nameRegex.test(value)) return 'Invalid name'
+  return true
+}
+export const textValidation = (value: string, length: number = 30): boolean | string => {
+  const nameRegex = /^(?!\s)[\s\S]*(?<!\s)$/
+  if (value === '') return 'Can not be empty'
+  if (value?.length > length) return 'Sorry, too long'
   if (!nameRegex.test(value)) return 'Invalid name'
   return true
 }

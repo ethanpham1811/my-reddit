@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client'
-import { COMMENT_FRAGMENT, POST_FRAGMENT, USER_FRAGMENT } from './fragments'
+import { COMMENT_FRAGMENT, POST_FRAGMENT, SUBREDDIT_FRAGMENT, USER_FRAGMENT } from './fragments'
 
 /* ------------------------------ USER--------------------------------- */
 export const UPDATE_USER = gql`
@@ -139,6 +139,14 @@ export const ADD_SUBREDDIT = gql`
       id
     }
   }
+`
+export const UPDATE_SUBREDDIT = gql`
+  mutation UpdateSubreddit($id: ID!, $headline: String, $description: String) {
+    updateSubreddit(id: $id, headline: $headline, description: $description) {
+      ...SubredditFragment
+    }
+  }
+  ${SUBREDDIT_FRAGMENT}
 `
 
 /* ----------------------------- COMMENT -------------------------------- */

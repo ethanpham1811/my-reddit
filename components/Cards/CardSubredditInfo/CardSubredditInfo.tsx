@@ -1,9 +1,12 @@
 import { RdSkeleton } from '@/components/Skeletons'
 import { TSubredditDetail } from '@/constants/types'
-import { Box, CardContent, CardHeader, Divider, Typography } from '@/mui'
-import { formatNumber, generateSeededHexColor } from '@/src/utils'
-import { format } from 'date-fns'
+import { CardContent, Divider } from '@/mui'
 import { RdCard } from '../..'
+import SubCreatedDate from './components/SubCreatedDate'
+import SubDescription from './components/SubDescription'
+import SubHeader from './components/SubHeader'
+import SubMember from './components/SubMember'
+import SubOwner from './components/SubOwner'
 import SubredditButtons from './components/SubredditButtons'
 
 type TCardSubredditInfoProps = {
@@ -13,53 +16,27 @@ type TCardSubredditInfoProps = {
 
 function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
   return (
-    <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
+    <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column', p: 2, position: 'sticky' }}>
       {!loading && subreddit ? (
         <>
           {/* Sub avatar + title */}
-          <CardHeader
-            titleTypographyProps={{ sx: { fontWeight: 600, fontSize: '0.9rem', color: 'white.main' } }}
-            title="About Community"
-            sx={{
-              p: 2,
-              mx: -2,
-              mt: -2,
-              width: 'auto',
-              bgcolor: generateSeededHexColor(subreddit.name || 'seed'),
-              '.MuiCardHeader-content': {
-                display: 'flex',
-                alignItems: 'center'
-              }
-            }}
-          />
+          <SubHeader name={subreddit?.name} />
+
           <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
             {/* Description */}
-            <Typography variant="body1" color="black" fontWeight={400}>
-              {subreddit.description}
-            </Typography>
+            <SubDescription subreddit={subreddit} />
+            <Divider sx={{ my: 1 }} />
+
+            {/* subreddit owner */}
+            <SubOwner ownerUsername={subreddit?.user?.username} />
             <Divider sx={{ my: 1 }} />
 
             {/* Member count */}
-            <Box display="flex" justifyContent="center" py={1} alignItems="center">
-              <Typography variant="subtitle1" fontWeight={700}>
-                {formatNumber(subreddit.member || 0)}
-              </Typography>{' '}
-              &nbsp;
-              <Typography variant="subtitle2" sx={{ color: 'hintText.main' }}>
-                members
-              </Typography>
-            </Box>
+            <SubMember member={subreddit?.member} />
             <Divider sx={{ my: 1 }} />
 
             {/* Started since mmm/yyyy */}
-            <Box display="flex" justifyContent="center" py={1} alignItems="center">
-              <Typography variant="subtitle2" sx={{ fontSize: '0.8rem', mr: '5px', color: 'hintText.main' }}>
-                Started since
-              </Typography>
-              <Typography variant="subtitle1" color="black" fontWeight={700}>
-                {subreddit.created_at && format(new Date(subreddit.created_at), 'MMM yyyy')}
-              </Typography>
-            </Box>
+            <SubCreatedDate created_at={subreddit?.created_at} />
           </CardContent>
           <SubredditButtons subreddit={subreddit} />
         </>

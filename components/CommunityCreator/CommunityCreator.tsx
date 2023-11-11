@@ -6,8 +6,8 @@ import { subnameValidation } from '@/src/formValidations'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { BottomNavigator, IsChildrenGroupCheckbox, RdInput, RdRadioGroup, TopicDropdown } from '..'
-import { groupTypeOptions } from './data'
+import { BottomNavigator, IsChildrenGroupCheckbox, RdInput, TopicDropdown } from '..'
+import CommunityTypeRadio from './CommunityTypeRadio/CommunityTypeRadio'
 
 function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   const { createSubreddit, loading } = useSubredditCreate()
@@ -50,33 +50,18 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
               name="name"
               helper="21 Characters remaining"
               width="60%"
-              bgcolor="white"
+              bgcolor="primary"
               height="22.25px"
+              placeholder={`What's on your mind?`}
             />
             <TopicDropdown<TCommunityCreatorForm> registerOptions={{ required: 'Please choose a topic' }} control={control} name="topic_ids" />
           </Stack>
 
           {/* Community types  */}
-          <RdRadioGroup<TCommunityCreatorForm>
-            options={groupTypeOptions}
-            name="subType"
-            control={control}
-            sx={{ mt: 1 }}
-            label={
-              <Typography
-                variant="h5"
-                sx={{
-                  mt: 2,
-                  color: 'black.main'
-                }}
-              >
-                Community type
-              </Typography>
-            }
-          />
+          <CommunityTypeRadio<TCommunityCreatorForm> control={control} />
 
           {/* Community isChildrenGroup */}
-          <IsChildrenGroupCheckbox<TCommunityCreatorForm> name="isChildrenContent" control={control} />
+          <IsChildrenGroupCheckbox<TCommunityCreatorForm> control={control} />
 
           {/* bottom button controller */}
           <BottomNavigator loading={loading} setOpen={setOpen} />

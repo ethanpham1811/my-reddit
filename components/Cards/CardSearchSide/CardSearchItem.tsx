@@ -1,3 +1,4 @@
+import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SEARCH_TABS } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
 import { Avatar, Divider, Stack, Typography } from '@/mui'
@@ -13,13 +14,17 @@ type TCardSearchItemProps = {
   revertBtnText: string
   extraText: string
   link: string
+  ownerUsername?: string
   guestMode?: boolean
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
   type: Exclude<SEARCH_TABS, SEARCH_TABS.Post>
 }
 
-function CardSearchItem({ name, status, btnText, revertBtnText, extraText, link, guestMode, updateUser, type }: TCardSearchItemProps) {
+function CardSearchItem({ name, ownerUsername, status, btnText, revertBtnText, extraText, link, guestMode, updateUser, type }: TCardSearchItemProps) {
+  const { session } = useAppSession()
+  const me = session?.userDetail
   const [hoverState, setHoverState] = useState(false)
+  const isMySub: boolean = ownerUsername ? ownerUsername === me?.username : false
 
   function onClick() {
     if (type === SEARCH_TABS.Communities) updateUser('member_of_ids', name, !status)
@@ -59,11 +64,12 @@ function CardSearchItem({ name, status, btnText, revertBtnText, extraText, link,
         {/* Join/Leave or Follow/Unfollow buttons */}
         {!guestMode && (
           <RdButton
-            text={hoverState ? revertBtnText : btnText}
+            disabled={isMySub}
+            text={isMySub ? 'My subreddit' : hoverState ? revertBtnText : btnText}
             onMouseEnter={() => setHoverState(true)}
             onMouseLeave={() => setHoverState(false)}
             onClick={onClick}
-            width="5rem"
+            minWidth="5rem"
             sx={{ height: '30px' }}
             filled={hoverState && status ? status : !status}
             color="blue"

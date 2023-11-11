@@ -102,6 +102,9 @@ export const SUBREDDIT_FRAGMENT = gql`
     name
     subType
     topic_ids
+    user {
+      username
+    }
   }
 `
 export const COMMENT_FRAGMENT = gql`

@@ -13,8 +13,9 @@ type TRdButtonProps = ButtonOwnProps &
     sx?: SxProps<Theme>
     flex?: number
     width?: string
+    minWidth?: string
   }
-function RdButton({ text, filled = false, flex, color = DEFAULT_BUTTON_COLOR, invertColor = false, sx, width, ...rest }: TRdButtonProps) {
+function RdButton({ text, filled = false, flex, color = DEFAULT_BUTTON_COLOR, invertColor = false, sx, width, minWidth, ...rest }: TRdButtonProps) {
   const hoverStyle = {
     '&:hover, &:focus': invertColor
       ? {
@@ -45,6 +46,7 @@ function RdButton({ text, filled = false, flex, color = DEFAULT_BUTTON_COLOR, in
         borderRadius: '9999px',
         textTransform: 'none',
         transition: 'none',
+        minWidth,
         width,
         '.MuiButton-endIcon': {
           position: 'absolute',

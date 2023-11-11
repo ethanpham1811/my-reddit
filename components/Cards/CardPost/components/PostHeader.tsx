@@ -23,21 +23,23 @@ function PostHeader({ subName, username, createdAt }: TPostHeader) {
     >
       {!loadedInSubPage && (
         <Stack direction="row" alignItems="center">
-          <Link href={`/r/${subName}`}>
-            <Avatar
-              sx={{
-                width: 20,
-                height: 20,
-                mr: 0.5,
-                backgroundColor: generateSeededHexColor(subName)
-              }}
-              alt={subName}
-              src={generateUserImage(subName)}
-            />
-          </Link>
+          <Box sx={{ '&:hover + .MuiStack-root .MuiTypography-root': { color: 'blue.main' } }}>
+            <Link href={`/r/${subName}`}>
+              <Avatar
+                sx={{
+                  width: 20,
+                  height: 20,
+                  mr: 0.5,
+                  backgroundColor: generateSeededHexColor(subName)
+                }}
+                alt={subName}
+                src={generateUserImage(subName)}
+              />
+            </Link>
+          </Box>
           <Stack direction="row">
             <Link href={`/r/${subName}`} onClick={(e) => e.stopPropagation()} style={{ color: 'inherit', textDecoration: 'none' }}>
-              <Typography fontWeight={600} color="black">
+              <Typography fontWeight={600} color="black" sx={{ '&:hover': { color: 'blue.main' } }}>
                 r/{subName}{' '}
               </Typography>
             </Link>
@@ -51,8 +53,8 @@ function PostHeader({ subName, username, createdAt }: TPostHeader) {
       {/* Posted by username */}
       <Typography variant="caption" sx={{ mt: 0.5 }}>
         Posted by{' '}
-        <Link href={`/u/${username}`} onClick={(e) => e.stopPropagation()} style={{ color: 'inherit' }}>
-          u/{username}
+        <Link href={`/u/${username}`} onClick={(e) => e.stopPropagation()} style={{ display: 'inline-block', color: 'inherit' }}>
+          <Box sx={{ '&:hover': { color: 'blue.main' } }}>u/{username}</Box>
         </Link>{' '}
         {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
       </Typography>

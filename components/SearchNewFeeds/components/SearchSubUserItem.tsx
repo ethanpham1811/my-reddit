@@ -2,6 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SEARCH_TABS } from '@/constants/enums'
 import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 import { Avatar, Divider, Stack, Typography } from '@/mui'
+import { isQueriedSub } from '@/src/typeCheck'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import Link from 'next/link'
 import { Fragment, useState } from 'react'
@@ -23,6 +24,7 @@ function SearchSubUserItem({ item, updateUser, revertBtnText, type }: TSearchSub
   const me = session?.userDetail
   const [hoverState, setHoverState] = useState(false)
   const { name, status, btnText, extraText, link } = getFields(me, item)
+  const isMySub: boolean = isQueriedSub(item) ? item?.user?.username === me?.username : false
 
   /* handle Join/leave and Follow/Unfollow */
   function onClick() {
@@ -61,12 +63,13 @@ function SearchSubUserItem({ item, updateUser, revertBtnText, type }: TSearchSub
         {/* Join/leave and Follow/Unfollow buttons */}
         {me && (
           <RdButton
-            text={hoverState ? revertBtnText : btnText}
+            disabled={isMySub}
+            text={isMySub ? 'My subreddit' : hoverState ? revertBtnText : btnText}
             filled={hoverState && status ? status : !status}
             onMouseEnter={() => setHoverState(true)}
             onMouseLeave={() => setHoverState(false)}
             onClick={onClick}
-            width="5rem"
+            minWidth="5rem"
             sx={{ height: '30px' }}
             color="blue"
             fullWidth={false}
