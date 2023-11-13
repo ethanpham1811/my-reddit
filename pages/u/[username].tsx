@@ -100,7 +100,9 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
             setHasNoPost={setHasNoPost}
           />
         </Stack>
-        <CardUserInfo user={user} loading={pageLoading} />
+        <Stack spacing={2} direction={{ xs: 'column', sm: 'row', md: 'column' }}>
+          <CardUserInfo user={user} loading={pageLoading} />
+        </Stack>
       </FeedLayout>
 
       {/* user custom background (position fixed) */}

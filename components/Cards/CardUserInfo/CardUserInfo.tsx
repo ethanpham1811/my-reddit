@@ -13,7 +13,7 @@ function CardUserInfo({ user, loading: userLoading }: TCardUserInfoProps) {
   const { control, onChangeUserInfo } = useUserInfoForm(user, updateUser)
 
   return (
-    <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
+    <RdCard sx={{ gap: 1, flex: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
       {!userLoading ? (
         <>
           <UserInfoMedia user={user} />

@@ -85,7 +85,7 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
   }
 
   // edit page: redirect to home if user not logged in
-  if (!me && mode === 'edit') {
+  if (!session && mode === 'edit') {
     navigate('/')
     return null
   }
@@ -121,7 +121,9 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
             )}
           </Stack>
         )}
-        <CardSubredditInfo subreddit={subreddit} loading={pageLoading} />
+        <Stack spacing={2} direction={{ xs: 'column', sm: 'row', md: 'column' }}>
+          <CardSubredditInfo subreddit={subreddit} loading={pageLoading} />
+        </Stack>
       </FeedLayout>
     </div>
   )

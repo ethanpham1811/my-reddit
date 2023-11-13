@@ -20,7 +20,7 @@ function CardHomeInfo() {
   }
 
   return (
-    <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
+    <RdCard sx={{ flex: 1, gap: 1, display: 'flex', flexDirection: 'column' }}>
       <CardMedia component="img" height={34} image={homeBannerUrl.src} alt="Home cover" sx={{ mx: -1, mt: -1, width: 'auto' }} />
       <CardHeader
         avatar={<Image alt="reddit robot" aria-label="reddit robot" src={redditRobotUrl.src} width={40} height={68} />}

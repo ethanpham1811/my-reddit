@@ -48,8 +48,8 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
       >
         {/* Display username (mobile only) */}
         {me && isMobile && (
-          <Box>
-            <Box px={2} pb={1} textAlign="right">
+          <Box mb={1}>
+            <Box px={2} mb={1} textAlign="right">
               <Typography>{me.username}</Typography>
             </Box>
             <Divider />

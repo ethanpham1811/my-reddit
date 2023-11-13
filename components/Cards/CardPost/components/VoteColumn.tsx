@@ -3,7 +3,7 @@ import { TUserDetail, TVote } from '@/constants/types'
 import { useVoteAdd, useVoteDelete, useVoteUpdate } from '@/hooks'
 import { Box, IconButton, Stack, Typography } from '@/mui'
 import { getTotalUpvote } from '@/src/utils'
-import { MouseEvent, useState } from 'react'
+import { useState } from 'react'
 
 type TVoteColumn = {
   vote: TVote[] | undefined
@@ -24,8 +24,7 @@ function VoteColumn({ vote: votes, me, postId, isMyPost, loadedInPostPage }: TVo
   const { deleteVote } = useVoteDelete()
 
   /* vote function */
-  const handleVote = async (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, isUpvoteBtn: boolean) => {
-    e.stopPropagation()
+  const handleVote = async (isUpvoteBtn: boolean) => {
     if (loading || !me) return
 
     setLoading(true)
@@ -50,12 +49,12 @@ function VoteColumn({ vote: votes, me, postId, isMyPost, loadedInPostPage }: TVo
 
   return (
     <Box width={40} m={-1} mb={isMyPost && loadedInPostPage ? 0 : -1} bgcolor="inputBgOutfocused.main">
-      <Stack alignItems="center">
-        <IconButton sx={{ cursor: loading || !me ? 'auto' : 'pointer' }} disableRipple={loading || !me} onClick={(e) => handleVote(e, true)}>
+      <Stack alignItems="center" onClick={(e) => e.stopPropagation()}>
+        <IconButton sx={{ cursor: loading || !me ? 'auto' : 'pointer' }} disableRipple={loading || !me} onClick={() => handleVote(true)}>
           <ImArrowUp style={{ color: `${vote != null && vote.upvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
-        <Typography>{voteCount}</Typography>
-        <IconButton sx={{ cursor: loading || !me ? 'auto' : 'pointer' }} disableRipple={loading || !me} onClick={(e) => handleVote(e, false)}>
+        <Typography sx={{ cursor: 'default' }}>{voteCount}</Typography>
+        <IconButton sx={{ cursor: loading || !me ? 'auto' : 'pointer' }} disableRipple={loading || !me} onClick={() => handleVote(false)}>
           <ImArrowDown style={{ color: `${vote != null && !vote.upvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
       </Stack>

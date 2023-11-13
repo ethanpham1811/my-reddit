@@ -10,16 +10,9 @@ type TPricingInfoProps = {
 
 function PricingInfo({ selectedPricing, setSelectedPricing }: TPricingInfoProps) {
   return (
-    <Stack flex={1} alignItems="center" gap={2}>
+    <Stack flex={1} alignItems="center" gap={2} width={{ xs: '100%', sm: 520 }}>
       <Typography textAlign="center">Please choose your package</Typography>
-      <Stack
-        flexDirection={{ xs: 'column', sm: 'row' }}
-        width={{ xs: '100%', sm: 520 }}
-        alignItems={{ xs: 'center', sm: 'flex-start' }}
-        justifyContent="center"
-        gap={3}
-        flex={1}
-      >
+      <Stack flexDirection={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'center', sm: 'flex-start' }} justifyContent="center" gap={3} flex={1}>
         {pricinginfoData.map((props, i) => (
           <RdPricing
             active={selectedPricing === i}

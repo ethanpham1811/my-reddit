@@ -66,13 +66,7 @@ function MainForm<T extends FieldValues>({
           />
         </Stack>
       ) : (
-        <RdTextEditor<T>
-          clearBodyOnFocus={!isEditing}
-          registerOptions={{ required: 'Body is required' }}
-          control={control}
-          name={'body' as Path<T>}
-          placeholder="Start your essay.."
-        />
+        <RdTextEditor<T> registerOptions={{ required: 'Body is required' }} control={control} name={'body' as Path<T>} />
       )}
 
       {/* uploaded images preview */}

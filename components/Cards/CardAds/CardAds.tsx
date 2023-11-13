@@ -23,9 +23,23 @@ function CardAds() {
   }
 
   return (
-    <RdCard>
+    <RdCard
+      sx={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: { xs: 'center', sm: 'center', md: 'unset' },
+        justifyContent: { xs: 'unset', sm: 'center', md: 'unset' }
+      }}
+    >
       <CardHeader
-        sx={{ p: 0 }}
+        sx={{
+          p: 0,
+          gap: { xs: 1, sm: 0, md: 1 },
+          flexDirection: { xs: 'row', sm: 'column', md: 'row' },
+          '.MuiCardHeader-avatar': { m: 0 },
+          '.MuiCardHeader-content': { textAlign: { xs: 'left', sm: 'center', md: 'left' } }
+        }}
         avatar={<SecurityOutlinedIcon sx={{ ml: 0.5, color: 'orange.main' }} />}
         titleTypographyProps={{
           sx: {
@@ -40,7 +54,7 @@ function CardAds() {
         title="Reddit Premium"
         subheader="The best Reddit experience"
       />
-      <CardActions sx={{ p: 0, pt: 0.5 }}>
+      <CardActions sx={{ p: 0, pt: 0.5, width: { xs: '100%', sm: 'auto', md: '100%' } }}>
         {me ? (
           <RdButton onClick={onClickTryNow} filled text={'Try Now'} invertColor />
         ) : (

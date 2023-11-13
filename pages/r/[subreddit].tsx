@@ -100,7 +100,9 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
             setHasNoPost={setHasNoPost}
           />
         </Stack>
-        <CardSubredditInfo subreddit={subreddit} loading={pageLoading} />
+        <Stack spacing={2} direction={{ xs: 'column', sm: 'row', md: 'column' }}>
+          <CardSubredditInfo subreddit={subreddit} loading={pageLoading} />
+        </Stack>
       </FeedLayout>
     </div>
   )

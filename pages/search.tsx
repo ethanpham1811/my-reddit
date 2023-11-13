@@ -45,7 +45,7 @@ const Search: NextPage = () => {
         </Stack>
 
         {/* Community & people right side cards: only available on Post tab */}
-        <Stack spacing={2}>
+        <Stack spacing={2} direction={{ xs: 'column', sm: 'row', md: 'column' }}>
           <CardSearchSide<TQueriedSub>
             updateUser={handleUpdateUser}
             loading={loading}

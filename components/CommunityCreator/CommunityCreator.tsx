@@ -31,16 +31,16 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   })
 
   return (
-    <Box px={{ xs: 2, sm: 5 }} py={{ xs: 1, sm: 5 }} height="100vh" display="grid">
-      <form onSubmit={onSubmit} style={{ display: 'grid' }}>
-        <Stack position="relative" display="flex">
-          <Typography variant="h5" fontWeight={{ xs: 700, sm: 500 }} color={{ xs: 'orange.main', sm: 'inherit' }} paddingY={{ xs: 1, sm: 0 }}>
+    <Box>
+      <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        <Stack position="relative" display="flex" flex={1} px={{ xs: 2, md: 5 }} pt={{ xs: 1, md: 5 }} pb={{ xs: 3, md: 5 }}>
+          <Typography variant="h5" fontWeight={{ xs: 700, md: 500 }} color={{ xs: 'orange.main', md: 'inherit' }} paddingY={{ xs: 1, md: 0 }}>
             Create a community
           </Typography>
-          <Divider sx={{ my: { xs: 1, sm: 2 } }} />
+          <Divider sx={{ my: { xs: 1, md: 2 } }} />
 
           {/* Community name & Topic */}
-          <Typography variant="h5" sx={{ mt: { xs: 0, sm: 2 } }}>
+          <Typography variant="h5" sx={{ mt: { xs: 0, md: 2 } }}>
             Name
           </Typography>
           <Typography variant="body1" component="p" sx={{ color: 'hintText.main' }}>
@@ -65,10 +65,10 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
 
           {/* Community isChildrenGroup */}
           <IsChildrenGroupCheckbox<TCommunityCreatorForm> control={control} />
-
-          {/* bottom button controller */}
-          <BottomNavigator loading={loading} setOpen={setOpen} />
         </Stack>
+
+        {/* bottom button controller */}
+        <BottomNavigator loading={loading} setOpen={setOpen} />
       </form>
     </Box>
   )

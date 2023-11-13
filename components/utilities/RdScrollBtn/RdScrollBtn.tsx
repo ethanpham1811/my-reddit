@@ -1,6 +1,6 @@
 import { INIT_SCROLL_TOP_THRESHOLD, SHOW_SCROLL_TOP_THRESHOLD } from '@/constants/enums'
 import { ArrowCircleRightSharpIcon, ArrowDownwardTwoToneIcon, ArrowUpwardTwoToneIcon } from '@/constants/icons'
-import { Box, IconButton, Typography, useMediaQuery } from '@/mui'
+import { Box, Button, IconButton, Typography, useMediaQuery } from '@/mui'
 import { useTheme } from '@mui/material/styles'
 import useScrollTrigger from '@mui/material/useScrollTrigger'
 import { MutableRefObject, useEffect, useState } from 'react'
@@ -50,29 +50,31 @@ function RdScrollBtn({ wrapperRef, topRef, bottomRef }: TRdScrollBtnProps) {
       sx={{
         opacity: is200pxPassed ? 1 : 0,
         transition: '0.3s ease all',
-        position: { xs: 'fixed', md: 'static' },
-        bottom: { xs: 0, md: 'unset' },
-        left: { xs: 10, md: 'unset' },
-        zIndex: 99999,
         pointerEvents: is200pxPassed ? 'auto' : 'none'
       }}
     >
       {isMobile ? (
-        <button onClick={scrollTo} style={{ cursor: 'pointer' }}>
-          <Box
-            position="fixed"
-            bottom={0}
-            bgcolor="black.main"
-            px={2}
-            py={0.5}
-            sx={{
-              boxShadow: (theme) => `0 0 5px ${theme.palette.inputBorder.main}`,
-              borderTopLeftRadius: 5,
-              borderTopRightRadius: 5,
-              left: '50%',
-              transform: 'translateX(-50%)'
-            }}
-          >
+        <Button
+          sx={{
+            boxShadow: (theme) => `0 0 5px ${theme.palette.inputBorder.main}`,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+            left: { xs: '50%', sm: '90%' },
+            transform: 'translateX(-50%)',
+            position: 'fixed',
+            bottom: 0,
+            bgcolor: 'black.main',
+            zIndex: 99999,
+            px: 2,
+            py: 0.5,
+            textTransform: 'none',
+            '&:hover': {
+              bgcolor: 'black.main'
+            }
+          }}
+          onClick={scrollTo}
+        >
+          <Box>
             <Typography color="white.main" fontWeight={500} variant="body2" display="flex" alignItems="center" gap={0.5}>
               Scroll{' '}
               {!isHalfWayScrolled ? (
@@ -82,7 +84,7 @@ function RdScrollBtn({ wrapperRef, topRef, bottomRef }: TRdScrollBtnProps) {
               )}
             </Typography>
           </Box>
-        </button>
+        </Button>
       ) : (
         <IconButton sx={{ mx: 'auto', display: 'flex', mt: 0.5 }} onClick={scrollTo}>
           <ArrowCircleRightSharpIcon sx={{ fontSize: '2rem', color: 'blue.main', transform: `rotate(${isHalfWayScrolled ? '-90deg' : '90deg'})` }} />

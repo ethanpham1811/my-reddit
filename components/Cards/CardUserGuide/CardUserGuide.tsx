@@ -10,7 +10,7 @@ import { guideListData } from './data'
 function CardUserGuide({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) {
   return (
     <RdCard sx={{ p: 2, display: 'flex', border: 'none' }}>
-      <Stack spacing={2} flex={1} width={{ xs: '90vw', lg: '400px' }}>
+      <Stack spacing={2} flex={1} width={{ xs: '90vw', sm: '400px' }}>
         {/* header */}
         <Stack spacing={2} py={1} sx={{ mx: '-1rem !important', mt: '-1rem !important' }} bgcolor="blue.main">
           <Typography

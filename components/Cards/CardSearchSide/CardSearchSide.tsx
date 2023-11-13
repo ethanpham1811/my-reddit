@@ -25,7 +25,7 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
   const me = session?.userDetail
 
   return (
-    <RdCard sx={{ gap: 1, py: 2, px: 0, display: 'flex', flexDirection: 'column' }}>
+    <RdCard sx={{ flex: 1, gap: 1, py: 2, px: 0, display: 'flex', flexDirection: 'column' }}>
       <CardHeader sx={{ py: 0, px: 2 }} titleTypographyProps={{ sx: { fontWeight: 600, fontSize: '0.9rem' } }} title={title} />
       <CardContent sx={{ p: 0 }}>
         {loading ? (

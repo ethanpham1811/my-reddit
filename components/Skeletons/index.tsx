@@ -1,4 +1,4 @@
-import { Skeleton, Stack } from '@/mui'
+import { Box, Skeleton, Stack } from '@/mui'
 import { Fragment } from 'react'
 
 export function RdSkeleton({ height = '25px' }: { height?: string }) {
@@ -27,6 +27,15 @@ export function RdSkeletonSideColumn() {
       <Skeleton sx={{ display: 'flex', mb: 2 }} variant="rectangular" width="100%" height="100px" />
       <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="100%" height="200px" />
     </>
+  )
+}
+export function RdSkeletonTextEditor({ height }: { height: number }) {
+  return (
+    <Box position="absolute" width="100%" height={height}>
+      <Skeleton variant="text" width="100%" height="39px" sx={{ fontSize: '1rem' }} />
+      <Skeleton variant="rounded" width="100%" height={height - 60 + 'px'} />
+      <Skeleton variant="text" width="100%" height="19px" sx={{ fontSize: '1rem' }} />
+    </Box>
   )
 }
 export function RdSkeletonDoublePost() {

@@ -16,9 +16,9 @@ function PostHeader({ subName, username, createdAt }: TPostHeader) {
   } = useRouter()
   return (
     <Stack
-      alignItems={{ sx: 'flex-start', md: 'center' }}
-      justifyContent={{ md: 'flex-start', sx: 'center' }}
-      flexDirection={{ xs: 'column', md: 'row' }}
+      alignItems={{ sx: 'flex-start', sm: 'center' }}
+      justifyContent={{ sm: 'flex-start', sx: 'center' }}
+      flexDirection={{ xs: 'column', sm: 'row' }}
       sx={{ px: 1 }}
     >
       {!loadedInSubPage && (
@@ -43,7 +43,7 @@ function PostHeader({ subName, username, createdAt }: TPostHeader) {
                 r/{subName}{' '}
               </Typography>
             </Link>
-            <Box mx={0.5} display={{ xs: 'none', md: 'block' }} position="relative" top={0.5}>
+            <Box mx={0.5} display={{ xs: 'none', sm: 'block' }} position="relative" top={0.5}>
               •
             </Box>
           </Stack>

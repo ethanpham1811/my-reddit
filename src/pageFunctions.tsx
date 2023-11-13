@@ -58,7 +58,7 @@ export function noPermissionUserPageMsg(
 ): ReactNode | false {
   const verifyFollower = validatePostByFollowing(following_ids, username) || myUsername === username
 
-  return !username ? ( // if user is not logged in
+  return !myUsername ? ( // if user is not logged in
     <MessageBoard head="You need to " highlight="login" tail=" to view their content" hasLogin hasBackground={isUserPage} />
   ) : !verifyFollower ? ( // if user is not following the user page
     <MessageBoard head="You need to follow " highlight={username as string} tail=" to view their posts" hasBackground={isUserPage} />

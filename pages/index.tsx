@@ -70,9 +70,9 @@ export default function Home({ postList: svPostList }: InferGetStaticPropsType<t
             appendPosts={appendHomePagePosts}
           />
         </Stack>
-        <Stack spacing={2}>
-          <CardAds />
+        <Stack spacing={2} direction={{ xs: 'column', sm: 'row', md: 'column' }}>
           <CardHomeInfo />
+          <CardAds />
         </Stack>
       </FeedLayout>
     </div>

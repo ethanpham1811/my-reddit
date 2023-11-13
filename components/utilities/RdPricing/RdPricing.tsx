@@ -16,6 +16,7 @@ function RdPricing({ active, title, description, price, benefits, sx, ...rest }:
       component="button"
       sx={{ '&:hover': { cursor: 'pointer' }, color: 'black.main', bgcolor: active ? 'premiumPricingBg.main' : 'white.main', ...sx }}
       justifySelf="center"
+      alignItems="stretch"
       spacing={1}
       border="1px solid"
       borderColor="cardBorder.main"
@@ -33,14 +34,12 @@ function RdPricing({ active, title, description, price, benefits, sx, ...rest }:
           {active && '(selected)'}
         </Typography>
       </Stack>
-      <Typography variant="subtitle2" color="black" fontWeight={400} sx={{ p: 0, fontSize: '0.8rem' }}>
+      <Typography variant="subtitle2" color="black" fontWeight={400} sx={{ p: 0, fontSize: '0.8rem', textAlign: 'left' }}>
         {description}
       </Typography>
-      <Stack direction="row" alignItems="flex-end">
-        <Typography variant="h3" ml="auto">
-          {price}
-        </Typography>
-        <Typography variant="body1" fontWeight={400} fontSize="1.2rem" mr="auto">
+      <Stack direction="row" alignItems="flex-end" justifyContent="center" flex={1}>
+        <Typography variant="h3">{price}</Typography>
+        <Typography variant="body1" fontWeight={400} fontSize="1.2rem">
           $/yr
         </Typography>
       </Stack>

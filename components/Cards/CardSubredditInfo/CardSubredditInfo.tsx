@@ -16,7 +16,7 @@ type TCardSubredditInfoProps = {
 
 function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
   return (
-    <RdCard sx={{ gap: 1, display: 'flex', flexDirection: 'column', p: 2, position: 'sticky' }}>
+    <RdCard sx={{ gap: 1, flex: 1, display: 'flex', flexDirection: 'column', p: 2, position: 'sticky' }}>
       {!loading && subreddit ? (
         <>
           {/* Sub avatar + title */}
