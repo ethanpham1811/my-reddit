@@ -10,10 +10,10 @@ type TVoteColumn = {
   me: TUserDetail | undefined | null
   postId: number
   isMyPost: boolean
-  loadedInPostPage: boolean | undefined
+  onPostPage: boolean | undefined
 }
 
-function VoteColumn({ vote: votes, me, postId, isMyPost, loadedInPostPage }: TVoteColumn) {
+function VoteColumn({ vote: votes, me, postId, isMyPost, onPostPage }: TVoteColumn) {
   const voteCount: number = votes ? getTotalUpvote(votes) : 0
   const vote: TVote | undefined = votes?.find((vote) => vote.user_id === me?.id)
   const [loading, setLoading] = useState(false)
@@ -48,7 +48,7 @@ function VoteColumn({ vote: votes, me, postId, isMyPost, loadedInPostPage }: TVo
   }
 
   return (
-    <Box width={40} m={-1} mb={isMyPost && loadedInPostPage ? 0 : -1} bgcolor="inputBgOutfocused.main">
+    <Box width={40} m={-1} mb={isMyPost && onPostPage ? 0 : -1} bgcolor="inputBgOutfocused.main">
       <Stack alignItems="center" onClick={(e) => e.stopPropagation()}>
         <IconButton sx={{ cursor: loading || !me ? 'auto' : 'pointer' }} disableRipple={loading || !me} onClick={() => handleVote(true)}>
           <ImArrowUp style={{ color: `${vote != null && vote.upvote ? '#ff4500' : '#DAE0E6'}` }} />

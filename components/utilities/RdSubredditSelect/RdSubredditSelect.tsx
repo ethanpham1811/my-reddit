@@ -71,9 +71,8 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
               value={inputValue}
               renderSelectedOption={renderSelectedOption}
               width={width}
-              sx={sx}
+              sx={{ minWidth: { xs: 'auto', sm: '150px' }, ...sx }}
               flex={flex}
-              minWidth="200px"
               mobileMode
               placeholder="Subreddit"
               borderColor="primary"

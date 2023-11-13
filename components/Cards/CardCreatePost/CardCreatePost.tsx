@@ -5,7 +5,7 @@ import { useEditPostDataMap, usePostCreateAndEdit, usePostCreateFormListener, us
 import { Box, Divider, Stack, Typography, useMediaQuery, useTheme } from '@/mui'
 import { postTitleValidation } from '@/src/formValidations'
 import { useRouter } from 'next/router'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Path, useForm } from 'react-hook-form'
 import { RdCard, RdInput } from '../..'
 import AvatarColumn from './components/AvatarColumn'
@@ -58,9 +58,21 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
     control,
     formState: { isDirty }
   } = useForm<TCardCreatePostForm>()
+
   const titleValue = watch('title')
+  const bodyValue = watch('body')
   const imagesValue = watch('images')
   const formOpened = !!titleValue || isDirty
+
+  /*
+   * set body to '' on title receiving value
+   * this is the workaround for mceTiny editor
+   * the editor won't receive undefined (set by reset()) -> inputted value always persists
+   * -> need to manually set the value of editor to '' every time user open the form
+   */
+  useEffect(() => {
+    titleValue && bodyValue == null && setFormValue('body', '')
+  }, [titleValue, bodyValue, setFormValue])
 
   /* map post data to the form in edit mode */
   useEditPostDataMap(editModePayload, setFormValue)

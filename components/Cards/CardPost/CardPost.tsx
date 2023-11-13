@@ -2,7 +2,7 @@ import { CardCommentBox, CardCreatePost as CardEditPost, RdCard } from '@/compon
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { OPTIMISTIC_TEMP_ID, POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardPostProps, TUserDetail } from '@/constants/types'
-import { Stack } from '@/mui'
+import { Stack, useTheme } from '@/mui'
 import { useRouter } from 'next/router'
 import { KeyboardEvent, MouseEvent, useState } from 'react'
 import ActionMenu from './components/ActionMenu'
@@ -27,6 +27,7 @@ function CardPost({
   },
   setZoomedImg
 }: TCardPostProps) {
+  const theme = useTheme()
   const { session } = useAppSession()
   const me: TUserDetail | undefined | null = session?.userDetail
   const {
@@ -35,17 +36,19 @@ function CardPost({
   } = useRouter()
   const isEditing = mode === POST_MUTATION_MODE.Edit
   const [isDeleting, setIsDeleting] = useState(false)
+  const onPostPage: boolean = postid != null
+  const isMyPost = me?.username === username
 
   // optimistic post || to be deleted post => block user interaction
   const blockInteraction = postId === OPTIMISTIC_TEMP_ID || isDeleting
 
-  // only show subreddit that user is member of
-  const isMyPost = me?.username === username
+  // opacity amount (optimistic post) differ based on color mode
+  const opacityAmount: number = theme.palette.mode === 'dark' ? 0.2 : 0.5
 
   /* navigate to post detail page */
   function goToPost(e: MouseEvent | KeyboardEvent) {
     if (e.type === 'keydown' && (e as KeyboardEvent).key !== 'Enter') return
-    !postid && !blockInteraction && navigate(`/r/${subName}/post/${postId}`)
+    !onPostPage && !blockInteraction && navigate(`/r/${subName}/post/${postId}`)
   }
 
   return (
@@ -63,18 +66,18 @@ function CardPost({
         />
       ) : (
         <RdCard
-          tabIndex={postid ? -1 : 0}
+          tabIndex={onPostPage ? -1 : 0}
           onKeyDown={goToPost}
           onClick={goToPost}
           sx={{
             pointerEvents: blockInteraction ? 'none' : 'auto',
-            opacity: blockInteraction ? 0.5 : 1,
-            '&:hover': !postid ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {}
+            opacity: blockInteraction ? opacityAmount : 1,
+            '&:hover': !onPostPage ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {}
           }}
         >
           <Stack direction="row">
             {/* side column */}
-            <VoteColumn vote={vote} me={me} postId={postId} isMyPost={isMyPost} loadedInPostPage={!!postid} />
+            <VoteColumn vote={vote} me={me} postId={postId} isMyPost={isMyPost} onPostPage={onPostPage} />
 
             {/* main section */}
             <PostColumn
@@ -91,15 +94,21 @@ function CardPost({
           </Stack>
 
           {/* comment count + edit/delete buttons */}
-          <BottomActionMenu isMyPost={isMyPost} totalComments={totalComments} subName={subName} postId={postId.toString()} />
+          <BottomActionMenu
+            setIsDeleting={setIsDeleting}
+            isMyPost={isMyPost}
+            totalComments={totalComments}
+            subName={subName}
+            postId={postId.toString()}
+          />
         </RdCard>
       )}
 
       {/* 3 dot menu */}
-      {isMyPost && !blockInteraction && !postid && <ActionMenu setIsDeleting={setIsDeleting} subName={subName} postId={postId.toString()} />}
+      {isMyPost && !blockInteraction && !onPostPage && <ActionMenu setIsDeleting={setIsDeleting} subName={subName} postId={postId.toString()} />}
 
       {/* comment box (post detail page) */}
-      {postid != null && <CardCommentBox commentList={commentList} post_id={postId} user_id={me?.id} username={me?.username as string} />}
+      {onPostPage && <CardCommentBox commentList={commentList} post_id={postId} user_id={me?.id} username={me?.username as string} />}
     </Stack>
   )
 }

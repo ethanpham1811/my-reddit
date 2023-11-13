@@ -3,7 +3,7 @@ import { CommentOutlinedIcon } from '@/constants/icons'
 import { usePostDelete } from '@/hooks'
 import { Box, Button, Stack, Typography } from '@/mui'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import CardConfirm from '../../CardConfirm/CardConfirm'
 
 type TBottomActionMenuProps = {
@@ -11,14 +11,20 @@ type TBottomActionMenuProps = {
   isMyPost: boolean
   subName: string
   totalComments: number | undefined
+  setIsDeleting: Dispatch<SetStateAction<boolean>>
 }
-function BottomActionMenu({ postId, isMyPost, subName, totalComments }: TBottomActionMenuProps) {
+function BottomActionMenu({ setIsDeleting, postId, isMyPost, subName, totalComments }: TBottomActionMenuProps) {
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const { push: navigate } = useRouter()
-  const { deletePostData } = usePostDelete()
+  const { deletePostData, loading } = usePostDelete()
   const {
     query: { postid }
   } = useRouter()
+
+  /* disable user interaction while deleting */
+  useEffect(() => {
+    setIsDeleting(loading)
+  }, [loading, setIsDeleting])
 
   async function handleDeletePost() {
     setIsOpenDialog(true)
