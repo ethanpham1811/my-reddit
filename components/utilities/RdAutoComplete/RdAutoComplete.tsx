@@ -26,7 +26,7 @@ function RdAutoComplete<
       ? {
           width: 'calc(100vw - 2rem) !important',
           '.MuiAutocomplete-listbox': {
-            maxHeight: '80vh'
+            maxHeight: '80dvh'
           }
         }
       : {}
@@ -43,7 +43,7 @@ function RdAutoComplete<
         '+ .MuiAutocomplete-popper': {
           border: (theme) => `1px solid ${theme.palette.blue.main}`,
           borderTopColor: 'inputBorder.main',
-          '.MuiAutocomplete-listbox': { maxHeight: '60vh' },
+          '.MuiAutocomplete-listbox': { maxHeight: '60dvh' },
           ...dropDownMobileStyle
         },
         ...inputMobileStyle,

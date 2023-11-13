@@ -65,7 +65,14 @@ function GroupMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDialog
           tabIndex={0}
           disabled={disabled}
           onKeyDown={(e) => handleMenuActions(e, type, i)}
-          sx={{ '&:hover': switcher ? { bgcolor: 'transparent' } : {}, ml: 'calc(1em + 1rem)', '&.MuiButtonBase-root': { p: 0 } }}
+          sx={{
+            mt: 1,
+            mb: 1.5,
+            ml: 'calc(1em + 1rem)',
+            minHeight: 'auto',
+            '&:hover': switcher ? { bgcolor: 'transparent' } : {},
+            '&.MuiButtonBase-root': { p: 0 }
+          }}
           key={key}
           {...rest}
         >
@@ -79,6 +86,9 @@ function GroupMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDialog
               createElement(Switch, {
                 checked,
                 sx: {
+                  position: 'absolute',
+                  right: '20px',
+                  zIndex: 10,
                   ml: 'auto',
                   '.Mui-checked': { '.MuiSwitch-thumb': { color: 'orange.main' }, '&+.MuiSwitch-track': { opacity: 1 } }
                 }

@@ -13,7 +13,7 @@ const ISGFallBack = () => {
         top: 0,
         left: 0,
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

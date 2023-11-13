@@ -12,7 +12,7 @@ const Page404 = () => {
 
       <Container
         maxWidth="md"
-        sx={{ height: '100vh', width: '100vw', flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        sx={{ height: '100dvh', width: '100vw', flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
         <NotFound />
       </Container>

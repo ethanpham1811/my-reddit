@@ -66,7 +66,7 @@ const RdStepper = ({ middleBtnSlot, steps, activeStep, setActiveStep, renderStep
       <Box mt="auto">
         <Divider sx={{ mt: 4 }} />
         <Stack>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, pb: 3 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, pb: 0 }}>
             <Button disabled={isFirststep} color="orange" onClick={handleBack}>
               Back
             </Button>

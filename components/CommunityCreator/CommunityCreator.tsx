@@ -32,7 +32,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
 
   return (
     <Box>
-      <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', height: '100dvh' }}>
         <Stack position="relative" display="flex" flex={1} px={{ xs: 2, md: 5 }} pt={{ xs: 1, md: 5 }} pb={{ xs: 3, md: 5 }}>
           <Typography variant="h5" fontWeight={{ xs: 700, md: 500 }} color={{ xs: 'orange.main', md: 'inherit' }} paddingY={{ xs: 1, md: 0 }}>
             Create a community

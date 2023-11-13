@@ -81,7 +81,7 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
   }
 
   return (
-    <Box height="100vh">
+    <Box height="100dvh">
       <Head>
         <title>u/{username}</title>
       </Head>
@@ -112,7 +112,7 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
         top={0}
         left={0}
         width="100vw"
-        height="100vh"
+        height="100dvh"
       />
     </Box>
   )

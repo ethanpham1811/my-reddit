@@ -33,7 +33,7 @@ function ZoomImgDialog({ zoomDialogOpen: zoomedImg, setZoomDialogOpen }: TPrevie
             width: imgSize.width,
             height: imgSize.height,
             maxWidth: (theme) => theme.breakpoints.values.xl,
-            maxHeight: '90vh'
+            maxHeight: '90dvh'
           }}
         >
           <Image

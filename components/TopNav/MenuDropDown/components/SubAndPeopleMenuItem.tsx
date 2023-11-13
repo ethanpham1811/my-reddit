@@ -20,12 +20,8 @@ function SubAndPeopleMenuItem({ type, name, url, onEnter, ...rest }: TSubAndPeop
   const prefix = type === SUB_PEOPLE_MENU_ITEM.Communities ? 'r' : 'u'
 
   return (
-    <MenuItem {...rest} value={name} onKeyUp={(e) => onEnter(e, url)}>
-      <Link
-        // href={`/${prefix}/${name}`}
-        href={url}
-        style={{ color: 'unset', textDecoration: 'none', flex: 1, display: 'flex', gap: '0.5rem', alignItems: 'center' }}
-      >
+    <MenuItem sx={{ minHeight: 'auto' }} {...rest} value={name} onKeyUp={(e) => onEnter(e, url)}>
+      <Link href={url} style={{ color: 'unset', textDecoration: 'none', flex: 1, display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
         <Avatar variant="circular" sx={{ bgcolor: generateSeededHexColor(name), width: 20, height: 20 }}>
           <Image src={generateUserImage(name)} alt={`community ${name} avatar`} aria-label={`community ${name} avatar`} width={20} height={20} />
         </Avatar>

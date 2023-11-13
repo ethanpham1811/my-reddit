@@ -48,7 +48,7 @@ function SubredditTopNav({ subreddit, owner }: TSubredditTopNavProps) {
           src={generateUserCover(name, 2000, 300)}
           width={2000}
           height={300}
-          style={{ width: '100%', height: '30vh', objectFit: 'cover' }}
+          style={{ width: '100%', height: '30dvh', objectFit: 'cover' }}
           alt="subreddit cover"
           aria-label="subreddit cover"
         />

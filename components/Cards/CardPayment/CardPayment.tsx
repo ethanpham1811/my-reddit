@@ -46,7 +46,7 @@ function CardPayment({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
       alignSelf="center"
       px={{ xs: 2, sm: 5 }}
       py={{ xs: 1, sm: 5 }}
-      height="100vh"
+      height="100dvh"
       display="flex"
       flexDirection="column"
       width={{ xs: '100vw', sm: 520, lg: 720 }}
