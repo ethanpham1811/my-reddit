@@ -167,7 +167,7 @@ export type TRdAutoCompleteProps<
   focused: boolean
 }
 
-export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'error' | 'disabled' | 'autoFocus'> & {
+export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'error' | 'disabled' | 'autoFocus' | 'onOpen' | 'onClick'> & {
   renderSelectedOption: (value: string) => ReactNode
   onChange?: (event: SelectChangeEvent<string>, child: ReactNode) => void
   width?: string

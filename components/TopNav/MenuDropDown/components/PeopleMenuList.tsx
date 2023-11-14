@@ -11,14 +11,13 @@ import SubAndPeopleMenuItem from './SubAndPeopleMenuItem'
 type TPeopleMenuListProps = {
   value: string
   options: TMenuItem[]
-  filterByTerm: (option: TMenuItem) => boolean
   onEnter: (e: KeyboardEvent<HTMLLIElement>, url: string) => void
 }
 
 /**
  * People group, list all user's following
  */
-function PeopleMenuList({ options, onEnter, filterByTerm, ...rest }: TPeopleMenuListProps) {
+function PeopleMenuList({ options, onEnter, ...rest }: TPeopleMenuListProps) {
   const { session, loading } = useAppSession()
 
   return (
@@ -29,18 +28,16 @@ function PeopleMenuList({ options, onEnter, filterByTerm, ...rest }: TPeopleMenu
       {!session ? null : loading ? (
         <RdSkeleton />
       ) : options.length > 0 ? (
-        options
-          .filter(filterByTerm)
-          .map(({ name, url }) => (
-            <SubAndPeopleMenuItem
-              onEnter={onEnter}
-              type={SUB_PEOPLE_MENU_ITEM.People}
-              {...rest}
-              url={url || ''}
-              name={name}
-              key={`people_menu_${rid()}`}
-            />
-          ))
+        options.map(({ name, url }) => (
+          <SubAndPeopleMenuItem
+            onEnter={onEnter}
+            type={SUB_PEOPLE_MENU_ITEM.People}
+            {...rest}
+            url={url || ''}
+            name={name}
+            key={`people_menu_${rid()}`}
+          />
+        ))
       ) : (
         <Box px={2} py={0.75}>
           <Typography variant="body1">You are not following anyone</Typography>

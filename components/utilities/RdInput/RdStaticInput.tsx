@@ -1,5 +1,6 @@
 import { TRdStaticInputProps } from '@/constants/types'
 import { styled, TextField } from '@/mui'
+import { ForwardedRef, forwardRef, ReactElement } from 'react'
 import { FieldValues } from 'react-hook-form'
 
 const RdInputBase = styled(TextField)(({ theme }) => ({
@@ -15,11 +16,15 @@ const RdInputBase = styled(TextField)(({ theme }) => ({
   }
 }))
 
-const RdStaticInput = <T extends FieldValues>({ borderColor, placeholder, label, sx, bgcolor, ...rest }: TRdStaticInputProps<T>) => {
+function RdStaticInput<T extends FieldValues>(
+  { borderColor, placeholder, label, sx, bgcolor, ...rest }: TRdStaticInputProps<T>,
+  ref: ForwardedRef<HTMLInputElement>
+) {
   const borderStyle = borderColor ? { borderColor: borderColor } : {}
 
   return (
     <RdInputBase
+      inputRef={ref}
       size="small"
       fullWidth
       label={label}
@@ -30,4 +35,4 @@ const RdStaticInput = <T extends FieldValues>({ borderColor, placeholder, label,
     />
   )
 }
-export default RdStaticInput
+export default forwardRef(RdStaticInput) as <T extends FieldValues>(p: TRdStaticInputProps<T>, ref: ForwardedRef<HTMLInputElement>) => ReactElement

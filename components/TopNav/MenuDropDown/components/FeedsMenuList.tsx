@@ -8,21 +8,21 @@ import GroupHeader from './MenuGroupHeader'
 
 type TFeedsMenuListProps = {
   value: string
-  feedsOptions: TMenuItem[]
+  options: TMenuItem[]
   onEnter: (e: KeyboardEvent<HTMLLIElement>, url: string) => void
 }
 
 /**
  * Feed group, Currently has only 1 option: "Home"
  */
-const FeedsMenuList = ({ feedsOptions, onEnter, ...rest }: TFeedsMenuListProps, ref: ForwardedRef<HTMLLIElement> | null) => {
+const FeedsMenuList = ({ options, onEnter, ...rest }: TFeedsMenuListProps, ref: ForwardedRef<HTMLLIElement> | null) => {
   return (
     <>
       <GroupHeader label={MAIN_MENU_GROUP.Feeds} />
-      {feedsOptions.map(({ name, icon, url }) => (
-        <MenuItem ref={ref} {...rest} key={`feeds_menu_${rid()}`} onKeyUp={(e) => onEnter(e, url || '/')}>
+      {options.map(({ name, icon, url }) => (
+        <MenuItem ref={ref} {...rest} key={`feeds_menu_${rid()}`} onKeyDown={(e) => onEnter(e, url || '/')}>
           <Link href={url || '/'} style={{ color: 'unset', textDecoration: 'none', flex: 1, display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            {icon && createElement(icon)}
+            {icon && createElement(icon)}|
             <ListItemText primary={name} />
           </Link>
         </MenuItem>

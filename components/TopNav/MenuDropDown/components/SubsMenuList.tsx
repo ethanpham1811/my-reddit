@@ -11,14 +11,13 @@ import SubAndPeopleMenuItem from './SubAndPeopleMenuItem'
 type TSubsMenuListProps = {
   value: string
   options: TMenuItem[]
-  filterByTerm: (option: TMenuItem) => boolean
   onEnter: (e: KeyboardEvent<HTMLLIElement>, url: string) => void
 }
 
 /**
  * Community group, list all user's subreddits
  */
-function SubsMenuList({ options, onEnter, filterByTerm, ...rest }: TSubsMenuListProps) {
+function SubsMenuList({ options, onEnter, ...rest }: TSubsMenuListProps) {
   const { loading, session } = useAppSession()
 
   return (
@@ -29,18 +28,16 @@ function SubsMenuList({ options, onEnter, filterByTerm, ...rest }: TSubsMenuList
       {!session ? null : loading ? (
         <RdSkeleton />
       ) : options.length > 0 ? (
-        options
-          .filter(filterByTerm)
-          .map(({ name, url }) => (
-            <SubAndPeopleMenuItem
-              type={SUB_PEOPLE_MENU_ITEM.Communities}
-              onEnter={onEnter}
-              url={url || ''}
-              {...rest}
-              name={name}
-              key={`communities_menu_${rid()}`}
-            />
-          ))
+        options.map(({ name, url }) => (
+          <SubAndPeopleMenuItem
+            type={SUB_PEOPLE_MENU_ITEM.Communities}
+            onEnter={onEnter}
+            url={url || ''}
+            {...rest}
+            name={name}
+            key={`communities_menu_${rid()}`}
+          />
+        ))
       ) : (
         <Box px={2} py={0.75}>
           <Typography variant="body1">You did not join any subreddit</Typography>
