@@ -45,12 +45,12 @@ function ActionMenu({ commentId, setIsDeleting, onClickEdit }: TActionMenuProps)
     <>
       <RdIconSelect
         disabled={loading}
-        position={{ left: '-70px' }}
+        position={{ left: '-40px' }}
         disableRipple
         size="small"
         options={commentActionOptions}
         icon={MoreHorizIcon}
-        sx={{ position: 'absolute', top: '-15px', right: 0, color: 'hintText.main', '&:hover': { color: 'inherit' } }}
+        sx={{ position: 'absolute', top: '-15px', right: '10px', color: 'hintText.main', '&:hover': { color: 'inherit' } }}
       />
 
       {/* delete comment confirm dialog */}

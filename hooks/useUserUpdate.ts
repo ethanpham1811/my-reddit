@@ -13,8 +13,6 @@ import toast from 'react-hot-toast'
  * - created_at
  * - email
  * - dob
- * - coverUrl
- * - photoUrl
  * - karma
  * - socialLinks
  * - member_of_ids
@@ -28,7 +26,7 @@ function useUserUpdate() {
   const [loading, setLoading] = useState(false)
   const { session } = useAppSession()
   const me = session?.userDetail
-  const [mutateMemberOf] = useMutation(UPDATE_USER)
+  const [mutateUser] = useMutation(UPDATE_USER)
 
   /* build dynamic update params from dynamic key */
   const buildUpdateParams = (
@@ -56,15 +54,15 @@ function useUserUpdate() {
 
     const updatedField = buildUpdateParams(me, key, newVal, isAdding)
 
-    const { errors } = await mutateMemberOf({
+    const { errors } = await mutateUser({
       variables: {
         id: me?.id,
         ...updatedField
       },
       optimisticResponse: {
         updateUser: {
-          id: me?.id,
           __typename: 'User',
+          ...me,
           ...updatedField
         }
       },

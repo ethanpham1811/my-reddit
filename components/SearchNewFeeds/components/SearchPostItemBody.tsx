@@ -30,7 +30,7 @@ function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPos
           {imgLoading && <RdImgLoader />}
           <Image
             onLoad={() => setImgLoading(false)}
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'cover', marginTop: '8px' }}
             alt={`post_ ${id}_preview_image`}
             src={`${process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL}/${images[0]}`}
             width={140}

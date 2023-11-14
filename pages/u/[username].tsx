@@ -107,7 +107,7 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
 
       {/* user custom background (position fixed) */}
       <Box
-        sx={{ backgroundImage: `url(${generateUserCover(user?.username, 2000, 1000, 7)})` }}
+        sx={{ backgroundImage: `url(${generateUserCover(user?.username, 2000, 1000, 7)})`, backgroundSize: 'cover' }}
         position="fixed"
         top={0}
         left={0}

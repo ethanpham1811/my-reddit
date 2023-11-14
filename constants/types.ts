@@ -1,5 +1,6 @@
 import { AutocompleteProps, PaletteOptions, SelectChangeEvent, SelectProps, SvgIconTypeMap, SxProps, TextFieldProps } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
+import { StorageError } from '@supabase/storage-js'
 import { Session } from '@supabase/supabase-js'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Control, FieldError, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
@@ -28,8 +29,6 @@ export type TUserDetail = TUser & {
   created_at: Date
   email?: string
   dob?: string
-  coverUrl?: string
-  photoUrl?: string
   karma?: number
   socialLinks?: string[]
   member_of_ids?: string[]
@@ -141,6 +140,9 @@ export type TSelectOption = {
 export type TFetchMoreArgs = {
   offset: number
   limit?: number
+}
+export type TStorageError = StorageError & {
+  statusCode: string
 }
 
 /* ---------------------------------------------Props Types--------------------------------------------- */

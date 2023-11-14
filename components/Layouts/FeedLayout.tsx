@@ -40,9 +40,8 @@ function FeedLayout({ allowCreatePost = false, loading, children, top, subreddit
         <Grid container spacing={3}>
           <Grid
             sx={{ '&.MuiGrid-item': { pt: { xs: 2, md: 3 } } }}
-            maxWidth={{ xs: '100%', md: '66.666667%' }}
-            xs={16}
-            md={single || loading ? 16 : 8}
+            xs={12}
+            md={single || loading ? 12 : 8}
             item
             order={!single || loading ? { xs: 2, md: 1 } : {}}
           >
@@ -63,7 +62,7 @@ function FeedLayout({ allowCreatePost = false, loading, children, top, subreddit
 
           {/* right side cards */}
           {!single && !loading && (
-            <Grid xs={16} md={4} item order={{ xs: 1, md: 2 }}>
+            <Grid xs={12} md={4} item order={{ xs: 1, md: 2 }}>
               <Box sx={{ position: { xs: 'unset', md: 'sticky' }, top: { xs: 'unset', md: router?.query?.subreddit ? '60px' : '70px' } }}>
                 {sessionLoading ? <RdSkeletonSideColumn /> : sideContent}
 

@@ -5,14 +5,12 @@ import { COMMENT_FRAGMENT, POST_FRAGMENT, SUBREDDIT_FRAGMENT, USER_FRAGMENT } fr
 export const UPDATE_USER = gql`
   mutation UpdateUser(
     $id: ID!
-    $coverUrl: String
     $created_at: Date
     $dob: String
     $email: String
     $followers: ID
     $fullName: String
     $karma: ID
-    $photoUrl: String
     $username: String
     $member_of_ids: [String]
     $following_ids: [String]
@@ -20,14 +18,12 @@ export const UPDATE_USER = gql`
   ) {
     updateUser(
       id: $id
-      coverUrl: $coverUrl
       created_at: $created_at
       dob: $dob
       email: $email
       followers: $followers
       fullName: $fullName
       karma: $karma
-      photoUrl: $photoUrl
       username: $username
       member_of_ids: $member_of_ids
       following_ids: $following_ids
@@ -75,22 +71,6 @@ export const UPDATE_POST = gql`
   }
   ${POST_FRAGMENT}
 `
-export const UPDATE_POST_WITH_VOTE_FRAG = gql`
-  fragment UpdatedPostWithVote on Post {
-    id
-    vote {
-      id
-      user_id
-      upvote
-    }
-  }
-`
-export const UPDATE_POST_FRAG = gql`
-  fragment UpdatedPost on Post {
-    id
-  }
-`
-
 /* ----------------------------- VOTE -------------------------------- */
 export const ADD_VOTE = gql`
   mutation AddVote($post_id: ID!, $user_id: ID!, $upvote: Boolean!) {
@@ -180,35 +160,6 @@ export const DELETE_COMMENTS_BY_POST_ID = gql`
   mutation DeleteCommentsSOfPost($post_id: ID!) {
     deleteCommentsOfPost(post_id: $post_id) {
       post_id
-    }
-  }
-`
-
-/* ------------------------------ AUTHEN --------------------------------- */
-export const LOGIN_MUTATION = gql`
-  mutation Login($username: String!) {
-    userSession(username: $username) {
-      token
-      user {
-        id
-        username
-        fullName
-        email
-        coverUrl
-        dob
-      }
-    }
-  }
-`
-export const REGISTER_MUTATION = gql`
-  mutation Register($username: String!) {
-    userRegisterSession(username: $username) {
-      id
-      username
-      fullName
-      email
-      coverUrl
-      dob
     }
   }
 `

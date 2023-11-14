@@ -9,36 +9,41 @@ type TSearchPostItemHeaderProps = { subName: string; username: string; created_a
  */
 export default function SearchPostItemHeader({ subName, username, created_at }: TSearchPostItemHeaderProps) {
   return (
-    <Stack flex={1} direction="row" alignItems="center" onClick={(e) => e.stopPropagation()}>
-      {/* Subreddit avatar */}
-      <Link href={`r/${subName}`} style={{ color: 'inherit' }}>
-        <Avatar
-          variant="circular"
-          sx={{
-            width: 30,
-            height: 30,
-            ml: '-4px',
-            backgroundColor: generateSeededHexColor(subName),
-            border: (theme): string => `4px solid ${theme.palette.white.main}`
-          }}
-          src={generateUserImage(subName)}
-        />
-      </Link>
-
-      {/* Subreddit name */}
-      <Typography fontSize="0.8rem" variant="h6" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        <Link href={`/r/${subName}`} style={{ color: 'inherit' }}>
-          r/{subName}
+    <Stack
+      flex={1}
+      alignItems={{ xs: 'flex-start', sm: 'center' }}
+      justifyContent={{ xs: 'center', sm: 'flex-start' }}
+      flexDirection={{ xs: 'column', sm: 'row' }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <Stack direction="row" alignItems="center" gap={1}>
+        {/* Subreddit avatar */}
+        <Link href={`r/${subName}`} style={{ color: 'inherit' }}>
+          <Avatar
+            variant="circular"
+            sx={{
+              width: { xs: 25, sm: 20 },
+              height: { xs: 25, sm: 20 },
+              backgroundColor: generateSeededHexColor(subName)
+            }}
+            src={generateUserImage(subName)}
+          />
         </Link>
-      </Typography>
+        {/* Subreddit name */}
+        <Typography fontSize="0.8rem" variant="h6" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <Link href={`/r/${subName}`} style={{ color: 'inherit' }}>
+            r/{subName}
+          </Link>
+        </Typography>
+      </Stack>
 
       {/* Period */}
-      <Box mx={0.5} color="hintText.main" fontSize="0.8rem">
+      <Box display={{ xs: 'none', sm: 'block' }} mx={0.5} color="hintText.main" fontSize="0.8rem">
         •
       </Box>
 
       {/* Posted by */}
-      <Typography fontWeight={400} fontSize="0.8rem" sx={{ flex: 'auto', color: 'hintText.main', p: { my: '2px', bgcolor: 'red' } }}>
+      <Typography fontWeight={400} fontSize="0.8rem" sx={{ ml: { xs: 'calc(25px + 0.5rem)', sm: 0 }, flex: 'auto', color: 'hintText.main' }}>
         Posted by{' '}
         <Link href={`/u/${username}`} style={{ color: 'inherit' }}>
           {username}

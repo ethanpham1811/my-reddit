@@ -1,6 +1,5 @@
 type User {
   comment: [Comment] @materializer(query: "commentUsingComment_user_id_fkey")
-  coverUrl: String
   role: String!
   created_at: DateTime!
   dob: String
@@ -9,7 +8,6 @@ type User {
   fullName: String
   id: ID!
   karma: ID
-  photoUrl: String
   username: String!
   vote: [Vote] @materializer(query: "voteUsingVote_user_id_fkey")
   socialLinks: [String]
@@ -78,7 +76,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "coverUrl", "created_at", "dob", "email", "followers", "fullName", "id", "karma", "photoUrl", "username" FROM "user" ORDER BY "id" LIMIT $1 OFFSET $2
+      SELECT "created_at", "dob", "email", "followers", "fullName", "id", "karma", "username" FROM "user" ORDER BY "id" LIMIT $1 OFFSET $2
       """
       configuration: "postgresql_config"
     )
@@ -87,7 +85,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "coverUrl", "created_at", "dob", "email", "followers", "fullName", "id", "karma", "photoUrl", "username" FROM "user" WHERE "id" = $1
+      SELECT "created_at", "dob", "email", "followers", "fullName", "id", "karma", "username" FROM "user" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -96,7 +94,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "coverUrl", "created_at", "dob", "email", "followers", "fullName", "id", "karma", "photoUrl", "username" FROM "user" WHERE "id" = $1
+      SELECT "created_at", "dob", "email", "followers", "fullName", "id", "karma", "username" FROM "user" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -105,7 +103,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "coverUrl", "created_at", "dob", "email", "followers", "fullName", "id", "karma", "photoUrl", "username" FROM "user" WHERE "id" = $1
+      SELECT "created_at", "dob", "email", "followers", "fullName", "id", "karma", "username" FROM "user" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -123,7 +121,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "coverUrl", "created_at", "dob", "email", "followers", "fullName", "id", "karma", "photoUrl", "username" FROM "user" WHERE "id" = $1
+      SELECT "created_at", "dob", "email", "followers", "fullName", "id", "karma", "username" FROM "user" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -136,18 +134,16 @@ Feel free to modify them or aggregate more.
 type Mutation {
   " Mutations for type 'User' "
   deleteUser(id: ID!): User @dbquery(type: "postgresql", schema: "public", table: "user", dml: DELETE, configuration: "postgresql_config")
-  insertUser(email: String, role: String, fullName: String, coverUrl: String, username: String!, dob: String): User
+  insertUser(email: String, role: String, fullName: String, username: String!, dob: String): User
     @dbquery(type: "postgresql", schema: "public", table: "user", dml: INSERT, configuration: "postgresql_config")
   updateUser(
     id: ID!
-    coverUrl: String
     created_at: Date
     dob: String
     email: String
     followers: ID
     fullName: String
     karma: ID
-    photoUrl: String
     username: String
     member_of_ids: [String]
     following_ids: [String]
@@ -158,18 +154,16 @@ type Mutation {
       schema: "public"
       query: """
       UPDATE "user" SET
-        "coverUrl" = COALESCE($2, "coverUrl"),
-        "created_at" = COALESCE($3, "created_at"),
-        "dob" = COALESCE($4, "dob"),
-        "email" = COALESCE($5, "email"),
-        "followers" = COALESCE($6, "followers"),
-        "fullName" = COALESCE($7, "fullName"),
-        "karma" = COALESCE($8, "karma"),
-        "photoUrl" = COALESCE($9, "photoUrl"),
-        "username" = COALESCE($10, "username"),
-        "member_of_ids" = COALESCE($11, "member_of_ids"),
-        "following_ids" = COALESCE($12, "following_ids"),
-        "role" = COALESCE($13, "role")
+        "created_at" = COALESCE($2, "created_at"),
+        "dob" = COALESCE($3, "dob"),
+        "email" = COALESCE($4, "email"),
+        "followers" = COALESCE($5, "followers"),
+        "fullName" = COALESCE($6, "fullName"),
+        "karma" = COALESCE($7, "karma"),
+        "username" = COALESCE($8, "username"),
+        "member_of_ids" = COALESCE($9, "member_of_ids"),
+        "following_ids" = COALESCE($10, "following_ids"),
+        "role" = COALESCE($11, "role")
       WHERE
         "id" = $1
       RETURNING *

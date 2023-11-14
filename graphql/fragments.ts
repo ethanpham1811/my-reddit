@@ -80,7 +80,6 @@ export const USER_FRAGMENT = gql`
     username
     fullName
     followers
-    coverUrl
     email
     dob
     created_at
@@ -123,12 +122,24 @@ export const UPDATE_USER_FRAG = gql`
     created_at
     email
     dob
-    coverUrl
-    photoUrl
     karma
     socialLinks
     member_of_ids
     following_ids
-    post
+  }
+`
+export const UPDATE_POST_WITH_VOTE_FRAG = gql`
+  fragment UpdatedPostWithVote on Post {
+    id
+    vote {
+      id
+      user_id
+      upvote
+    }
+  }
+`
+export const UPDATE_POST_FRAG = gql`
+  fragment UpdatedPost on Post {
+    id
   }
 `

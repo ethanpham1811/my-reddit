@@ -29,12 +29,6 @@ export const buildData = ({ me, toggleDarkMode, openPremiumDrawer, setUserGuideO
     onClick: toggleDarkMode
   },
   {
-    icon: OutboundOutlinedIcon,
-    name: NOTI_BOX_NAME.Popular,
-    tooltip: 'Top trending posts',
-    onClick: () => navigate('/search')
-  },
-  {
     icon: StarsIcon,
     name: NOTI_BOX_NAME.Premium,
     tooltip: 'Premium subscription',
@@ -53,6 +47,12 @@ export const buildData = ({ me, toggleDarkMode, openPremiumDrawer, setUserGuideO
     tooltip: 'Work in progress',
     disabled: true,
     onClick: () => {}
+  },
+  {
+    icon: OutboundOutlinedIcon,
+    name: NOTI_BOX_NAME.Popular,
+    tooltip: 'Top trending posts',
+    onClick: () => navigate('/search')
   },
   {
     icon: ErrorOutlineIcon,

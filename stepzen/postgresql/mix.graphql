@@ -141,7 +141,7 @@ type Query {
           s."user_id",
           'Communities' AS "groupBy"
         FROM "subreddit" s
-        WHERE lower(s."name") LIKE '%' || lower($3) || '%' OR lower(s."headline") LIKE '%' || lower($3) || '%'
+        WHERE lower(s."name") LIKE '%' || lower($3) || '%'
       )
       SELECT
         *,
@@ -165,7 +165,7 @@ type Query {
           u."followers",
           'People' AS "groupBy"
         FROM "user" u
-        WHERE lower(u."username") LIKE '%' || lower($3) || '%' OR lower(u."fullName") LIKE '%' || lower($3) || '%'
+        WHERE lower(u."username") LIKE '%' || lower($3) || '%'
       )
       SELECT
         *,

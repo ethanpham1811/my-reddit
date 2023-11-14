@@ -19,7 +19,7 @@ function RdImageUploader<T extends FieldValues>({ name, control }: TRdImageUploa
               id="upload-image"
               multiple
               hidden
-              accept="image/jpg, image/png, image/jpeg, image/webp, image/gif"
+              accept="image/*"
               type="file"
               onChange={(e) => onChange(e.target.files)}
               style={{

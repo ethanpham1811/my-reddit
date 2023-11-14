@@ -45,7 +45,7 @@ export const fullNameValidation = (value: string, length: number = 16): boolean 
   return true
 }
 export const textValidation = (value: string, length: number = 30): boolean | string => {
-  const nameRegex = /^(?!\s)[\s\S]*(?<!\s)$/
+  const nameRegex = /^\S[\s\S]*\S$/
   if (value === '') return 'Can not be empty'
   if (value?.length > length) return 'Sorry, too long'
   if (!nameRegex.test(value)) return 'First and end character must not be space'

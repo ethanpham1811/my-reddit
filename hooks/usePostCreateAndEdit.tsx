@@ -1,8 +1,9 @@
 import { client } from '@/apollo-client'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { OPTIMISTIC_TEMP_ID, QUERY_LIMIT } from '@/constants/enums'
-import { TCardCreatePostForm, TPost, TSubreddit } from '@/constants/types'
-import { ADD_POST, UPDATE_POST, UPDATE_POST_FRAG } from '@/graphql/mutations'
+import { TCardCreatePostForm, TPost, TStorageError, TSubreddit } from '@/constants/types'
+import { UPDATE_POST_FRAG } from '@/graphql/fragments'
+import { ADD_POST, UPDATE_POST } from '@/graphql/mutations'
 import {
   GET_PAGINATED_POST_LIST,
   GET_POST_BY_ID,
@@ -12,7 +13,7 @@ import {
 } from '@/graphql/queries'
 import { ApolloCache, DocumentNode, useMutation, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import useSupabaseUpload from './useSupabaseUpload'
 
@@ -20,6 +21,7 @@ function usePostCreateAndEdit() {
   const { session } = useAppSession()
   const me = session?.userDetail
   const [loading, setLoading] = useState(false)
+  const [uploadImgError, setUploadImgError] = useState<string | null>(null)
   const uploadFiles = useSupabaseUpload()
   const { data: subList } = useQuery(GET_SUBREDDIT_LIST_SHORT)
   const [insertPost] = useMutation(ADD_POST)
@@ -40,14 +42,16 @@ function usePostCreateAndEdit() {
   const createPost = async (formData: TCardCreatePostForm, resetAndCloseForm: () => void, isLinkPost: boolean) => {
     if (!me) return
 
-    // turn on loading state for image upload only
-    formData.images && setLoading(true)
-
     const { subreddit_id, images, title, body, link, linkDescription } = formData
-    const uploadImgUrls: string[] | null = await handleUploadImages(isLinkPost, images, setLoading)
+    const { uploadedFilePaths, error: uploadError } = await handleUploadImages(isLinkPost, images)
+
+    // stop loading upon finishing uploading images
+    setLoading(false)
+
+    // if uploaded img return null (failed) => return
+    if (uploadError) return setUploadImgError(uploadErrorMsg(uploadError))
 
     // turn of loading & close the form at this point and show optimistic update
-    setLoading(false)
     resetAndCloseForm()
 
     // find the subreddit info by the subreddit_id (formData) to retrieve it's name & subType
@@ -56,7 +60,7 @@ function usePostCreateAndEdit() {
     const { errors } = await insertPost({
       variables: {
         ...formData,
-        images: uploadImgUrls,
+        images: uploadedFilePaths,
         user_id: me?.id
       },
       optimisticResponse: {
@@ -66,7 +70,7 @@ function usePostCreateAndEdit() {
           body: body || null,
           link: link || null,
           linkDescription: linkDescription || null,
-          images: uploadImgUrls,
+          images: uploadedFilePaths,
           created_at: new Date().toISOString(),
           user: {
             username: me?.username || 'unknown',
@@ -137,15 +141,18 @@ function usePostCreateAndEdit() {
   const updatePost = async (formData: TCardCreatePostForm, isLinkPost: boolean) => {
     if (!me) return
 
-    // turn on loading state for image upload only
-    formData.images && setLoading(true)
-
     const { post: curPost } = await client.readQuery({
       query: GET_POST_BY_ID,
       variables: { id: postid }
     })
 
-    const uploadImgUrls: string[] | null = await handleUploadImages(isLinkPost, formData.images, setLoading)
+    const { uploadedFilePaths, error: uploadError } = await handleUploadImages(isLinkPost, formData?.images)
+
+    // if uploaded img return null (failed) => stop loading and return
+    if (uploadError) {
+      setLoading(false)
+      return setUploadImgError(uploadErrorMsg(uploadError))
+    }
 
     // turn of loading & close the form at this point and show optimistic update
     navigate(`/r/${subName}/post/${postid}`)
@@ -158,16 +165,16 @@ function usePostCreateAndEdit() {
     const { errors } = await editPost({
       variables: {
         ...formData,
-        images: uploadImgUrls,
+        images: uploadedFilePaths,
         user_id: me?.id
       },
-      optimisticResponse: {
-        updatePost: {
-          ...curPost,
-          ...formData,
-          images: uploadImgUrls
-        }
-      },
+      // optimisticResponse: {
+      //   updatePost: {
+      //     ...curPost,
+      //     ...formData,
+      //     images: uploadedFilePaths
+      //   }
+      // },
       update: (cache: ApolloCache<any>, { data: { updatePost } }) => {
         const postCachedId = `Post:${postid}`
 
@@ -185,22 +192,26 @@ function usePostCreateAndEdit() {
   /* upload images to supabase storage & return array of urls */
   async function handleUploadImages(
     isLinkPost: boolean,
-    images: FileList | undefined,
-    cb: Dispatch<SetStateAction<boolean>>
-  ): Promise<string[] | null> {
-    let uploadedUrls: string[] | null = null
+    images: FileList | undefined
+  ): Promise<{ uploadedFilePaths: string[] | null; error?: TStorageError }> {
+    if (!images || images.length <= 0 || isLinkPost) return { uploadedFilePaths: null }
 
-    if (!isLinkPost && images && images.length > 0) {
-      uploadedUrls = await uploadFiles(images)
-      if (!images) {
-        cb(true)
-        return null
-      }
-    }
-    return uploadedUrls
+    // turn on loading state for image upload only
+    setLoading(true)
+
+    return await uploadFiles(images)
   }
 
-  return { updatePost, createPost, loading }
+  function uploadErrorMsg(uploadError: TStorageError): string {
+    switch (uploadError?.statusCode) {
+      case '413':
+        return 'Maxium file size: 5mb'
+      default:
+        return uploadError?.message
+    }
+  }
+
+  return { updatePost, createPost, loading, uploadImgError, setUploadImgError }
 }
 
 export default usePostCreateAndEdit

@@ -47,7 +47,7 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   const isEditing: boolean = router?.query?.mode === POST_MUTATION_MODE.Edit
   const { breakpoints } = useTheme()
   const isMobile = useMediaQuery(breakpoints.down('sm'))
-  const { createPost, updatePost, loading } = usePostCreateAndEdit()
+  const { createPost, updatePost, loading, uploadImgError, setUploadImgError } = usePostCreateAndEdit()
   const [isLinkPost, setIsLinkPost] = usePostCreateFormMode(editModePayload)
   const {
     reset,
@@ -73,6 +73,11 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   useEffect(() => {
     titleValue && bodyValue == null && setFormValue('body', '')
   }, [titleValue, bodyValue, setFormValue])
+
+  /* reset upload image error msg on selecting new image */
+  useEffect(() => {
+    setUploadImgError(null)
+  }, [imagesValue, setUploadImgError])
 
   /* map post data to the form in edit mode */
   useEditPostDataMap(editModePayload, setFormValue)
@@ -127,6 +132,7 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
                 imagesValue={imagesValue}
                 subId={subId}
                 setIsLinkPost={setIsLinkPost}
+                uploadImgError={uploadImgError}
               />
             </Stack>
 
@@ -143,6 +149,7 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
                 isEditing={isEditing}
                 control={control}
                 formOpened={formOpened}
+                setFormValue={setFormValue}
                 setIsLinkPost={setIsLinkPost}
                 isLinkPost={isLinkPost}
               />

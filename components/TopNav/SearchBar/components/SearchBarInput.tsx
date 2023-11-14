@@ -3,7 +3,7 @@ import { HighlightOffOutlinedIcon, SearchIcon } from '@/constants/icons'
 import { Avatar, Stack, TextField } from '@/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import { AutocompleteRenderInputParams } from '@mui/material/Autocomplete'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 
 type TInputProps = {
   params: AutocompleteRenderInputParams
@@ -17,6 +17,17 @@ type TInputProps = {
 
 /* Autocomplete input display */
 function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onDeleteChip }: TInputProps) {
+  const ref = useRef<HTMLInputElement | null>(null)
+  // delete the controlled value of Autocomplete
+  // => prevent input value to changed upon selecting options
+  delete params.inputProps.value
+
+  useEffect(() => {
+    if (ref && ref?.current) {
+      focused ? ref?.current?.focus() : ref?.current?.blur()
+    }
+  }, [focused])
+
   const startAdornment = () => (
     <Stack direction="row" alignItems="center" className="search-icon">
       <SearchIcon onClick={() => setFocused(true)} sx={{ cursor: 'pointer' }} />
@@ -45,6 +56,7 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
 
   return (
     <TextField
+      inputRef={ref}
       {...params}
       InputProps={{
         ...params.InputProps,

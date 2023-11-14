@@ -33,7 +33,7 @@ function RdDatePicker<T extends FieldValues>({ width, name, control, registerOpt
                 justifyContent: 'center',
                 '.MuiInputBase-root': {
                   mx: 'auto',
-                  width: width ?? '100%',
+                  width: width ?? '100px',
                   p: 0,
                   input: { p: 0, fontSize: '0.8rem', color: 'hintText.main', textAlign: 'center' },
                   fieldset: { display: 'none' },

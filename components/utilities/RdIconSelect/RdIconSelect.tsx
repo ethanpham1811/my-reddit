@@ -50,7 +50,7 @@ function RdIconSelect({ disabled, options, icon, disableRipple, size, sx, positi
       </IconButton>
 
       {/* The dropdown popover */}
-      <Paper sx={{ mt: '0 !important', width: 320, position: 'relative' }}>
+      <Paper sx={{ mt: '0 !important', maxWidth: 320, position: 'relative' }}>
         <Menu
           disableScrollLock
           open={open}

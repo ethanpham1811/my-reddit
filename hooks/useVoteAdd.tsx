@@ -1,4 +1,5 @@
-import { ADD_VOTE, UPDATE_POST_WITH_VOTE_FRAG } from '@/graphql/mutations'
+import { UPDATE_POST_WITH_VOTE_FRAG } from '@/graphql/fragments'
+import { ADD_VOTE } from '@/graphql/mutations'
 import { ApolloCache, useMutation } from '@apollo/client'
 import toast from 'react-hot-toast'
 

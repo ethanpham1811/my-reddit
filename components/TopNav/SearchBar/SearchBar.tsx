@@ -1,6 +1,7 @@
 import { RdAutoComplete } from '@/components'
 import { TAutocompleteOptions } from '@/constants/types'
 import { useTopSearchQueriedList } from '@/hooks'
+import { Box } from '@/mui'
 import { isNotFound } from '@/src/typeCheck'
 import { generateAutoCompleteUrl } from '@/src/utils'
 import { AutocompleteRenderInputParams } from '@mui/material/Autocomplete'
@@ -34,6 +35,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
 
   /* Autocomplete listeners */
   const onChange = (_: SyntheticEvent<Element, Event>, option: string | TAutocompleteOptions | null) => {
+    setFocused(false)
     if (!option) return
 
     if (typeof option === 'string') {
@@ -53,7 +55,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
   }
 
   return (
-    <RdAutoComplete<TAutocompleteOptions, false, false, true, 'span'>
+    <RdAutoComplete<TAutocompleteOptions, false, true, true, 'span'>
       options={dataList}
       disablePortal
       freeSolo
@@ -66,6 +68,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
       popupIcon={false}
       isMobile={lgMobile}
       focused={focused}
+      disableClearable={true}
       groupBy={(option): string => option.groupBy}
       onFocus={() => setFocused(true)}
       onBlur={onBlur}
@@ -75,7 +78,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
       renderGroup={renderGroup}
       renderOption={renderOption}
       PaperComponent={(props) => renderContainer(props, searchTerm)}
-      noOptionsText={<div>Nothing found</div>}
+      noOptionsText={<Box>Nothing found</Box>}
       getOptionLabel={() => ''} // prevent displaying selected option value
       filterOptions={() => dataList} // filtering disabled
       id="top-search-auto"

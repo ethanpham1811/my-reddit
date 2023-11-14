@@ -62,7 +62,7 @@ function CardCommentBox({ post_id, user_id, username, commentList }: TCardCommen
                 <RdNakedInput<TPostCommentForm> multiline fullWidth control={control} name={'comment'} placeholder="What are your thoughts?" />
               </Box>
 
-              <Box display="flex" justifyContent="space-between" p={1} pb={2}>
+              <Stack justifyContent="space-between" direction="row" p={1} spacing={1}>
                 {/* comment filter */}
                 <Box display="flex">
                   {commentList && commentList.length > 0 && (
@@ -80,7 +80,7 @@ function CardCommentBox({ post_id, user_id, username, commentList }: TCardCommen
                   text="Comment"
                   type="submit"
                 />
-              </Box>
+              </Stack>
             </Stack>
           </form>
         </Stack>

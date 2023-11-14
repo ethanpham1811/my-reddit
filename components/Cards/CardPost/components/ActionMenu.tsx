@@ -47,7 +47,7 @@ function ActionMenu({ postId, subName, setIsDeleting }: TActionMenuProps) {
     <>
       <RdIconSelect
         disabled={loading}
-        position={{ left: '-70px' }}
+        position={{ left: '-40px' }}
         disableRipple
         size="small"
         options={postActionOptions}

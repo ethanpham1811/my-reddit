@@ -28,19 +28,26 @@ function Comment({ commentId, username, created_at, text: initComment }: TCommen
   const blockInteraction = commentId === OPTIMISTIC_TEMP_ID.toString() || isDeleting
 
   return (
-    <Stack sx={{ mx: 1, pl: 1, position: 'relative', opacity: blockInteraction ? 0.3 : 1 }} flex={1}>
-      <Stack direction="row">
+    <Stack sx={{ position: 'relative', opacity: blockInteraction ? 0.3 : 1 }} flex={1} pr="20px" gap={1}>
+      <Stack
+        alignItems={{ sx: 'flex-start', sm: 'center' }}
+        justifyContent={{ sm: 'flex-start', sx: 'center' }}
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        gap={0.5}
+      >
         <Typography sx={{ color: 'black.main' }}>
           <Link href={`/u/${username}`} style={{ color: 'inherit' }}>
             {username}
           </Link>
         </Typography>
-        <Box mx={0.5} color="hintText.main" fontSize="0.8rem">
-          •
-        </Box>
-        <Typography fontWeight={400} fontSize="0.8rem" sx={{ color: 'hintText.main', p: { my: '2px', bgcolor: 'red' } }}>
-          {customFormatDistance(new Date(created_at))}
-        </Typography>
+        <Stack direction="row" alignItems="center" gap={0.5}>
+          <Box color="hintText.main" fontSize="0.8rem">
+            •
+          </Box>
+          <Typography fontWeight={400} fontSize="0.8rem" sx={{ color: 'hintText.main', p: { my: '2px', bgcolor: 'red' } }}>
+            {customFormatDistance(new Date(created_at))}
+          </Typography>
+        </Stack>
       </Stack>
 
       {/*
@@ -67,7 +74,6 @@ function Comment({ commentId, username, created_at, text: initComment }: TCommen
           variant="subtitle1"
           minHeight="2rem"
           lineHeight={1.4}
-          py={0.5}
           pb={isEditing ? 5 : 0.5}
         >
           {updatedText != null ? updatedText : initComment}

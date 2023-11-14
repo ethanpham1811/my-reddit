@@ -1,6 +1,8 @@
 import { MainLayout, MuiProvider } from '@/components'
 import { createEmotionCache } from '@/mui/createEmotionCache'
 import { ApolloProvider } from '@apollo/client'
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev'
+import { __DEV__ } from '@apollo/client/utilities/globals'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
@@ -14,7 +16,11 @@ export interface TMyAppProps extends AppProps {
   emotionCache?: EmotionCache
 }
 
-// Dark-light mode context
+// emit apollo messages only in dev
+if (__DEV__) {
+  loadDevMessages()
+  loadErrorMessages()
+}
 
 export default function App({ Component, emotionCache = createEmotionCache(), pageProps: { ...pageProps } }: TMyAppProps) {
   /* Init supabase client on app first render */

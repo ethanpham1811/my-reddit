@@ -1,6 +1,7 @@
 import { POST_MUTATION_MODE } from '@/constants/enums'
-import { Stack } from '@/mui'
+import { Stack, Typography } from '@/mui'
 import { urlValidation } from '@/src/formValidations'
+
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 import { Control, FieldValues, Path, UseFormReset, UseFormSetValue } from 'react-hook-form'
@@ -11,6 +12,7 @@ type TMainFormProps<T extends FieldValues> = {
   control: Control<T>
   open: boolean
   isLinkPost: boolean
+  uploadImgError: string | null
   imagesValue: FileList | undefined
   subId: number | undefined
   loading: boolean
@@ -24,6 +26,7 @@ function MainForm<T extends FieldValues>({
   setIsLinkPost,
   reset,
   setFormValue,
+  uploadImgError,
   open,
   isDirty,
   isLinkPost,
@@ -70,7 +73,12 @@ function MainForm<T extends FieldValues>({
       )}
 
       {/* uploaded images preview */}
-      {!isLinkPost && imagesValue && imagesValue.length > 0 && <RdImageList images={imagesValue} cols={5} />}
+      {uploadImgError && (
+        <Typography variant="body2" textAlign="center" sx={{ color: 'orange.main' }}>
+          {uploadImgError}
+        </Typography>
+      )}
+      {!isLinkPost && imagesValue && imagesValue?.length > 0 && <RdImageList images={imagesValue} cols={5} />}
 
       {/* Subreddit select + Back btn + Post btn + Reset btn (trash can) */}
       <BottomControl
@@ -83,7 +91,6 @@ function MainForm<T extends FieldValues>({
         reset={reset}
       />
     </Stack>
-    // {/* <ErrorMessage errors={errors} render={({ message }) => <p>{message}</p>} /> */}
   )
 }
 
