@@ -4,6 +4,7 @@ import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp
 import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
 import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined'
@@ -55,6 +56,7 @@ export {
   ArrowDownwardTwoToneIcon,
   ArrowForwardIcon,
   ArrowForwardIosIcon,
+  ArrowForwardIosSharpIcon,
   ArrowUpwardTwoToneIcon,
   ArticleOutlinedIcon,
   Brightness5OutlinedIcon,

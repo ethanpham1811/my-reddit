@@ -1,7 +1,7 @@
+import { RdAccordion, RdCard } from '@/components'
 import { RdSkeleton } from '@/components/Skeletons'
 import { TSubredditDetail } from '@/constants/types'
-import { CardContent, Divider } from '@/mui'
-import { RdCard } from '../..'
+import { CardContent, Divider, Stack, useMediaQuery, useTheme } from '@/mui'
 import SubCreatedDate from './components/SubCreatedDate'
 import SubDescription from './components/SubDescription'
 import SubHeader from './components/SubHeader'
@@ -15,30 +15,34 @@ type TCardSubredditInfoProps = {
 }
 
 function CardSubredditInfo({ subreddit, loading }: TCardSubredditInfoProps) {
+  const { breakpoints } = useTheme()
+  const isMobile = useMediaQuery(breakpoints.down('md'))
+
   return (
-    <RdCard sx={{ gap: 1, flex: 1, display: 'flex', flexDirection: 'column', p: 2, position: 'sticky' }}>
+    <RdCard sx={{ gap: 1, flex: 1, display: 'flex', flexDirection: 'column', p: 0, position: 'sticky' }}>
       {!loading && subreddit ? (
         <>
-          {/* Sub avatar + title */}
-          <SubHeader name={subreddit?.name} />
+          <RdAccordion isMobile={isMobile}>
+            {/* Sub avatar + title */}
+            <SubHeader isMobile={isMobile} name={subreddit?.name} />
 
-          <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-            {/* Description */}
-            <SubDescription subreddit={subreddit} />
-            <Divider sx={{ my: 1 }} />
-
-            {/* subreddit owner */}
-            <SubOwner ownerUsername={subreddit?.user?.username} />
-            <Divider sx={{ my: 1 }} />
-
-            {/* Member count */}
-            <SubMember member={subreddit?.member} />
-            <Divider sx={{ my: 1 }} />
-
-            {/* Started since mmm/yyyy */}
-            <SubCreatedDate created_at={subreddit?.created_at} />
-          </CardContent>
-          <SubredditButtons subreddit={subreddit} />
+            <Stack gap={1}>
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                {/* Description */}
+                <SubDescription subreddit={subreddit} />
+                <Divider sx={{ my: 1 }} />
+                {/* subreddit owner */}
+                <SubOwner ownerUsername={subreddit?.user?.username} />
+                <Divider sx={{ my: 1 }} />
+                {/* Member count */}
+                <SubMember member={subreddit?.member} />
+                <Divider sx={{ my: 1 }} />
+                {/* Started since mmm/yyyy */}
+                <SubCreatedDate created_at={subreddit?.created_at} />
+              </CardContent>
+              <SubredditButtons subreddit={subreddit} />
+            </Stack>
+          </RdAccordion>
         </>
       ) : (
         <RdSkeleton />

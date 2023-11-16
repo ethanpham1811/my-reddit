@@ -27,6 +27,7 @@ import MenuDropDown from './TopNav/MenuDropDown/MenuDropDown'
 import ProfileDropdown from './TopNav/ProfileDropdown/ProfileDropdown'
 import SearchBar from './TopNav/SearchBar/SearchBar'
 import TopNav from './TopNav/TopNav'
+import RdAccordion from './utilities/RdAccordion/RdAccordion'
 import RdAdItem from './utilities/RdAdItem/RdAdItem'
 import RdAutoComplete from './utilities/RdAutoComplete/RdAutoComplete'
 import RdButton from './utilities/RdButton/RdButton'
@@ -79,6 +80,7 @@ export {
   MuiProvider,
   NewFeeds,
   ProfileDropdown,
+  RdAccordion,
   RdAdItem,
   RdAutoComplete,
   RdButton,
