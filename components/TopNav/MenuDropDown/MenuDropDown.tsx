@@ -51,7 +51,7 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
   return (
     <RdDropdown
       onOpen={focusFilterInput}
-      value="."
+      value=""
       renderSelectedOption={handleRenderSelectedOption}
       flex={1}
       offsetTop="10px"
@@ -62,7 +62,6 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       {/* Filter input */}
       <FilterInput
         setFilterTerm={setFilterTerm}
-        value="dummy"
         filterTerm={filterTerm}
         menuRef={menuRef}
         filterInputRef={filterInputRef}
@@ -70,13 +69,13 @@ function MenuDropDown({ subName, userPageName, pathName }: TMenuDropdownProps) {
       />
 
       {/* Feeds list */}
-      <FeedsMenuList onEnter={onEnter} value="dummy" options={feedsOptions} ref={menuRef} />
+      <FeedsMenuList onEnter={onEnter} options={feedsOptions} ref={menuRef} />
 
       {/* Subreddit list */}
-      <SubsMenuList onEnter={onEnter} value="dummy" options={communityOptions.filter(filterByTerm)} />
+      <SubsMenuList onEnter={onEnter} options={communityOptions.filter(filterByTerm)} />
 
       {/* Following list */}
-      <PeopleMenuList onEnter={onEnter} value="dummy" options={followingOptions.filter(filterByTerm)} />
+      <PeopleMenuList onEnter={onEnter} options={followingOptions.filter(filterByTerm)} />
 
       {/* Hidden option - A little hack for displaying unlisted Item (for profile pages) */}
       {isUserOrSubPage && <MenuItem sx={{ minHeight: 'auto', p: 0 }} disabled value={activePage}></MenuItem>}

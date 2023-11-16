@@ -1,5 +1,6 @@
-import { Box, Skeleton, Stack } from '@/mui'
+import { Box, Divider, Skeleton, Stack } from '@/mui'
 import { Fragment } from 'react'
+import { RdCard } from '..'
 
 export function RdSkeleton({ height = '25px' }: { height?: string }) {
   return (
@@ -49,5 +50,52 @@ export function RdSkeletonDoublePost() {
         </Fragment>
       ))}
     </>
+  )
+}
+export function RdSearchPostSkeleton(count: number = 1) {
+  return (
+    <RdCard sx={{ p: 0 }}>
+      <Stack gap="1px">
+        {Array.from({ length: count }).map((_, i) => (
+          <>
+            <Stack key={`skeleton_search_feed_${i}`} gap={2} px={3} py={2}>
+              <Stack flexDirection="row" gap={1} alignItems="center">
+                <Skeleton variant="circular" width="25px" height="25px" />
+                <Skeleton sx={{ display: 'flex' }} variant="rectangular" width="35%" height="20px" />
+              </Stack>
+
+              <Stack flexDirection="row" gap={1} alignItems="center">
+                <Stack gap={0.5} flex={1}>
+                  <Skeleton variant="rectangular" width="70%" height="20px" />
+                  <Skeleton sx={{ display: 'flex' }} variant="rectangular" height="120px" />
+                </Stack>
+              </Stack>
+            </Stack>
+            <Divider />
+          </>
+        ))}
+      </Stack>
+    </RdCard>
+  )
+}
+export function RdSearchPeopleSubSkeleton(count: number = 1) {
+  return (
+    <RdCard sx={{ p: 0 }}>
+      <Stack gap="1px">
+        {Array.from({ length: count }).map((_, i) => (
+          <>
+            <Stack height="75px" key={`skeleton_search_feed_${i}`} flexDirection="row" px={3} gap={1} alignItems="center">
+              <Skeleton variant="circular" width="40px" height="40px" />
+              <Stack gap={0.5} flex={1}>
+                <Skeleton sx={{ display: 'flex', minWidth: '100px' }} variant="rectangular" width="15%" height="15px" />
+                <Skeleton sx={{ display: 'flex', minWidth: '130px' }} variant="rectangular" width="20%" height="10px" />
+              </Stack>
+              <Skeleton variant="rectangular" sx={{ borderRadius: 999 }} width="80px" height="30px" />
+            </Stack>
+            <Divider />
+          </>
+        ))}
+      </Stack>
+    </RdCard>
   )
 }

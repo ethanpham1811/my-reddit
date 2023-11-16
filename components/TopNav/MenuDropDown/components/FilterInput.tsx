@@ -3,7 +3,6 @@ import { Box } from '@/mui'
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react'
 
 type TFilterInputProps = {
-  value: string
   filterTerm: string
   menuRef: React.RefObject<HTMLLIElement>
   focusFilterInput: () => void

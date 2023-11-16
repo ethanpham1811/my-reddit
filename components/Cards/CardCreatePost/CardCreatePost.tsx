@@ -89,11 +89,20 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
     isEditing ? updatePost(formData, isLinkPost) : createPost(formData, createPostCb, isLinkPost)
   })
 
+  /**
+   * custom reset form
+   * - keep subId on creating post on subreddit page
+   * - keep title on switching post type (post => link & vice versa)
+   */
+  function resetForm(isSwitchType?: boolean) {
+    reset({ subreddit_id: subId, title: !isSwitchType ? undefined : titleValue })
+  }
+
   /* Cb to reset the form */
   function createPostCb() {
     setTimeout(() => {
       setIsLinkPost(false)
-      reset()
+      resetForm()
     }, 100)
   }
 
@@ -122,7 +131,7 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
               {/* Rest of the form (only show on form focused) */}
               <MainForm<TCardCreatePostForm>
                 open={formOpened}
-                reset={reset}
+                resetForm={resetForm}
                 setFormValue={setFormValue}
                 isDirty={isDirty}
                 loading={loading}
@@ -148,7 +157,7 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
                 isEditing={isEditing}
                 control={control}
                 formOpened={formOpened}
-                setFormValue={setFormValue}
+                resetForm={resetForm}
                 setIsLinkPost={setIsLinkPost}
                 isLinkPost={isLinkPost}
               />

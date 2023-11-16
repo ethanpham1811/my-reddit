@@ -2,7 +2,7 @@ import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SESSION_STATUS } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
 import { useUserUpdate } from '@/hooks'
-import { CardActions, Divider } from '@/mui'
+import { CardActions, Divider, useMediaQuery, useTheme } from '@/mui'
 import { Events, eventEmitter } from '@/src/eventEmitter'
 import { useState } from 'react'
 import { RdButton } from '../../..'
@@ -17,6 +17,8 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
   const status = session?.user?.role
   const me = session?.userDetail
   const { updateUser, loading } = useUserUpdate()
+  const { breakpoints } = useTheme()
+  const isMobile = useMediaQuery(breakpoints.down('md'))
   const [showUnfollowBtn, setShowUnfollowBtn] = useState(false)
   const isDisabled: boolean = !me || !me.member_of_ids || me?.member_of_ids?.length === 0
 
@@ -42,13 +44,12 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
                   <RdButton
                     disabled={loading}
                     onClick={() => handleFollowingAction(true)}
-                    filled={showUnfollowBtn}
-                    text={showUnfollowBtn ? 'Unfollow' : 'Following'}
-                    onMouseEnter={() => setShowUnfollowBtn(true)}
-                    onMouseLeave={() => setShowUnfollowBtn(false)}
+                    filled={isMobile || showUnfollowBtn}
+                    text={isMobile || showUnfollowBtn ? 'Unfollow' : 'Following'}
+                    onMouseEnter={() => !isMobile && setShowUnfollowBtn(true)}
+                    onMouseLeave={() => !isMobile && setShowUnfollowBtn(false)}
                     color="blue"
-                    width="6rem"
-                    sx={{ px: 3, py: 0.5, fontWeight: 700, fontSize: '0.8rem' }}
+                    sx={{ px: 3, py: 0.5, fontWeight: 700, fontSize: '0.8rem', width: { xs: '100%', sm: '30%', md: 'max-content' } }}
                   />
                 ) : (
                   <RdButton
@@ -56,6 +57,7 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
                     onClick={() => handleFollowingAction(false)}
                     text={'Follow'}
                     filled={!loading}
+                    sx={{ width: { xs: '100%', sm: '30%', md: '100%' } }}
                     color="blue"
                     invertColor
                   />
@@ -63,7 +65,15 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
               </>
             ) : (
               <>
-                <RdButton disabled={isDisabled} onClick={onCreatePost} text={'Create Post'} filled={!isDisabled} color="blue" invertColor />
+                <RdButton
+                  sx={{ width: { xs: '100%', sm: '30%', md: '100%' } }}
+                  disabled={isDisabled}
+                  onClick={onCreatePost}
+                  text={'Create Post'}
+                  filled={!isDisabled}
+                  color="blue"
+                  invertColor
+                />
               </>
             )}
           </CardActions>

@@ -8,7 +8,6 @@ import { KeyboardEvent } from 'react'
 type TSubAndPeopleMenuItemProps = {
   type: SUB_PEOPLE_MENU_ITEM
   name: string
-  value: string
   url: string
   onEnter: (e: KeyboardEvent<HTMLLIElement>, url: string) => void
 }

@@ -38,6 +38,7 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
                     onClick={onClick}
                     text={!postid ? 'Create Post' : (subName as string)}
                     filled
+                    sx={{ width: { xs: '100%', sm: '30%', md: '100%' } }}
                     color="blue"
                     invertColor
                   />
@@ -47,6 +48,7 @@ function SubredditButtons({ subreddit }: { subreddit: TSubredditDetail | null })
                     onClick={() => updateUser('member_of_ids', subreddit?.name)}
                     text={'Join community'}
                     filled={!loading}
+                    sx={{ width: { xs: '100%', sm: '30%', md: '100%' } }}
                     color="blue"
                     invertColor
                   />

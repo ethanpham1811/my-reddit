@@ -15,6 +15,7 @@ type TFeedLayoutProps = Pick<ContainerProps, 'sx'> & {
   allowCreatePost?: boolean
   single?: boolean
   loading?: boolean
+  ignoreLayoutLoading?: boolean
   sx?: SxProps<Theme>
 }
 
@@ -23,7 +24,7 @@ type TFeedLayoutProps = Pick<ContainerProps, 'sx'> & {
  * @param  {boolean} single   single column layout (only for search page)
  * @param  {string} top       custom top (for page with banners)
  */
-function FeedLayout({ allowCreatePost = false, loading, children, top, subredditId, single = false, sx }: TFeedLayoutProps) {
+function FeedLayout({ allowCreatePost = false, ignoreLayoutLoading, loading, children, top, subredditId, single = false, sx }: TFeedLayoutProps) {
   const { session, loading: sessionLoading } = useAppSession()
   const me = session?.userDetail
   const router = useRouter()
@@ -46,7 +47,7 @@ function FeedLayout({ allowCreatePost = false, loading, children, top, subreddit
             order={!single || loading ? { xs: 2, md: 1 } : {}}
           >
             <Stack spacing={2}>
-              {sessionLoading ? (
+              {!ignoreLayoutLoading && sessionLoading ? (
                 <RdSkeletonDoublePost />
               ) : (
                 <>

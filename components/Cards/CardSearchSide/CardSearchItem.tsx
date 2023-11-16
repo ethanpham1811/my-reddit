@@ -1,13 +1,15 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { SEARCH_TABS } from '@/constants/enums'
 import { TUserDetail } from '@/constants/types'
-import { Avatar, Divider, Stack, Typography } from '@/mui'
+import { Avatar, Divider, Stack, Typography, useMediaQuery, useTheme } from '@/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/utils'
 import Link from 'next/link'
 import { useState } from 'react'
 import { RdButton } from '../..'
 
 type TCardSearchItemProps = {
+  flex?: number
+  width?: string
   name: string
   status: boolean
   btnText: string
@@ -15,17 +17,35 @@ type TCardSearchItemProps = {
   extraText: string
   link: string
   ownerUsername?: string
-  guestMode?: boolean
+  px?: number
+  py?: number
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
   type: Exclude<SEARCH_TABS, SEARCH_TABS.Post>
 }
 
-function CardSearchItem({ name, ownerUsername, status, btnText, revertBtnText, extraText, link, guestMode, updateUser, type }: TCardSearchItemProps) {
+function CardSearchItem({
+  flex,
+  width,
+  name,
+  status,
+  btnText,
+  extraText,
+  link,
+  ownerUsername,
+  updateUser,
+  revertBtnText,
+  type,
+  px = 3,
+  py = 2
+}: TCardSearchItemProps) {
   const { session } = useAppSession()
   const me = session?.userDetail
+  const { breakpoints } = useTheme()
+  const isMobile = useMediaQuery(breakpoints.down('md'))
   const [hoverState, setHoverState] = useState(false)
   const isMySub: boolean = ownerUsername ? ownerUsername === me?.username : false
 
+  /* handle Join/leave and Follow/Unfollow */
   function onClick() {
     if (type === SEARCH_TABS.Communities) updateUser('member_of_ids', name, !status)
     if (type === SEARCH_TABS.People) updateUser('following_ids', name, !status)
@@ -33,7 +53,7 @@ function CardSearchItem({ name, ownerUsername, status, btnText, revertBtnText, e
 
   return (
     <>
-      <Stack direction="row" spacing={1} py={1} px={2} alignItems="center">
+      <Stack direction="row" spacing={1} py={py} px={px} alignItems="center">
         {/* Sub/user avatar */}
         <Link href={link} style={{ color: 'inherit' }}>
           <Avatar
@@ -50,7 +70,7 @@ function CardSearchItem({ name, ownerUsername, status, btnText, revertBtnText, e
         </Link>
 
         {/* Sub/user name + extra infos */}
-        <Stack flex="auto" width="20px">
+        <Stack flex={flex != null ? flex : 'auto'} width={width}>
           <Link href={link} style={{ color: 'inherit' }}>
             <Typography fontSize="0.8rem" variant="h6" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{`${
               type === SEARCH_TABS.Communities ? 'r' : 'u'
@@ -62,16 +82,16 @@ function CardSearchItem({ name, ownerUsername, status, btnText, revertBtnText, e
         </Stack>
 
         {/* Join/Leave or Follow/Unfollow buttons */}
-        {!guestMode && (
+        {me && (
           <RdButton
             disabled={isMySub}
-            text={isMySub ? 'My subreddit' : hoverState ? revertBtnText : btnText}
-            onMouseEnter={() => setHoverState(true)}
-            onMouseLeave={() => setHoverState(false)}
+            text={isMySub ? 'My subreddit' : isMobile || hoverState ? revertBtnText : btnText}
+            filled={isMySub ? false : (isMobile || hoverState) && status ? status : !status}
+            onMouseEnter={() => !isMobile && setHoverState(true)}
+            onMouseLeave={() => !isMobile && setHoverState(false)}
             onClick={onClick}
             minWidth="5rem"
             sx={{ height: '30px' }}
-            filled={hoverState && status ? status : !status}
             color="blue"
             fullWidth={false}
           />

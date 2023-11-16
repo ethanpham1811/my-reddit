@@ -38,10 +38,10 @@ const Search: NextPage = () => {
       <Container maxWidth="md">
         <SearchFeedsTabBar top="70px" type={type as SEARCH_TABS | undefined} />
       </Container>
-      <FeedLayout top="1rem" single={type === SEARCH_TABS.Communities || type === SEARCH_TABS.People}>
+      <FeedLayout ignoreLayoutLoading top="1rem" single={type === SEARCH_TABS.Communities || type === SEARCH_TABS.People}>
         {/* main tab content */}
         <Stack spacing={2}>
-          <SearchFeeds updateUser={handleUpdateUser} searchTerm={searchTerm as string} searchList={searchList} loading={loading} />
+          <SearchFeeds type={type} updateUser={handleUpdateUser} searchTerm={searchTerm as string} searchList={searchList} loading={loading} />
         </Stack>
 
         {/* Community & people right side cards: only available on Post tab */}

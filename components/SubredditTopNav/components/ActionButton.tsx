@@ -26,7 +26,7 @@ function ActionButton({ name, subType, isMySub }: TActionButton) {
 
   return (
     <Stack
-      sx={{ alignSelf: 'flex-start', alignItems: 'center', mr: { xs: 'auto', sm: 'unset' }, ml: 'auto', mt: { xs: 1, sm: 0.5 }, pl: 1 }}
+      sx={{ alignSelf: 'flex-start', alignItems: 'center', mr: { xs: 'auto', md: 'unset' }, ml: 'auto', mt: { xs: 1, md: 0.5 }, pl: 1 }}
       direction="row"
     >
       {!isMySub && me?.member_of_ids?.includes(name as string) ? (

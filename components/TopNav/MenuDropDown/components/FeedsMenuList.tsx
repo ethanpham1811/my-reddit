@@ -7,7 +7,6 @@ import { v4 as rid } from 'uuid'
 import GroupHeader from './MenuGroupHeader'
 
 type TFeedsMenuListProps = {
-  value: string
   options: TMenuItem[]
   onEnter: (e: KeyboardEvent<HTMLLIElement>, url: string) => void
 }

@@ -9,7 +9,6 @@ import GroupHeader from './MenuGroupHeader'
 import SubAndPeopleMenuItem from './SubAndPeopleMenuItem'
 
 type TPeopleMenuListProps = {
-  value: string
   options: TMenuItem[]
   onEnter: (e: KeyboardEvent<HTMLLIElement>, url: string) => void
 }

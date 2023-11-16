@@ -1,24 +1,24 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { SEARCH_TABS } from '@/constants/enums'
+import { QUERY_LIMIT, SEARCH_TABS } from '@/constants/enums'
 import { TQueriedList, TQueriedPost, TQueriedSub, TQueriedUser, TSearchOptions, TUserDetail } from '@/constants/types'
-import { Box } from '@/mui'
-import { isSearchQueriedPost, isSearchQueriedSub, isSearchQueriedUser } from '@/src/typeCheck'
-import { validatePostByFollowing, validateSubredditMember } from '@/src/utils'
-import { Jelly } from '@uiball/loaders'
+import { isSearchQueriedPost } from '@/src/typeCheck'
 import { RdCard } from '..'
 import { NotFound } from '../Cards/CardNotFound/CardNotFound'
+import CardSearchItem from '../Cards/CardSearchSide/CardSearchItem'
+import { RdSearchPeopleSubSkeleton, RdSearchPostSkeleton } from '../Skeletons'
 import RdPaginator from '../utilities/RdPaginator/RdPaginator'
 import SearchPostItem from './components/SearchPostItem'
-import SearchSubUserItem from './components/SearchSubUserItem'
+import { getFields } from './utils'
 
 type TSearchFeedsProps = {
   searchList: TQueriedPost[] | TQueriedSub[] | TQueriedUser[]
   searchTerm: string
   loading: boolean
+  type: string | string[] | undefined
   updateUser: (field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, status: boolean) => void
 }
 
-function SearchFeeds({ searchList, loading, searchTerm, updateUser }: TSearchFeedsProps) {
+function SearchFeeds({ searchList, type, loading, searchTerm, updateUser }: TSearchFeedsProps) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const totalItems: number = searchList[0]?.totalItems || 0
@@ -28,35 +28,36 @@ function SearchFeeds({ searchList, loading, searchTerm, updateUser }: TSearchFee
     if (isSearchQueriedPost(item)) {
       return <SearchPostItem key={`search_post_item_${item.id}`} item={item} />
     }
-
     // Queried Community tab
-    if (isSearchQueriedSub(item)) {
-      const status = me ? validateSubredditMember(me?.member_of_ids, item.name) : false
+    else {
+      const { name, status, btnText, extraText, link, revertBtnText, ownerUsername, type } = getFields(me, item)
+
       return (
-        <SearchSubUserItem
-          key={`search_post_item_${item.id}`}
-          item={item}
+        <CardSearchItem
+          flex={1}
+          name={name}
+          status={status}
+          btnText={btnText}
+          extraText={extraText}
+          link={link}
+          revertBtnText={revertBtnText}
+          ownerUsername={ownerUsername}
+          type={type}
           updateUser={updateUser}
-          revertBtnText={status ? 'Leave' : 'Join'}
-          type={SEARCH_TABS.Communities}
+          key={`search_post_item_${item.id}`}
         />
       )
     }
-
-    // Queried People tab
-    if (isSearchQueriedUser(item)) {
-      const status = me ? validatePostByFollowing(me?.following_ids, item.username) : false
-      return <SearchSubUserItem item={item} updateUser={updateUser} revertBtnText={status ? 'Unfollow' : 'Follow'} type={SEARCH_TABS.People} />
-    }
-    return <div></div>
   }
 
   return (
     <>
       {loading || !searchList ? (
-        <Box display="flex" justifyContent="center" py={4}>
-          <Jelly size={40} speed={0.7} color="#ff4500" />
-        </Box>
+        type === SEARCH_TABS.Post || !type ? (
+          RdSearchPostSkeleton(QUERY_LIMIT)
+        ) : (
+          RdSearchPeopleSubSkeleton(QUERY_LIMIT)
+        )
       ) : searchList.length > 0 ? (
         <>
           <RdCard sx={{ p: 0 }}>{searchList.map((item) => renderListItem(item))}</RdCard>

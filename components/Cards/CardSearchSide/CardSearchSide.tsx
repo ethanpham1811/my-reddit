@@ -1,9 +1,9 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
+import { getFields } from '@/components/SearchNewFeeds/utils'
 import { RdSkeleton } from '@/components/Skeletons'
 import { SEARCH_TABS } from '@/constants/enums'
 import { TQueriedSub, TQueriedUser, TUserDetail } from '@/constants/types'
 import { CardActions, CardContent, CardHeader, Typography } from '@/mui'
-import { formatNumber, validatePostByFollowing, validateSubredditMember } from '@/src/utils'
 import Link from 'next/link'
 import { MessageBoard, RdCard } from '../..'
 import CardSearchItem from './CardSearchItem'
@@ -34,46 +34,23 @@ function CardSearchSide<T extends TQueriedSub | TQueriedUser>({ title, q, type, 
           list
             .filter((_, i) => i < 3)
             .map((item) => {
-              let name = ''
-              let status = false
-              let btnText = ''
-              let revertBtnText = ''
-              let extraText = ''
-              let link = '/'
-              let ownerUsername = undefined
-              let type = SEARCH_TABS.People
-
-              if ('username' in item) {
-                name = item.username?.toString()
-                status = me ? validatePostByFollowing(me?.following_ids, item.username) : false
-                btnText = status ? 'Following' : 'Follow'
-                revertBtnText = status ? 'Unfollow' : 'Follow'
-                extraText = formatNumber(item.followers) + ' followers'
-                link = `u/${item.username}`
-              } else {
-                name = item.name?.toString()
-                status = me ? validateSubredditMember(me?.member_of_ids, item.name) : false
-                btnText = status ? 'Joined' : 'Join'
-                revertBtnText = status ? 'Leave' : 'Join'
-                extraText = formatNumber(item.member || 0) + ' members'
-                link = `r/${item.name}`
-                type = SEARCH_TABS.Communities
-                ownerUsername = item?.user?.username
-              }
+              const { name, status, btnText, extraText, link, revertBtnText, ownerUsername, type } = getFields(me, item)
 
               return (
                 <CardSearchItem
-                  ownerUsername={ownerUsername}
-                  revertBtnText={revertBtnText}
-                  type={type}
-                  updateUser={updateUser}
-                  key={`${name}_search_result`}
-                  guestMode={!me}
+                  width="20px"
                   name={name}
                   status={status}
                   btnText={btnText}
                   extraText={extraText}
                   link={link}
+                  revertBtnText={revertBtnText}
+                  ownerUsername={ownerUsername}
+                  type={type}
+                  updateUser={updateUser}
+                  key={`${name}_search_result`}
+                  px={2}
+                  py={1}
                 />
               )
             })

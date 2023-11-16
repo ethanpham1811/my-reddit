@@ -2,7 +2,7 @@ import { CloseIcon } from '@/constants/icons'
 import { CircularProgress, IconButton, Stack } from '@/mui'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { Control, FieldValues, Path, UseFormReset } from 'react-hook-form'
+import { Control, FieldValues, Path } from 'react-hook-form'
 import { RdButton, RdSubredditSelect } from '../../..'
 
 type TBottomControlProps<T extends FieldValues> = {
@@ -12,10 +12,10 @@ type TBottomControlProps<T extends FieldValues> = {
   loading: boolean
   isDirty: boolean
   setIsLinkPost: Dispatch<SetStateAction<boolean>>
-  reset: UseFormReset<T>
+  resetForm: (isSwitchType?: boolean) => void
 }
 
-function BottomControl<T extends FieldValues>({ subId, isEditing, control, loading, isDirty, setIsLinkPost, reset }: TBottomControlProps<T>) {
+function BottomControl<T extends FieldValues>({ subId, isEditing, control, loading, isDirty, setIsLinkPost, resetForm }: TBottomControlProps<T>) {
   const [backBtnHover, setBackBtnHover] = useState(false)
   const {
     push: navigate,
@@ -64,7 +64,7 @@ function BottomControl<T extends FieldValues>({ subId, isEditing, control, loadi
           sx={{ p: 0.5, color: 'actionIcon.main' }}
           onClick={() => {
             setIsLinkPost(false)
-            reset()
+            resetForm()
           }}
         >
           <CloseIcon sx={{ display: 'block', fontSize: '1.5rem' }} />

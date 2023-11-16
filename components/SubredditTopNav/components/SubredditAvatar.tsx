@@ -4,7 +4,7 @@ import { generateSeededHexColor, generateUserImage } from '../../../src/utils'
 
 function SubredditAvatar({ name }: { name: string | undefined }) {
   return (
-    <Box position={{ xs: 'absolute', sm: 'relative' }} sx={{ translate: { xs: '-50% calc(-50% - 3.5rem)', sm: 'none' } }} left={{ xs: '50%', sm: 0 }}>
+    <Box position={{ xs: 'absolute', md: 'relative' }} sx={{ translate: { xs: '-50% calc(-50% - 3.5rem)', md: 'none' } }} left={{ xs: '50%', md: 0 }}>
       <Link href={`/r/${name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <Avatar
           sx={{
@@ -13,7 +13,7 @@ function SubredditAvatar({ name }: { name: string | undefined }) {
             backgroundColor: generateSeededHexColor(name),
             border: (theme): string => `5px solid ${theme.palette.white.main}`,
             position: 'relative',
-            top: { xs: 0, sm: '-2.5rem' },
+            top: { xs: 0, md: '-2.5rem' },
             mr: 2
           }}
           alt={`subreddit ${name} avatar`}

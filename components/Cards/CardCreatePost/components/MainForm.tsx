@@ -3,7 +3,7 @@ import { urlValidation } from '@/src/formValidations'
 
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect } from 'react'
-import { Control, FieldValues, Path, UseFormReset, UseFormSetValue } from 'react-hook-form'
+import { Control, FieldValues, Path, UseFormSetValue } from 'react-hook-form'
 import { RdImageList, RdInput, RdTextEditor } from '../../..'
 import BottomControl from './BottomControl'
 
@@ -16,14 +16,14 @@ type TMainFormProps<T extends FieldValues> = {
   subId: number | undefined
   loading: boolean
   isDirty: boolean
-  reset: UseFormReset<T>
+  resetForm: (isSwitchType?: boolean) => void
   setFormValue: UseFormSetValue<T>
   setIsLinkPost: Dispatch<SetStateAction<boolean>>
 }
 
 function MainForm<T extends FieldValues>({
   setIsLinkPost,
-  reset,
+  resetForm,
   setFormValue,
   uploadImgError,
   open,
@@ -87,7 +87,7 @@ function MainForm<T extends FieldValues>({
         loading={loading}
         isDirty={isDirty}
         setIsLinkPost={setIsLinkPost}
-        reset={reset}
+        resetForm={resetForm}
       />
     </Stack>
   )

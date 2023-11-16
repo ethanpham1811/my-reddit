@@ -52,14 +52,14 @@ function SubredditTopNav({ subreddit, owner }: TSubredditTopNavProps) {
           alt="subreddit cover"
           aria-label="subreddit cover"
         />
-        <Container maxWidth="md" sx={{ pt: { xs: 7, sm: 2 } }}>
-          <Stack direction={{ xs: 'column', sm: 'row' }}>
+        <Container maxWidth="md" sx={{ pt: { xs: 7, md: 2 } }}>
+          <Stack direction={{ xs: 'column', md: 'row' }}>
             {/* Sub avatar */}
             <SubredditAvatar name={name} />
 
-            <Stack alignItems={{ xs: 'center', sm: 'flex-start' }} flex={1}>
+            <Stack alignItems={{ xs: 'center', md: 'flex-start' }} flex={1}>
               {/* Headline */}
-              <Typography fontWeight={700} variant="h4" width="100%" fontSize="1.8rem" textAlign={{ xs: 'center', sm: 'left' }}>
+              <Typography fontWeight={700} variant="h4" width="100%" fontSize="1.8rem" textAlign={{ xs: 'center', md: 'left' }}>
                 {isMySub ? (
                   <RdInlineInput<TSubredditEditForm>
                     registerOptions={{ validate: (val) => textValidation(val, 60) }}

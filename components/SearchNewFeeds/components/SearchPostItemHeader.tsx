@@ -24,6 +24,8 @@ export default function SearchPostItemHeader({ subName, username, created_at }: 
             sx={{
               width: { xs: 25, sm: 20 },
               height: { xs: 25, sm: 20 },
+              position: { xs: 'relative', sm: 'static' },
+              top: { xs: '8px', sm: 'unset' },
               backgroundColor: generateSeededHexColor(subName)
             }}
             src={generateUserImage(subName)}
