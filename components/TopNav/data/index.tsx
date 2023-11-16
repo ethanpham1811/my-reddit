@@ -1,6 +1,7 @@
-import { NOTI_BOX_NAME, PROFILE_DIALOG_TYPE, PROFILE_MENU_OPTION_TYPE, PROFILE_MENU_OPTION_VALUE } from '@/constants/enums'
+import { DARK_MODE, NOTI_BOX_NAME, PROFILE_DIALOG_TYPE, PROFILE_MENU_OPTION_TYPE, PROFILE_MENU_OPTION_VALUE } from '@/constants/enums'
 import {
   AccountCircleOutlinedIcon,
+  DarkModeIcon,
   DarkModeOutlinedIcon,
   ErrorOutlineIcon,
   InfoOutlinedIcon,
@@ -14,6 +15,7 @@ import { Dispatch, SetStateAction } from 'react'
 
 type TBuildDataProps = {
   me: TUserDetail | null | undefined
+  mode: DARK_MODE
   toggleDarkMode: () => void
   openPremiumDrawer: () => void
   setUserGuideOpen: Dispatch<SetStateAction<boolean>>
@@ -21,9 +23,9 @@ type TBuildDataProps = {
 }
 
 /* data tree for Notification Box */
-export const buildData = ({ me, toggleDarkMode, openPremiumDrawer, setUserGuideOpen, navigate }: TBuildDataProps): TIconBox[] => [
+export const buildData = ({ me, mode, toggleDarkMode, openPremiumDrawer, setUserGuideOpen, navigate }: TBuildDataProps): TIconBox[] => [
   {
-    icon: DarkModeOutlinedIcon,
+    icon: mode == DARK_MODE.light ? DarkModeOutlinedIcon : DarkModeIcon,
     name: NOTI_BOX_NAME.Darkmode,
     tooltip: 'Dark mode',
     onClick: toggleDarkMode

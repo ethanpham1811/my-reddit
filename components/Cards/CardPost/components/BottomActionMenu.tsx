@@ -32,7 +32,7 @@ function BottomActionMenu({ setIsDeleting, postId, isMyPost, subName, totalComme
 
   // navigate to edit post page
   function handleEditPost() {
-    navigate(`/r/${subName}/post/${postId}?mode=edit`, undefined, { scroll: false })
+    navigate(`/r/${subName}/post/${postId}?editing=true`, undefined, { scroll: false })
   }
 
   return (

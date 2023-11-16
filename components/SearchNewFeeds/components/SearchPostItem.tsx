@@ -1,6 +1,7 @@
+import { useDarkMode } from '@/components/Layouts/MuiProvider'
 import { MAX_NEW_FEEDS_POST_HEIGHT } from '@/constants/enums'
 import { TQueriedPost } from '@/constants/types'
-import { Divider, Stack, useTheme } from '@/mui'
+import { Divider, Stack } from '@/mui'
 import { blurBottomStyle, postHoverStyle } from '@/mui/styles'
 import { useRouter } from 'next/router'
 import { Fragment, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from 'react'
@@ -10,9 +11,7 @@ import SearchPostItemHeader from './SearchPostItemHeader'
 
 function SearchPostItem({ item }: { item: TQueriedPost }) {
   const { push: navigate } = useRouter()
-  const {
-    palette: { mode }
-  } = useTheme()
+  const { mode } = useDarkMode()
   const {
     id,
     title,

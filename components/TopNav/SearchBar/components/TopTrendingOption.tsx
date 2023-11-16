@@ -1,7 +1,8 @@
-import { MAX_TOP_TRENDING_HEIGHT } from '@/constants/enums'
+import { useDarkMode } from '@/components/Layouts/MuiProvider'
+import { DARK_MODE, MAX_TOP_TRENDING_HEIGHT } from '@/constants/enums'
 import { OutboundOutlinedIcon } from '@/constants/icons'
 import { TQueriedTrending } from '@/constants/types'
-import { Box, Divider, ListItem, Stack, Typography, useTheme } from '@/mui'
+import { Box, Divider, ListItem, Stack, Typography } from '@/mui'
 import { blurBottomStyle } from '@/mui/styles'
 import { parseHtml } from '@/src/utils'
 import Image from 'next/image'
@@ -16,13 +17,11 @@ type TTropTrendingOptionProps = {
 
 function TopTrendingOption({ option, props, url }: TTropTrendingOptionProps) {
   const { push: navigate } = useRouter()
-  const {
-    palette: { mode }
-  } = useTheme()
+  const { mode } = useDarkMode()
   const [bottomStyle, setBottomStyle] = useState({})
   const ref = useRef<HTMLDivElement>(null)
   const postFirsImgUrl: string | null = option?.images?.[0] ? `${process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL}/${option?.images?.[0]}` : null
-  const hoveredBtmBgcolor = mode === 'light' ? '#F6F7F8' : '#222 '
+  const hoveredBtmBgcolor = mode === DARK_MODE.light ? '#F6F7F8' : '#222 '
 
   /* if an item > 120px => blur out the overflow bottom part */
   useEffect(() => {
@@ -44,7 +43,7 @@ function TopTrendingOption({ option, props, url }: TTropTrendingOptionProps) {
         sx={{
           '&.MuiListItem-root': { py: 1.5, gap: 2, alignItems: 'flex-start' },
           '&.Mui-focused.MuiAutocomplete-option, &.Mui-focusVisible.MuiAutocomplete-option': {
-            bgcolor: 'inputBgOutfocused.main',
+            bgcolor: (theme) => `${theme.palette.inputBgOutfocused.main} !important`,
             '.blurred-bottom::after': {
               background: `linear-gradient(0deg, ${hoveredBtmBgcolor} 0%, ${hoveredBtmBgcolor} 30%, transparent 100%)`
             }

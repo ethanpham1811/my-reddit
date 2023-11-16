@@ -69,7 +69,7 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
   const { session } = useAppSession()
   const me = session?.userDetail
   const {
-    query: { subreddit: subName, mode },
+    query: { subreddit: subName, editing },
     push: navigate
   } = useRouter()
   const [zoomedImg, setZoomedImg] = useState<string | null>(null)
@@ -85,7 +85,7 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
   }
 
   // edit page: redirect to home if user not logged in
-  if (!session && mode === 'edit') {
+  if (!session && editing === 'true') {
     navigate('/')
     return null
   }

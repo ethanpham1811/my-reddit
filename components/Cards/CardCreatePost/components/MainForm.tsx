@@ -1,4 +1,3 @@
-import { POST_MUTATION_MODE } from '@/constants/enums'
 import { Stack, Typography } from '@/mui'
 import { urlValidation } from '@/src/formValidations'
 
@@ -36,9 +35,9 @@ function MainForm<T extends FieldValues>({
   loading
 }: TMainFormProps<T>) {
   const {
-    query: { postid, mode }
+    query: { postid, editing }
   } = useRouter()
-  const isEditing = mode === POST_MUTATION_MODE.Edit
+  const isEditing = editing === 'true'
 
   // Populate subId & post id (edit mode)
   useEffect(() => {

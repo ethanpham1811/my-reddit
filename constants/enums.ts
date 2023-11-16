@@ -17,10 +17,6 @@ export enum NOTI_BOX_NAME {
   Notification = 'Notification',
   Guide = 'Guide'
 }
-export enum POST_MUTATION_MODE {
-  Create = 'create',
-  Edit = 'edit'
-}
 export enum ORDERING {
   Asc = 'asc',
   Desc = 'desc'
@@ -90,4 +86,8 @@ export enum PROFILE_MENU_OPTION_VALUE {
   status = 'status',
   userAgreement = 'userAgreement',
   mode = 'mode'
+}
+export enum DARK_MODE {
+  dark = 'dark',
+  light = 'light'
 }

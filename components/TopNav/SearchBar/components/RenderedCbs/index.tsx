@@ -29,7 +29,7 @@ export const renderContainer = (props: HTMLAttributes<HTMLElement>, searchTerm: 
       >
         {!searchTerm ? (
           <Typography sx={{ mb: -1, color: 'hintText.main' }} variant="subtitle1" fontSize={10}>
-            TOP TRENDING
+            TOP TRENDING POSTS
           </Typography>
         ) : (
           <Box display="flex" alignItems="center">

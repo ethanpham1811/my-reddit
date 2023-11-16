@@ -1,6 +1,6 @@
 import { CardUserGuide, RdDialog, RdNotiBubble } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { ColorModeContext } from '@/components/Layouts/MuiProvider'
+import { DarkModeContext } from '@/components/Layouts/MuiProvider'
 import { TIconBox } from '@/constants/types'
 import { Box, IconButton, Stack, Tooltip } from '@/mui'
 import { Events, eventEmitter } from '@/src/eventEmitter'
@@ -14,10 +14,10 @@ function IconBox({ isMobile }: { isMobile: boolean }) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const { push: navigate } = useRouter()
-  const { toggleDarkMode } = useContext(ColorModeContext)
+  const { toggleDarkMode, mode } = useContext(DarkModeContext)
   const [userGuideOpen, setUserGuideOpen] = useState(false)
   const firstTime = !cookie.get('first-time-visit-my-reddit')
-  const notiData: TIconBox[] = buildData({ me, toggleDarkMode, openPremiumDrawer, setUserGuideOpen, navigate })
+  const notiData: TIconBox[] = buildData({ me, mode, toggleDarkMode, openPremiumDrawer, setUserGuideOpen, navigate })
 
   /* open the user guide for the first time using the app */
   useEffect(() => {

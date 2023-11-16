@@ -1,9 +1,10 @@
 import { CardLogout, RdDialog, RdDropdown } from '@/components'
 import CardUserAgreement from '@/components/Cards/CardUserAgreement/CardUserAgreement'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { PROFILE_DIALOG_TYPE } from '@/constants/enums'
+import { useDarkMode } from '@/components/Layouts/MuiProvider'
+import { DARK_MODE, PROFILE_DIALOG_TYPE } from '@/constants/enums'
 import { TProfileDropDownList, TProfileDropdownGroupedList } from '@/constants/types'
-import { Box, Divider, Typography, useTheme } from '@/mui'
+import { Box, Divider, Typography } from '@/mui'
 import { createGroupedList } from '@/src/utils'
 import { ReactNode, useState } from 'react'
 import { v4 as rid } from 'uuid'
@@ -18,16 +19,14 @@ type TProfileDropdownProps = {
   sessionUsername: string | undefined
 }
 function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDropdownProps) {
+  const { mode } = useDarkMode()
   const { session } = useAppSession()
   const me = session?.userDetail
-  const {
-    palette: { mode }
-  } = useTheme()
   const [isOpenDialog, setIsOpenDialog] = useState(false)
   const [dialogType, setDialogType] = useState(PROFILE_DIALOG_TYPE.Logout)
 
   // Build grouped menu data
-  const menuList: TProfileDropDownList[] = buildProfileMenuData(me?.username, { darkMode: mode !== 'light' })
+  const menuList: TProfileDropDownList[] = buildProfileMenuData(me?.username, { darkMode: mode !== DARK_MODE.light })
   const groupedMenuList: TProfileDropdownGroupedList[] = createGroupedList(menuList)
 
   function handleRenderSelectedOption(_: string): ReactNode {

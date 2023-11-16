@@ -1,5 +1,4 @@
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { POST_MUTATION_MODE } from '@/constants/enums'
 import { TCardCreatePostForm, TEditModePayload } from '@/constants/types'
 import { useEditPostDataMap, usePostCreateAndEdit, usePostCreateFormListener, usePostCreateFormMode } from '@/hooks'
 import { Box, Divider, Stack, Typography, useMediaQuery, useTheme } from '@/mui'
@@ -44,7 +43,7 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
   const userName: string | undefined | null = session?.userDetail?.username
   const ref = useRef<HTMLInputElement | null>(null)
   const router = useRouter()
-  const isEditing: boolean = router?.query?.mode === POST_MUTATION_MODE.Edit
+  const isEditing: boolean = router?.query?.editing === 'true'
   const { breakpoints } = useTheme()
   const isMobile = useMediaQuery(breakpoints.down('sm'))
   const { createPost, updatePost, loading, uploadImgError, setUploadImgError } = usePostCreateAndEdit()

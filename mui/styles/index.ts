@@ -1,4 +1,6 @@
-import { Badge, SxProps, Theme, styled } from '@mui/material'
+import { DARK_MODE } from '@/constants/enums'
+import { SxProps, Theme } from '@mui/material/styles'
+import { Badge, styled } from '..'
 
 /* -------------------------------------------STYLES --------------------------------------------------- */
 
@@ -50,8 +52,8 @@ export const OnlineDotStyle = styled(Badge)(({ theme }) => ({
 export const postHoverStyle = (postId?: string | null | undefined) => ({
   '&:hover': !postId ? { cursor: 'pointer', border: '1px solid', borderColor: 'orange.main' } : {}
 })
-export const blurBottomStyle = (height: string, mode: 'light' | 'dark', isTopNav?: boolean) => {
-  const bgColor = mode === 'light' ? '#fff' : isTopNav ? '#000' : '#121212'
+export const blurBottomStyle = (height: string, mode: DARK_MODE, isTopNav?: boolean) => {
+  const bgColor = mode === DARK_MODE.light ? '#fff' : isTopNav ? '#000' : '#121212'
   return {
     '&::after': {
       content: '""',

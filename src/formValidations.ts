@@ -57,3 +57,7 @@ export const postTitleValidation = (value: string): boolean | string => {
   if (value.length > 100) return 'Title must not exceed 100 characters'
   return true
 }
+export const emptyArrayValidation = (value: string[], name: string): boolean | string => {
+  if (value === null || value === undefined || value.length === 0) return `Please choose a ${name}`
+  return true
+}

@@ -13,6 +13,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CloseIcon from '@mui/icons-material/Close'
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
 import ErrorIcon from '@mui/icons-material/Error'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
@@ -65,6 +66,7 @@ export {
   CloseIcon,
   CommentOutlinedIcon,
   CreateOutlinedIcon,
+  DarkModeIcon,
   DarkModeOutlinedIcon,
   ErrorIcon,
   ErrorOutlineIcon,

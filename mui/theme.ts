@@ -1,3 +1,4 @@
+import { DARK_MODE } from '@/constants/enums'
 import { red } from '@mui/material/colors'
 import { Theme, createTheme } from '@mui/material/styles'
 import { IBM_Plex_Sans, Noto_Sans } from 'next/font/google'
@@ -158,8 +159,8 @@ const darkPalette = {
 }
 
 // Create a theme instance.
-export const buildTheme = (mode: 'light' | 'dark'): Theme => {
-  const palette = mode === 'light' ? lightPalette : darkPalette
+export const buildTheme = (mode: DARK_MODE): Theme => {
+  const palette = mode === DARK_MODE.light ? lightPalette : darkPalette
   return createTheme({
     breakpoints: {
       values: {
@@ -193,7 +194,7 @@ export const buildTheme = (mode: 'light' | 'dark'): Theme => {
             scrollBehavior: 'smooth'
           },
           body: {
-            backgroundColor: mode === 'light' ? '#DAE0E6' : '#1a1a1a',
+            backgroundColor: mode === DARK_MODE.light ? '#DAE0E6' : '#1a1a1a',
             fontSize: '1rem',
             fontWeight: 400
           },

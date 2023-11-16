@@ -3,7 +3,7 @@ import { OverridableComponent } from '@mui/material/OverridableComponent'
 import { StorageError } from '@supabase/storage-js'
 import { Session } from '@supabase/supabase-js'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
-import { Control, FieldError, FieldPath, FieldValues, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
+import { Control, FieldPath, FieldValues, Path, PathValue, RegisterOptions, UseFormGetValues, UseFormReset, UseFormSetValue } from 'react-hook-form'
 import {
   MAIN_MENU_GROUP,
   ORDERING,
@@ -183,15 +183,18 @@ export type TRdDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'childre
   offsetTop?: string
   offsetBot?: string
 }
-export type TRdMultipleDropdownProps = Pick<SelectProps, 'placeholder' | 'sx' | 'children' | 'open'> & {
-  renderSelectedOption: (value: string[], setSelectedArray: Dispatch<SetStateAction<string[]>>) => ReactNode
-  onChange: (event: SelectChangeEvent<string[]>, child: ReactNode) => void
+export type TRdMultipleDropdownProps<T extends FieldValues, P extends { id: number }> = Pick<
+  SelectProps,
+  'placeholder' | 'sx' | 'children' | 'open'
+> & {
+  renderSelectedOption: (value: PathValue<T, Path<T>>) => ReactNode
+  registerOptions?: RegisterOptions
+  name: FieldPath<T>
+  control: Control<T>
   max?: number
-  width?: string
   flex?: number
   loading?: boolean
   borderColor?: string
-  error?: FieldError
 }
 
 export type TRdSubredditAutoCompleteProps<T extends FieldValues> = {
@@ -205,6 +208,7 @@ export type TRdInputProps<T extends FieldValues> = TextFieldProps & {
   name: FieldPath<T>
   control: Control<T>
   helper?: string
+  letterCount?: number
   width?: string
   height?: string
   flex?: number

@@ -23,7 +23,12 @@ function QueriedSubUserOption({ option, props, url }: TQueriedSubUserOptionProps
       }}
       key={`search_result_item_${isSub ? option.name : option.username}`}
       {...props}
-      sx={{ '&.MuiListItem-root': { gap: 2, alignItems: 'flex-start' }, '&:hover': { bgcolor: 'inputBgOutfocused.main' } }}
+      sx={{
+        '&.MuiListItem-root': { gap: 2, alignItems: 'flex-start' },
+        '&.Mui-focused.MuiAutocomplete-option, &.Mui-focusVisible.MuiAutocomplete-option': {
+          bgcolor: (theme) => `${theme.palette.inputBgOutfocused.main} !important`
+        }
+      }}
     >
       <Box pt={0.6}>
         <Avatar

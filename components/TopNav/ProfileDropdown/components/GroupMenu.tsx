@@ -1,10 +1,10 @@
-import { ColorModeContext } from '@/components/Layouts/MuiProvider'
+import { DarkModeContext } from '@/components/Layouts/MuiProvider'
 import { PROFILE_DIALOG_TYPE, PROFILE_MENU_OPTION_TYPE, PROFILE_MENU_OPTION_VALUE } from '@/constants/enums'
 import { TProfileDropDownList } from '@/constants/types'
 import { Divider, MenuItem, Stack, Switch } from '@/mui'
 import { Events, eventEmitter } from '@/src/eventEmitter'
-import { SvgIconTypeMap } from '@mui/material'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
+import { SvgIconTypeMap } from '@mui/material/SvgIcon'
 import { useRouter } from 'next/router'
 import { Dispatch, Fragment, KeyboardEvent, MouseEvent, SetStateAction, createElement, useContext } from 'react'
 import ProfileGroupHeader from './ProfileGroupHeader'
@@ -19,7 +19,7 @@ type TProfileMenuProps = {
 }
 
 function GroupMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDialog, key: groupKey, ...rest }: TProfileMenuProps) {
-  const { toggleDarkMode } = useContext(ColorModeContext)
+  const { toggleDarkMode } = useContext(DarkModeContext)
   const { push: navigate } = useRouter()
 
   /* fire event to open create community drawer (only for Create Community Option) */
@@ -86,6 +86,8 @@ function GroupMenu({ group, groupIcon, menuItems, setDialogType, setIsOpenDialog
                 sx: {
                   zIndex: 10,
                   ml: 'auto',
+                  position: 'absolute',
+                  right: '1rem',
                   '.Mui-checked': { '.MuiSwitch-thumb': { color: 'orange.main' }, '&+.MuiSwitch-track': { opacity: 1 } }
                 }
               })}

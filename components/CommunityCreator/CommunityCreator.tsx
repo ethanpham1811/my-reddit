@@ -12,10 +12,11 @@ import CommunityTypeRadio from './CommunityTypeRadio/CommunityTypeRadio'
 function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   const { createSubreddit, loading } = useSubredditCreate()
   const { push: redirect } = useRouter()
-  const { handleSubmit, control } = useForm<TCommunityCreatorForm>({
+  const { handleSubmit, control, setValue, watch, trigger } = useForm<TCommunityCreatorForm>({
     mode: 'all',
-    defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false }
+    defaultValues: { subType: SUBREDDIT_TYPE.Public, isChildrenContent: false, topic_ids: [] }
   })
+  const topicIdsValue = watch('topic_ids')
 
   /* form submit handler */
   const onSubmit = handleSubmit(async (formData) => {
@@ -46,18 +47,23 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
           <Typography variant="body1" component="p" sx={{ color: 'hintText.main' }}>
             Community names including capitalization cannot be changed.
           </Typography>
-          <Stack direction="row" gap={1} sx={{ mt: 2 }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} gap={1} sx={{ mt: 2 }}>
             <RdInput<TCommunityCreatorForm>
               registerOptions={{ validate: (val): string | boolean => subnameValidation(val) }}
               control={control}
+              letterCount={20}
               name="name"
-              helper="21 Characters remaining"
-              width="60%"
               bgcolor="primary"
               height="22.25px"
+              flex={1}
               placeholder={`What's on your mind?`}
             />
-            <TopicDropdown<TCommunityCreatorForm> registerOptions={{ required: 'Please choose a topic' }} control={control} name="topic_ids" />
+            <TopicDropdown<TCommunityCreatorForm>
+              triggerValidation={trigger}
+              control={control}
+              setFormValue={setValue}
+              selectedTopics={topicIdsValue}
+            />
           </Stack>
 
           {/* Community types  */}

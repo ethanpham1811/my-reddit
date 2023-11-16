@@ -1,8 +1,9 @@
 import { CardCommentBox, CardCreatePost as CardEditPost, RdCard } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
-import { OPTIMISTIC_TEMP_ID, POST_MUTATION_MODE } from '@/constants/enums'
+import { useDarkMode } from '@/components/Layouts/MuiProvider'
+import { DARK_MODE, OPTIMISTIC_TEMP_ID } from '@/constants/enums'
 import { TCardPostProps, TUserDetail } from '@/constants/types'
-import { Stack, useTheme } from '@/mui'
+import { Stack } from '@/mui'
 import { useRouter } from 'next/router'
 import { KeyboardEvent, MouseEvent, useState } from 'react'
 import ActionMenu from './components/ActionMenu'
@@ -27,14 +28,14 @@ function CardPost({
   },
   setZoomedImg
 }: TCardPostProps) {
-  const theme = useTheme()
+  const { mode } = useDarkMode()
   const { session } = useAppSession()
   const me: TUserDetail | undefined | null = session?.userDetail
   const {
     push: navigate,
-    query: { postid, mode }
+    query: { postid, editing }
   } = useRouter()
-  const isEditing = mode === POST_MUTATION_MODE.Edit
+  const isEditing = editing === 'true'
   const [isDeleting, setIsDeleting] = useState(false)
   const onPostPage: boolean = postid != null
   const isMyPost = me?.username === username
@@ -43,7 +44,7 @@ function CardPost({
   const blockInteraction = postId === OPTIMISTIC_TEMP_ID || isDeleting
 
   // opacity amount (optimistic post) differ based on color mode
-  const opacityAmount: number = theme.palette.mode === 'dark' ? 0.2 : 0.5
+  const opacityAmount: number = mode === DARK_MODE.dark ? 0.2 : 0.5
 
   /* navigate to post detail page */
   function goToPost(e: MouseEvent | KeyboardEvent) {

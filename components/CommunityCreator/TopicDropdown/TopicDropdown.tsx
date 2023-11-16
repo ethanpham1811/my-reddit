@@ -3,42 +3,45 @@ import { RdSkeleton } from '@/components/Skeletons'
 import { MAX_TOPIC_CHOSEN } from '@/constants/enums'
 import { TTopic } from '@/constants/types'
 import { useTopicList } from '@/hooks'
-import { FormControl, MenuItem } from '@/mui'
-import { Control, Controller, FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
+import { MenuItem } from '@/mui'
+import { emptyArrayValidation } from '@/src/formValidations'
+import { Control, FieldValues, Path, PathValue, UseFormSetValue, UseFormTrigger } from 'react-hook-form'
 import { renderSelectedOption } from './RenderedCbs'
 
 type TTopicDropdown<T extends FieldValues> = {
-  name: FieldPath<T>
   control: Control<T>
-  registerOptions?: RegisterOptions
+  setFormValue: UseFormSetValue<T>
+  selectedTopics: string[]
+  triggerValidation: UseFormTrigger<T>
 }
 
-function TopicDropdown<T extends FieldValues>({ name, control, registerOptions }: TTopicDropdown<T>) {
+function TopicDropdown<T extends FieldValues>({ control, setFormValue, triggerValidation, selectedTopics }: TTopicDropdown<T>) {
   const { topicList } = useTopicList()
 
+  function unselectedOptions({ id, name }: TTopic) {
+    return !selectedTopics.includes(`${id}_${name}`)
+  }
+
   return (
-    <FormControl sx={{ flex: 1 }}>
-      <Controller
-        rules={registerOptions}
-        control={control}
-        name={name}
-        render={({ field: { onChange }, fieldState: { error } }) => (
-          <RdMultipleDropdown error={error} max={MAX_TOPIC_CHOSEN} renderSelectedOption={renderSelectedOption} onChange={onChange}>
-            {topicList ? (
-              topicList.map(({ id, name }: TTopic) => {
-                return (
-                  <MenuItem value={`${id}_${name}`} key={`topic_${id}`}>
-                    {name || 'unknown'}
-                  </MenuItem>
-                )
-              })
-            ) : (
-              <RdSkeleton />
-            )}
-          </RdMultipleDropdown>
-        )}
-      />
-    </FormControl>
+    <RdMultipleDropdown<T, TTopic>
+      registerOptions={{ validate: (val): string | boolean => emptyArrayValidation(val, 'topic') }}
+      name={'topic_ids' as Path<T>}
+      control={control}
+      max={MAX_TOPIC_CHOSEN}
+      renderSelectedOption={(value: PathValue<T, Path<T>>) => renderSelectedOption(value, setFormValue, triggerValidation)}
+    >
+      {topicList ? (
+        topicList.filter(unselectedOptions).map(({ id, name }: TTopic) => {
+          return (
+            <MenuItem disabled={selectedTopics?.length === MAX_TOPIC_CHOSEN} value={`${id}_${name}`} key={`topic_${id}`}>
+              {name || 'unknown'}
+            </MenuItem>
+          )
+        })
+      ) : (
+        <RdSkeleton />
+      )}
+    </RdMultipleDropdown>
   )
 }
 

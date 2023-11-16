@@ -17,7 +17,22 @@ const RdInputBase = styled(TextField)(({ theme }) => {
 })
 
 const RdInput = <T extends FieldValues>(
-  { registerOptions, name, control, label, flex, width, height, helper, sx, bgcolor, indentedHelper, endIcon, ...rest }: TRdInputProps<T>,
+  {
+    registerOptions,
+    letterCount,
+    name,
+    control,
+    label,
+    flex,
+    width,
+    height,
+    helper,
+    sx,
+    bgcolor,
+    indentedHelper,
+    endIcon,
+    ...rest
+  }: TRdInputProps<T>,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   return (
@@ -28,40 +43,47 @@ const RdInput = <T extends FieldValues>(
         control={control}
         rules={registerOptions}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <RdInputBase
-            inputRef={ref}
-            helperText={error ? error.message : null}
-            size="small"
-            error={!!error}
-            onChange={onChange}
-            value={value || ''}
-            fullWidth
-            label={label}
-            variant="outlined"
-            autoComplete="off"
-            id={name}
-            aria-describedby={`helper_${name}`}
-            sx={{
-              '.MuiFormHelperText-root.Mui-error': { color: 'orange.main', mx: 0 },
-              '.MuiInputBase-root': {
-                bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main`,
-                input: {
-                  height
-                }
-              },
-              '.MuiFormHelperText-root': {
-                pl: indentedHelper ? 1 : 0
-              },
-              ...sx
-            }}
-            InputProps={{
-              endAdornment: endIcon
-            }}
-            {...rest}
-          />
+          <>
+            <RdInputBase
+              inputRef={ref}
+              helperText={error ? error.message : null}
+              size="small"
+              error={!!error}
+              onChange={onChange}
+              value={value || ''}
+              fullWidth
+              label={label}
+              variant="outlined"
+              autoComplete="off"
+              id={name}
+              aria-describedby={`helper_${name}`}
+              sx={{
+                '.MuiFormHelperText-root.Mui-error': { color: 'orange.main', mx: 0 },
+                '.MuiInputBase-root': {
+                  bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main`,
+                  input: {
+                    height
+                  }
+                },
+                '.MuiFormHelperText-root': {
+                  pl: indentedHelper ? 1 : 0
+                },
+                ...sx
+              }}
+              InputProps={{
+                endAdornment: endIcon
+              }}
+              {...rest}
+            />
+            {helper && !error && <FormHelperText id={`helper_${name}`}>{helper}</FormHelperText>}
+            {letterCount && !error && (
+              <FormHelperText id={`helper_${name}`} sx={{ mx: 0, mt: '4px' }}>
+                {letterCount - (value?.length || 0)} characters remaining
+              </FormHelperText>
+            )}
+          </>
         )}
       />
-      {helper && <FormHelperText id={`helper_${name}`}>{helper}</FormHelperText>}
     </FormControl>
   )
 }

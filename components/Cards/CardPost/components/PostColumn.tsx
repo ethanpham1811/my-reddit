@@ -1,4 +1,5 @@
 import { RdImageCarousel } from '@/components'
+import { useDarkMode } from '@/components/Layouts/MuiProvider'
 import { MAX_NEW_FEEDS_POST_HEIGHT } from '@/constants/enums'
 import { Box, Typography, useTheme } from '@/mui'
 import { blurBottomStyle } from '@/mui/styles'
@@ -22,8 +23,9 @@ type TPostColumnProps = {
 
 function PostColumn({ subName, username, createdAt, title, body, link, linkDescription, setZoomedImg, images }: TPostColumnProps) {
   const [bottomStyle, setBottomStyle] = useState({})
+  const { mode } = useDarkMode()
   const {
-    palette: { mode, blue }
+    palette: { blue }
   } = useTheme()
   const ref = useRef<HTMLDivElement>(null)
   const {

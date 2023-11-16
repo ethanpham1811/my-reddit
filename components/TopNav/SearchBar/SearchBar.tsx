@@ -47,8 +47,10 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
       url && navigate(url)
     }
   }
-  const onInputChange = (_: SyntheticEvent<Element, Event>, value: string) => setSearchTerm(value)
   const onDeleteChip = () => setChip(false)
+  const onInputChange = (e: SyntheticEvent<Element, Event>, value: string) => {
+    e?.type === 'change' && setSearchTerm(value)
+  }
   const onBlur = () => {
     setFocused(false)
     setChip(true)
