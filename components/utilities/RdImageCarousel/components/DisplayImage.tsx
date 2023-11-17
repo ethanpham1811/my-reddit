@@ -1,12 +1,12 @@
 import Image from 'next/image'
-import { MouseEvent, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import RdImgLoader from '../../RdImgLoader/RdImgLoader'
 
 type TDisplayImageProps = {
   width: string
   height: string
   imgSrc: string
-  zoomImage: (e: MouseEvent<HTMLImageElement, globalThis.MouseEvent>, imgSrc: string) => void
+  zoomImage: Dispatch<SetStateAction<string | null>>
 }
 
 function DisplayImage({ width, height, imgSrc, zoomImage }: TDisplayImageProps) {
@@ -17,6 +17,7 @@ function DisplayImage({ width, height, imgSrc, zoomImage }: TDisplayImageProps) 
       {imgLoading && <RdImgLoader />}
 
       <Image
+        tabIndex={0}
         onLoad={() => setImgLoading(false)}
         src={process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + imgSrc}
         alt={'post image'}
@@ -25,7 +26,16 @@ function DisplayImage({ width, height, imgSrc, zoomImage }: TDisplayImageProps) 
         width={300}
         height={200}
         loading="lazy"
-        onClick={(e) => zoomImage(e, imgSrc)}
+        onClick={(e) => {
+          e.stopPropagation()
+          zoomImage(imgSrc)
+        }}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
+            e.stopPropagation()
+            zoomImage(imgSrc)
+          }
+        }}
       />
     </>
   )

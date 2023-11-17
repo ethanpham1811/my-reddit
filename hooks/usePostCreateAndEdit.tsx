@@ -28,7 +28,7 @@ function usePostCreateAndEdit() {
   const [editPost] = useMutation(UPDATE_POST)
   const {
     push: navigate,
-    query: { subreddit: subName, username, postid }
+    query: { subreddit: subName, postid }
   } = useRouter()
 
   /**
@@ -37,7 +37,7 @@ function usePostCreateAndEdit() {
    * - otherwise => show new created post immediately without loading (optimistic update)
    *
    * Optimistic update
-   * Cache update
+   * Cache update (3 queries: Homepage, Subpage, Userpage)
    */
   const createPost = async (formData: TCardCreatePostForm, resetAndCloseForm: () => void, isLinkPost: boolean) => {
     if (!me) return
@@ -90,46 +90,53 @@ function usePostCreateAndEdit() {
         }
       },
       update: (cache: ApolloCache<any>, { data: { insertPost } }) => {
-        // default: home page
-        let query: DocumentNode = GET_PAGINATED_POST_LIST
-        let variables: { offset: number; limit: number; name?: string; username?: string } = { offset: 0, limit: QUERY_LIMIT }
-        let dataKey: string = 'postPaginatedList'
-        let childKey: string | null = null
+        const tobeUpdatedQueries: {
+          query: DocumentNode
+          variables: { offset: number; limit: number; name?: string; username?: string }
+          dataKey: string
+          childKey: string | null
+        }[] = [
+          {
+            // home page
+            query: GET_PAGINATED_POST_LIST,
+            variables: { offset: 0, limit: QUERY_LIMIT },
+            dataKey: 'postPaginatedList',
+            childKey: null
+          },
 
-        // subreddit page
-        if (subName) {
-          // retrieve subreddit name by id from subreddit list
-          const sub_name = subreddit?.name
-          if (!sub_name) return // abort cache update
+          {
+            // subreddit page
+            query: GET_SUBREDDIT_BY_NAME_WITH_POSTS,
+            variables: { offset: 0, limit: QUERY_LIMIT, name: subreddit?.name },
+            dataKey: 'subredditByNameWithPosts',
+            childKey: 'post'
+          },
+          {
+            // user profile page
+            query: GET_USER_BY_USERNAME_WITH_POSTS,
+            variables: { offset: 0, limit: QUERY_LIMIT, username: me?.username },
+            dataKey: 'userByUsernameWithPosts',
+            childKey: 'post'
+          }
+        ]
 
-          variables = { ...variables, name: sub_name }
-          query = GET_SUBREDDIT_BY_NAME_WITH_POSTS
-          dataKey = 'subredditByNameWithPosts'
-          childKey = 'post'
-        }
+        /* update 3 above queries */
+        tobeUpdatedQueries.map(({ query, variables, dataKey, childKey }) => {
+          cache.updateQuery({ query, variables }, (data) => {
+            if (!data) return // abort cache update
+            const cachedPostList: TPost[] = childKey ? data[dataKey][childKey] : data[dataKey]
 
-        // user profile page
-        if (username && me) {
-          variables = { ...variables, username: me.username }
-          query = GET_USER_BY_USERNAME_WITH_POSTS
-          dataKey = 'userByUsernameWithPosts'
-          childKey = 'post'
-        }
-
-        cache.updateQuery({ query, variables }, (data) => {
-          if (!data) return // abort cache update
-          const cachedPostList: TPost[] = childKey ? data[dataKey][childKey] : data[dataKey]
-
-          return childKey
-            ? {
-                [dataKey]: {
-                  ...data[dataKey],
-                  [childKey as string]: [insertPost, ...cachedPostList]
+            return childKey
+              ? {
+                  [dataKey]: {
+                    ...data[dataKey],
+                    [childKey as string]: [insertPost, ...cachedPostList]
+                  }
                 }
-              }
-            : {
-                [dataKey]: [insertPost, ...cachedPostList]
-              }
+              : {
+                  [dataKey]: [insertPost, ...cachedPostList]
+                }
+          })
         })
       }
     })
@@ -137,7 +144,8 @@ function usePostCreateAndEdit() {
     toast.success('Successfully created post')
   }
 
-  /* update post function */
+  /* ---------------------------------------------------------UPDATE POST ----------------------------------------------- */
+
   const updatePost = async (formData: TCardCreatePostForm, isLinkPost: boolean) => {
     if (!me) return
 
@@ -168,13 +176,13 @@ function usePostCreateAndEdit() {
         images: uploadedFilePaths,
         user_id: me?.id
       },
-      // optimisticResponse: {
-      //   updatePost: {
-      //     ...curPost,
-      //     ...formData,
-      //     images: uploadedFilePaths
-      //   }
-      // },
+      optimisticResponse: {
+        updatePost: {
+          ...curPost,
+          ...formData,
+          images: uploadedFilePaths
+        }
+      },
       update: (cache: ApolloCache<any>, { data: { updatePost } }) => {
         const postCachedId = `Post:${postid}`
 
@@ -201,6 +209,8 @@ function usePostCreateAndEdit() {
 
     return await uploadFiles(images)
   }
+
+  /* ------------------------------------------------------ functions -------------------------------------------- */
 
   function uploadErrorMsg(uploadError: TStorageError): string {
     switch (uploadError?.statusCode) {

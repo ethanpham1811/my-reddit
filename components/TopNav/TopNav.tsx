@@ -22,26 +22,26 @@ function TopNav({ sessionUsername }: { sessionUsername: string | undefined }) {
     pathname: pathName,
     push: navigate
   } = router
-  const xlMobile = useMediaQuery(breakpoints.down('lg'))
-  const lgMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Lg)
-  const mdMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Md)
+  const lgMobile = useMediaQuery(breakpoints.down('lg'))
+  const customLgMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Lg)
+  const customMdMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Md)
 
   return (
     <Box flexGrow={1} id="top-nav">
       <NavBar>
         <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} sx={{ justifyContent: 'flex-start' }}>
-          <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={{ sx: 0, md: 1 }} flex={mdMobile ? 1 : 0}>
+          <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={{ sx: 0, md: 1 }} flex={customMdMobile ? 1 : 0}>
             <Logo />
             {/* dropdown */}
             <MenuDropDown subName={subName} userPageName={username} pathName={pathName} />
           </Stack>
           {/* search */}
-          <SearchBar lgMobile={lgMobile} subOrUserName={subName ?? username} navigate={navigate} />
+          <SearchBar isMobile={customLgMobile} subOrUserName={subName ?? username} navigate={navigate} />
           {/* Icons */}
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} pr={1}>
-            <IconBox isMobile={mdMobile} />
+            <IconBox isMobile={customMdMobile} />
             {/* Profile dropdown */}
-            {session && <ProfileDropdown isMobile={xlMobile} loading={loading} sessionUsername={sessionUsername} />}
+            {session && <ProfileDropdown isMobile={lgMobile} loading={loading} sessionUsername={sessionUsername} />}
             {!session && <LoginButton />}
           </Stack>
         </Stack>

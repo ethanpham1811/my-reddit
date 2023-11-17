@@ -1,8 +1,9 @@
 import { CardUserGuide, RdDialog, RdNotiBubble } from '@/components'
 import { useAppSession } from '@/components/Layouts/MainLayout'
 import { DarkModeContext } from '@/components/Layouts/MuiProvider'
+import RdTooltip from '@/components/utilities/RdTooltip/RdTooltip'
 import { TIconBox } from '@/constants/types'
-import { Box, IconButton, Stack, Tooltip } from '@/mui'
+import { Box, IconButton, Stack } from '@/mui'
 import { Events, eventEmitter } from '@/src/eventEmitter'
 import { notificationsLabel } from '@/src/utils'
 import cookie from 'js-cookie'
@@ -19,12 +20,14 @@ function IconBox({ isMobile }: { isMobile: boolean }) {
   const firstTime = !cookie.get('first-time-visit-my-reddit')
   const notiData: TIconBox[] = buildData({ me, mode, toggleDarkMode, openPremiumDrawer, setUserGuideOpen, navigate })
 
-  /* open the user guide for the first time using the app */
+  /*
+   * upon user first time visit the app
+   * show user guide & set cookie firstime=false
+   */
   useEffect(() => {
-    if (firstTime) {
-      setUserGuideOpen(true)
-      cookie.set('first-time-visit-my-reddit', 'true')
-    }
+    if (!firstTime) return
+    setUserGuideOpen(true)
+    cookie.set('first-time-visit-my-reddit', 'false')
   }, [firstTime])
 
   function openPremiumDrawer() {
@@ -38,7 +41,7 @@ function IconBox({ isMobile }: { isMobile: boolean }) {
           notiData.map(({ name, disabled, tooltip, notification, icon, hideOnMobile, onClick }) => (
             <Fragment key={`noti_bubble_${name}`}>
               {isMobile && hideOnMobile ? null : (
-                <Tooltip title={tooltip}>
+                <RdTooltip title={tooltip}>
                   <Box>
                     <IconButton
                       onClick={onClick}
@@ -56,7 +59,7 @@ function IconBox({ isMobile }: { isMobile: boolean }) {
                       )}
                     </IconButton>
                   </Box>
-                </Tooltip>
+                </RdTooltip>
               )}
             </Fragment>
           ))}

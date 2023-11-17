@@ -13,10 +13,10 @@ import SearchBarInput from './components/SearchBarInput'
 type TSearchBarProps = {
   subOrUserName: string | string[] | undefined
   navigate: NextRouter['push']
-  lgMobile: boolean
+  isMobile: boolean
 }
 
-function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
+function SearchBar({ subOrUserName, isMobile, navigate }: TSearchBarProps) {
   const [focused, setFocused] = useState(false)
   const [chip, setChip] = useState(true)
   const { dataList = [], loading, searchTerm, setSearchTerm } = useTopSearchQueriedList(focused)
@@ -27,7 +27,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
       focused={focused}
       params={params}
       chip={chip}
-      isMobile={lgMobile}
+      isMobile={isMobile}
       name={subOrUserName}
       onDeleteChip={onDeleteChip}
     />
@@ -68,7 +68,7 @@ function SearchBar({ subOrUserName, lgMobile, navigate }: TSearchBarProps) {
       loading={loading}
       inputValue={searchTerm}
       popupIcon={false}
-      isMobile={lgMobile}
+      isMobile={isMobile}
       focused={focused}
       disableClearable={true}
       groupBy={(option): string => option.groupBy}

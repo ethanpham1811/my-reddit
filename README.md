@@ -2,38 +2,6 @@
 
 ![My Reddit](public/readme/readme.jpg)
 
-## Getting Started
-
-Install dependencies:
-
-```bash
-npm
-# or
-yarn
-```
-
-Dev run:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Build & Prod run:
-
-```bash
-npm run build
-# or
-yarn build
-
-npm run start
-# or
-yarn start
-```
-
-Navigate [http://localhost:3000](http://localhost:3000) (Both Dev & Prod)
-
 # NextJs + MUI + GraphQL
 
 ## Overview

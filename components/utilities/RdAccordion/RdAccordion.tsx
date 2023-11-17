@@ -20,8 +20,8 @@ const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters
 }))
 
 /* header */
-const Header = styled((props: AccordionSummaryProps & { isMobile?: boolean }) => (
-  <MuiAccordionSummary expandIcon={props.isMobile && <ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />} {...props} />
+const Header = styled(({ isMobile, ...props }: AccordionSummaryProps & { isMobile?: boolean }) => (
+  <MuiAccordionSummary expandIcon={isMobile && <ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />} {...props} />
 ))(({ theme }) => ({
   padding: '1rem',
   paddingBottom: 0,

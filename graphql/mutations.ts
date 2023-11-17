@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import { COMMENT_FRAGMENT, POST_FRAGMENT, SUBREDDIT_FRAGMENT, USER_FRAGMENT } from './fragments'
 
 /* ------------------------------ USER--------------------------------- */
 export const UPDATE_USER = gql`
@@ -35,8 +34,6 @@ export const UPDATE_USER = gql`
       }
     }
   }
-  ${POST_FRAGMENT}
-  ${USER_FRAGMENT}
 `
 
 /* ----------------------------- POST -------------------------------- */
@@ -54,7 +51,6 @@ export const ADD_POST = gql`
       ...PostFragment
     }
   }
-  ${POST_FRAGMENT}
 `
 export const DELETE_POST = gql`
   mutation DeletePost($id: ID!) {
@@ -69,7 +65,6 @@ export const UPDATE_POST = gql`
       ...PostFragment
     }
   }
-  ${POST_FRAGMENT}
 `
 /* ----------------------------- VOTE -------------------------------- */
 export const ADD_VOTE = gql`
@@ -129,7 +124,6 @@ export const UPDATE_SUBREDDIT = gql`
       ...SubredditFragment
     }
   }
-  ${SUBREDDIT_FRAGMENT}
 `
 
 /* ----------------------------- COMMENT -------------------------------- */
@@ -139,7 +133,6 @@ export const ADD_COMMENT = gql`
       ...CommentFragment
     }
   }
-  ${COMMENT_FRAGMENT}
 `
 export const UPDATE_COMMENT = gql`
   mutation UpdateComment($id: ID!, $text: String!) {
@@ -147,7 +140,6 @@ export const UPDATE_COMMENT = gql`
       ...CommentFragment
     }
   }
-  ${COMMENT_FRAGMENT}
 `
 export const DELETE_COMMENT_BY_ID = gql`
   mutation DeleteCommentById($id: ID!) {

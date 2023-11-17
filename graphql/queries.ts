@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import { POST_FRAGMENT, QUERIED_POST_FRAGMENT, SUBREDDIT_FRAGMENT, USER_FRAGMENT } from './fragments'
 
 /* ------------------------------ USER--------------------------------- */
 export const GET_USER_BY_EMAIL = gql`
@@ -8,7 +7,6 @@ export const GET_USER_BY_EMAIL = gql`
       ...UserFragment
     }
   }
-  ${USER_FRAGMENT}
 `
 export const GET_USER_BY_USERNAME_WITH_POSTS = gql`
   query User_by_username_with_posts($username: String!, $offset: Int, $limit: Int) {
@@ -19,8 +17,6 @@ export const GET_USER_BY_USERNAME_WITH_POSTS = gql`
       }
     }
   }
-  ${USER_FRAGMENT}
-  ${POST_FRAGMENT}
 `
 export const GET_USER_LIST_SHORT = gql`
   query Users_short {
@@ -38,7 +34,6 @@ export const GET_SUBREDDIT_BY_NAME = gql`
       ...SubredditFragment
     }
   }
-  ${SUBREDDIT_FRAGMENT}
 `
 export const GET_SUBREDDIT_BY_NAME_WITH_POSTS = gql`
   query Sub_by_name($name: String!, $offset: Int, $limit: Int) {
@@ -49,8 +44,6 @@ export const GET_SUBREDDIT_BY_NAME_WITH_POSTS = gql`
       }
     }
   }
-  ${SUBREDDIT_FRAGMENT}
-  ${POST_FRAGMENT}
 `
 export const GET_SUBREDDIT_LIST_SHORT = gql`
   query Subs_short {
@@ -67,7 +60,6 @@ export const GET_SUBREDDIT_LIST = gql`
       ...SubredditFragment
     }
   }
-  ${SUBREDDIT_FRAGMENT}
 `
 
 /* ----------------------------- POST -------------------------------- */
@@ -77,7 +69,6 @@ export const GET_POST_LIST = gql`
       ...PostFragment
     }
   }
-  ${POST_FRAGMENT}
 `
 export const GET_PAGINATED_POST_LIST = gql`
   query Posts($offset: Int, $limit: Int) {
@@ -85,7 +76,6 @@ export const GET_PAGINATED_POST_LIST = gql`
       ...PostFragment
     }
   }
-  ${POST_FRAGMENT}
 `
 export const GET_POST_BY_ID = gql`
   query Post_by_id($id: ID!) {
@@ -93,7 +83,6 @@ export const GET_POST_BY_ID = gql`
       ...PostFragment
     }
   }
-  ${POST_FRAGMENT}
 `
 /* ----------------------------- TOPIC -------------------------------- */
 export const GET_TOPIC_LIST = gql`
@@ -169,5 +158,4 @@ export const GET_SEARCHED_RESULTS = gql`
       totalItems
     }
   }
-  ${QUERIED_POST_FRAGMENT}
 `
