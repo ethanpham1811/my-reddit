@@ -2,12 +2,16 @@ import { TAppSession } from '@/src/constants/types'
 import { useDrawer, useUserDetailForSession } from '@/src/hooks'
 import { Box, useMediaQuery, useTheme } from '@/src/mui'
 import { Events } from '@/src/services/eventEmitter'
-import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { ReactNode, Suspense, createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { CommunityCreator, RdDrawer, TopNav } from '../components'
-import CardPayment from '../components/Cards/CardPayment/CardPayment'
+import { RdDrawer, TopNav } from '../components'
+import { DrawerFallback } from '../components/Fallbacks'
 import SplashScreen from '../components/SplashScreen/SplashScreen'
+import { lazyLoad } from '../services/lazyLoad'
 import { toastOptions } from './data'
+
+const CommunityCreator = lazyLoad('CommunityCreator', 'CommunityCreator')
+const CardPayment = lazyLoad('Cards/CardPayment', 'CardPayment')
 
 export const AppContext = createContext<{ session: TAppSession; loading: boolean }>({
   session: null,
@@ -19,8 +23,8 @@ export const AppContext = createContext<{ session: TAppSession; loading: boolean
  * - Session context (authentication status + user user detail)
  * - Top navigation
  * - Toaster
- * - Community creation drawer
- * - Premium registration drawer
+ * - Community creation drawer (lazy loaded)
+ * - Premium registration drawer (lazy loaded)
  */
 export default function MainLayout({ children }: { children: ReactNode }) {
   const [appSession, loading, sessionUsername] = useUserDetailForSession()
@@ -54,12 +58,12 @@ export default function MainLayout({ children }: { children: ReactNode }) {
 
           {/* Right drawer (Community creation form) */}
           <RdDrawer disableScrollLock={!isMobile} anchor="right" open={communityDrawerOpen} setOpen={setCommunityDrawerOpen}>
-            <CommunityCreator setOpen={setCommunityDrawerOpen} />
+            <Suspense fallback={<DrawerFallback />}>{communityDrawerOpen && <CommunityCreator setOpen={setCommunityDrawerOpen} />}</Suspense>
           </RdDrawer>
 
           {/* Left drawer (Premium registration form) */}
           <RdDrawer disableScrollLock={!isMobile} anchor="left" open={premiumDrawerOpen} setOpen={setPremiumDrawerOpen}>
-            <CardPayment setOpen={setPremiumDrawerOpen} />
+            <Suspense fallback={<DrawerFallback />}>{premiumDrawerOpen && <CardPayment setOpen={setPremiumDrawerOpen} />}</Suspense>
           </RdDrawer>
         </Box>
       )}

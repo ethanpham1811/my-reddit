@@ -1,3 +1,4 @@
+import { RdInput, RdTopicDropdown } from '@/src/components'
 import { SUBREDDIT_TYPE } from '@/src/constants/enums'
 import { TCommunityCreatorForm, TCommunityCreatorProps } from '@/src/constants/types'
 import { useSubredditCreate } from '@/src/hooks'
@@ -6,8 +7,8 @@ import { subnameValidation } from '@/src/services/formValidations'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { BottomNavigator, IsChildrenGroupCheckbox, RdInput, TopicDropdown } from '..'
-import CommunityTypeRadio from './CommunityTypeRadio/CommunityTypeRadio'
+import { BottomNavigator, IsChildrenGroupCheckbox } from './components'
+import CommunityTypeRadio from './components/CommunityTypeRadio'
 
 function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   const { createSubreddit, loading } = useSubredditCreate()
@@ -32,8 +33,8 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
   })
 
   return (
-    <Box>
-      <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', height: '100dvh' }}>
+    <form onSubmit={onSubmit}>
+      <Box height="100dvh" display="flex" flexDirection="column">
         <Stack position="relative" display="flex" flex={1} px={{ xs: 2, md: 5 }} pt={{ xs: 1, md: 5 }} pb={{ xs: 3, md: 5 }}>
           <Typography variant="h5" fontWeight={{ xs: 700, md: 500 }} color={{ xs: 'orange.main', md: 'inherit' }} paddingY={{ xs: 1, md: 0 }}>
             Create a community
@@ -58,7 +59,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
               flex={1}
               placeholder={`What's on your mind?`}
             />
-            <TopicDropdown<TCommunityCreatorForm>
+            <RdTopicDropdown<TCommunityCreatorForm>
               triggerValidation={trigger}
               control={control}
               setFormValue={setValue}
@@ -75,8 +76,8 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
 
         {/* bottom button controller */}
         <BottomNavigator loading={loading} setOpen={setOpen} />
-      </form>
-    </Box>
+      </Box>
+    </form>
   )
 }
 

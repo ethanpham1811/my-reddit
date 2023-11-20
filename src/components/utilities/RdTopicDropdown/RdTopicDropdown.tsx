@@ -6,7 +6,7 @@ import { useTopicList } from '@/src/hooks'
 import { MenuItem } from '@/src/mui'
 import { emptyArrayValidation } from '@/src/services/formValidations'
 import { Control, FieldValues, Path, PathValue, UseFormSetValue, UseFormTrigger } from 'react-hook-form'
-import { renderSelectedOption } from './RenderedCbs'
+import { renderSelectedOption } from './renders'
 
 type TTopicDropdown<T extends FieldValues> = {
   control: Control<T>
@@ -15,7 +15,7 @@ type TTopicDropdown<T extends FieldValues> = {
   triggerValidation: UseFormTrigger<T>
 }
 
-function TopicDropdown<T extends FieldValues>({ control, setFormValue, triggerValidation, selectedTopics }: TTopicDropdown<T>) {
+function RdTopicDropdown<T extends FieldValues>({ control, setFormValue, triggerValidation, selectedTopics }: TTopicDropdown<T>) {
   const { topicList } = useTopicList()
 
   function unselectedOptions({ id, name }: TTopic) {
@@ -45,4 +45,4 @@ function TopicDropdown<T extends FieldValues>({ control, setFormValue, triggerVa
   )
 }
 
-export default TopicDropdown
+export default RdTopicDropdown

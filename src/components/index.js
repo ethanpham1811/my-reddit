@@ -11,10 +11,6 @@ import CardPost from './Cards/CardPost/CardPost'
 import CardSubredditInfo from './Cards/CardSubredditInfo/CardSubredditInfo'
 import CardUserGuide from './Cards/CardUserGuide/CardUserGuide'
 import CardUserInfo from './Cards/CardUserInfo/CardUserInfo'
-import BottomNavigator from './CommunityCreator/BottomNavigator/BottomNavigator'
-import CommunityCreator from './CommunityCreator/CommunityCreator'
-import IsChildrenGroupCheckbox from './CommunityCreator/IsChildrenGroupCheckbox/IsChildrenGroupCheckbox'
-import TopicDropdown from './CommunityCreator/TopicDropdown/TopicDropdown'
 import LoginPortal from './LoginPortal/LoginPortal'
 import NewFeeds from './NewFeeds/NewFeeds'
 import SearchFeeds from './SearchNewFeeds/SearchFeeds'
@@ -55,9 +51,9 @@ import RdRadioGroup from './utilities/RdRadioGroup/RdRadioGroup'
 import RdSubredditSelect from './utilities/RdSubredditSelect/RdSubredditSelect'
 import RdTextEditor from './utilities/RdTextEditor/RdTextEditor'
 import RdToast from './utilities/RdToast/RdToast'
+import RdTopicDropdown from './utilities/RdTopicDropdown/RdTopicDropdown'
 
 export {
-  BottomNavigator,
   CardAds,
   CardCommentBox,
   CardCreatePost,
@@ -69,9 +65,7 @@ export {
   CardSubredditInfo,
   CardUserGuide,
   CardUserInfo,
-  CommunityCreator,
   IconBox,
-  IsChildrenGroupCheckbox,
   LoginPortal,
   Logo,
   MainLayout,
@@ -108,10 +102,10 @@ export {
   RdSubredditSelect,
   RdTextEditor,
   RdToast,
+  RdTopicDropdown,
   SearchBar,
   SearchFeeds,
   SearchFeedsTabBar,
   SubredditTopNav,
-  TopNav,
-  TopicDropdown
+  TopNav
 }
