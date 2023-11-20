@@ -1,13 +1,13 @@
 import { client } from '@/apollo-client'
-import { CardPost, CardSubredditInfo, MessageBoard, SubredditTopNav } from '@/components'
-import ZoomImgDialog from '@/components/Cards/CardPost/components/ZoomImgDialog'
-import FeedLayout from '@/components/Layouts/FeedLayout'
-import { useAppSession } from '@/components/Layouts/MainLayout'
-import { TPost, TSubredditDetail } from '@/constants/types'
-import { GET_POST_BY_ID, GET_POST_LIST, GET_SUBREDDIT_BY_NAME } from '@/graphql/queries'
-import { useSubByNameAndPostById } from '@/hooks'
-import { Stack } from '@/mui'
-import { validatePostBySubname } from '@/src/utils'
+import FeedLayout from '@/src/Layouts/FeedLayout'
+import { useAppSession } from '@/src/Layouts/MainLayout'
+import { CardPost, CardSubredditInfo, RdMessageBoard, SubredditTopNav } from '@/src/components'
+import ZoomImgDialog from '@/src/components/Cards/CardPost/components/ZoomImgDialog'
+import { TPost, TSubredditDetail } from '@/src/constants/types'
+import { GET_POST_BY_ID, GET_POST_LIST, GET_SUBREDDIT_BY_NAME } from '@/src/graphql/queries'
+import { useSubByNameAndPostById } from '@/src/hooks'
+import { Stack } from '@/src/mui'
+import { validatePostBySubname } from '@/src/services/utils'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -103,7 +103,7 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
       <SubredditTopNav subreddit={subreddit} owner={subreddit?.user?.username} />
       <FeedLayout top="1rem" subredditId={subreddit?.id} loading={pageLoading}>
         {!verifyPost() ? (
-          <MessageBoard
+          <RdMessageBoard
             head={`This post is private, please ${me ? 'join' : ''} `}
             highlight={!me ? 'login' : (subName as string)}
             tail={!me ? ` and join the ${subName as string}` : undefined}

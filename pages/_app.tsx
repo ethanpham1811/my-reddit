@@ -1,5 +1,5 @@
-import { MainLayout, MuiProvider } from '@/components'
-import { createEmotionCache } from '@/mui/createEmotionCache'
+import { MainLayout, MuiProvider } from '@/src/components'
+import { createEmotionCache } from '@/src/mui/createEmotionCache'
 import { ApolloProvider } from '@apollo/client'
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev'
 import { __DEV__ } from '@apollo/client/utilities/globals'

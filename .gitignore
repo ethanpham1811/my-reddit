@@ -33,7 +33,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-stepzen/config.yaml
+src/stepzen/config.yaml
 
 # images
 /public/readme

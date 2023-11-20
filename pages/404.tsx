@@ -1,5 +1,5 @@
-import { NotFound } from '@/components/Cards/CardNotFound/CardNotFound'
-import { Container } from '@/mui'
+import { NotFound } from '@/src/components/Cards/CardNotFound/CardNotFound'
+import { Container } from '@/src/mui'
 
 import Head from 'next/head'
 

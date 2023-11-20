@@ -1,7 +1,7 @@
 /* temporarily unused */
 
 import { client } from '@/apollo-client'
-import { ServerResponseData } from '@/constants/types'
+import { ServerResponseData } from '@/src/constants/types'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import type { NextApiRequest, NextApiResponse } from 'next'
 

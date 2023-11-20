@@ -39,12 +39,11 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "constants/data.tss",
     "pages/api/auth/[...nextauth].ts",
     "pages/api/auth/register.ts"],
   "exclude": [
     "node_modules",
-    "stepzen",
+    "src/stepzen",
     "public",
     ".next"
   ]

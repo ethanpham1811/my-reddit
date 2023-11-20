@@ -9,7 +9,7 @@ import {
   UPDATE_POST_WITH_VOTE_FRAG,
   UPDATE_USER_FRAG,
   USER_FRAGMENT
-} from './graphql/fragments'
+} from './src/graphql/fragments'
 const httpLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_STEPZEN_HOST,
   headers: {
