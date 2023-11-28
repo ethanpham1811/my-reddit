@@ -1,6 +1,6 @@
-import { client } from '@/apollo-client'
 import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TQueryNotFound } from '@/src/constants/types'
 import { GET_QUERIED_SUBS_USERS, GET_TOP_TRENDING_POSTS } from '@/src/graphql/queries'
+import { client } from '@/src/services/apollo-client'
 import { ApolloError, useQuery } from '@apollo/client'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 

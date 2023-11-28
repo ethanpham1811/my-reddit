@@ -1,7 +1,7 @@
-import { client } from '@/apollo-client'
 import { RdButton, RdCard } from '@/src/components'
 import { LogoutIcon } from '@/src/constants/icons'
 import { CircularProgress, Divider, Stack, Typography } from '@/src/mui'
+import { client } from '@/src/services/apollo-client'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Dispatch, SetStateAction, useState } from 'react'
 

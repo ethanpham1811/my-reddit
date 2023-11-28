@@ -77,12 +77,3 @@ declare module '@mui/material/Button' {
     purple: true
   }
 }
-
-declare module 'next-auth' {
-  interface User {
-    id?: number
-  }
-  interface Session extends DefaultSession {
-    user?: User
-  }
-}

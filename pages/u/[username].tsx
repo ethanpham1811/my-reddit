@@ -1,4 +1,3 @@
-import { client } from '@/apollo-client'
 import FeedLayout from '@/src/Layouts/FeedLayout'
 import { useAppSession } from '@/src/Layouts/MainLayout'
 import { CardFeedSorter, CardUserInfo, NewFeeds } from '@/src/components'
@@ -7,6 +6,7 @@ import { TPost, TSortOptions, TUserCompact, TUserDetail } from '@/src/constants/
 import { GET_USER_BY_USERNAME_WITH_POSTS, GET_USER_LIST_SHORT } from '@/src/graphql/queries'
 import { useUserByUsername } from '@/src/hooks'
 import { Box, Stack } from '@/src/mui'
+import { client } from '@/src/services/apollo-client'
 import { appendPosts, noPermissionUserPageMsg } from '@/src/services/pageFunctions'
 import { generateUserCover } from '@/src/services/utils'
 

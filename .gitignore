@@ -40,3 +40,8 @@ src/stepzen/config.yaml
 
 # misc
 /public/refer_next_auth.js
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/tests-examples

@@ -1,4 +1,3 @@
-import { client } from '@/apollo-client'
 import FeedLayout from '@/src/Layouts/FeedLayout'
 import { useAppSession } from '@/src/Layouts/MainLayout'
 import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/src/components'
@@ -7,6 +6,7 @@ import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/src/constan
 import { GET_SUBREDDIT_BY_NAME_WITH_POSTS, GET_SUBREDDIT_LIST_SHORT } from '@/src/graphql/queries'
 import { useSubByNameWithPosts } from '@/src/hooks'
 import { Stack } from '@/src/mui'
+import { client } from '@/src/services/apollo-client'
 import { appendPosts, noPermissionSubPageMsg } from '@/src/services/pageFunctions'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'

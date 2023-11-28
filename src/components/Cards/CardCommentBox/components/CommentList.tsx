@@ -3,7 +3,7 @@ import { ORDERING, SORT_METHOD } from '@/src/constants/enums'
 import { TComment } from '@/src/constants/types'
 import { Avatar, Box, Stack } from '@/src/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/services/utils'
-import { orderBy } from 'lodash'
+import orderBy from 'lodash.orderby'
 import Link from 'next/link'
 import Comment from './Comment'
 

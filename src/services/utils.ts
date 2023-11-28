@@ -1,10 +1,8 @@
-import { client } from '@/apollo-client'
 import { SUBREDDIT_TYPE } from '@/src/constants/enums'
 import { TAutocompleteOptions, TProfileDropDownList, TProfileDropdownGroupedList, TQueryNotFound, TVote } from '@/src/constants/types'
-import { GET_USER_BY_EMAIL } from '@/src/graphql/queries'
 import { ApolloError } from '@apollo/client'
 import { formatDistanceToNow } from 'date-fns'
-import groupBy from 'lodash/groupBy'
+import groupBy from 'lodash.groupby'
 import { JSXElementConstructor, ReactElement } from 'react'
 import toast from 'react-hot-toast'
 import ReactHtmlParser from 'react-html-parser'
@@ -17,8 +15,8 @@ export const notificationHandler = () => {
   return { onCompleted: () => toast.success('sucessful!'), onError: (error: ApolloError) => toast.error(error.message) }
 }
 
-export const getTotalUpvote = (votes: TVote[]): number =>
-  Array.isArray(votes) ? votes.reduce((prev, cur): number => (cur.upvote ? prev + 1 : prev - 1), 0) : 0
+export const getTotalUpvote = (votes: TVote[] | undefined): number =>
+  votes && Array.isArray(votes) ? votes.reduce((prev, cur): number => (cur.upvote ? prev + 1 : prev - 1), 0) : 0
 
 export const notificationsLabel = (count: number) => {
   if (count === 0) return 'no notifications'
@@ -146,19 +144,3 @@ export function generateAutoCompleteUrl(option: Exclude<TAutocompleteOptions, TQ
   return `/u/${option.username}`
 }
 export const parseHtml = (html: string): ReactElement<any, string | JSXElementConstructor<any>>[] => ReactHtmlParser(html)
-
-/*------------------------------------- Server side utils --------------------------------------- */
-// A separate function to check if a user exists and validate credentials
-export const findUser = async (email: string) => {
-  const {
-    data: { userByEmail: existedUser },
-    error
-  } = await client.query({
-    variables: { email, fetchPolicy: 'no-cache' },
-    query: GET_USER_BY_EMAIL
-  })
-
-  if (error) throw new Error(error.message)
-
-  return existedUser
-}

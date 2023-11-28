@@ -1,4 +1,3 @@
-import { client } from '@/apollo-client'
 import { useAppSession } from '@/src/Layouts/MainLayout'
 import { OPTIMISTIC_TEMP_ID, QUERY_LIMIT } from '@/src/constants/enums'
 import { TCardCreatePostForm, TPost, TStorageError, TSubreddit } from '@/src/constants/types'
@@ -11,6 +10,7 @@ import {
   GET_SUBREDDIT_LIST_SHORT,
   GET_USER_BY_USERNAME_WITH_POSTS
 } from '@/src/graphql/queries'
+import { client } from '@/src/services/apollo-client'
 import { ApolloCache, DocumentNode, useMutation, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { useState } from 'react'

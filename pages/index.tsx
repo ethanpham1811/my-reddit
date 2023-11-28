@@ -1,4 +1,3 @@
-import { client } from '@/apollo-client'
 import FeedLayout from '@/src/Layouts/FeedLayout'
 import { CardAds, CardFeedSorter, CardHomeInfo, NewFeeds } from '@/src/components'
 import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/src/constants/enums'
@@ -6,6 +5,7 @@ import { TPost, TSortOptions } from '@/src/constants/types'
 import { GET_PAGINATED_POST_LIST } from '@/src/graphql/queries'
 import { usePostList } from '@/src/hooks'
 import { Stack } from '@/src/mui'
+import { client } from '@/src/services/apollo-client'
 import { appendHomePagePosts } from '@/src/services/pageFunctions'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'

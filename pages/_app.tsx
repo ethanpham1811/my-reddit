@@ -10,7 +10,7 @@ import { SessionContextProvider as SupabaseAuthProvider } from '@supabase/auth-h
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useState } from 'react'
-import { client } from '../apollo-client'
+import { client } from '../src/services/apollo-client'
 
 export interface TMyAppProps extends AppProps {
   emotionCache?: EmotionCache

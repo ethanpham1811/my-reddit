@@ -40,7 +40,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "pages/api/auth/[...nextauth].ts",
-    "pages/api/auth/register.ts"],
+    "pages/api/auth/register.ts", "jest.config.js", "src/services/__tests__/utils.spec.js"],
   "exclude": [
     "node_modules",
     "src/stepzen",
