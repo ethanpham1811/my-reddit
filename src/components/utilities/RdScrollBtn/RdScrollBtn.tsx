@@ -86,7 +86,7 @@ function RdScrollBtn({ wrapperRef, topRef, bottomRef }: TRdScrollBtnProps) {
           </Box>
         </Button>
       ) : (
-        <IconButton sx={{ mx: 'auto', display: 'flex', mt: 0.5 }} onClick={scrollTo}>
+        <IconButton sx={{ mx: 'auto', display: 'flex', mt: 0.5 }} onClick={scrollTo} aria-label="top/bottom scroller">
           <ArrowCircleRightSharpIcon sx={{ fontSize: '2rem', color: 'blue.main', transform: `rotate(${isHalfWayScrolled ? '-90deg' : '90deg'})` }} />
         </IconButton>
       )}

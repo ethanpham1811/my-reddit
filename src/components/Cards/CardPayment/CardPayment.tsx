@@ -14,7 +14,7 @@ function CardPayment({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
   const selectedPrice = selectedPricing != null ? pricinginfoData[selectedPricing].price : 0
 
   const closeDrawerBtn = (
-    <IconButton onClick={() => setOpen(false)}>
+    <IconButton onClick={() => setOpen(false)} aria-label="close modal">
       <CloseIcon sx={{ color: 'actionIcon.main', fontSize: '1.5rem' }} />
     </IconButton>
   )

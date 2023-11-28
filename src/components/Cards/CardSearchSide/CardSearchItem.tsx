@@ -65,6 +65,7 @@ function CardSearchItem({
               backgroundColor: generateSeededHexColor(name),
               border: (theme): string => `4px solid ${theme.palette.white.main}`
             }}
+            alt="avatar"
             src={generateUserImage(name)}
           />
         </Link>

@@ -42,6 +42,7 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
                 backgroundColor: generateSeededHexColor(name as string),
                 border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
               }}
+              alt="subreddit avatar"
               src={generateUserImage(name as string)}
             />
           }

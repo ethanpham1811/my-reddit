@@ -66,6 +66,7 @@ function BottomControl<T extends FieldValues>({ subId, isEditing, control, loadi
             setIsLinkPost(false)
             resetForm()
           }}
+          aria-label="close menu"
         >
           <CloseIcon sx={{ display: 'block', fontSize: '1.5rem' }} />
         </IconButton>

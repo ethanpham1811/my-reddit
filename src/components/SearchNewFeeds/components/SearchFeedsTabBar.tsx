@@ -50,7 +50,7 @@ function SearchFeedsTabBar({ type = SEARCH_TABS.Post, top }: TSearchFeedsTabBarP
           <ToggleButton
             key={`sorter_${rid()}`}
             value={value}
-            aria-label={`${title} search tab`}
+            aria-label={`${title}`}
             sx={{
               '&.Mui-selected': { bgcolor: 'white.main', opacity: 0.8 },
               '.MuiTypography-root': { color: 'black' },

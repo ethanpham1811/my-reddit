@@ -38,7 +38,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       return (
         <div>
           <h2>Oops, there is an error!</h2>
-          <button type="button" onClick={this.handleTryAgainClick}>
+          <button type="button" onClick={this.handleTryAgainClick} id="error-try-again" aria-label="Try again?">
             Try again?
           </button>
         </div>

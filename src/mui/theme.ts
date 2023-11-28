@@ -196,7 +196,10 @@ export const buildTheme = (mode: DARK_MODE): Theme => {
           body: {
             backgroundColor: mode === DARK_MODE.light ? '#DAE0E6' : '#1a1a1a',
             fontSize: '1rem',
-            fontWeight: 400
+            fontWeight: 400,
+            '@media (max-width:1024px)': {
+              fontSize: '16px !important'
+            }
           },
           //TinyMCE elements overridings (comment box)
           '.parsed-html p': {

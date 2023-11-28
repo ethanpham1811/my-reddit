@@ -1,7 +1,7 @@
 import homeBannerUrl from '@/public/home_banner.png'
 import redditRobotUrl from '@/public/reddit_robot.png'
 import { useAppSession } from '@/src/Layouts/MainLayout'
-import { CardActions, CardContent, CardHeader, CardMedia, Divider, Typography } from '@/src/mui'
+import { Box, CardActions, CardContent, CardHeader, CardMedia, Divider, Typography } from '@/src/mui'
 import { Events, eventEmitter } from '@/src/services/eventEmitter'
 import Image from 'next/image'
 import { RdButton, RdCard } from '../..'
@@ -23,7 +23,11 @@ function CardHomeInfo() {
     <RdCard sx={{ flex: 1, gap: 1, display: 'flex', flexDirection: 'column' }}>
       <CardMedia component="img" height={34} image={homeBannerUrl.src} alt="Home cover" sx={{ mx: -1, mt: -1, width: 'auto' }} />
       <CardHeader
-        avatar={<Image alt="reddit robot" aria-label="reddit robot" src={redditRobotUrl.src} width={40} height={68} />}
+        avatar={
+          <Box width={40} height={68} position="relative">
+            <Image alt="reddit robot" aria-label="reddit robot" src={redditRobotUrl.src} layout="fill" objectFit="contain" />
+          </Box>
+        }
         titleTypographyProps={{ sx: { fontWeight: 600, fontSize: '0.9rem', mt: 3 } }}
         title="Home"
         sx={{ p: 0, mt: -2.5 }}

@@ -45,12 +45,12 @@ function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSort
         }}
       >
         {data.length > 0 &&
-          data.map(({ optionDisabled, methodValue, description, icon, label }) => (
+          data.map(({ optionDisabled, methodValue, icon, label }) => (
             <ToggleButton
               disabled={disabled || optionDisabled}
               key={`sorter_${rid()}`}
               value={methodValue}
-              aria-label={description}
+              aria-label={label}
               sx={{ borderRadius: '9999px !important', paddingRight: 1.5, gap: 0.5 }}
             >
               {createElement(icon)}
@@ -65,6 +65,7 @@ function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSort
       <IconButton
         sx={{ ml: 'auto !important', width: '35px', height: '35px' }}
         onClick={(e) => setSortOptions({ ...sortOptions, ordering: sortOptions.ordering === ORDERING.Desc ? ORDERING.Asc : ORDERING.Desc })}
+        aria-label="Asc/Desc switcher"
       >
         <SwapVertOutlinedIcon sx={{ display: 'block' }} />
       </IconButton>

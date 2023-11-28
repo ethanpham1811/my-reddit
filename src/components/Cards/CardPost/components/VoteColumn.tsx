@@ -50,11 +50,21 @@ function VoteColumn({ vote: votes, me, postId, isMyPost, onPostPage }: TVoteColu
   return (
     <Box width={40} m={-1} mb={isMyPost && onPostPage ? 0 : -1} bgcolor="inputBgOutfocused.main">
       <Stack alignItems="center" onClick={(e) => e.stopPropagation()}>
-        <IconButton sx={{ cursor: loading || !me ? 'auto' : 'pointer' }} disableRipple={loading || !me} onClick={() => handleVote(true)}>
+        <IconButton
+          sx={{ cursor: loading || !me ? 'auto' : 'pointer' }}
+          disableRipple={loading || !me}
+          onClick={() => handleVote(true)}
+          aria-label="upvote"
+        >
           <ImArrowUp style={{ color: `${vote != null && vote.upvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
         <Typography sx={{ cursor: 'default' }}>{voteCount}</Typography>
-        <IconButton sx={{ cursor: loading || !me ? 'auto' : 'pointer' }} disableRipple={loading || !me} onClick={() => handleVote(false)}>
+        <IconButton
+          sx={{ cursor: loading || !me ? 'auto' : 'pointer' }}
+          disableRipple={loading || !me}
+          onClick={() => handleVote(false)}
+          aria-label="downvote"
+        >
           <ImArrowDown style={{ color: `${vote != null && !vote.upvote ? '#ff4500' : '#DAE0E6'}` }} />
         </IconButton>
       </Stack>

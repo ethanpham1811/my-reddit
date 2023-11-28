@@ -42,7 +42,12 @@ function LoginPortal({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
 
         {/* Login with FB & Github providers button icons */}
         <Stack direction="row" justifyContent="flex-start" spacing={1}>
-          <IconButton disabled sx={{ p: 0.4, color: 'unset', ml: '-0.4rem !important' }} onClick={() => LoginWithProvider('facebook')}>
+          <IconButton
+            disabled
+            sx={{ p: 0.4, color: 'unset', ml: '-0.4rem !important' }}
+            onClick={() => LoginWithProvider('facebook')}
+            aria-label="facebook login"
+          >
             <BsFacebook size={25} />
           </IconButton>
           {loading ? (
@@ -56,6 +61,7 @@ function LoginPortal({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
                 setLoading(true)
                 LoginWithProvider('github')
               }}
+              aria-label="reddit login"
             >
               <BsReddit size={25} />
             </IconButton>

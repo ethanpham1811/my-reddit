@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en'
+  },
   images: {
     domains: ['images.unsplash.com', 'rlp-proxy.herokuapp.com', 'robohash.org', 'picsum.photos', 'atmlrrpvxwcbwwhukbze.supabase.co'],
     formats: ['image/avif', 'image/webp']

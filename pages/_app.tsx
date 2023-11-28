@@ -25,11 +25,12 @@ if (__DEV__) {
 export default function App({ Component, emotionCache = createEmotionCache(), pageProps: { ...pageProps } }: TMyAppProps) {
   /* Init supabase client on app first render */
   const [supabaseClient] = useState(() => createPagesBrowserClient())
+  const metaDescription = 'my clone reddit'
 
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1" />
+        <meta name="description" content={metaDescription} />
       </Head>
 
       <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!, components: 'buttons', currency: 'USD' }}>

@@ -40,6 +40,7 @@ function RdIconSelect({ disabled, options, icon, disableRipple, size, sx, positi
         aria-haspopup="true"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
+        aria-label="open menu"
         onClick={(e) => {
           e.stopPropagation()
           e.preventDefault()

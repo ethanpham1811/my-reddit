@@ -31,7 +31,12 @@ function Tools<T extends FieldValues>({ resetForm, imagesValue, isEditing, contr
     <Stack spacing={1.5} alignItems="center" direction={{ xs: 'row', sm: 'column' }}>
       <Tooltip title={isEditing ? "You can't change mode" : 'Create Link Post'}>
         <Box>
-          <IconButton disabled={isEditing} sx={{ bgcolor: isLinkPost ? 'primary.main' : 'unset', ml: '7px' }} onClick={onClickLinkBtn}>
+          <IconButton
+            disabled={isEditing}
+            sx={{ bgcolor: isLinkPost ? 'primary.main' : 'unset', ml: '7px' }}
+            onClick={onClickLinkBtn}
+            ara-label="link post toggler"
+          >
             <LinkIcon sx={{ display: 'block' }} />
           </IconButton>
         </Box>
@@ -43,6 +48,7 @@ function Tools<T extends FieldValues>({ resetForm, imagesValue, isEditing, contr
               tabIndex={-1}
               disabled={!formOpened || isLinkPost}
               sx={{ bgcolor: imagesValue && imagesValue?.length !== 0 ? 'primary.main' : 'unset', ml: '7px' }}
+              aria-label="image uploader"
             >
               <RdImageUploader<T> control={control} name={'images' as Path<T>} />
             </IconButton>

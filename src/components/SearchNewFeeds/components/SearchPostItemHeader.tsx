@@ -28,6 +28,7 @@ export default function SearchPostItemHeader({ subName, username, created_at }: 
               top: { xs: '8px', sm: 'unset' },
               backgroundColor: generateSeededHexColor(subName)
             }}
+            alt="subreddit avatar"
             src={generateUserImage(subName)}
           />
         </Link>

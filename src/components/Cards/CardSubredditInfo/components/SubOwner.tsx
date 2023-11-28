@@ -28,6 +28,7 @@ function SubOwner({ ownerUsername }: { ownerUsername: string | undefined }) {
                 backgroundColor: generateSeededHexColor(ownerUsername),
                 border: (theme): string => `4px solid ${theme.palette.primary.main}`
               }}
+              alt="user avatar"
               src={generateUserImage(ownerUsername)}
             />
             <Typography variant="subtitle2" sx={{ color: 'blue.main' }}>
