@@ -10,7 +10,7 @@ function NotFoundOption({ option, props }: { option: TQueryNotFound; props: HTML
       {...props}
       sx={{
         '&.MuiListItem-root': { cursor: 'auto', gap: 2, alignItems: 'flex-start', '&.Mui-focused': { backgroundColor: 'inherit' } },
-        '&:hover': { bgcolor: 'inputBgOutfocused.main' }
+        '&:hover': { bgcolor: 'primary.light' }
       }}
     >
       <Typography>{option.text}</Typography>

@@ -23,7 +23,7 @@ export const renderSelectedOption = (
                 width: 20,
                 height: 20,
                 backgroundColor: generateSeededHexColor(selectedMenu.name),
-                border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+                border: (theme): string => `1px solid ${theme.palette.primary.dark}`
               }}
               alt={`${selectedMenu.name} avatar`}
               src={generateUserImage(selectedMenu.name)}

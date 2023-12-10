@@ -15,7 +15,7 @@ function RdFunctionItem({ title, list, ...rest }: TRdAdItemProps) {
       justifySelf="center"
       spacing={1}
       border="1px solid"
-      borderColor="cardBorder.main"
+      borderColor="gray.light"
       py={1.5}
       px={1}
       borderRadius={3}

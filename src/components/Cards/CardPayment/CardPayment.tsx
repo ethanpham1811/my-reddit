@@ -15,7 +15,7 @@ function CardPayment({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
 
   const closeDrawerBtn = (
     <IconButton onClick={() => setOpen(false)} aria-label="close modal">
-      <CloseIcon sx={{ color: 'actionIcon.main', fontSize: '1.5rem' }} />
+      <CloseIcon sx={{ color: 'gray.main', fontSize: '1.5rem' }} />
     </IconButton>
   )
 

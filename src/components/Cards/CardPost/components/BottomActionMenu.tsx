@@ -38,11 +38,11 @@ function BottomActionMenu({ setIsDeleting, postId, isMyPost, subName, totalComme
   return (
     <>
       <Stack direction="row">
-        <Box width={40} m={-1} mt={0} bgcolor="inputBgOutfocused.main"></Box>
+        <Box width={40} m={-1} mt={0} bgcolor="primary.light"></Box>
         <Box display="flex" gap={1} flex={1} ml={1} px={1} pt={1} justifyContent="space-between">
           {/* vote-comment counter */}
           <Stack direction="row" alignItems="center" justifySelf="flex-start">
-            <Typography fontWeight={400} fontSize="0.8rem" sx={{ color: 'hintText.main', ml: 1 }}>
+            <Typography fontWeight={400} fontSize="0.8rem" sx={{ color: 'gray.dark', ml: 1 }}>
               <CommentOutlinedIcon sx={{ fontSize: '1rem', position: 'relative', top: '2px', mr: 0.5 }} />
               {totalComments || 0}
             </Typography>

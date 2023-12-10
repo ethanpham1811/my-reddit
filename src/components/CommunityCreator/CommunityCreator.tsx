@@ -45,7 +45,7 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
           <Typography variant="h5" sx={{ mt: { xs: 0, md: 2 } }}>
             Name
           </Typography>
-          <Typography variant="body1" component="p" sx={{ color: 'hintText.main' }}>
+          <Typography variant="body1" component="p" sx={{ color: 'gray.dark' }}>
             Community names including capitalization cannot be changed.
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} gap={1} sx={{ mt: 2 }}>

@@ -35,7 +35,7 @@ function RdIconSelect({ disabled, options, icon, disableRipple, size, sx, positi
         disabled={disabled}
         disableRipple={disableRipple}
         size={size}
-        sx={{ '&.Mui-focusVisible': { bgcolor: 'inputBorder.main' }, ...sx }}
+        sx={{ '&.Mui-focusVisible': { bgcolor: 'primary.light' }, ...sx }}
         id={`rd-select-btn-${btnId}`}
         aria-haspopup="true"
         aria-controls={open ? 'basic-menu' : undefined}

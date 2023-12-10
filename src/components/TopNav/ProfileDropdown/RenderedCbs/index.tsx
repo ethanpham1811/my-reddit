@@ -26,7 +26,7 @@ export const renderSelectedOption = (username: string | undefined, loading: bool
                   width: 20,
                   height: 20,
                   backgroundColor: generateSeededHexColor(username),
-                  border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+                  border: (theme): string => `1px solid ${theme.palette.primary.light}`
                 }}
                 alt={`${username} avatar`}
                 src={generateUserImage(username)}

@@ -21,7 +21,7 @@ function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPos
         <Typography variant="h6" sx={{ color: 'black.main' }}>
           {title}
         </Typography>
-        <Typography fontSize="0.8rem" sx={{ pb: 5, color: 'hintText.main', ...bottomStyle }}>
+        <Typography fontSize="0.8rem" sx={{ pb: 5, color: 'gray.dark', ...bottomStyle }}>
           {parseHtml(body)}
         </Typography>
       </Stack>

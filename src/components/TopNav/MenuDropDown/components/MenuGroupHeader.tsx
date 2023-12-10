@@ -4,7 +4,7 @@ import { ListSubheader, Typography } from '@/src/mui'
 function MenuGroupHeader({ label }: { label: MAIN_MENU_GROUP }) {
   return (
     <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-      <Typography variant="subtitle1" sx={{ color: 'hintText.main' }}>
+      <Typography variant="subtitle1" sx={{ color: 'gray.dark' }}>
         {label.toUpperCase()}
       </Typography>
     </ListSubheader>

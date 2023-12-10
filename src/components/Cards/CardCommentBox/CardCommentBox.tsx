@@ -47,7 +47,7 @@ function CardCommentBox({ post_id, user_id, username, commentList }: TCardCommen
             <Stack sx={{ flex: 1 }}>
               {/* Comment as <username> */}
               {
-                <Typography variant="body2" sx={{ p: 1, color: 'hintText.main' }}>
+                <Typography variant="body2" sx={{ p: 1, color: 'gray.dark' }}>
                   Comment as{' '}
                   <Link href={`/u/${username}`} style={{ textDecoration: 'none' }}>
                     <Typography variant="body2" sx={{ color: 'blue.main' }}>

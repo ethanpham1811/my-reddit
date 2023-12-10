@@ -8,7 +8,7 @@ function SubMember({ member }: { member: number | undefined }) {
         {formatNumber(member || 0)}
       </Typography>{' '}
       &nbsp;
-      <Typography variant="subtitle2" sx={{ color: 'hintText.main' }}>
+      <Typography variant="subtitle2" sx={{ color: 'gray.dark' }}>
         members
       </Typography>
     </Box>

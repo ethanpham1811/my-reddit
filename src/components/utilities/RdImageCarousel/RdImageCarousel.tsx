@@ -16,8 +16,8 @@ function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarou
   return (
     <>
       <Carousel
-        NextIcon={<ArrowForwardIosIcon sx={{ color: 'actionIcon.main' }} />}
-        PrevIcon={<ArrowBackIosIcon sx={{ color: 'actionIcon.main', position: 'relative', left: '4px' }} />}
+        NextIcon={<ArrowForwardIosIcon sx={{ color: 'gray.main' }} />}
+        PrevIcon={<ArrowBackIosIcon sx={{ color: 'gray.main', position: 'relative', left: '4px' }} />}
         height={300}
         indicators={imgList.length > 1}
         fullHeightHover={false}

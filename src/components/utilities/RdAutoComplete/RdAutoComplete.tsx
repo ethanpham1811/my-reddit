@@ -33,6 +33,11 @@ function RdAutoComplete<
 
   return (
     <Autocomplete
+      disablePortal
+      selectOnFocus
+      openOnFocus
+      handleHomeEndKeys
+      popupIcon={false}
       sx={{
         '&.Mui-expanded': {
           '.MuiInputBase-root.MuiAutocomplete-inputRoot': {
@@ -42,8 +47,8 @@ function RdAutoComplete<
         },
         '+ .MuiAutocomplete-popper': {
           border: (theme) => `1px solid ${theme.palette.blue.main}`,
-          borderTopColor: 'inputBorder.main',
-          '.MuiAutocomplete-listbox': { maxHeight: '60dvh' },
+          borderTopColor: 'primary.dark',
+          '.MuiAutocomplete-listbox': { maxHeight: '60dvh', py: 0 },
           ...dropDownMobileStyle
         },
         ...inputMobileStyle,

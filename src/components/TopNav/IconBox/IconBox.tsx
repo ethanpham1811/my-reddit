@@ -46,7 +46,7 @@ function IconBox({ isMobile }: { isMobile: boolean }) {
                     <IconButton
                       onClick={onClick}
                       size="large"
-                      sx={{ color: 'icon.main', p: 1.25, fontSize: '2rem', '&.Mui-disabled': { color: 'hintText.main' } }}
+                      sx={{ color: 'secondary.dark', p: 1.25, fontSize: '2rem', '&.Mui-disabled': { color: 'gray.dark' } }}
                       aria-label={notificationsLabel(100)}
                       disabled={disabled}
                     >

@@ -19,7 +19,7 @@ function RdPricing({ active, title, description, price, benefits, sx, ...rest }:
       alignItems="stretch"
       spacing={1}
       border="1px solid"
-      borderColor="cardBorder.main"
+      borderColor="gray.light"
       py={1.5}
       px={2}
       borderRadius={3}

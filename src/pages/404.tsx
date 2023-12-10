@@ -20,18 +20,3 @@ const Page404 = () => {
   )
 }
 export default Page404
-
-// export async function getServerSideProps({ res }) {
-//   res.writeHead(302, { Location: '/' })
-//   res.end()
-
-//   return {
-//     props: {} // Empty props since the component won't be rendered.
-//   }
-// }
-
-// if (!data) {
-//   return {
-//     notFound: true,
-//   }
-// }

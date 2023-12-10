@@ -24,6 +24,7 @@ function SearchBar({ subOrUserName, isMobile, navigate }: TSearchBarProps) {
   const renderInput = (params: AutocompleteRenderInputParams) => (
     <SearchBarInput
       setFocused={setFocused}
+      loading={loading}
       focused={focused}
       params={params}
       chip={chip}
@@ -59,15 +60,8 @@ function SearchBar({ subOrUserName, isMobile, navigate }: TSearchBarProps) {
   return (
     <RdAutoComplete<TAutocompleteOptions, false, true, true, 'span'>
       options={dataList}
-      disablePortal
       freeSolo
-      selectOnFocus
-      openOnFocus
-      handleHomeEndKeys
-      includeInputInList
-      loading={loading}
       inputValue={searchTerm}
-      popupIcon={false}
       isMobile={isMobile}
       focused={focused}
       disableClearable={true}

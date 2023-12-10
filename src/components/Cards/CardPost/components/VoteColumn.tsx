@@ -48,7 +48,7 @@ function VoteColumn({ vote: votes, me, postId, isMyPost, onPostPage }: TVoteColu
   }
 
   return (
-    <Box width={40} m={-1} mb={isMyPost && onPostPage ? 0 : -1} bgcolor="inputBgOutfocused.main">
+    <Box width={40} m={-1} mb={isMyPost && onPostPage ? 0 : -1} bgcolor="primary.light">
       <Stack alignItems="center" onClick={(e) => e.stopPropagation()}>
         <IconButton
           sx={{ cursor: loading || !me ? 'auto' : 'pointer' }}

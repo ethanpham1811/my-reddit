@@ -51,7 +51,7 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
         {/* Inform messages */}
         {newUserEmail && (
           <Stack alignItems="center">
-            <Typography sx={{ color: 'hintText.main' }}>
+            <Typography sx={{ color: 'gray.dark' }}>
               Welcome <Typography sx={{ color: 'orange.main' }}>{newUserEmail}</Typography>!
             </Typography>
             <Typography fontSize="0.8rem">Please login with your account</Typography>
@@ -97,7 +97,7 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
         />
 
         {/* Not registered? Signup here */}
-        <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main', display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'gray.dark', display: 'flex', alignItems: 'center', gap: 0.5 }}>
           Not Registered?{' '}
           <Link component="button" sx={{ cursor: 'pointer', color: 'blue.main' }} onClick={() => setIsLoginForm(false)}>
             Signup

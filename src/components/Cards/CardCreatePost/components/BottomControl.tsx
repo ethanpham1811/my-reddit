@@ -61,7 +61,7 @@ function BottomControl<T extends FieldValues>({ subId, isEditing, control, loadi
       {!isEditing && (
         <IconButton
           disabled={isEditing}
-          sx={{ p: 0.5, color: 'actionIcon.main' }}
+          sx={{ p: 0.5, color: 'gray.main' }}
           onClick={() => {
             setIsLinkPost(false)
             resetForm()

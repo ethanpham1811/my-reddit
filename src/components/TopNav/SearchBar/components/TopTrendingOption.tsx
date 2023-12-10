@@ -43,7 +43,7 @@ function TopTrendingOption({ option, props, url }: TTropTrendingOptionProps) {
         sx={{
           '&.MuiListItem-root': { py: 1.5, gap: 2, alignItems: 'flex-start' },
           '&.Mui-focused.MuiAutocomplete-option, &.Mui-focusVisible.MuiAutocomplete-option': {
-            bgcolor: (theme) => `${theme.palette.inputBgOutfocused.main} !important`,
+            bgcolor: (theme) => `${theme.palette.primary.light} !important`,
             '.blurred-bottom::after': {
               background: `linear-gradient(0deg, ${hoveredBtmBgcolor} 0%, ${hoveredBtmBgcolor} 30%, transparent 100%)`
             }
@@ -79,7 +79,7 @@ function TopTrendingOption({ option, props, url }: TTropTrendingOptionProps) {
           <Box
             className="blurred-bottom"
             pb={5}
-            color="hintText.main"
+            color="gray.dark"
             sx={{
               ...bottomStyle
             }}

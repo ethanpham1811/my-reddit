@@ -8,7 +8,7 @@ const RdInputBase = styled(TextField)(({ theme }) => {
   return {
     '.MuiInputBase-root': {
       borderRadius: '4px',
-      color: theme.palette.inputText.main,
+      color: theme.palette.secondary.main,
       '&.Mui-focused, &:hover': {
         backgroundColor: 'white.main'
       }

@@ -84,7 +84,7 @@ function ProfileDropdownProp({ isMobile, loading, sessionUsername }: TProfileDro
 
         {/* bottom copyrights */}
         <Box px={2}>
-          <Typography variant="caption" sx={{ color: 'hintText.main', textWrap: 'nowrap' }}>
+          <Typography variant="caption" sx={{ color: 'gray.dark', textWrap: 'nowrap' }}>
             Ethan Reddit, Inc. © 2023. All rights reserved.
           </Typography>
         </Box>

@@ -45,7 +45,7 @@ function CardUserGuide({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>>
         {/* close btn */}
         <Stack direction="row" spacing={2} justifyContent="center">
           <IconButton
-            sx={{ backgroundColor: 'inputBorder.main', '&:hover': { '.MuiSvgIcon-root': { color: 'black.main' } } }}
+            sx={{ backgroundColor: 'primary.dark', '&:hover': { '.MuiSvgIcon-root': { color: 'black.main' } } }}
             onClick={() => setOpen(false)}
             aria-label="close modal"
           >

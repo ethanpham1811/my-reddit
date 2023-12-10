@@ -50,7 +50,7 @@ function ActionMenu({ commentId, setIsDeleting, onClickEdit }: TActionMenuProps)
         size="small"
         options={commentActionOptions}
         icon={MoreHorizIcon}
-        sx={{ position: 'absolute', top: '-15px', right: '10px', color: 'hintText.main', '&:hover': { color: 'inherit' } }}
+        sx={{ position: 'absolute', top: '-15px', right: '10px', color: 'gray.dark', '&:hover': { color: 'inherit' } }}
       />
 
       {/* delete comment confirm dialog */}

@@ -41,12 +41,12 @@ export default function SearchPostItemHeader({ subName, username, created_at }: 
       </Stack>
 
       {/* Period */}
-      <Box display={{ xs: 'none', sm: 'block' }} mx={0.5} color="hintText.main" fontSize="0.8rem">
+      <Box display={{ xs: 'none', sm: 'block' }} mx={0.5} color="gray.dark" fontSize="0.8rem">
         •
       </Box>
 
       {/* Posted by */}
-      <Typography fontWeight={400} fontSize="0.8rem" sx={{ ml: { xs: 'calc(25px + 0.5rem)', sm: 0 }, flex: 'auto', color: 'hintText.main' }}>
+      <Typography fontWeight={400} fontSize="0.8rem" sx={{ ml: { xs: 'calc(25px + 0.5rem)', sm: 0 }, flex: 'auto', color: 'gray.dark' }}>
         Posted by{' '}
         <Link href={`/u/${username}`} style={{ color: 'inherit' }}>
           {username}

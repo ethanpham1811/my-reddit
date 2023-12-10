@@ -47,7 +47,7 @@ function RdMultipleDropdown<T extends FieldValues, P extends { id: number }>({
                 minWidth: '200px',
                 width: 'min-content',
                 fontWeight: 'medium',
-                border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`,
+                border: (theme): string => `1px solid ${theme.palette.primary.dark}`,
                 '.MuiSelect-select': {
                   p: 0.8,
                   gap: 1,

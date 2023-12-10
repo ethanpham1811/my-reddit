@@ -12,7 +12,7 @@ function CommentList({ commentList, filterTerm }: { commentList: TComment[] | un
     return option.text.toLowerCase().includes(filterTerm.toLowerCase()) || option.user.username.toLowerCase().includes(filterTerm.toLowerCase())
   }
   return (
-    <Box bgcolor="commentBox.main" m={1} pb={3} pt={2}>
+    <Box bgcolor="bright.main" m={1} pb={3} pt={2}>
       {commentList && commentList.length > 0 ? (
         orderBy(commentList.filter(filterByTerm), SORT_METHOD.New, ORDERING.Desc).map(({ id, text, user: { username }, created_at }, i) => (
           <Stack sx={{ pt: i === 0 ? 1 : 3 }} direction="row" key={`comment_by_user_${username}_${id}`} gap={1}>
@@ -24,7 +24,7 @@ function CommentList({ commentList, filterTerm }: { commentList: TComment[] | un
                     width: 35,
                     height: 35,
                     backgroundColor: generateSeededHexColor(username || 'seed'),
-                    border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+                    border: (theme): string => `1px solid ${theme.palette.primary.dark}`
                   }}
                   alt={`comment of user ${username}`}
                   src={generateUserImage(username)}

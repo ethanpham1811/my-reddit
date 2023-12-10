@@ -26,7 +26,7 @@ function QueriedSubUserOption({ option, props, url }: TQueriedSubUserOptionProps
       sx={{
         '&.MuiListItem-root': { gap: 2, alignItems: 'flex-start' },
         '&.Mui-focused.MuiAutocomplete-option, &.Mui-focusVisible.MuiAutocomplete-option': {
-          bgcolor: (theme) => `${theme.palette.inputBgOutfocused.main} !important`
+          bgcolor: (theme) => `${theme.palette.primary.light} !important`
         }
       }}
     >
@@ -43,7 +43,7 @@ function QueriedSubUserOption({ option, props, url }: TQueriedSubUserOptionProps
       </Box>
       <Stack>
         <Typography>r/{isSub ? option.name : option.username}</Typography>
-        <Typography variant="caption" sx={{ color: 'hintText.main' }}>
+        <Typography variant="caption" sx={{ color: 'gray.dark' }}>
           {isSub && `Community • ${formatNumber(option.member)} members`}
           {!isSub && `User • ${formatNumber(option.followers)} followers`}
         </Typography>

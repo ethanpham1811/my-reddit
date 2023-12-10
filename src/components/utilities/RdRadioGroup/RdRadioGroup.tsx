@@ -58,7 +58,7 @@ const RdRadioGroup = <T extends FieldValues>({ sx, options, name, control, label
                     <Box style={{ padding: '0 0.5rem' }} display={{ xs: 'none', sm: 'block' }}>
                       •
                     </Box>
-                    <Typography variant="body1" sx={{ color: 'hintText.main' }}>
+                    <Typography variant="body1" sx={{ color: 'gray.dark' }}>
                       {description}
                     </Typography>
                   </Stack>

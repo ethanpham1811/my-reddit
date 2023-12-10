@@ -52,7 +52,7 @@ function ActionMenu({ postId, subName, setIsDeleting }: TActionMenuProps) {
         size="small"
         options={postActionOptions}
         icon={MoreHorizIcon}
-        sx={{ position: 'absolute', top: 0, right: '0.5rem', color: 'hintText.main', '&:hover': { color: 'inherit' } }}
+        sx={{ position: 'absolute', top: 0, right: '0.5rem', color: 'gray.dark', '&:hover': { color: 'inherit' } }}
       />
       <RdDialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
         <CardConfirm

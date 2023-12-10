@@ -1,8 +1,8 @@
-import { TAutocompleteOptions, TQueriedSub, TQueriedTrending, TQueriedUser, TQueryNotFound } from '@/src/constants/types'
+import { TAutocompleteOptions, TQueriedSub, TQueriedUser, TQueryNotFound } from '@/src/constants/types'
 import { GET_QUERIED_SUBS_USERS, GET_TOP_TRENDING_POSTS } from '@/src/graphql/queries'
-import { client } from '@/src/services/apollo-client'
-import { ApolloError, useQuery } from '@apollo/client'
+import { ApolloError, useLazyQuery } from '@apollo/client'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { SEARCH_DEBOUNCE_TIMER } from '../constants/enums'
 
 type TuseTopSearchQueriedListResponse = {
   dataList: TAutocompleteOptions[]
@@ -13,6 +13,10 @@ type TuseTopSearchQueriedListResponse = {
 }
 
 /**
+ * This hook handles fetching trending list & top subreddit + users
+ * - abort concurrent request before trigger new request
+ * - debounce request upon user input by 500ms
+ *
  * If SearchTerm is empty (user not input anything):
  * - request for top 3 post with highest votes
  *
@@ -21,43 +25,67 @@ type TuseTopSearchQueriedListResponse = {
  */
 function useTopSearchQueriedList(isFocused: boolean): TuseTopSearchQueriedListResponse {
   const [searchTerm, setSearchTerm] = useState('')
-  const [trendingLoading, setTrendingLoading] = useState(false)
-  const [trendingData, setTrendingData] = useState<TQueriedTrending[] | null>(null)
   const notFound: TQueryNotFound[] = [{ groupBy: 'Not Found', text: 'Nothing found.' }]
 
+  /*-------------------------------------- Queries and data mapping --------------------------------------------*/
+
+  // query trending post
+  const [queryTrending, { data: trendingData, loading: trendingLoading, error: trendingError }] = useLazyQuery(GET_TOP_TRENDING_POSTS)
+  const queriedTrending = trendingData?.queriedTrending
+
   // query Subs and users list by search term
-  const {
-    data: queriedData,
-    loading: queriedLoading,
-    error,
-    refetch
-  } = useQuery(GET_QUERIED_SUBS_USERS, { skip: searchTerm === '', variables: { offset: 0, limit: 3, term: searchTerm } })
+  const [querySubAndUser, { data: queriedData, loading: queriedLoading, error: subUserError }] = useLazyQuery(GET_QUERIED_SUBS_USERS)
   const queriedSubs: TQueriedSub[] = queriedData?.queriedSubs ?? []
   const queriedUsers: TQueriedUser[] = queriedData?.queriedUsers ?? []
 
-  // use Trending posts for default list if searchTerm is ''
+  /*--------------------------------------------- Merge states ---------------------------------------------------*/
+
+  // merge loading & error
   const loading = trendingLoading || queriedLoading
-  const queriedDataList = searchTerm === '' ? trendingData || [] : [...queriedSubs, ...queriedUsers]
+  const error = trendingError || subUserError
+
+  // searchTerm: use Trending posts - Else: use queried sub and users
+  const queriedDataList = searchTerm === '' ? queriedTrending || [] : [...queriedSubs, ...queriedUsers]
+
+  // data list empty => show not found
   const dataList = queriedDataList.length == 0 && !loading ? notFound : queriedDataList
 
-  // fetch queried user and subreddit list on user typing
+  /**
+   * fetch queried user and subreddit list on user typing with debounce
+   *
+   * on receiving new search term
+   * - abort the concurrent request
+   * - clear debounce elapse timer
+   */
   useEffect(() => {
-    searchTerm !== '' && refetch()
-  }, [searchTerm, refetch])
+    const abortCtrl = new AbortController()
 
-  // fetch Top trending post on user first time focus search bar
+    const timeout = setTimeout(() => {
+      searchTerm !== '' &&
+        querySubAndUser({
+          variables: { offset: 0, limit: 3, term: searchTerm },
+          context: {
+            fetchOptions: {
+              signal: abortCtrl.signal
+            }
+          }
+        })
+    }, SEARCH_DEBOUNCE_TIMER)
+    return () => {
+      abortCtrl.abort()
+      clearTimeout(timeout)
+    }
+  }, [searchTerm, querySubAndUser])
+
+  /**
+   * fetch Top trending post on user first time focus search bar
+   */
   useEffect(() => {
     if (!isFocused || trendingData) return
-    setTrendingLoading(true)
-
-    const fetchTopTrending = async () => {
-      const { data, error } = await client.query({ query: GET_TOP_TRENDING_POSTS, variables: { quantity: 3 } })
-      setTrendingLoading(false)
-      if (error) return
-      setTrendingData(data?.queriedTrending)
-    }
-    fetchTopTrending()
-  }, [isFocused, setTrendingData, trendingData])
+    queryTrending({
+      variables: { quantity: 3 }
+    })
+  }, [isFocused, trendingData, queryTrending])
 
   return { dataList, loading, error, searchTerm, setSearchTerm }
 }

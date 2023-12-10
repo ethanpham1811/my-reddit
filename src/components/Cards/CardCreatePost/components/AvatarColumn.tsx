@@ -12,8 +12,8 @@ function AvatarColumn({ userName }: { userName: string | undefined }) {
             sx={{
               width: 38,
               height: 38,
-              backgroundColor: 'inputBgOutfocused.main',
-              border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+              backgroundColor: 'primary.light',
+              border: (theme): string => `1px solid ${theme.palette.primary.dark}`
             }}
             alt={userName || ''}
             src={generateUserImage(userName || 'seed')}

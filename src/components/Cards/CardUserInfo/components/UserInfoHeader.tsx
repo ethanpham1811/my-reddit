@@ -28,7 +28,7 @@ function UserInfoHeader<T extends FieldValues>({ control, onSubmitField, user, i
           user?.fullName || 'Anonymous'
         )}
       </Typography>
-      <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
+      <Typography variant="subtitle1" fontSize="0.8rem" sx={{ color: 'gray.dark' }}>
         u/{user?.username}
       </Typography>
     </>

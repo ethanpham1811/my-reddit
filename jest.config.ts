@@ -9,7 +9,7 @@ const config: Config = {
   testPathIgnorePatterns: ['node_modules', 'e2e', 'tests-examples', 'playwright-report', 'test-results'],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.js?$',
   moduleFileExtensions: ['ts', 'js'],
-  collectCoverage: true,
+  collectCoverage: false,
   clearMocks: true,
   coverageDirectory: 'coverage',
   transform: {

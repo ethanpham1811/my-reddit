@@ -41,10 +41,10 @@ function Comment({ commentId, username, created_at, text: initComment }: TCommen
           </Link>
         </Typography>
         <Stack direction="row" alignItems="center" gap={0.5}>
-          <Box color="hintText.main" fontSize="0.8rem">
+          <Box color="gray.dark" fontSize="0.8rem">
             •
           </Box>
-          <Typography fontWeight={400} fontSize="0.8rem" sx={{ color: 'hintText.main', p: { my: '2px', bgcolor: 'red' } }}>
+          <Typography fontWeight={400} fontSize="0.8rem" sx={{ color: 'gray.dark', p: { my: '2px', bgcolor: 'red' } }}>
             {customFormatDistance(new Date(created_at))}
           </Typography>
         </Stack>

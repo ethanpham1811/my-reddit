@@ -9,7 +9,10 @@ export const BUCKET = 'post_images'
 export const BUCKET_SUBFOLDER = 'public'
 export const SHOW_SCROLL_TOP_THRESHOLD = 50
 export const INIT_SCROLL_TOP_THRESHOLD = 200
+export const SEARCH_DEBOUNCE_TIMER = 500
 export const UPDATE_USER_ARRAY_KEY = ['member_of_ids', 'following_ids', 'socialLinks']
+
+/*------------------------------Enums---------------------------*/
 export enum NOTI_BOX_NAME {
   Darkmode = 'Darkmode',
   Popular = 'Popular',

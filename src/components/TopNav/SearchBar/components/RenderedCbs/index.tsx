@@ -27,18 +27,20 @@ export const renderContainer = (props: HTMLAttributes<HTMLElement>, searchTerm: 
         justifyContent={!searchTerm ? 'center' : 'flex-end'}
         alignItems="center"
       >
-        {!searchTerm ? (
-          <Typography sx={{ mb: -1, color: 'hintText.main' }} variant="subtitle1" fontSize={10}>
-            TOP TRENDING POSTS
-          </Typography>
-        ) : (
-          <Box display="flex" alignItems="center">
-            <ErrorOutlineIcon sx={{ fontSize: '0.9rem', color: 'hintText.main', mr: 0.5 }} />
-            <Typography sx={{ color: 'hintText.main' }} fontSize={12}>
-              Enter to search for post
+        <Box display="flex" alignItems="center">
+          {!searchTerm ? (
+            <Typography sx={{ color: 'gray.dark' }} variant="subtitle1" fontSize={10}>
+              TOP TRENDING POSTS
             </Typography>
-          </Box>
-        )}
+          ) : (
+            <>
+              <ErrorOutlineIcon sx={{ fontSize: '0.9rem', color: 'gray.dark', mr: 0.5 }} />
+              <Typography sx={{ color: 'gray.dark' }} fontSize={12}>
+                Enter to search for post
+              </Typography>
+            </>
+          )}
+        </Box>
       </Stack>
       {searchTerm && <Divider />}
       <Box {...props}></Box>

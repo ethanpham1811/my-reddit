@@ -6,7 +6,7 @@ import { FieldValues } from 'react-hook-form'
 const RdInputBase = styled(TextField)(({ theme }) => ({
   '.MuiInputBase-root': {
     borderRadius: '4px',
-    color: theme.palette.inputText.main,
+    color: theme.palette.secondary.main,
     '&.Mui-focused, &:hover': {
       backgroundColor: 'white.main'
     },
@@ -30,7 +30,10 @@ function RdStaticInput<T extends FieldValues>(
       label={label}
       placeholder={placeholder}
       variant="outlined"
-      sx={{ '.MuiInputBase-root': { bgcolor: `${bgcolor ?? 'inputBgOutfocused'}.main`, '&.Mui-focused': { fieldset: { ...borderStyle } } }, ...sx }}
+      sx={{
+        '.MuiInputBase-root': { bgcolor: `${bgcolor ? `${bgcolor}.main` : 'primary.light'}`, '&.Mui-focused': { fieldset: { ...borderStyle } } },
+        ...sx
+      }}
       {...rest}
     />
   )

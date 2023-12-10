@@ -6,7 +6,7 @@ import { Badge, styled } from '..'
 
 export const borderColorStyle: SxProps<Theme> = {
   fieldset: {
-    borderColor: (theme): string => theme.palette.inputBorder.main + '!important'
+    borderColor: (theme): string => theme.palette.primary.dark + '!important'
   },
   '.Mui-focused, &:hover': {
     fieldset: {

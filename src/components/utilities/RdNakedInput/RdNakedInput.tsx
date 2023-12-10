@@ -59,7 +59,7 @@ function RdNakedInput<T extends FieldValues>({
                 '.MuiInputBase-root': {
                   '&::before, &::after': {
                     borderWidth: '1px !important',
-                    borderColor: 'inputBorder.main'
+                    borderColor: 'primary.light'
                   }
                 },
                 ...sx

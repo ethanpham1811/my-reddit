@@ -77,7 +77,7 @@ function CardSearchItem({
               type === SEARCH_TABS.Communities ? 'r' : 'u'
             }/${name}`}</Typography>
           </Link>
-          <Typography fontSize="0.8rem" sx={{ color: 'hintText.main' }}>
+          <Typography fontSize="0.8rem" sx={{ color: 'gray.dark' }}>
             {extraText}
           </Typography>
         </Stack>
@@ -98,7 +98,7 @@ function CardSearchItem({
           />
         )}
       </Stack>
-      <Divider sx={{ borderColor: 'inputBorder.main' }} />
+      <Divider sx={{ borderColor: 'primary.light' }} />
     </>
   )
 }

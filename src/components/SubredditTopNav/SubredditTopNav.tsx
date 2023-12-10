@@ -77,7 +77,7 @@ function SubredditTopNav({ subreddit, owner }: TSubredditTopNavProps) {
 
               {/* sub name + is SFW chip */}
               <Stack direction="row" spacing={0.5} mt={1}>
-                <Typography fontWeight={700} variant="subtitle1" sx={{ color: 'hintText.main' }}>
+                <Typography fontWeight={700} variant="subtitle1" sx={{ color: 'gray.dark' }}>
                   <Link href={`/r/${name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     r/{name}
                   </Link>

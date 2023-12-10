@@ -56,7 +56,7 @@ function RdScrollBtn({ wrapperRef, topRef, bottomRef }: TRdScrollBtnProps) {
       {isMobile ? (
         <Button
           sx={{
-            boxShadow: (theme) => `0 0 5px ${theme.palette.inputBorder.main}`,
+            boxShadow: (theme) => `0 0 5px ${theme.palette.primary.dark}`,
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
             left: { xs: '80dvw', sm: '90dvw' },

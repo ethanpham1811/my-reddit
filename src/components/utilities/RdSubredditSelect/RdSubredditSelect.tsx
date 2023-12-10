@@ -87,7 +87,7 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
                     <MenuItem
                       value={id}
                       key={`menu_${rid()}`}
-                      sx={{ pl: 1, pr: 2, bgcolor: 'inputBgOutfocused.main', '&:hover,&.Mui.focused': { bgcolor: 'primary.main' } }}
+                      sx={{ pl: 1, pr: 2, bgcolor: 'primary.light', '&:hover,&.Mui.focused': { bgcolor: 'primary.main' } }}
                     >
                       <Avatar
                         variant="circular"
@@ -106,7 +106,7 @@ function RdSubredditSelect<T extends FieldValues>({ registerOptions, name, contr
                 })
               ) : (
                 <Box px={2}>
-                  <Typography sx={{ color: 'hintText.main' }}>No subreddit found</Typography>
+                  <Typography sx={{ color: 'gray.dark' }}>No subreddit found</Typography>
                 </Box>
               )}
             </RdDropdown>

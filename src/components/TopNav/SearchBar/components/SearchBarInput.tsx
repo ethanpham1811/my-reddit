@@ -1,6 +1,6 @@
 import { RdChip } from '@/src/components'
 import { HighlightOffOutlinedIcon, SearchIcon } from '@/src/constants/icons'
-import { Avatar, Stack, TextField } from '@/src/mui'
+import { Avatar, CircularProgress, Stack, TextField } from '@/src/mui'
 import { generateSeededHexColor, generateUserImage } from '@/src/services/utils'
 import { AutocompleteRenderInputParams } from '@mui/material/Autocomplete'
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react'
@@ -12,11 +12,12 @@ type TInputProps = {
   onDeleteChip: () => void
   isMobile: boolean
   focused: boolean
+  loading: boolean
   setFocused: Dispatch<SetStateAction<boolean>>
 }
 
 /* Autocomplete input display */
-function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onDeleteChip }: TInputProps) {
+function SearchBarInput({ params, loading, setFocused, chip, focused, isMobile, name, onDeleteChip }: TInputProps) {
   const ref = useRef<HTMLInputElement | null>(null)
   // delete the controlled value of Autocomplete
   // => prevent input value to changed upon selecting options
@@ -30,7 +31,12 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
 
   const startAdornment = () => (
     <Stack direction="row" alignItems="center" className="search-icon">
-      <SearchIcon onClick={() => setFocused(true)} sx={{ cursor: 'pointer' }} />
+      {loading ? (
+        <CircularProgress sx={{ mr: 0.5, ml: 1, color: 'black.main' }} size={21} />
+      ) : (
+        <SearchIcon onClick={() => setFocused(true)} sx={{ mr: '0.25rem !important', cursor: 'pointer' }} />
+      )}
+
       {chip && name && !isMobile && (
         <RdChip
           avatar={
@@ -40,7 +46,7 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
                 width: '20px !important',
                 height: '20px !important',
                 backgroundColor: generateSeededHexColor(name as string),
-                border: (theme): string => `1px solid ${theme.palette.inputBorder.main}`
+                border: (theme): string => `1px solid ${theme.palette.primary.dark}`
               }}
               alt="subreddit avatar"
               src={generateUserImage(name as string)}
@@ -49,7 +55,7 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
           onDelete={onDeleteChip}
           deleteIcon={<HighlightOffOutlinedIcon sx={{ opacity: 0.6, color: '#1A1A1B !important' }} />}
           label={`r/${name}`}
-          sx={{ mr: 1, height: 28 }}
+          sx={{ mx: 1, height: 28 }}
         />
       )}
     </Stack>
@@ -62,7 +68,7 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
       InputProps={{
         ...params.InputProps,
         startAdornment: startAdornment(),
-        placeholder: 'Search Reddit'
+        placeholder: isMobile ? 'Search' : 'Search Reddit'
       }}
       sx={{
         '.MuiInputBase-root.MuiAutocomplete-inputRoot': {
@@ -73,7 +79,7 @@ function SearchBarInput({ params, setFocused, chip, focused, isMobile, name, onD
           pr: '1rem !important',
           p: '0.2rem !important',
           pl: 3,
-          bgcolor: 'inputBgOutfocused.main',
+          bgcolor: 'primary.light',
           '.MuiStack-root > .MuiSvgIcon-root': {
             mx: 1
           },

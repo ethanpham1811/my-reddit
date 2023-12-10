@@ -56,7 +56,7 @@ function PostColumn({ subName, username, createdAt, title, body, link, linkDescr
 
       {/* TODO: link preview: {link && <LinkPreview url={link} width="400px" />} */}
       {link && (
-        <Box py={1} px={2} bgcolor="inputBgOutfocused.main" borderRadius="4px">
+        <Box py={1} px={2} bgcolor="primary.light" borderRadius="4px">
           <Link onClick={(e) => e.stopPropagation()} href={link} target="_blank" style={{ textDecoration: 'none', color: blue.main }}>
             {link}
           </Link>

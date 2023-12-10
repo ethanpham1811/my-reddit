@@ -4,7 +4,7 @@ export const TextEditorWrapper = styled(Box)(({ theme }) => {
   return {
     '.tox-tinymce': {
       borderWidth: '1px',
-      borderColor: theme.palette.inputBorder.main,
+      borderColor: theme.palette.primary.dark,
       borderRadius: '4px',
       '&:not(.tox-tinymce-inline) .tox-editor-header': {
         backgroundColor: theme.palette.white.main
@@ -18,7 +18,7 @@ export const TextEditorWrapper = styled(Box)(({ theme }) => {
         color: theme.palette.black.main
       },
       '.tox-edit-area__iframe': {
-        backgroundColor: theme.palette.tinyEditor.main
+        backgroundColor: theme.palette.bright.light
       },
       '.tox-statusbar': {
         backgroundColor: theme.palette.white.main,

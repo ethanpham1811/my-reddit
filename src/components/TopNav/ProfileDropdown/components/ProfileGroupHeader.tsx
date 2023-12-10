@@ -10,7 +10,7 @@ type TProfileGroupHeaderProps = {
 function ProfileGroupHeader({ label, groupIcon }: TProfileGroupHeaderProps) {
   return (
     <ListSubheader sx={{ bgcolor: 'background.paper', py: '0.3rem', mb: '5px' }}>
-      <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'hintText.main' }}>
+      <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'gray.dark' }}>
         {createElement(groupIcon)}
         {label}
       </Typography>

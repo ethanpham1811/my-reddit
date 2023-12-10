@@ -14,7 +14,7 @@ export const NotFound = ({ searchTerm }: { searchTerm?: string }) => {
           <Typography variant="h6" color="black" gutterBottom>
             {searchTerm ? `Hm... we couldn’t find any results for “${searchTerm}”` : '404 - Page not found'}
           </Typography>
-          <Typography variant="body1" sx={{ color: 'hintText.main' }}>
+          <Typography variant="body1" sx={{ color: 'gray.dark' }}>
             {searchTerm ? 'Double-check your spelling or try different keywords to ' : 'You might want to return to '}
             {searchTerm ? (
               <Link color="blue.main" sx={{ cursor: 'pointer' }} onClick={focusSearchBar}>

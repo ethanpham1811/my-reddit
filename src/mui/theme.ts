@@ -1,166 +1,17 @@
 import { DARK_MODE } from '@/src/constants/enums'
-import { red } from '@mui/material/colors'
 import { Theme, createTheme } from '@mui/material/styles'
-import { IBM_Plex_Sans, Noto_Sans } from 'next/font/google'
+import { Noto_Sans } from 'next/font/google'
+import { buildPalette } from './palette'
 
-export const ibmPlexSans = IBM_Plex_Sans({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
-  display: 'swap'
-})
 export const notoSans = Noto_Sans({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap'
 })
 
-const lightPalette = {
-  primary: {
-    main: '#DAE0E6'
-  },
-  secondary: {
-    main: '#19857b'
-  },
-  error: {
-    main: red.A400
-  },
-  icon: {
-    main: '#1A1A1B' // Custom color value
-  },
-  actionIcon: {
-    main: '#878A8C' // Custom color value
-  },
-  inputBgOutfocused: {
-    main: '#F6F7F8' // Custom color value
-  },
-  inputBorder: {
-    main: '#cccecf' // Custom color value
-  },
-  inputText: {
-    main: '#1c1c1c' // Custom color value
-  },
-  cardBorder: {
-    main: '#ccc' // Custom color value
-  },
-  hintText: {
-    main: '#7c7c7c' // Custom color value
-  },
-  cardBg: {
-    main: '#fff' // Custom color value
-  },
-  tinyEditor: {
-    main: '#fff' // Custom color value
-  },
-  inlineEditBg: {
-    main: '#DAE0E6' // Custom color value
-  },
-  commentBox: {
-    main: '#e9f5fd' // Custom color value
-  },
-  premiumPricingBg: {
-    main: '#e9f5fd' // Custom color value
-  },
-  white: {
-    main: '#fff' // Custom color value
-  },
-  black: {
-    main: '#000' // Custom color value
-  },
-  blue: {
-    main: '#0079D3' // Custom color value
-  },
-  lightblue: {
-    main: '#e9f5fd' // Custom color value
-  },
-  orange: {
-    main: '#ff4500' // Custom color value
-  },
-  green: {
-    main: '#44b700' // Custom color value
-  },
-  yellow: {
-    main: '#ffd623' // Custom color value
-  },
-  purple: {
-    main: '#fa00e2' // Custom color value
-  }
-}
-
-const darkPalette = {
-  primary: {
-    main: '#1a1a1a'
-  },
-  secondary: {
-    main: '#1a1a1a'
-  },
-  error: {
-    main: red.A400
-  },
-  icon: {
-    main: '#fff' // Custom color value
-  },
-  actionIcon: {
-    main: '#878A8C' // Custom color value
-  },
-  inputBgOutfocused: {
-    main: '#222' // Custom color value
-  },
-  inputBorder: {
-    main: '#333' // Custom color value
-  },
-  inputText: {
-    main: '#fff' // Custom color value
-  },
-  cardBorder: {
-    main: '#444' // Custom color value
-  },
-  hintText: {
-    main: '#7c7c7c' // Custom color value
-  },
-  cardBg: {
-    main: '#121212' // Custom color value
-  },
-  tinyEditor: {
-    main: '#d0d0d0' // Custom color value
-  },
-  inlineEditBg: {
-    main: '#7c7c7c' // Custom color value
-  },
-  commentBox: {
-    main: '#494949' // Custom color value
-  },
-  premiumPricingBg: {
-    main: '#ff4500' // Custom color value
-  },
-  white: {
-    main: '#000' // Custom color value
-  },
-  black: {
-    main: '#fff' // Custom color value
-  },
-  blue: {
-    main: '#0079D3' // Custom color value
-  },
-  lightblue: {
-    main: '#d0d0d0' // Custom color value
-  },
-  orange: {
-    main: '#ff4500' // Custom color value
-  },
-  green: {
-    main: '#44b700' // Custom color value
-  },
-  yellow: {
-    main: '#ffd623' // Custom color value
-  },
-  purple: {
-    main: '#fa00e2' // Custom color value
-  }
-}
-
 // Create a theme instance.
 export const buildTheme = (mode: DARK_MODE): Theme => {
-  const palette = mode === DARK_MODE.light ? lightPalette : darkPalette
+  const palette = buildPalette(mode !== DARK_MODE.light)
   return createTheme({
     breakpoints: {
       values: {

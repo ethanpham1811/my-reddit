@@ -36,7 +36,7 @@ function LoginPortal({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }
 
       <Divider sx={{ my: 1 }} />
       <Stack justifyContent="center" spacing={1}>
-        <Typography variant="body2" sx={{ color: 'hintText.main' }}>
+        <Typography variant="body2" sx={{ color: 'gray.dark' }}>
           Or login via social links
         </Typography>
 
