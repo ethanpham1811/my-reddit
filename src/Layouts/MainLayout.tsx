@@ -1,17 +1,13 @@
 import { TAppSession } from '@/src/constants/types'
-import { useDrawer, useUserDetailForSession } from '@/src/hooks'
-import { Box, useMediaQuery, useTheme } from '@/src/mui'
-import { Events } from '@/src/services/eventEmitter'
-import { ReactNode, Suspense, createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { useUserDetailForSession } from '@/src/hooks'
+import { Box } from '@/src/mui'
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { RdDrawer, TopNav } from '../components'
-import { DrawerFallback } from '../components/Fallbacks'
+import { TopNav } from '../components'
 import SplashScreen from '../components/SplashScreen/SplashScreen'
-import { lazyLoad } from '../services/lazyLoad'
+import DrawerCommunityWrapper from './components/DrawerCommunityWrapper'
+import DrawerPremiumWrapper from './components/DrawerPremiumWrapper'
 import { toastOptions } from './data'
-
-const CommunityCreator = lazyLoad('CommunityCreator', 'CommunityCreator')
-const CardPayment = lazyLoad('Cards/CardPayment', 'CardPayment')
 
 export const AppContext = createContext<{ session: TAppSession; loading: boolean }>({
   session: null,
@@ -28,11 +24,7 @@ export const AppContext = createContext<{ session: TAppSession; loading: boolean
  */
 export default function MainLayout({ children }: { children: ReactNode }) {
   const [appSession, loading, sessionUsername] = useUserDetailForSession()
-  const { breakpoints } = useTheme()
-  const isMobile = useMediaQuery(breakpoints.down('sm'))
   const [isAppLoading, setIsAppLoading] = useState(true)
-  const [communityDrawerOpen, setCommunityDrawerOpen] = useDrawer(Events.OPEN_CREATE_COMMUNITY_DRAWER)
-  const [premiumDrawerOpen, setPremiumDrawerOpen] = useDrawer(Events.OPEN_PREMIUM_DRAWER)
 
   const ctx = useMemo(() => ({ session: appSession, loading }), [appSession, loading])
 
@@ -57,14 +49,10 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           <Toaster toastOptions={toastOptions} position="bottom-right" />
 
           {/* Right drawer (Community creation form) */}
-          <RdDrawer disableScrollLock={!isMobile} anchor="right" open={communityDrawerOpen} setOpen={setCommunityDrawerOpen}>
-            <Suspense fallback={<DrawerFallback />}>{communityDrawerOpen && <CommunityCreator setOpen={setCommunityDrawerOpen} />}</Suspense>
-          </RdDrawer>
+          <DrawerCommunityWrapper />
 
           {/* Left drawer (Premium registration form) */}
-          <RdDrawer disableScrollLock={!isMobile} anchor="left" open={premiumDrawerOpen} setOpen={setPremiumDrawerOpen}>
-            <Suspense fallback={<DrawerFallback />}>{premiumDrawerOpen && <CardPayment setOpen={setPremiumDrawerOpen} />}</Suspense>
-          </RdDrawer>
+          <DrawerPremiumWrapper />
         </Box>
       )}
     </AppContext.Provider>
