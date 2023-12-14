@@ -25,7 +25,7 @@ type TuseTopSearchQueriedListResponse = {
  */
 function useTopSearchQueriedList(isFocused: boolean): TuseTopSearchQueriedListResponse {
   const [searchTerm, setSearchTerm] = useState('')
-  const notFound: TQueryNotFound[] = [{ groupBy: 'Not Found', text: 'Nothing found.' }]
+  const notFound: TQueryNotFound[] = [{ groupBy: 'Not Found', text: 'No subreddit or user found.' }]
 
   /*-------------------------------------- Queries and data mapping --------------------------------------------*/
 

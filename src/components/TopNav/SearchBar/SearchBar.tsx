@@ -1,7 +1,6 @@
 import { RdAutoComplete } from '@/src/components'
 import { TAutocompleteOptions } from '@/src/constants/types'
 import { useTopSearchQueriedList } from '@/src/hooks'
-import { Box } from '@/src/mui'
 import { isNotFound } from '@/src/services/typeCheck'
 import { generateAutoCompleteUrl } from '@/src/services/utils'
 import { AutocompleteRenderInputParams } from '@mui/material/Autocomplete'
@@ -74,7 +73,6 @@ function SearchBar({ subOrUserName, isMobile, navigate }: TSearchBarProps) {
       renderGroup={renderGroup}
       renderOption={renderOption}
       PaperComponent={(props) => renderContainer(props, searchTerm)}
-      noOptionsText={<Box>Nothing found</Box>}
       getOptionLabel={() => ''} // prevent displaying selected option value
       filterOptions={() => dataList} // filtering disabled
       id="top-search-auto"

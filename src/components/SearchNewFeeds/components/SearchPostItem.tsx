@@ -1,17 +1,14 @@
-import { useDarkMode } from '@/src/Layouts/MuiProvider'
-import { MAX_NEW_FEEDS_POST_HEIGHT } from '@/src/constants/enums'
 import { TQueriedPost } from '@/src/constants/types'
 import { Divider, Stack } from '@/src/mui'
-import { blurBottomStyle, postHoverStyle } from '@/src/mui/styles'
+import { postHoverStyle } from '@/src/mui/styles'
 import { useRouter } from 'next/router'
-import { Fragment, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from 'react'
+import { Fragment, KeyboardEvent, MouseEvent, useRef } from 'react'
 import SearchPostItemBody from './SearchPostItemBody'
 import SearchPostItemFooter from './SearchPostItemFooter'
 import SearchPostItemHeader from './SearchPostItemHeader'
 
 function SearchPostItem({ item }: { item: TQueriedPost }) {
   const { push: navigate } = useRouter()
-  const { mode } = useDarkMode()
   const {
     id,
     title,
@@ -23,15 +20,7 @@ function SearchPostItem({ item }: { item: TQueriedPost }) {
     comment,
     images
   } = item
-  const [blurredBottomStyle, setBlurredBottomStyle] = useState({})
-
-  /* if a post's height > 200px => blur out the overflow bottom part */
   const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (!ref?.current) return
-    const isHeightExceeded = ref?.current?.offsetHeight && ref?.current?.offsetHeight >= MAX_NEW_FEEDS_POST_HEIGHT
-    setBlurredBottomStyle(isHeightExceeded ? blurBottomStyle('80px', mode) : {})
-  }, [ref, mode])
 
   /* navigate to post detail page */
   function goToPost(e: MouseEvent | KeyboardEvent) {
@@ -60,7 +49,7 @@ function SearchPostItem({ item }: { item: TQueriedPost }) {
       >
         {/* header & body */}
         <SearchPostItemHeader subName={subName} username={username} created_at={created_at} />
-        <SearchPostItemBody title={title} body={body} images={images} id={id} bottomStyle={blurredBottomStyle} />
+        <SearchPostItemBody title={title} body={body} images={images} id={id} parentRef={ref} />
 
         {/* upvote & comment count */}
         <SearchPostItemFooter vote={vote} comment={comment} />

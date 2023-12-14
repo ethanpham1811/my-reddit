@@ -1,19 +1,34 @@
+import { useDarkMode } from '@/src/Layouts/MuiProvider'
 import { RdImgLoader } from '@/src/components'
+import { MAX_NEW_FEEDS_POST_HEIGHT } from '@/src/constants/enums'
 import { Box, Stack, Typography } from '@/src/mui'
+import { blurBottomStyle } from '@/src/mui/styles'
 import { parseHtml } from '@/src/services/utils'
 import Image from 'next/image'
-import { useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 
 type TSearchPostItemBodyProps = {
   title: string
   body: string
   images: string[] | undefined
   id: number
-  bottomStyle: {}
+  parentRef: RefObject<HTMLDivElement>
 }
 
-function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPostItemBodyProps) {
+function SearchPostItemBody({ id, title, body, images, parentRef }: TSearchPostItemBodyProps) {
+  const { mode } = useDarkMode()
   const [imgLoading, setImgLoading] = useState(true)
+  const [blurredBottomStyle, setBlurredBottomStyle] = useState({})
+
+  /* if a post's height > 200px => blur out the overflow bottom part */
+  useEffect(() => {
+    if (!parentRef?.current) return
+
+    const wrapperHeight = parentRef?.current?.offsetHeight
+    const isHeightExceeded = wrapperHeight && wrapperHeight >= MAX_NEW_FEEDS_POST_HEIGHT
+
+    setBlurredBottomStyle(isHeightExceeded ? blurBottomStyle('80px', mode) : {})
+  }, [parentRef, mode])
 
   return (
     <Stack direction="row" spacing={1}>
@@ -21,10 +36,12 @@ function SearchPostItemBody({ id, title, body, images, bottomStyle }: TSearchPos
         <Typography variant="h6" sx={{ color: 'black.main' }}>
           {title}
         </Typography>
-        <Typography fontSize="0.8rem" sx={{ pb: 5, color: 'gray.dark', ...bottomStyle }}>
+        <Typography fontSize="0.8rem" sx={{ pb: 5, color: 'gray.dark', ...blurredBottomStyle }}>
           {parseHtml(body)}
         </Typography>
       </Stack>
+
+      {/* first image of the post */}
       {images && (
         <Box width="140px" position="relative">
           {imgLoading && <RdImgLoader />}

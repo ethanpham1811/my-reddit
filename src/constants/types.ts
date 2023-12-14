@@ -348,7 +348,7 @@ export type TQueriedResponse = {
 }
 export type TQueriedList = TQueriedPost[] | TQueriedSub[] | TQueriedUser[]
 export type TQueryNotFound = {
-  text: 'Nothing found.'
+  text: string
   groupBy: string
 }
 export type TAutocompleteOptions = TQueriedTrending | TQueriedSub | TQueriedUser | TQueryNotFound
