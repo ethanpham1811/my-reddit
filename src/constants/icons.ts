@@ -46,7 +46,7 @@ import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import { BsFacebook, BsReddit } from 'react-icons/bs'
+import { BsFacebook, BsGithub } from 'react-icons/bs'
 import { ImArrowDown, ImArrowUp } from 'react-icons/im'
 
 export {
@@ -61,7 +61,7 @@ export {
   ArticleOutlinedIcon,
   Brightness5OutlinedIcon,
   BsFacebook,
-  BsReddit,
+  BsGithub,
   CakeOutlinedIcon,
   CheckCircleIcon,
   CheckIcon,
