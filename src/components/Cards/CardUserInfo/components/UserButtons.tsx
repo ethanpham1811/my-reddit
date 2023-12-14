@@ -36,8 +36,8 @@ function UserButtons({ user, isMe }: TUserButtonsProps) {
     <>
       {status === SESSION_STATUS.Authenticated && (
         <>
-          <Divider sx={{ my: 1 }} />
-          <CardActions disableSpacing sx={{ p: 0, pt: 0.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Divider sx={{ mt: 1, mb: 2 }} />
+          <CardActions disableSpacing sx={{ p: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
             {!isMe ? (
               <>
                 {user && me?.following_ids?.includes(user.username) ? (
