@@ -25,8 +25,7 @@ function CardPost({
     link,
     linkDescription,
     totalComments
-  },
-  setZoomedImg
+  }
 }: TCardPostProps) {
   const { mode } = useDarkMode()
   const { session } = useAppSession()
@@ -90,7 +89,6 @@ function CardPost({
               link={link}
               images={images}
               linkDescription={linkDescription}
-              setZoomedImg={setZoomedImg}
             />
           </Stack>
 

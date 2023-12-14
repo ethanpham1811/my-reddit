@@ -1,32 +1,33 @@
 import { RdDialog, RdImgLoader } from '@/src/components'
 import { Box } from '@/src/mui'
+import { Events, eventEmitter } from '@/src/services/eventEmitter'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-type TPreviewImgDialogProps = {
-  zoomDialogOpen: string | null
-  setZoomDialogOpen: Dispatch<SetStateAction<string | null>>
-}
-
-function ZoomImgDialog({ zoomDialogOpen: zoomedImg, setZoomDialogOpen }: TPreviewImgDialogProps) {
+function ZoomImgDialog() {
+  const [imgUrl, setImgUrl] = useState<string | null>(null)
   const [imgLoading, setImgLoading] = useState(true)
   const [imgSize, setImgSize] = useState({ width: '50px', height: '50px' })
 
+  useEffect(() => {
+    eventEmitter.subscribe(Events.OPEN_IMAGE_PREVIEW, (url) => setImgUrl(url as string))
+  }, [])
+
   return (
     <RdDialog
-      open={!!zoomedImg}
+      open={!!imgUrl}
       maxWidth="xl"
       transparent
       sx={{ '.MuiDialog-paperScrollPaper': { overflow: 'hidden' } }}
       onClose={() => {
-        setZoomDialogOpen(null)
+        setImgUrl(null)
       }}
-      onClick={() => setZoomDialogOpen(null)}
+      onClick={() => setImgUrl(null)}
     >
       {imgLoading && <RdImgLoader zIndex={1000} />}
 
       {/* TODO: using normal img tag due to layout issue with Next Image, will fix later */}
-      {zoomedImg && (
+      {imgUrl && (
         <Box
           sx={{
             opacity: imgLoading ? 0 : 1,
@@ -42,7 +43,7 @@ function ZoomImgDialog({ zoomDialogOpen: zoomedImg, setZoomDialogOpen }: TPrevie
               setImgSize({ width: w + 'px', height: h + 'px' })
               setImgLoading(false)
             }}
-            src={process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + zoomedImg}
+            src={process.env.NEXT_PUBLIC_SUPABASE_IMAGE_BUCKET_URL + imgUrl}
             alt={'zoomed image'}
             layout="fill"
             objectFit="contain"

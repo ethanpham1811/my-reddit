@@ -148,7 +148,6 @@ export type TStorageError = StorageError & {
 /* ---------------------------------------------Props Types--------------------------------------------- */
 export type TCardPostProps = {
   post: TPost
-  setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
 
 export type TCommunityCreatorProps = {

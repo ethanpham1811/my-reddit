@@ -11,7 +11,6 @@ import { validatePostBySubname } from '@/src/services/utils'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 
 type TPostPageProps = {
   subreddit: TSubredditDetail | null
@@ -72,7 +71,6 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
     query: { subreddit: subName, editing },
     push: navigate
   } = useRouter()
-  const [zoomedImg, setZoomedImg] = useState<string | null>(null)
 
   /**
    * Client side data fetching (to sync apollo cache between server & client)
@@ -113,10 +111,10 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
           <Stack spacing={2}>
             {postDetail && (
               <>
-                <CardPost post={postDetail} setZoomedImg={setZoomedImg} />
+                <CardPost post={postDetail} />
 
                 {/* dialog show zoomed image */}
-                <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />
+                <ZoomImgDialog />
               </>
             )}
           </Stack>

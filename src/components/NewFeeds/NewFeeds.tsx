@@ -6,7 +6,7 @@ import { validatePostBySubname } from '@/src/services/utils'
 import { ApolloError } from '@apollo/client'
 import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
 import orderBy from 'lodash.orderby'
-import { Dispatch, Fragment, ReactNode, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, Fragment, ReactNode, SetStateAction, useEffect } from 'react'
 import { CardPost, RdMessageBoard } from '..'
 import ZoomImgDialog from '../Cards/CardPost/components/ZoomImgDialog'
 import { RdSkeletonListItem } from '../Skeletons'
@@ -36,9 +36,6 @@ const NewFeeds = ({
   const { session } = useAppSession()
   const me = session?.userDetail
 
-  // zoom image dialog states
-  const [zoomedImg, setZoomedImg] = useState<string | null>(null)
-
   // postList ordering & filtered by user permission
   const mappedPostList: TPost[] | null =
     postList &&
@@ -58,34 +55,32 @@ const NewFeeds = ({
     return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post?.subreddit?.subType)
   }
 
+  // return loader on loading
+  if (loading || !mappedPostList) {
+    return [0].map((el) => (
+      <Fragment key={`skeleton_${el}`}>
+        <RdSkeletonListItem index={el.toString()} />
+      </Fragment>
+    ))
+  }
+
+  // return message on unauthorized access
+  if (permissionFailedMsg) return permissionFailedMsg
+
+  // return no post message on empty post list
+  if (!mappedPostList || mappedPostList.length === 0) return <RdMessageBoard head={noPostText} hasBackground />
+
   return (
     <>
-      {loading || !mappedPostList ? (
-        [0].map((el) => (
-          <Fragment key={`skeleton_${el}`}>
-            <RdSkeletonListItem index={el.toString()} />
-          </Fragment>
-        ))
-      ) : permissionFailedMsg ? (
-        permissionFailedMsg
-      ) : (
-        <>
-          {mappedPostList.length > 0 ? (
-            <>
-              {mappedPostList.map((post) => (
-                <CardPost key={`post_${post.id}`} post={post} setZoomedImg={setZoomedImg} />
-              ))}
-              {/* load more anchor */}
-              <RdInfiniteScroll<TPost> appendPosts={appendPosts} fetchMore={fetchMore} limit={QUERY_LIMIT} list={postList} />
+      {mappedPostList.map((post) => (
+        <CardPost key={`post_${post.id}`} post={post} />
+      ))}
 
-              {/* dialog show zoomed image */}
-              {zoomedImg && <ZoomImgDialog zoomDialogOpen={zoomedImg} setZoomDialogOpen={setZoomedImg} />}
-            </>
-          ) : (
-            <RdMessageBoard head={noPostText} hasBackground />
-          )}
-        </>
-      )}
+      {/* load more anchor */}
+      <RdInfiniteScroll<TPost> appendPosts={appendPosts} fetchMore={fetchMore} limit={QUERY_LIMIT} list={postList} />
+
+      {/* dialog show zoomed image */}
+      <ZoomImgDialog />
     </>
   )
 }

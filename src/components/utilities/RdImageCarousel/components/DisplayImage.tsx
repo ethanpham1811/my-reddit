@@ -1,16 +1,21 @@
+import { Events, eventEmitter } from '@/src/services/eventEmitter'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { KeyboardEvent, MouseEvent, useState } from 'react'
 import RdImgLoader from '../../RdImgLoader/RdImgLoader'
 
 type TDisplayImageProps = {
   width: string
   height: string
   imgSrc: string
-  zoomImage: Dispatch<SetStateAction<string | null>>
 }
 
-function DisplayImage({ width, height, imgSrc, zoomImage }: TDisplayImageProps) {
+function DisplayImage({ width, height, imgSrc }: TDisplayImageProps) {
   const [imgLoading, setImgLoading] = useState(true)
+
+  function openPreviewModal(e: MouseEvent<HTMLImageElement> | KeyboardEvent<HTMLImageElement>) {
+    e.stopPropagation()
+    eventEmitter.dispatch(Events.OPEN_IMAGE_PREVIEW, imgSrc)
+  }
 
   return (
     <>
@@ -26,16 +31,8 @@ function DisplayImage({ width, height, imgSrc, zoomImage }: TDisplayImageProps) 
         width={300}
         height={200}
         loading="lazy"
-        onClick={(e) => {
-          e.stopPropagation()
-          zoomImage(imgSrc)
-        }}
-        onKeyUp={(e) => {
-          if (e.key === 'Enter') {
-            e.stopPropagation()
-            zoomImage(imgSrc)
-          }
-        }}
+        onClick={openPreviewModal}
+        onKeyUp={(e) => e.key === 'Enter' && openPreviewModal(e)}
       />
     </>
   )

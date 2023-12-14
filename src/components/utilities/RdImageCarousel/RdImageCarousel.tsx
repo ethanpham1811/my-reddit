@@ -1,6 +1,6 @@
 import { ArrowBackIosIcon, ArrowForwardIosIcon } from '@/src/constants/icons'
 import { Paper, useTheme } from '@/src/mui'
-import { Dispatch, SetStateAction, memo } from 'react'
+import { memo } from 'react'
 import Carousel from 'react-material-ui-carousel'
 import DisplayImage from './components/DisplayImage'
 
@@ -8,9 +8,8 @@ type TRdImageCarouselProps = {
   width: string
   height: string
   imgList: string[]
-  setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
-function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarouselProps) {
+function RdImageCarousel({ width, height, imgList }: TRdImageCarouselProps) {
   const theme = useTheme()
 
   return (
@@ -39,7 +38,7 @@ function RdImageCarousel({ width, height, imgList, setZoomedImg }: TRdImageCarou
       >
         {imgList.map((imgSrc) => (
           <Paper key={`image_${imgSrc}`} sx={{ boxShadow: 'none' }}>
-            <DisplayImage width={width} height={height} imgSrc={imgSrc} zoomImage={setZoomedImg} />
+            <DisplayImage width={width} height={height} imgSrc={imgSrc} />
           </Paper>
         ))}
       </Carousel>

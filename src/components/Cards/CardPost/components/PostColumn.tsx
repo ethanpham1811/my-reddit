@@ -6,7 +6,7 @@ import { blurBottomStyle } from '@/src/mui/styles'
 import { parseHtml } from '@/src/services/utils'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PostHeader from '../components/PostHeader'
 
 type TPostColumnProps = {
@@ -18,10 +18,9 @@ type TPostColumnProps = {
   link: string
   linkDescription: string
   images: string[] | undefined
-  setZoomedImg: Dispatch<SetStateAction<string | null>>
 }
 
-function PostColumn({ subName, username, createdAt, title, body, link, linkDescription, setZoomedImg, images }: TPostColumnProps) {
+function PostColumn({ subName, username, createdAt, title, body, link, linkDescription, images }: TPostColumnProps) {
   const [bottomStyle, setBottomStyle] = useState({})
   const { mode } = useDarkMode()
   const {
@@ -64,7 +63,7 @@ function PostColumn({ subName, username, createdAt, title, body, link, linkDescr
       )}
 
       {/* image carousel */}
-      {images && <RdImageCarousel setZoomedImg={setZoomedImg} width="100%" height="300px" imgList={images} />}
+      {images && <RdImageCarousel width="100%" height="300px" imgList={images} />}
     </Box>
   )
 }
