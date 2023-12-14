@@ -54,7 +54,7 @@ function SearchPostItem({ item }: { item: TQueriedPost }) {
         {/* upvote & comment count */}
         <SearchPostItemFooter vote={vote} comment={comment} />
       </Stack>
-      <Divider sx={{ borderColor: 'primary.light' }} />
+      <Divider sx={{ borderColor: 'primary.dark' }} />
     </Fragment>
   )
 }

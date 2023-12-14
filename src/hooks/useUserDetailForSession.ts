@@ -1,9 +1,10 @@
 import { TAppSession } from '@/src/constants/types'
 import useUserByEmail from '@/src/hooks/useUserByEmail'
+import { ApolloError } from '@apollo/client'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
 
-type TUseUserDetailForSession = [appSession: TAppSession, loading: boolean, sessionUsername: string | undefined]
+type TUseUserDetailForSession = [appSession: TAppSession, loading: boolean, sessionUsername: string | undefined, error: ApolloError | undefined]
 
 /**
  * Update session on authentication (login/logout)
@@ -15,7 +16,7 @@ function useUserDetailForSession(): TUseUserDetailForSession {
   const supabase = useSupabaseClient()
   const [appSession, setAppSession] = useState<TAppSession>(null)
   const [userEmail, setUserEmail] = useState<string | null>(null)
-  const [userDetail, loading] = useUserByEmail(userEmail)
+  const [userDetail, loading, error] = useUserByEmail(userEmail)
 
   // username from authentication providers (this is for default username on initial load)
   const sessionUsername: string | undefined = appSession?.user?.user_metadata?.username
@@ -28,7 +29,7 @@ function useUserDetailForSession(): TUseUserDetailForSession {
     return () => sbAuth?.data?.subscription.unsubscribe()
   }, [supabase, userDetail])
 
-  return [appSession, loading, sessionUsername]
+  return [appSession, loading, sessionUsername, error]
 }
 
 export default useUserDetailForSession

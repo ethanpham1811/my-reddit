@@ -2,7 +2,7 @@ import { TAppSession } from '@/src/constants/types'
 import { useUserDetailForSession } from '@/src/hooks'
 import { Box } from '@/src/mui'
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { Toaster } from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 import { TopNav } from '../components'
 import SplashScreen from '../components/SplashScreen/SplashScreen'
 import DrawerCommunityWrapper from './components/DrawerCommunityWrapper'
@@ -23,10 +23,12 @@ export const AppContext = createContext<{ session: TAppSession; loading: boolean
  * - Premium registration drawer (lazy loaded)
  */
 export default function MainLayout({ children }: { children: ReactNode }) {
-  const [appSession, loading, sessionUsername] = useUserDetailForSession()
+  const [appSession, loading, sessionUsername, error] = useUserDetailForSession()
   const [isAppLoading, setIsAppLoading] = useState(true)
 
   const ctx = useMemo(() => ({ session: appSession, loading }), [appSession, loading])
+
+  error && toast.error('Server error, could not fetch data, please try again later!')
 
   /* splash screen */
   useEffect(() => {

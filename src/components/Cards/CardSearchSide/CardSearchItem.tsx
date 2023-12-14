@@ -98,7 +98,7 @@ function CardSearchItem({
           />
         )}
       </Stack>
-      <Divider sx={{ borderColor: 'primary.light' }} />
+      <Divider sx={{ borderColor: 'primary.dark' }} />
     </>
   )
 }
