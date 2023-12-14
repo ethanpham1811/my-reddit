@@ -3,7 +3,8 @@ import { CircularProgress, Link, Stack, Typography } from '@/src/mui'
 import { emailValidation, passwordValidation, rePasswordValidation } from '@/src/services/formValidations'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import PasswordEye from '../PasswordEye'
+import ErrorMessage from './ErrorMessage'
+import PasswordEye from './PasswordEye'
 
 type TRegisterFormProps = {
   setIsLoginForm: Dispatch<SetStateAction<boolean>>
@@ -18,7 +19,7 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [showRePassword, setShowRePassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   /* form controllers */
   const { handleSubmit, getValues, control } = useForm<TRegisterForm>()
@@ -39,30 +40,16 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
     })
     const { error } = await res.json()
     error
-      ? setError(error) // Display an error message
+      ? setError(error.message) // Display an error message
       : (setNewUserEmail(email), setIsLoginForm(true))
     setLoading(false)
   })
-
-  /* register options */
-  const passwordOptions = {
-    validate: (val: string) => passwordValidation(val)
-  }
-  const rePasswordOptions = {
-    validate: (val: string) => rePasswordValidation(val, getValues('password'))
-  }
 
   return (
     <form onSubmit={onSubmit}>
       <Stack spacing={2} sx={{ width: { xs: '60vw', sm: '300px' } }}>
         {/* Error message */}
-        {error && (
-          <Stack alignItems="center">
-            <Typography fontSize="0.8rem" sx={{ color: 'orange.main' }}>
-              {error}
-            </Typography>
-          </Stack>
-        )}
+        {error && <ErrorMessage error={error} />}
 
         {/* Form Email / Password / Repassword inputs */}
         <RdInput<TRegisterForm>
@@ -76,7 +63,7 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
         />
         <RdInput<TRegisterForm>
           autoComplete="off"
-          registerOptions={passwordOptions}
+          registerOptions={{ validate: (val: string) => passwordValidation(val) }}
           type={showPassword ? 'text' : 'password'}
           endIcon={<PasswordEye showPassword={showPassword} setShowPassword={setShowPassword} />}
           bgcolor="white"
@@ -87,7 +74,7 @@ function RegisterForm({ setIsLoginForm, setNewUserEmail }: TRegisterFormProps) {
         />
         <RdInput<TRegisterForm>
           autoComplete="off"
-          registerOptions={rePasswordOptions}
+          registerOptions={{ validate: (val: string) => rePasswordValidation(val, getValues('password')) }}
           type={showRePassword ? 'text' : 'password'}
           endIcon={<PasswordEye showPassword={showRePassword} setShowPassword={setShowRePassword} />}
           bgcolor="white"

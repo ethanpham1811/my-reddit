@@ -1,10 +1,13 @@
 import { RdButton, RdInput } from '@/src/components'
+import { GUEST_EMAIL, GUEST_PASSWORD } from '@/src/constants/enums'
 import { CircularProgress, Link, Stack, Typography } from '@/src/mui'
 import { emailValidation } from '@/src/services/formValidations'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import PasswordEye from '../PasswordEye'
+import ErrorMessage from './ErrorMessage'
+import PasswordEye from './PasswordEye'
+import WelcomeMessage from './WelcomeMessage'
 
 type TLoginFormProps = {
   setIsLoginForm: Dispatch<SetStateAction<boolean>>
@@ -26,8 +29,8 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
 
   /* set email by registered email or offer test account for demonstration */
   useEffect(() => {
-    setValue('email', newUserEmail || 'guest_account@gmail.com')
-    !newUserEmail && setValue('password', '123123')
+    setValue('email', newUserEmail || GUEST_EMAIL)
+    !newUserEmail && setValue('password', GUEST_PASSWORD)
   }, [newUserEmail, setValue])
 
   /* form submit: signin with email + password */
@@ -48,22 +51,11 @@ function LoginForm({ setIsLoginForm, setOpen, newUserEmail }: TLoginFormProps) {
   return (
     <form onSubmit={onSubmit}>
       <Stack spacing={2} sx={{ width: { xs: '60vw', sm: '250px' } }}>
-        {/* Inform messages */}
-        {newUserEmail && (
-          <Stack alignItems="center">
-            <Typography sx={{ color: 'gray.dark' }}>
-              Welcome <Typography sx={{ color: 'orange.main' }}>{newUserEmail}</Typography>!
-            </Typography>
-            <Typography fontSize="0.8rem">Please login with your account</Typography>
-          </Stack>
-        )}
-        {error && (
-          <Stack alignItems="center">
-            <Typography fontSize="0.8rem" sx={{ color: 'orange.main' }}>
-              {error}
-            </Typography>
-          </Stack>
-        )}
+        {/* Welcome message */}
+        {newUserEmail && <WelcomeMessage userEmail={newUserEmail} />}
+
+        {/* Error message */}
+        {error && <ErrorMessage error={error} />}
 
         {/* Email + Pasword inputs */}
         <RdInput<TLoginForm>

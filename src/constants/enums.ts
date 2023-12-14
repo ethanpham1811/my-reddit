@@ -1,3 +1,5 @@
+export const GUEST_EMAIL = 'guest_account@gmail.com'
+export const GUEST_PASSWORD = '123123'
 export const MAX_UPLOADS = 5
 export const MAX_TOPIC_CHOSEN = 2
 export const QUERY_LIMIT = 5
