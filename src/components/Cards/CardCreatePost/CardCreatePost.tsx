@@ -1,7 +1,7 @@
 import { useAppSession } from '@/src/Layouts/MainLayout'
 import { TCardCreatePostForm, TEditModePayload } from '@/src/constants/types'
 import { useEditPostDataMap, usePostCreateAndEdit, usePostCreateFormListener, usePostCreateFormMode } from '@/src/hooks'
-import { Box, Divider, Stack, Typography, useMediaQuery, useTheme } from '@/src/mui'
+import { Box, Divider, Stack, useMediaQuery, useTheme } from '@/src/mui'
 import { postTitleValidation } from '@/src/services/formValidations'
 import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
@@ -9,6 +9,7 @@ import { Path, useForm } from 'react-hook-form'
 import { RdCard, RdInput } from '../..'
 import AvatarColumn from './components/AvatarColumn'
 import MainForm from './components/MainForm'
+import NotJoinedSubMessage from './components/NotJoinedSubMessage'
 import Tools from './components/Tools'
 
 type TCardCreatePostProps = {
@@ -169,23 +170,7 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
       </RdCard>
 
       {/* Message to user if user has not joined any subreddit  */}
-      {isDisabled && (
-        <Typography
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%'
-          }}
-          variant="body2"
-        >
-          Please join at least one subreddit to create a post.
-        </Typography>
-      )}
+      {isDisabled && <NotJoinedSubMessage />}
     </Box>
   )
 }

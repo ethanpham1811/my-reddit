@@ -41,14 +41,16 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
           </Typography>
           <Divider sx={{ my: { xs: 1, md: 2 } }} />
 
-          {/* Community name & Topic */}
+          {/* name input labels */}
           <Typography variant="h5" sx={{ mt: { xs: 0, md: 2 } }}>
             Name
           </Typography>
           <Typography variant="body1" component="p" sx={{ color: 'gray.dark' }}>
             Community names including capitalization cannot be changed.
           </Typography>
+
           <Stack direction={{ xs: 'column', sm: 'row' }} gap={1} sx={{ mt: 2 }}>
+            {/* Community name input */}
             <RdInput<TCommunityCreatorForm>
               registerOptions={{ validate: (val): string | boolean => subnameValidation(val) }}
               control={control}
@@ -59,6 +61,8 @@ function CommunityCreator({ setOpen }: TCommunityCreatorProps) {
               flex={1}
               placeholder={`What's on your mind?`}
             />
+
+            {/* Topic dropdown */}
             <RdTopicDropdown<TCommunityCreatorForm>
               triggerValidation={trigger}
               control={control}

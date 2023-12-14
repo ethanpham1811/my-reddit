@@ -1,6 +1,6 @@
-import { DARK_MODE } from '@/src/constants/enums'
+import { BORDER_TYPES, DARK_MODE } from '@/src/constants/enums'
 import { SxProps, Theme } from '@mui/material/styles'
-import { Badge, styled } from '..'
+import { Badge, ToggleButtonGroup, styled } from '..'
 
 /* -------------------------------------------STYLES --------------------------------------------------- */
 
@@ -66,3 +66,21 @@ export const blurBottomStyle = (height: string, mode: DARK_MODE, isTopNav?: bool
     }
   }
 }
+
+export const RdButtonGroup = styled(ToggleButtonGroup)(() => ({
+  display: 'flex',
+  gap: '1rem',
+  '& .MuiToggleButtonGroup-grouped': {
+    margin: '0.25rem',
+    border: 0,
+    '&.Mui-disabled': {
+      border: 0
+    },
+    '&:not(:first-of-type)': {
+      borderRadius: BORDER_TYPES.Circular
+    },
+    '&:first-of-type': {
+      borderRadius: BORDER_TYPES.Circular
+    }
+  }
+}))

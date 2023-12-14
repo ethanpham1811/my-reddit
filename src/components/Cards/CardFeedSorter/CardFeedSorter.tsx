@@ -1,10 +1,12 @@
 import { RdCard } from '@/src/components'
-import { BORDER_TYPES, ORDERING, SORT_METHOD } from '@/src/constants/enums'
+import { ORDERING, SORT_METHOD } from '@/src/constants/enums'
 import { SwapVertOutlinedIcon } from '@/src/constants/icons'
 import { TSortOptions } from '@/src/constants/types'
-import { IconButton, ToggleButton, ToggleButtonGroup, Typography } from '@/src/mui'
-import { Dispatch, MouseEvent, SetStateAction, createElement } from 'react'
+import { IconButton } from '@/src/mui'
+import { RdButtonGroup } from '@/src/mui/styles'
+import { Dispatch, MouseEvent, SetStateAction } from 'react'
 import { v4 as rid } from 'uuid'
+import SortButton from './components/SortButton'
 import { data } from './data'
 
 export type TCardFeedSorterProps = {
@@ -12,6 +14,7 @@ export type TCardFeedSorterProps = {
   sortOptions: TSortOptions
   setSortOptions: Dispatch<SetStateAction<TSortOptions>>
 }
+
 function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSorterProps) {
   const onChange = (_: MouseEvent<HTMLElement, globalThis.MouseEvent>, method: SORT_METHOD | null) => {
     method && setSortOptions({ ordering: ORDERING.Desc, method })
@@ -20,46 +23,12 @@ function CardFeedSorter({ sortOptions, setSortOptions, disabled }: TCardFeedSort
   return (
     <RdCard sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       {/* Sort by New/Hot/Trending buttons */}
-      <ToggleButtonGroup
-        exclusive
-        size="small"
-        value={sortOptions.method}
-        onChange={onChange}
-        aria-label="new feeds sorter"
-        sx={{
-          display: 'flex',
-          gap: 2,
-          '& .MuiToggleButtonGroup-grouped': {
-            margin: 0.5,
-            border: 0,
-            '&.Mui-disabled': {
-              border: 0
-            },
-            '&:not(:first-of-type)': {
-              borderRadius: BORDER_TYPES.Circular
-            },
-            '&:first-of-type': {
-              borderRadius: BORDER_TYPES.Circular
-            }
-          }
-        }}
-      >
+      <RdButtonGroup exclusive size="small" value={sortOptions.method} onChange={onChange} aria-label="new feeds sorter">
         {data.length > 0 &&
           data.map(({ optionDisabled, methodValue, icon, label }) => (
-            <ToggleButton
-              disabled={disabled || optionDisabled}
-              key={`sorter_${rid()}`}
-              value={methodValue}
-              aria-label={label}
-              sx={{ borderRadius: '9999px !important', paddingRight: 1.5, gap: 0.5 }}
-            >
-              {createElement(icon)}
-              <Typography fontWeight={700} textTransform="capitalize">
-                {label}
-              </Typography>
-            </ToggleButton>
+            <SortButton key={`sorter_${rid()}`} disabled={disabled || optionDisabled} value={methodValue} label={label} icon={icon} />
           ))}
-      </ToggleButtonGroup>
+      </RdButtonGroup>
 
       {/* Asc/Desc switcher */}
       <IconButton
