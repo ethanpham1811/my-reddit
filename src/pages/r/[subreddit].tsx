@@ -1,8 +1,8 @@
 import FeedLayout from '@/src/Layouts/FeedLayout'
 import { useAppSession } from '@/src/Layouts/MainLayout'
-import { CardFeedSorter, CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/src/components'
-import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/src/constants/enums'
-import { TPost, TSortOptions, TSubreddit, TSubredditDetail } from '@/src/constants/types'
+import { CardSubredditInfo, NewFeeds, SubredditTopNav } from '@/src/components'
+import { QUERY_LIMIT } from '@/src/constants/enums'
+import { TPost, TSubreddit, TSubredditDetail } from '@/src/constants/types'
 import { GET_SUBREDDIT_BY_NAME_WITH_POSTS, GET_SUBREDDIT_LIST_SHORT } from '@/src/graphql/queries'
 import { useSubByNameWithPosts } from '@/src/hooks'
 import { Stack } from '@/src/mui'
@@ -12,7 +12,6 @@ import { appendPosts, noPermissionSubPageMsg } from '@/src/services/pageFunction
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 
 type TSubredditPageProps = {
   subreddit: TSubredditDetail | null
@@ -66,8 +65,6 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
     query: { subreddit: subName },
     push: navigate
   } = useRouter()
-  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
-  const [hasNoPost, setHasNoPost] = useState(false)
 
   /**
    * Client side data fetching (to sync apollo cache between server & client)
@@ -87,17 +84,14 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
       <SubredditTopNav subreddit={subreddit} owner={subreddit?.user?.username} />
       <FeedLayout top="1rem" subredditId={subreddit?.id} allowCreatePost={me?.member_of_ids?.includes(subName as string) ?? false}>
         <Stack spacing={2}>
-          <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
           <NewFeeds
             fetchMore={fetchMore}
             postList={subredditPosts}
             loading={pageLoading}
             error={error}
-            sortOptions={sortOptions}
             noPostText="This subreddit has no post"
             appendPosts={appendPosts('subredditByNameWithPosts')}
             permissionFailedMsg={noPermissionSubPageMsg(me?.member_of_ids, subreddit?.subType, subName)}
-            setHasNoPost={setHasNoPost}
           />
         </Stack>
         <Stack spacing={2} direction={{ xs: 'column', sm: 'row', md: 'column' }}>

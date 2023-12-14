@@ -1,8 +1,8 @@
 import FeedLayout from '@/src/Layouts/FeedLayout'
 import { useAppSession } from '@/src/Layouts/MainLayout'
-import { CardFeedSorter, CardUserInfo, NewFeeds } from '@/src/components'
-import { NON_SUB_FEED_LAYOUT_TOP_OFFSET, ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/src/constants/enums'
-import { TPost, TSortOptions, TUserCompact, TUserDetail } from '@/src/constants/types'
+import { CardUserInfo, NewFeeds } from '@/src/components'
+import { NON_SUB_FEED_LAYOUT_TOP_OFFSET, QUERY_LIMIT } from '@/src/constants/enums'
+import { TPost, TUserCompact, TUserDetail } from '@/src/constants/types'
 import { GET_USER_BY_USERNAME_WITH_POSTS, GET_USER_LIST_SHORT } from '@/src/graphql/queries'
 import { useUserByUsername } from '@/src/hooks'
 import { Box, Stack } from '@/src/mui'
@@ -13,7 +13,6 @@ import { generateUserCover } from '@/src/services/utils'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 
 type TUserPageProps = {
   user: TUserDetail | null
@@ -67,8 +66,6 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
     query: { username },
     push: navigate
   } = useRouter()
-  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
-  const [hasNoPost, setHasNoPost] = useState(false)
 
   /**
    * Client side data fetching (to sync apollo cache between server & client)
@@ -91,17 +88,14 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
         sx={{ position: 'relative', zIndex: 1 }}
       >
         <Stack spacing={2}>
-          <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
           <NewFeeds
             fetchMore={fetchMore}
             postList={userPosts}
             loading={pageLoading}
             error={error}
-            sortOptions={sortOptions}
             noPostText="This user has no post"
             appendPosts={appendPosts('userByUsernameWithPosts')}
             permissionFailedMsg={noPermissionUserPageMsg(me?.following_ids, me?.username, username, true)}
-            setHasNoPost={setHasNoPost}
           />
         </Stack>
         <Stack spacing={2} direction={{ xs: 'column', sm: 'row', md: 'column' }}>

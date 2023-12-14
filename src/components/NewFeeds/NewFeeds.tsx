@@ -1,59 +1,42 @@
 import { useAppSession } from '@/src/Layouts/MainLayout'
-import { RdInfiniteScroll } from '@/src/components'
-import { QUERY_LIMIT } from '@/src/constants/enums'
+import { CardFeedSorter, RdInfiniteScroll } from '@/src/components'
+import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/src/constants/enums'
 import { TFetchMoreArgs, TPost, TSortOptions } from '@/src/constants/types'
 import { validatePostBySubname } from '@/src/services/utils'
 import { ApolloError } from '@apollo/client'
 import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery'
 import orderBy from 'lodash.orderby'
-import { Dispatch, Fragment, ReactNode, SetStateAction, useEffect } from 'react'
+import { Fragment, ReactNode, useMemo, useState } from 'react'
 import { CardPost, RdMessageBoard } from '..'
 import ZoomImgDialog from '../Cards/CardPost/components/ZoomImgDialog'
 import { RdSkeletonListItem } from '../Skeletons'
 
 type TNewFeedsProps = {
   noPostText: string
-  sortOptions: TSortOptions
   postList: TPost[] | null
   loading: boolean
   error: ApolloError | undefined | null
   permissionFailedMsg: ReactNode | false
   appendPosts: (prev: {}, fetchMoreResult: {}) => {}
   fetchMore: FetchMoreFunction<{ [key: string]: TPost[] }, TFetchMoreArgs>
-  setHasNoPost: Dispatch<SetStateAction<boolean>>
 }
 
-const NewFeeds = ({
-  permissionFailedMsg,
-  noPostText,
-  sortOptions: { method, ordering },
-  postList,
-  loading,
-  fetchMore,
-  setHasNoPost,
-  appendPosts
-}: TNewFeedsProps) => {
+const NewFeeds = ({ permissionFailedMsg, noPostText, postList, loading, fetchMore, appendPosts }: TNewFeedsProps) => {
   const { session } = useAppSession()
   const me = session?.userDetail
+  const [sortOptions, setSortOptions] = useState<TSortOptions>({ method: SORT_METHOD.New, ordering: ORDERING.Desc })
 
   // postList ordering & filtered by user permission
-  const mappedPostList: TPost[] | null =
-    postList &&
-    orderBy(
-      postList.filter((post: TPost): boolean => verifyPost(post)),
-      method,
-      ordering
+  const mappedPostList: TPost[] | null = useMemo(() => {
+    return (
+      postList &&
+      orderBy(
+        postList.filter((post) => validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post?.subreddit?.subType)),
+        sortOptions.method,
+        sortOptions.ordering
+      )
     )
-
-  /* set message in MainLayout if no post found */
-  useEffect(() => {
-    !loading && postList && setHasNoPost(postList.length === 0)
-  }, [postList, loading, setHasNoPost])
-
-  // if post in public subreddit OR user in subreddit => return true
-  function verifyPost(post: TPost): boolean {
-    return validatePostBySubname(me?.member_of_ids, post?.subreddit?.name, post?.subreddit?.subType)
-  }
+  }, [postList, sortOptions, me?.member_of_ids])
 
   // return loader on loading
   if (loading || !mappedPostList) {
@@ -72,6 +55,8 @@ const NewFeeds = ({
 
   return (
     <>
+      <CardFeedSorter sortOptions={sortOptions} setSortOptions={setSortOptions} />
+
       {mappedPostList.map((post) => (
         <CardPost key={`post_${post.id}`} post={post} />
       ))}

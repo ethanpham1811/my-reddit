@@ -8,7 +8,7 @@ import { v4 as rid } from 'uuid'
 import { data } from './data'
 
 export type TCardFeedSorterProps = {
-  disabled: boolean
+  disabled?: boolean
   sortOptions: TSortOptions
   setSortOptions: Dispatch<SetStateAction<TSortOptions>>
 }
