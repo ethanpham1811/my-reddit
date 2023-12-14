@@ -16,12 +16,11 @@ const NavBar = styled(AppBar)(({ theme }) => {
 function TopNav({ sessionUsername }: { sessionUsername: string | undefined }) {
   const { session, loading } = useAppSession()
   const { breakpoints } = useTheme()
-  const router = useRouter()
   const {
     query: { subreddit: subName, username },
     pathname: pathName,
     push: navigate
-  } = router
+  } = useRouter()
   const lgMobile = useMediaQuery(breakpoints.down('lg'))
   const customLgMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Lg)
   const customMdMobile = useMediaQuery(MOBILE_CUSTOM_BREAKPOINT.Md)
@@ -31,17 +30,24 @@ function TopNav({ sessionUsername }: { sessionUsername: string | undefined }) {
       <NavBar>
         <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} sx={{ justifyContent: 'flex-start' }}>
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={{ sx: 0, md: 1 }} flex={customMdMobile ? 1 : 0}>
+            {/* logo */}
             <Logo />
-            {/* dropdown */}
+
+            {/* menu dropdown */}
             <MenuDropDown subName={subName} userPageName={username} pathName={pathName} />
           </Stack>
-          {/* search */}
+
+          {/* search bar */}
           <SearchBar isMobile={customLgMobile} subOrUserName={subName ?? username} navigate={navigate} />
-          {/* Icons */}
+
           <Stack direction="row" useFlexGap justifyContent="center" alignItems="center" spacing={1} pr={1}>
+            {/* action buttons */}
             <IconBox isMobile={customMdMobile} />
+
             {/* Profile dropdown */}
             {session && <ProfileDropdown isMobile={lgMobile} loading={loading} sessionUsername={sessionUsername} />}
+
+            {/* login button */}
             {!session && <LoginButton />}
           </Stack>
         </Stack>

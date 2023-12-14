@@ -1,16 +1,12 @@
-import { BORDER_TYPES } from '@/src/constants/enums'
-import { TSubredditDetail, TSubredditEditForm } from '@/src/constants/types'
-import { useSubUpdateForm, useSubredditUpdate } from '@/src/hooks'
-import { AppBar, Box, Container, Stack, Typography, styled } from '@/src/mui'
-import { textValidation } from '@/src/services/formValidations'
+import { TSubredditDetail } from '@/src/constants/types'
+import { AppBar, Box, Container, Stack, styled } from '@/src/mui'
 import { generateUserCover } from '@/src/services/utils'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useEffect } from 'react'
-import { RdChip, RdInlineInput } from '..'
 import { useAppSession } from '../../Layouts/MainLayout'
 import ActionButton from './components/ActionButton'
 import SubredditAvatar from './components/SubredditAvatar'
+import SubredditHeadLine from './components/SubredditHeadLine'
+import SubredditInfo from './components/SubredditInfo'
 
 const SubredditNavBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.white.main,
@@ -30,16 +26,7 @@ function SubredditTopNav({ subreddit, owner }: TSubredditTopNavProps) {
   const { session } = useAppSession()
   const me = session?.userDetail
   const isMySub: boolean = owner === me?.username
-  const { updateSub } = useSubredditUpdate()
-  const { control, onChangeSubInfo, setFormValue } = useSubUpdateForm(subreddit, updateSub)
-  const { headline, name, isChildrenContent, subType } = subreddit || {}
-
-  // populate current headline to the form
-  useEffect(() => {
-    if (subreddit) {
-      setFormValue('headline', headline as string)
-    }
-  }, [subreddit, setFormValue, headline])
+  const { name, isChildrenContent, subType } = subreddit || {}
 
   return (
     <Box flexGrow={1}>
@@ -59,33 +46,10 @@ function SubredditTopNav({ subreddit, owner }: TSubredditTopNavProps) {
 
             <Stack alignItems={{ xs: 'center', md: 'flex-start' }} flex={1}>
               {/* Headline */}
-              <Typography fontWeight={700} variant="h4" width="100%" fontSize="1.8rem" textAlign={{ xs: 'center', md: 'left' }}>
-                {isMySub ? (
-                  <RdInlineInput<TSubredditEditForm>
-                    registerOptions={{ validate: (val) => textValidation(val, 60) }}
-                    onFieldSubmit={onChangeSubInfo}
-                    control={control}
-                    name="headline"
-                    headline
-                    fontSize="1.8rem"
-                    endIcon
-                  />
-                ) : (
-                  headline
-                )}
-              </Typography>
+              <SubredditHeadLine isMySub={isMySub} subreddit={subreddit} />
 
               {/* sub name + is SFW chip */}
-              <Stack direction="row" spacing={0.5} mt={1}>
-                <Typography fontWeight={700} variant="subtitle1" sx={{ color: 'gray.dark' }}>
-                  <Link href={`/r/${name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    r/{name}
-                  </Link>
-                </Typography>
-                {isChildrenContent && (
-                  <RdChip shape={BORDER_TYPES.Rounded} clickable={false} size="small" label="Super SFW" color="success" variant="filled" />
-                )}
-              </Stack>
+              <SubredditInfo isChildrenContent={isChildrenContent} name={name} />
             </Stack>
 
             {/* member status and subreddit type indicator */}
