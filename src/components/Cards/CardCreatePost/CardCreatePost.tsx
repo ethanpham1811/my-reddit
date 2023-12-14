@@ -106,6 +106,8 @@ function CardCreatePost({ subId, editModePayload }: TCardCreatePostProps) {
     }, 100)
   }
 
+  if (!me) return null
+
   return (
     <Box sx={{ position: 'relative' }}>
       <RdCard sx={{ p: { xs: 2, sm: 1.5 }, opacity: isDisabled ? 0.5 : 1 }}>

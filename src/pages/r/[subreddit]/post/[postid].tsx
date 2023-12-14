@@ -96,7 +96,7 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
   }
 
   return (
-    <div>
+    <>
       <Head>
         <title>r/{subName}</title>
       </Head>
@@ -125,6 +125,6 @@ export default function Post({ subreddit: svSubreddit, post: svPost }: InferGetS
           <CardSubredditInfo subreddit={subreddit} loading={pageLoading} />
         </Stack>
       </FeedLayout>
-    </div>
+    </>
   )
 }

@@ -1,6 +1,6 @@
 import FeedLayout from '@/src/Layouts/FeedLayout'
 import { CardAds, CardFeedSorter, CardHomeInfo, NewFeeds } from '@/src/components'
-import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/src/constants/enums'
+import { NON_SUB_FEED_LAYOUT_TOP_OFFSET, ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/src/constants/enums'
 import { TPost, TSortOptions } from '@/src/constants/types'
 import { GET_PAGINATED_POST_LIST } from '@/src/graphql/queries'
 import { usePostList } from '@/src/hooks'
@@ -50,12 +50,12 @@ export default function Home({ postList: svPostList }: InferGetStaticPropsType<t
   const { postList, loading: pageLoading, error, fetchMore } = usePostList(svPostList)
 
   return (
-    <div>
+    <>
       <Head>
         <title>My Reddit</title>
       </Head>
 
-      <FeedLayout top="70px" allowCreatePost>
+      <FeedLayout top={NON_SUB_FEED_LAYOUT_TOP_OFFSET} allowCreatePost>
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
           <NewFeeds
@@ -75,6 +75,6 @@ export default function Home({ postList: svPostList }: InferGetStaticPropsType<t
           <CardAds />
         </Stack>
       </FeedLayout>
-    </div>
+    </>
   )
 }

@@ -2,7 +2,7 @@ import FeedLayout from '@/src/Layouts/FeedLayout'
 import { useAppSession } from '@/src/Layouts/MainLayout'
 import { SearchFeeds, SearchFeedsTabBar } from '@/src/components'
 import CardSearchSide from '@/src/components/Cards/CardSearchSide/CardSearchSide'
-import { SEARCH_TABS } from '@/src/constants/enums'
+import { NON_SUB_FEED_LAYOUT_TOP_OFFSET, SEARCH_TABS } from '@/src/constants/enums'
 import { TQueriedList, TQueriedSub, TQueriedUser, TUserDetail } from '@/src/constants/types'
 import { useSearchQueriedList, useUserUpdate } from '@/src/hooks'
 import { Container, Stack } from '@/src/mui'
@@ -25,18 +25,23 @@ const Search: NextPage = () => {
   if (type === SEARCH_TABS.Communities) searchList = queriedSubs
   if (type === SEARCH_TABS.People) searchList = queriedUsers
 
+  /**
+   * Handle update user:
+   * - "member_of_ids": join/leave subreddit
+   * - "following_ids": follow/unfollow user
+   */
   async function handleUpdateUser(field: keyof Pick<TUserDetail, 'member_of_ids' | 'following_ids'>, name: string, isAdding: boolean) {
     if (me == null || me[field] == null) return
     updateUser(field, name, isAdding)
   }
 
   return (
-    <div>
+    <>
       <Head>
         <title>Search reddit</title>
       </Head>
       <Container maxWidth="md">
-        <SearchFeedsTabBar top="70px" type={type as SEARCH_TABS | undefined} />
+        <SearchFeedsTabBar top={NON_SUB_FEED_LAYOUT_TOP_OFFSET} type={type as SEARCH_TABS | undefined} />
       </Container>
       <FeedLayout ignoreLayoutLoading top="1rem" single={type === SEARCH_TABS.Communities || type === SEARCH_TABS.People}>
         {/* main tab content */}
@@ -64,7 +69,7 @@ const Search: NextPage = () => {
           />
         </Stack>
       </FeedLayout>
-    </div>
+    </>
   )
 }
 

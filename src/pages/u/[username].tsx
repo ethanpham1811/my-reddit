@@ -1,7 +1,7 @@
 import FeedLayout from '@/src/Layouts/FeedLayout'
 import { useAppSession } from '@/src/Layouts/MainLayout'
 import { CardFeedSorter, CardUserInfo, NewFeeds } from '@/src/components'
-import { ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/src/constants/enums'
+import { NON_SUB_FEED_LAYOUT_TOP_OFFSET, ORDERING, QUERY_LIMIT, SORT_METHOD } from '@/src/constants/enums'
 import { TPost, TSortOptions, TUserCompact, TUserDetail } from '@/src/constants/types'
 import { GET_USER_BY_USERNAME_WITH_POSTS, GET_USER_LIST_SHORT } from '@/src/graphql/queries'
 import { useUserByUsername } from '@/src/hooks'
@@ -85,7 +85,11 @@ export default function User({ user: svUser, userPosts: svUserPosts }: InferGetS
       <Head>
         <title>u/{username}</title>
       </Head>
-      <FeedLayout top="70px" allowCreatePost={username === me?.username.toString() ?? false} sx={{ position: 'relative', zIndex: 1 }}>
+      <FeedLayout
+        top={NON_SUB_FEED_LAYOUT_TOP_OFFSET}
+        allowCreatePost={username === me?.username.toString() ?? false}
+        sx={{ position: 'relative', zIndex: 1 }}
+      >
         <Stack spacing={2}>
           <CardFeedSorter disabled={hasNoPost} sortOptions={sortOptions} setSortOptions={setSortOptions} />
           <NewFeeds

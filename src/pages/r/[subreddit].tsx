@@ -80,7 +80,7 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
   }
 
   return (
-    <div>
+    <>
       <Head>
         <title>r/{subName}</title>
       </Head>
@@ -104,6 +104,6 @@ export default function Subreddit({ subreddit: svSubreddit, subredditPosts: svSu
           <CardSubredditInfo subreddit={subreddit} loading={pageLoading} />
         </Stack>
       </FeedLayout>
-    </div>
+    </>
   )
 }

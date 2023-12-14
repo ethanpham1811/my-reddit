@@ -25,8 +25,7 @@ type TFeedLayoutProps = Pick<ContainerProps, 'sx'> & {
  * @param  {string} top       custom top (for page with banners)
  */
 function FeedLayout({ allowCreatePost = false, ignoreLayoutLoading, loading, children, top, subredditId, single = false, sx }: TFeedLayoutProps) {
-  const { session, loading: sessionLoading } = useAppSession()
-  const me = session?.userDetail
+  const { loading: sessionLoading } = useAppSession()
   const router = useRouter()
   const wrapperRef = useRef<HTMLDivElement | null>(null)
   const bottomRef = useRef<HTMLDivElement | null>(null)
@@ -51,7 +50,7 @@ function FeedLayout({ allowCreatePost = false, ignoreLayoutLoading, loading, chi
                 <RdSkeletonDoublePost />
               ) : (
                 <>
-                  {me && allowCreatePost && <CardCreatePost subId={subredditId} />}
+                  {allowCreatePost && <CardCreatePost subId={subredditId} />}
                   {mainContent}
                 </>
               )}

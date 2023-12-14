@@ -1,6 +1,7 @@
 export const MAX_UPLOADS = 5
 export const MAX_TOPIC_CHOSEN = 2
 export const QUERY_LIMIT = 5
+export const NON_SUB_FEED_LAYOUT_TOP_OFFSET = '70px'
 export const MAX_TOP_TRENDING_HEIGHT = 120
 export const MAX_NEW_FEEDS_POST_HEIGHT = 200
 export const OPTIMISTIC_TEMP_ID = 99999

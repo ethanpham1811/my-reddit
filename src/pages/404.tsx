@@ -5,7 +5,7 @@ import Head from 'next/head'
 
 const Page404 = () => {
   return (
-    <div>
+    <>
       <Head>
         <title>404 - Page not found</title>
       </Head>
@@ -16,7 +16,7 @@ const Page404 = () => {
       >
         <NotFound />
       </Container>
-    </div>
+    </>
   )
 }
 export default Page404
